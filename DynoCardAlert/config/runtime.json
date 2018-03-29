@@ -1,0 +1,41 @@
+{
+  "deployment": {
+    "docker": {
+      "edgeRuntimeImage": "microsoft/azureiotedge-agent:1.0-preview", 
+      "loggingOptions": {
+        "log-driver": "json-file", 
+        "log-opts": {
+          "max-size": "10m"
+        }
+      }, 
+      "registries": [
+        {
+          "address": "iotedgedynocarddemo.azurecr.io", 
+          "password": "ByR8D=Z8iYVXE6LfReXQU/RyUGeGFU5E", 
+          "username": "IoTEdgeDynoCardDemo"
+        }
+      ], 
+      "uri": "unix:///var/run/docker.sock"
+    }, 
+    "type": "docker"
+  }, 
+  "deviceConnectionString": "HostName=oxy-dynocard-demp.azure-devices.net;DeviceId=deviceone;SharedAccessKey=q/mmFOw+JErw4bjQ4qM839CqzaqP34EKSe2IIGEUZp8=", 
+  "homeDir": "/var/lib/azure-iot-edge", 
+  "configDir": "/etc/azure-iot-edge", 
+  "hostName": "794f18755e50", 
+  "logLevel": "info", 
+  "schemaVersion": "1", 
+  "security": {
+    "certificates": {
+      "option": "selfSigned", 
+      "preInstalled": {
+        "deviceCACertificateFilePath": "", 
+        "serverCertificateFilePath": ""
+      }, 
+      "selfSigned": {
+        "forceNoPasswords": true, 
+        "forceRegenerate": false
+      }
+    }
+  }
+}
