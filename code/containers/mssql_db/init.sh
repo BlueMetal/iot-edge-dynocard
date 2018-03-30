@@ -6,17 +6,18 @@ SLEEP_TIME=5
 DB_INIT_SQL_FILE='schema.sql'
 
 ## start MSSQL in the background
+echo "[INFO] init.sh: Starting SQL Server in the background..."
 /opt/mssql/bin/sqlservr &
 MSSQL_PID=$!
 
 ## wait for the database to come up
 SQL_OUTPUT=`/opt/mssql-tools/bin/sqlcmd -l 5 -S localhost -U sa -P $SA_PASSWORD -d master -Q "Select @@VERSION"`
 while [ $? -ne 0 ]; do
-    echo "[INFO] init.sh: Database still starting. Retry in ${SLEEP_TIME} seconds..."
+    echo "[INFO] init.sh: SQL Server still starting. Retry in ${SLEEP_TIME} seconds..."
     sleep $SLEEP_TIME
     SQL_OUTPUT=`/opt/mssql-tools/bin/sqlcmd -l 5 -S localhost -U sa -P $SA_PASSWORD -d master -Q "Select @@VERSION"`
 done
-echo "[INFO] init.sh: Database is UP!"
+echo "[INFO] init.sh: SQL Server is UP!"
 echo $SQL_OUTPUT
 
 ## import the initial schema
@@ -26,7 +27,7 @@ echo "[INFO] init.sh: Initalizing database..."
 ## if initial schema load was successful, wait on MSSQL server process (forever) if not, die.
 if [ $? -eq 0 ]; then
     echo "[INFO] init.sh: Database initalized sucessfully!"
-    echo "[INFO] init.sh: Database (PID $MSSQL_PID) is ready for connections..."
+    echo "[INFO] init.sh: SQL Server database is ready for connections..."
     ## wait on mssql
     wait $MSSQL_PID
 else
