@@ -1,0 +1,104 @@
+{
+    "dataRoles": [
+        {
+            "displayName": "Pump ID ",
+            "name": "PumpIdd",
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "Event ID ",
+            "name": "EventIdd",
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "Card Type",
+            "name": "CardType",
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "Card ID",
+            "name": "CardId",
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "Postition",
+            "name": "Postition",
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "Load",
+            "name": "Load",
+            "kind": "Grouping"
+        }
+    ],
+    "objects": {
+        "dataPoint": {
+            "displayName": "Data colors",
+            "properties": {
+                "defaultColor": {
+                    "displayName": "Default color",
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "showAllDataPoints": {
+                    "displayName": "Show all",
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "fill": {
+                    "displayName": "Fill",
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "fillRule": {
+                    "displayName": "Color saturation",
+                    "type": {
+                        "fill": {}
+                    }
+                },
+                 "fontSize": {
+                    "displayName": "Text Size",
+                    "type": {
+                        "formatting": {
+                            "fontSize": true
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "dataViewMappings": [
+        {
+            "table": {
+                "rows": {
+                   "dataReductionAlgorithm": {
+                       "top": {
+                           "count": 30000
+                       }
+                   }, 
+                        "select": [
+                            { "for": {  "in": "PumpIdd"}},
+                            { "for": {  "in": "EventIdd"}},
+                            { "for": {  "in": "CardType"}},
+                            { "for": {  "in": "CardId"}},
+                            { "for": {  "in": "Postition"}},
+                            { "for": {  "in": "Load"}}
+                    ]   
+                    
+
+                }
+            }
+        }
+    ]
+}
