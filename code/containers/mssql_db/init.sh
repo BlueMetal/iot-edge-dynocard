@@ -21,7 +21,7 @@ echo $SQL_OUTPUT
 
 ## import the initial schema
 echo "[INFO] init.sh: Initalizing database..."
-/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -d master -i $DB_INIT_SQL_FILE
+/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -d master -e -i $DB_INIT_SQL_FILE
 
 ## if initial schema load was successful, wait on MSSQL server process (forever) if not, die.
 if [ $? -eq 0 ]; then
