@@ -27,7 +27,7 @@ echo "[INFO] init.sh: Initalizing database..."
 ## if initial schema load was successful, wait on MSSQL server process (forever) if not, die.
 if [ $? -eq 0 ]; then
     echo "[INFO] init.sh: Database initalized sucessfully!"
-    echo "[INFO] init.sh: SQL Server database is ready for connections..."
+    echo "[INFO] init.sh: SQL Server is up and database is ready for connections."
     ## wait on mssql
     wait $MSSQL_PID
 else
