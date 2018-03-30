@@ -6,5 +6,6 @@ namespace DynoCardAlertModule.Model
     public class DynoCardAnomaly
     {
         public string DynoCardId { get; set; }
+        public DateTime DynoCardTimestamp { get; set; }
     }
 }

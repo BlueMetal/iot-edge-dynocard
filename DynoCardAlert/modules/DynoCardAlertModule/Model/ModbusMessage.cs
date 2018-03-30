@@ -11,6 +11,7 @@ namespace DynoCardAlertModule.Model
 {
      public class ModbusMessage
     {
+        public string DisplayName { get; set; }
         public List<ModbusRegisterValue> RegisterValues { get; set; }
         public static ModbusLayoutConfig LayoutConfig { get; set; }
 
@@ -28,6 +29,9 @@ namespace DynoCardAlertModule.Model
                     Console.WriteLine("Sending output message");
                     var processedMessage = new Message(messageBytes);
                     RegisterValues = registers;
+
+                    //Preserve the display name off one value to determine what it represents
+                    DisplayName = registers[0].DisplayName;
 
                     Console.WriteLine("Completed output message");
                 }
@@ -62,6 +66,18 @@ namespace DynoCardAlertModule.Model
         {
             //Convert modbus message to dynocard here
             DynoCard dynoCard = new DynoCard();
+
+            if (!string.IsNullOrEmpty(message.DisplayName))
+            {
+                if (message.DisplayName.ToLower().Contains("surface"))
+                {
+                    dynoCard.CardType = DynoCardType.Surface;
+                }
+                else if (message.DisplayName.ToLower().Contains("pump"))
+                {
+                    dynoCard.CardType = DynoCardType.Pump;
+                }
+            } 
             
             var timestampProp = ModbusMessage.LayoutConfig.Timestamp;
             if (timestampProp != null)

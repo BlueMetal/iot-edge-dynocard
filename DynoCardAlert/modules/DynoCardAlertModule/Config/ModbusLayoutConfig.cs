@@ -27,6 +27,5 @@ namespace DynoCardAlertModule.Config
 
         [JsonProperty("pointArrayStartRegister")]
         public ModbusLayoutProperty Point { get; set; }
-
     }
 }

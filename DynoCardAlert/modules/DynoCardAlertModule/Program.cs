@@ -1,23 +1,24 @@
-namespace DynoCardAlertModule
-{
-    using System;
-    using System.IO;
-    using System.Runtime.InteropServices;
-    using System.Runtime.Loader;
-    using System.Security.Cryptography.X509Certificates;
-    using System.Text;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using Microsoft.Azure.Devices.Client;
-    using Microsoft.Azure.Devices.Client.Transport.Mqtt;
-    using System.Collections.Generic;     // for KeyValuePair<>
-    using Microsoft.Azure.Devices.Shared; // for TwinCollection
-    using Newtonsoft.Json;                // for JsonConvert
-    using Sql = System.Data.SqlClient;
-    using DynoCardAlertModule.Model;
-    using DynoCardAlertModule.Config;
+using System;
+using System.Linq;
+using System.Collections;
+using System.IO;
+using System.Runtime.InteropServices;
+using System.Runtime.Loader;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.Azure.Devices.Client;
+using Microsoft.Azure.Devices.Client.Transport.Mqtt;
+using System.Collections.Generic;     // for KeyValuePair<>
+using Microsoft.Azure.Devices.Shared; // for TwinCollection
+using Newtonsoft.Json;                // for JsonConvert
+using Sql = System.Data.SqlClient;
+using DynoCardAlertModule.Model;
+using DynoCardAlertModule.Config;
 
-    class Program
+namespace DynoCardAlertModule
+{    class Program
     {
         private static int counter;
         private static string _sqlConnectionString;
@@ -126,7 +127,7 @@ namespace DynoCardAlertModule
                 Console.WriteLine("Setting alertInput handler");
                 // Register callback to be called when an alert is received by the module
                 await ioTHubModuleClient.SetInputMessageHandlerAsync("alertInput", ProcessAlert, ioTHubModuleClient);
-                
+
                 Console.WriteLine("Done setting inputs");
             }
             catch (Exception ex)
@@ -182,6 +183,10 @@ namespace DynoCardAlertModule
                 DeviceClient deviceClient = (DeviceClient)userContext;
                 var modbusMessage = new ModbusMessage(message);
                 var dynoCard = modbusMessage.ToDynoCard();
+
+                string json = JsonConvert.SerializeObject(dynoCard);
+                System.Console.WriteLine(json);
+
                 await PersistDynoCard(dynoCard);
                 
                 var dynoCardMessage = dynoCard.ToDeviceMessage();
@@ -240,14 +245,14 @@ namespace DynoCardAlertModule
                     var anomaly = JsonConvert.DeserializeObject<DynoCardAnomaly>(messageString);
                     var previousCardList = GetPreviousCards(anomaly);
                     
-                    var alertMessgeBytes = JsonConvert.SerializeObject(previousCardList);
-                    var alertMessgeBytesString = Encoding.UTF8.GetBytes(alertMessgeBytes);
-                    var alertMessage = new Message(alertMessgeBytesString);
+                    var previousCardsMessgeBytes = JsonConvert.SerializeObject(previousCardList);
+                    var previousCardsMessgeBytesString = Encoding.UTF8.GetBytes(previousCardsMessgeBytes);
+                    var previousCardsMessage = new Message(previousCardsMessgeBytesString);
 
                     Console.WriteLine("Sending Alert");
-                    alertMessage.Properties["MessageType"] = "Alert";
+                    previousCardsMessage.Properties["MessageType"] = "Alert";
                     
-                    await deviceClient.SendEventAsync("alertOutput", alertMessage);
+                    await deviceClient.SendEventAsync("alertOutput", previousCardsMessage);
                     Console.WriteLine("Completed sending alert");
                 }
 
@@ -290,10 +295,10 @@ namespace DynoCardAlertModule
                     var insertHeader = new StringBuilder("INSERT INTO db4cards.[ACTIVE].[CARD_HEADER] ([EV_ID],[CH_COLLECTED],[CH_SCALED_MAX_LOAD],")
                     .Append("[CH_SCALED_MIN_LOAD],[CH_STROKE_LENGTH],[CH_STROKE_PERIOD],[CH_CARD_TYPE],[CH_UPDATE_DATE],[CH_UPDATE_BY]) ")
                     .Append("OUTPUT INSERTED.CH_ID ")
-                    .Append($"VALUES (null, '{card.Timestamp}', {card.MaxLoad}, {card.MinLoad}, {card.StrokeLength}, {card.StrokePeriod}, {0}, '{DateTime.Now}', 'edgeModule');");
+                    .Append($"VALUES (null, '{card.Timestamp}', {card.MaxLoad}, {card.MinLoad}, {card.StrokeLength}, {card.StrokePeriod}, {card.CardType}, '{DateTime.Now}', 'edgeModule');");
                     System.Console.WriteLine($"Header insert: {insertHeader}");
 
-                    var insertDetail = "INSERT INTO db4cards.[ACTIVE].[CARD_DETAIL] ([CH_ID],[CH_SCALED_POSITION],[CH_SCALED_LOAD]) VALUES ({0}, {1}, {2});";
+                    var insertDetail = "INSERT INTO db4cards.[ACTIVE].[CARD_DETAIL] ([CH_ID],[CD_POSITION],[CD_LOAD]) VALUES ({0}, {1}, {2});";
 
                     using (Sql.SqlCommand headerInsert = new Sql.SqlCommand(insertHeader.ToString(), conn))
                     {
@@ -326,11 +331,85 @@ namespace DynoCardAlertModule
 
         private static async Task<List<DynoCard>> GetPreviousCards(DynoCardAnomaly anomalyCard)
         {
-            List<DynoCard> cardList = new List<DynoCard>();
+            DateTime start = anomalyCard.DynoCardTimestamp.Subtract(TimeSpan.FromHours(1));
+            DateTime end = anomalyCard.DynoCardTimestamp;
+            string startDateString = start.ToString("s");
+            string endDateString = end.ToString("s");
 
-            //Add logic here to get the cards from the DB
+            var sql = new StringBuilder("SELECT h.CH_ID, ")
+            .Append("CH_COLLECTED, ")
+            .Append("CH_SCALED_MAX_LOAD, ")
+            .Append("CH_SCALED_MIN_LOAD, ")
+            .Append("CH_STROKE_LENGTH, ")
+            .Append("CH_STROKE_PERIOD, ")
+            .Append("CH_CARD_TYPE, ")
+            .Append("CD_ID, ")
+            .Append("CD_POSITION, ")
+            .Append("CD_LOAD ")
+            .Append("FROM[ACTIVE].[CARD_HEADER] h ")
+            .Append("JOIN[ACTIVE].[CARD_DETAIL] d ON h.CH_ID = d.CH_ID ")
+            .Append($"WHERE h.CH_COLLECTED >= '{startDateString}' ")
+            .Append($"AND h.CH_COLLECTED <= '{endDateString}' ")
+            .Append("ORDER BY h.CH_ID DESC");
 
-            return await Task.FromResult(cardList);
+            Dictionary<int,DynoCard> cardList = new Dictionary<int,DynoCard>();
+            
+            // //Store the data in SQL db
+            using (Sql.SqlConnection conn = new Sql.SqlConnection(_sqlConnectionString))
+            {
+                conn.Open();
+            
+                using (Sql.SqlCommand cardHistorySelect = new Sql.SqlCommand(sql.ToString(), conn))
+                {
+                    var results = await cardHistorySelect.ExecuteReaderAsync();
+
+                    if (results.HasRows)
+                    {
+                        DynoCard card = null;
+                        int headerID = 0;
+
+                        while(await results.ReadAsync())
+                        {
+                            int currentID = results.GetInt32(0);
+
+                            if (headerID != currentID)
+                            {
+                                headerID = currentID;
+
+                                card = new DynoCard()
+                                {
+                                    Id = currentID,
+                                    Timestamp = results.GetDateTime(1),
+                                    MaxLoad = (int)results.GetFloat(2),
+                                    MinLoad = (int)results.GetFloat(3),
+                                    StrokeLength = (int)results.GetFloat(4),
+                                    StrokePeriod = (int)results.GetFloat(5),
+                                    CardType = results.GetString(6) == "0" ? DynoCardType.Pump : DynoCardType.Surface,
+                                    CardPoints = new List<DynoCardPoint>()
+                                };
+
+                                card.CardPoints.Add(new DynoCardPoint()
+                                {
+                                    Position = (int)results.GetFloat(8),
+                                    Load = (int)results.GetFloat(9)
+                                });
+
+                                cardList.Add(currentID, card);
+                            }
+                            else
+                            {
+                                cardList[currentID].CardPoints.Add(new DynoCardPoint()
+                                {
+                                    Position = (int)results.GetFloat(8),
+                                    Load = (int)results.GetFloat(9)
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+
+            return await Task.FromResult(cardList?.Values?.ToList());
         }
     }
 }
