@@ -9,15 +9,15 @@ ENV SA_PASSWORD='DemoPass01#'
 ## MSSQL Product ID (Developer, Express, Standard, EnterpriseCore, Enterprise, etc...)
 ENV MSSQL_PID='Developer'
 
-# create app directory
+## create app directory
 RUN mkdir -p /opt/app/mssql_db
 WORKDIR /opt/app/mssql_db
 
-# copy files into container
+## copy files into container
 COPY . /opt/app/mssql_db
 
-# set permissions
+## set permissions
 RUN chmod +x /opt/app/mssql_db/init.sh
 
 ## set default container command
-CMD /opt/app/mssql_db/init.sh
+CMD /bin/bash /opt/app/mssql_db/init.sh
