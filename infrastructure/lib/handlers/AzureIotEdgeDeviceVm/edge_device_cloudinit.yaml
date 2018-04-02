@@ -1,0 +1,14 @@
+#cloud-config
+##
+## This cloudinit file sets a host up to act as an IoT Edge device
+##
+package_update: false
+packages:
+  - python2.7
+  - python-pip
+  - docker.io
+runcmd:
+  - export HOME=/root
+  - pip install -U azure-iot-edge-runtime-ctl
+  - iotedgectl setup --connection-string "${connstr}" --auto-cert-gen-force-no-passwords 
+  - iotedgectl start
