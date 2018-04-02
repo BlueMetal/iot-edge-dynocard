@@ -89,7 +89,7 @@ module powerbi.extensibility.visual {
             let pumpCardData = _.filter(this.graphData, { 'cardType': 'P' });
 
             console.log("Surface Data Before Short", surfCardData);
-            surfCardData= _.sortBy(surfCardData, 'position');
+            surfCardData= _.sortBy(surfCardData, 'cardId');
             //surfCardData= _.sortBy(surfCardData, 'load');
             console.log("Surface Data After Short", surfCardData );
             let xMaxPos_surf = d3.max(surfCardData, d => d.position);
@@ -104,32 +104,44 @@ module powerbi.extensibility.visual {
 
 
 
-            const drawLine: d3.svg.Line<DataPoint> = d3.svg.line<DataPoint>()
+            const drawLine: d3.svg.Line<DataPoint> = d3.svg.line<DataPoint>().interpolate("cardinal")
                 .x((dp: DataPoint) => { return xAxisPos_surf(dp.position); })
                 .y((dp: DataPoint) => { return yAxisLoad_surf(dp.load); });
 
-            let dotSurf = this.surCrdSvgGrp.selectAll("circle").data(surfCardData);
-            let plotPath = this.surCrdSvgGrp.selectAll("rect").data([surfCardData]);
+           // let dotSurf = this.surCrdSvgGrp.selectAll("circle").data(surfCardData);
+            let plotPath = this.surCrdSvgGrp.selectAll("path").data([surfCardData]);
             plotPath.enter().append("path").classed("path-cls",true);
-            plotPath.attr("stroke", "gray")
-                    .attr("stroke-width", 0.1)
+            plotPath.exit().remove();
+            let plotPathLenght= 2000;
+            console.log("plotPaht Lenght", plotPath, "| Path Node: ", plotPath.node());
+            plotPath.attr("stroke", "red")
+                    .attr("stroke-width", 2)
                     .attr("fill", "none")
                     .attr("d", drawLine);
-            dotSurf.enter().append("circle").attr({
-                r: 3,
-                cy: d => yAxisLoad_surf(d.load),
-                cx: d => xAxisPos_surf(d.position)
-            }).style({
-                fill: 'red'
-            });
-            dotSurf.exit().remove();
-            dotSurf.attr({
-                r: 3,
-                cy: d => yAxisLoad_surf(d.load),
-                cx: d => xAxisPos_surf(d.position)
-            }).style({
-                fill: 'red'
-            })
+            
+            plotPath
+            .attr("stroke-dasharray", plotPathLenght + " " + plotPathLenght)
+            .attr("stroke-dashoffset", plotPathLenght)
+            .transition()
+            .duration(2000)
+            .ease("linear")
+            .attr("stroke-dashoffset", 0);           
+                    
+            // dotSurf.enter().append("circle").attr({
+            //     r: 3,
+            //     cy: d => yAxisLoad_surf(d.load),
+            //     cx: d => xAxisPos_surf(d.position)
+            // }).style({
+            //     fill: 'red'
+            // });
+            // dotSurf.exit().remove();
+            // dotSurf.attr({
+            //     r: 3,
+            //     cy: d => yAxisLoad_surf(d.load),
+            //     cx: d => xAxisPos_surf(d.position)
+            // }).style({
+            //     fill: 'red'
+            // })
 
 
             let dotPump = this.pumpCrdSvgGrp.selectAll("circle").data(pumpCardData);
@@ -184,6 +196,7 @@ module powerbi.extensibility.visual {
                 retDataView.dataPoints.push({
                     pumpId: <number>+dataView[i][columnPos.indexOf(DataColumns.pumpId)],
                     eventId: <number>+dataView[i][columnPos.indexOf(DataColumns.eventId)],
+                    cardHeaderId:<number>dataView[i][columnPos.indexOf(DataColumns.cardHeaderId)],
                     cardType: <string>dataView[i][columnPos.indexOf(DataColumns.cardType)],
                     cardId: <number>dataView[i][columnPos.indexOf(DataColumns.cardId)],
                     position: <number>dataView[i][columnPos.indexOf(DataColumns.position)],
@@ -310,8 +323,9 @@ module powerbi.extensibility.visual {
     }
 
     export class DataColumns {
-        static pumpId = "PumpIdd";
-        static eventId = "EventIdd";
+        static pumpId = "PumpId";
+        static eventId = "EventId";
+        static cardHeaderId ="CardHeaderID";
         static cardType = "CardType";
         static cardId = "CardId";
         static position = "Postition";
@@ -320,6 +334,7 @@ module powerbi.extensibility.visual {
     export interface DataPoint {
         pumpId: number;
         eventId: number;
+        cardHeaderId:number;
         cardType: string;
         cardId: number;
         position: number;

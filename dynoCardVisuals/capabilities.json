@@ -2,12 +2,17 @@
     "dataRoles": [
         {
             "displayName": "Pump ID ",
-            "name": "PumpIdd",
+            "name": "PumpId",
             "kind": "Grouping"
         },
         {
             "displayName": "Event ID ",
-            "name": "EventIdd",
+            "name": "EventId",
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "Card Header ID",
+            "name": "CardHeaderID",
             "kind": "Grouping"
         },
         {
@@ -88,8 +93,9 @@
                        }
                    }, 
                         "select": [
-                            { "for": {  "in": "PumpIdd"}},
-                            { "for": {  "in": "EventIdd"}},
+                            { "for": {  "in": "PumpId"}},
+                            { "for": {  "in": "EventId"}},
+                            { "for": {  "in": "CardHeaderID"}},
                             { "for": {  "in": "CardType"}},
                             { "for": {  "in": "CardId"}},
                             { "for": {  "in": "Postition"}},
