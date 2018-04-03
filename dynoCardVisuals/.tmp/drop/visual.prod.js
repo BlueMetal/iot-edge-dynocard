@@ -28055,10 +28055,10 @@ var powerbi;
                 "use strict";
                 var Visual = (function () {
                     function Visual(options) {
-                        this.isDropDownRender = false;
-                        // private pumpIdVal = null;
                         this.eventIdVal = 'all';
                         this.cardTypeVal = 'all';
+                        this.isDropDownRender = false;
+                        this.margin = { top: 100, right: 50, bottom: 80, left: 5 };
                         this.host = options.host;
                         this.flagCounter = 0;
                         this.target = options.element;
@@ -28066,16 +28066,22 @@ var powerbi;
                             this.target.appendChild(this.createInitialHeader());
                             var animateButton = this.createButton();
                             document.getElementById("buttonDiv").appendChild(animateButton);
-                            this.surCardSVG = d3.select(document.getElementById("surfaceCard")).append("svg").classed("sur-svg-cls", true);
-                            this.surCrdSvgGrp = this.surCardSVG.append("g").classed("sur-svg-grp-cls", true);
-                            this.pumpCardSVG = d3.select(document.getElementById("pumpCardDiv")).append("svg").classed("pump-svg-cls", true);
-                            this.pumpCrdSvgGrp = this.pumpCardSVG.append("g").classed("pump-svg-grp-cls", true);
+                            this.dynoCardSvg = d3.select(document.getElementById("dynoCardDiv")).append("svg").classed("dyno-svg-cls", true);
+                            // this.surCardSVG = d3.select(document.getElementById("surfaceCard")).append("svg").classed("sur-svg-cls", true);
+                            this.surCrdSvgGrp = this.dynoCardSvg.append("g").classed("sur-svg-grp-cls", true);
+                            this.surCrdSvgGrp.attr({ id: "surfaceCard" });
+                            // this.pumpCardSVG = d3.select(document.getElementById("pumpCardDiv")).append("svg").classed("pump-svg-cls", true);
+                            this.pumpCrdSvgGrp = this.dynoCardSvg.append("g").classed("pump-svg-grp-cls", true);
+                            this.pumpCrdSvgGrp.attr({ id: "pumpCard" });
+                            this.xAxisGroup = this.dynoCardSvg.append("g").classed("x-axis", true);
+                            this.yAxisGroup = this.dynoCardSvg.append("g").classed("y-axis", true);
+                            this.yAxisGroupPump = this.dynoCardSvg.append("g").classed("y-axis-pump", true);
                         }
                     }
                     Visual.prototype.update = function (options) {
+                        var _this = this;
                         this.dataSet = this.getTableData(options);
                         if (!this.isDropDownRender) {
-                            console.log("Going to Render update Points");
                             var pumpDD = this.createDropDown(DataColumns.pumpId);
                             var eventDD = this.createDropDown(DataColumns.eventId);
                             var cardTypeDD = this.createDropDown(DataColumns.cardType);
@@ -28084,51 +28090,54 @@ var powerbi;
                             document.getElementById("controlDiv").appendChild(cardTypeDD);
                             this.isDropDownRender = true;
                         }
-                        this.updatePoints(options);
+                        var svgCanvasWidth = options.viewport.width;
+                        this.svgCanvasHeight = options.viewport.height - this.margin.top - this.margin.bottom;
+                        this.dynoCardSvg.attr({
+                            width: svgCanvasWidth,
+                            height: this.svgCanvasHeight
+                        });
+                        //--- Define X & Y  Axis Scale and Line
+                        var xMax = d3.max(this.dataSet.dataPoints, function (d) { return d.position; });
+                        this.xAxis_Position = d3.scale.linear().domain([0, xMax]).range([0, svgCanvasWidth]);
+                        this.yAxis_Load = d3.scale.linear().domain(d3.extent(this.dataSet.dataPoints, function (d) { return d.load; })).range([this.svgCanvasHeight / 2, 0]);
+                        var xAxisLine = d3.svg.axis().scale(this.xAxis_Position).orient("bottom").tickSize(5).tickFormat(function (d) { return d + ' in'; });
+                        this.xAxisGroup.call(xAxisLine).attr({
+                            transform: "translate(" + this.margin.right + ", " + (this.svgCanvasHeight - 20) + ")"
+                        });
+                        var yAxisLine = d3.svg.axis().scale(this.yAxis_Load).orient("left").tickSize(5).tickFormat(function (d) { return Number(d) / 1000 + ' klb'; });
+                        this.yAxisGroup.call(yAxisLine).attr({
+                            transform: "translate(" + this.margin.right + ", 5)"
+                        }).style({
+                            'fill': "red",
+                            'stroke-width': "7px",
+                            width: "7px"
+                        });
+                        this.yAxisGroupPump.call(yAxisLine).attr({
+                            transform: "translate(" + this.margin.right + ", " + this.svgCanvasHeight / 2 + ")"
+                        });
+                        //-- Define Path Draw function
+                        this.drawLineFunc = d3.svg.line().interpolate("cardinal")
+                            .x(function (dp) { return _this.xAxis_Position(dp.position); })
+                            .y(function (dp) { return _this.yAxis_Load(dp.load); });
+                        this.updateDynoCardGraph(options);
                         this.refoptions = options;
                     };
-                    Visual.prototype.updatePoints = function (options) {
-                        var svgWidthFull = options.viewport.width;
-                        var svgHeightFull = options.viewport.height / 2;
-                        var margin = { top: 100, right: 5, bottom: 10, left: 5 };
-                        var svgWidth = svgWidthFull - margin.left - margin.right;
-                        var svgHeight = svgHeightFull - margin.top - margin.bottom;
-                        this.surCardSVG.attr({
-                            width: svgWidth,
-                            height: svgHeight
-                        });
-                        this.pumpCardSVG.attr({
-                            width: svgWidth,
-                            height: svgHeight
-                        });
+                    Visual.prototype.updateDynoCardGraph = function (options) {
                         // this.barGroup.attr("transform", "translate(0,5)");
+                        this.graphData = _.sortBy(this.graphData, 'cardId');
                         var surfCardData = _.filter(this.graphData, { 'cardType': 'S' });
                         var pumpCardData = _.filter(this.graphData, { 'cardType': 'P' });
-                        console.log("Surface Data Before Short", surfCardData);
-                        surfCardData = _.sortBy(surfCardData, 'cardId');
-                        //surfCardData= _.sortBy(surfCardData, 'load');
-                        console.log("Surface Data After Short", surfCardData);
-                        var xMaxPos_surf = d3.max(surfCardData, function (d) { return d.position; });
-                        var yMaxLoad_surf = d3.max(surfCardData, function (d) { return d.load; });
-                        var xAxisPos_surf = d3.scale.linear().domain([0, xMaxPos_surf]).range([0, svgWidth]);
-                        var yAxisLoad_surf = d3.scale.linear().domain(d3.extent(surfCardData, function (d) { return d.load; })).range([svgHeight, 0]);
-                        var xMaxPos_pump = d3.max(pumpCardData, function (d) { return d.position; });
-                        var yMaxLoad_pump = d3.max(pumpCardData, function (d) { return d.load; });
-                        var xAxisPos_pump = d3.scale.linear().domain([0, xMaxPos_surf]).range([0, svgWidth]);
-                        var yAxisLoad_pump = d3.scale.linear().domain(d3.extent(pumpCardData, function (d) { return d.load; })).range([svgHeight, 0]);
-                        var drawLine = d3.svg.line().interpolate("cardinal")
-                            .x(function (dp) { return xAxisPos_surf(dp.position); })
-                            .y(function (dp) { return yAxisLoad_surf(dp.load); });
-                        var drawPumpLine = d3.svg.line().interpolate("cardinal")
-                            .x(function (dp) { return xAxisPos_pump(dp.position); })
-                            .y(function (dp) { return yAxisLoad_pump(dp.load); });
+                        //surfCardData = _.sortBy(surfCardData, 'cardId');
+                        // const drawLine: d3.svg.Line<DataPoint> = d3.svg.line<DataPoint>().interpolate("cardinal")
+                        //     .x((dp: DataPoint) => { return this.xAxis_Position(dp.position); })
+                        //     .y((dp: DataPoint) => { return this.yAxis_Load(dp.load); });
                         var plotSurfacePath = this.surCrdSvgGrp.selectAll("path").data([surfCardData]);
                         plotSurfacePath.enter().append("path").classed("path-cls", true);
                         plotSurfacePath.exit().remove();
                         plotSurfacePath.attr("stroke", "red")
                             .attr("stroke-width", 2)
                             .attr("fill", "none")
-                            .attr("d", drawLine);
+                            .attr("d", this.drawLineFunc);
                         this.plotteSurfacedPath = d3.select(document.getElementById("surfaceCard")).selectAll("path");
                         var surfacePathLength = this.plotteSurfacedPath.node().getTotalLength();
                         console.log("plotPathLenght Lenght", surfacePathLength);
@@ -28145,8 +28154,8 @@ var powerbi;
                         plotPumpPath.attr("stroke", "steelblue")
                             .attr("stroke-width", 2)
                             .attr("fill", "none")
-                            .attr("d", drawPumpLine);
-                        this.plottePumpPath = d3.select(document.getElementById("pumpCardDiv")).selectAll("path");
+                            .attr("d", this.drawLineFunc);
+                        this.plottePumpPath = d3.select(document.getElementById("pumpCard")).selectAll("path");
                         var pumpPathLength = this.plottePumpPath.node().getTotalLength();
                         console.log("pumpPathLength Lenght", pumpPathLength);
                         plotPumpPath
@@ -28156,22 +28165,88 @@ var powerbi;
                             .duration(2000)
                             .ease("linear")
                             .attr("stroke-dashoffset", 0);
+                        this.surCrdSvgGrp.attr({
+                            transform: "translate(10,0)"
+                        });
+                        this.surCrdSvgGrp.attr({
+                            transform: "translate(" + this.margin.right + ",0)"
+                        });
+                        this.pumpCrdSvgGrp.attr({
+                            transform: "translate(" + this.margin.right + "," + (this.svgCanvasHeight / 2 - 30) + ")"
+                        });
                         // let dotPump = this.pumpCrdSvgGrp.selectAll("circle").data(pumpCardData);
                         // dotPump.enter().append("circle").attr({
                         //     r: 2,
-                        //     cy: d => yAxisLoad_pump(d.load),
-                        //     cx: d => xAxisPos_pump(d.position)
+                        //     cy: d => this.yAxis_Load(d.load),
+                        //     cx: d => this.xAxis_Position(d.position)
                         // }).style({
                         //     fill: 'blue'
                         // });
                         // dotPump.exit().remove();
                         // dotPump.attr({
                         //     r: 2,
-                        //     cy: d => yAxisLoad_pump(d.load),
-                        //     cx: d => xAxisPos_pump(d.position)
+                        //     cy: d => this.yAxis_Load(d.load),
+                        //     cx: d => this.xAxis_Position(d.position)
                         // }).style({
-                        //     fill: 'blue'
+                        //     fill: 'red'
                         // })
+                    };
+                    Visual.prototype.renderCard = function (cardId, dataSet) {
+                    };
+                    Visual.prototype.animateGraph = function () {
+                        var allDataPoints = _.sortBy(this.dataSet.dataPoints, 'cardId');
+                        var surfaceDataGrp = _.groupBy(_.filter(allDataPoints, { 'cardType': 'S' }), 'cardHeaderId');
+                        var pumpCardDataGrp = _.groupBy(_.filter(allDataPoints, { 'cardType': 'P' }), 'cardHeaderId');
+                        this.surCrdSvgGrp.selectAll("path").remove();
+                        var color = ["red", "green", "blue", "black", "yellow"];
+                        var count = 0;
+                        var plotSurfacePath;
+                        for (var card in surfaceDataGrp) {
+                            var surCardData = surfaceDataGrp[card];
+                            console.log("Surface Card Data Point: ", surCardData);
+                            plotSurfacePath = this.surCrdSvgGrp.selectAll("path" + card).data([surCardData]);
+                            plotSurfacePath.enter().append("path").classed("path-cls", true);
+                            plotSurfacePath.exit().remove();
+                            plotSurfacePath.attr("stroke", color[count++])
+                                .attr("stroke-width", 2)
+                                .attr("fill", "none")
+                                .attr("d", this.drawLineFunc);
+                            this.plotteSurfacedPath = d3.select(document.getElementById("surfaceCard")).selectAll("path");
+                            var surfacePathLength = this.plotteSurfacedPath.node().getTotalLength();
+                            plotSurfacePath
+                                .attr("stroke-dasharray", surfacePathLength + " " + surfacePathLength)
+                                .attr("stroke-dashoffset", surfacePathLength)
+                                .transition()
+                                .duration(2000)
+                                .ease("linear")
+                                .attr("stroke-dashoffset", 0);
+                        }
+                        //     let plotPumpPath = this.pumpCrdSvgGrp.selectAll("path").data([pumpCardData]);
+                        //     plotPumpPath.enter().append("path").classed("path-cls", true);
+                        //     plotPumpPath.exit().remove();
+                        //     plotPumpPath.attr("stroke", "steelblue")
+                        //         .attr("stroke-width", 2)
+                        //         .attr("fill", "none")
+                        //         .attr("d", drawLine);
+                        //     this.plottePumpPath = d3.select(document.getElementById("pumpCard")).selectAll("path");
+                        //     let pumpPathLength = this.plottePumpPath.node().getTotalLength();
+                        //     console.log("pumpPathLength Lenght", pumpPathLength);
+                        //     plotPumpPath
+                        //         .attr("stroke-dasharray", pumpPathLength + " " + pumpPathLength)
+                        //         .attr("stroke-dashoffset", pumpPathLength)
+                        //         .transition()
+                        //         .duration(2000)
+                        //         .ease("linear")
+                        //         .attr("stroke-dashoffset", 0);
+                        //     this.surCrdSvgGrp.attr({
+                        //         transform:"translate(10,0)"
+                        //     });
+                        //     this.surCrdSvgGrp.attr({
+                        //         transform:"translate("+this.margin.right+",0)"
+                        //     });
+                        //     this.pumpCrdSvgGrp.attr({
+                        //             transform:"translate("+this.margin.right+","+(this.svgCanvasHeight/2-30)+")"
+                        //         })
                     };
                     Visual.parseSettings = function (dataView) {
                         return dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.VisualSettings.parse(dataView);
@@ -28184,7 +28259,6 @@ var powerbi;
                         return dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.VisualSettings.enumerateObjectInstances(this.settings || dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.VisualSettings.getDefault(), options);
                     };
                     Visual.prototype.getTableData = function (options) {
-                        console.log("Options: ", options);
                         var sampleData = [];
                         var retDataView = {
                             dataPoints: sampleData,
@@ -28221,15 +28295,19 @@ var powerbi;
                         controlDiv.setAttribute("id", "controlDiv");
                         controlDiv.setAttribute("class", "form-inline");
                         baseDiv.appendChild(controlDiv);
-                        var surfaceCardDiv = document.createElement("div");
-                        surfaceCardDiv.setAttribute("id", "surfaceCard");
-                        surfaceCardDiv.setAttribute("class", "row");
-                        baseDiv.appendChild(surfaceCardDiv);
-                        baseDiv.appendChild(document.createElement("hr"));
-                        var pumpCardDiv = document.createElement("div");
-                        pumpCardDiv.setAttribute("id", "pumpCardDiv");
-                        pumpCardDiv.setAttribute("class", "row");
-                        baseDiv.appendChild(pumpCardDiv);
+                        var dynoCardDiv = document.createElement("div");
+                        dynoCardDiv.setAttribute("id", "dynoCardDiv");
+                        dynoCardDiv.setAttribute("class", "row");
+                        baseDiv.appendChild(dynoCardDiv);
+                        // const surfaceCardDiv: HTMLElement = document.createElement("div");
+                        // surfaceCardDiv.setAttribute("id", "surfaceCard");
+                        // surfaceCardDiv.setAttribute("class", "row");
+                        // baseDiv.appendChild(surfaceCardDiv);
+                        // baseDiv.appendChild(document.createElement("hr"));
+                        // const pumpCardDiv: HTMLElement = document.createElement("div");
+                        // pumpCardDiv.setAttribute("id", "pumpCardDiv");
+                        // pumpCardDiv.setAttribute("class", "row");
+                        // baseDiv.appendChild(pumpCardDiv);
                         baseDiv.appendChild(document.createElement("hr"));
                         var buttonDiv = document.createElement("div");
                         buttonDiv.setAttribute("id", "buttonDiv");
@@ -28282,7 +28360,7 @@ var powerbi;
                             else if (argDropDownType == DataColumns.cardType)
                                 _this.cardTypeVal = selVal;
                             _this.updateGraphData();
-                            _this.updatePoints(_this.refoptions);
+                            _this.updateDynoCardGraph(_this.refoptions);
                             console.log("Current Graph Data:", _this.graphData);
                         };
                         ddDiv.appendChild(labelDiv);
@@ -28309,8 +28387,7 @@ var powerbi;
                         tempButton.setAttribute("class", "btn btn-success center-block");
                         tempButton.textContent = "Run DynoCard Animation";
                         tempButton.onclick = function () {
-                            thisRef.flagCounter++;
-                            thisRef.updatePoints(thisRef.refoptions);
+                            thisRef.animateGraph();
                         };
                         return tempButton;
                     };
