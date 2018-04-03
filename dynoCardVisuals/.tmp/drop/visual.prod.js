@@ -28119,54 +28119,59 @@ var powerbi;
                         var drawLine = d3.svg.line().interpolate("cardinal")
                             .x(function (dp) { return xAxisPos_surf(dp.position); })
                             .y(function (dp) { return yAxisLoad_surf(dp.load); });
-                        // let dotSurf = this.surCrdSvgGrp.selectAll("circle").data(surfCardData);
-                        var plotPath = this.surCrdSvgGrp.selectAll("path").data([surfCardData]);
-                        plotPath.enter().append("path").classed("path-cls", true);
-                        plotPath.exit().remove();
-                        var plotPathLenght = 2000;
-                        console.log("plotPaht Lenght", plotPath, "| Path Node: ", plotPath.node());
-                        plotPath.attr("stroke", "red")
+                        var drawPumpLine = d3.svg.line().interpolate("cardinal")
+                            .x(function (dp) { return xAxisPos_pump(dp.position); })
+                            .y(function (dp) { return yAxisLoad_pump(dp.load); });
+                        var plotSurfacePath = this.surCrdSvgGrp.selectAll("path").data([surfCardData]);
+                        plotSurfacePath.enter().append("path").classed("path-cls", true);
+                        plotSurfacePath.exit().remove();
+                        plotSurfacePath.attr("stroke", "red")
                             .attr("stroke-width", 2)
                             .attr("fill", "none")
                             .attr("d", drawLine);
-                        plotPath
-                            .attr("stroke-dasharray", plotPathLenght + " " + plotPathLenght)
-                            .attr("stroke-dashoffset", plotPathLenght)
+                        this.plotteSurfacedPath = d3.select(document.getElementById("surfaceCard")).selectAll("path");
+                        var surfacePathLength = this.plotteSurfacedPath.node().getTotalLength();
+                        console.log("plotPathLenght Lenght", surfacePathLength);
+                        plotSurfacePath
+                            .attr("stroke-dasharray", surfacePathLength + " " + surfacePathLength)
+                            .attr("stroke-dashoffset", surfacePathLength)
                             .transition()
                             .duration(2000)
                             .ease("linear")
                             .attr("stroke-dashoffset", 0);
-                        // dotSurf.enter().append("circle").attr({
-                        //     r: 3,
-                        //     cy: d => yAxisLoad_surf(d.load),
-                        //     cx: d => xAxisPos_surf(d.position)
+                        var plotPumpPath = this.pumpCrdSvgGrp.selectAll("path").data([pumpCardData]);
+                        plotPumpPath.enter().append("path").classed("path-cls", true);
+                        plotPumpPath.exit().remove();
+                        plotPumpPath.attr("stroke", "steelblue")
+                            .attr("stroke-width", 2)
+                            .attr("fill", "none")
+                            .attr("d", drawPumpLine);
+                        this.plottePumpPath = d3.select(document.getElementById("pumpCardDiv")).selectAll("path");
+                        var pumpPathLength = this.plottePumpPath.node().getTotalLength();
+                        console.log("pumpPathLength Lenght", pumpPathLength);
+                        plotPumpPath
+                            .attr("stroke-dasharray", pumpPathLength + " " + pumpPathLength)
+                            .attr("stroke-dashoffset", pumpPathLength)
+                            .transition()
+                            .duration(2000)
+                            .ease("linear")
+                            .attr("stroke-dashoffset", 0);
+                        // let dotPump = this.pumpCrdSvgGrp.selectAll("circle").data(pumpCardData);
+                        // dotPump.enter().append("circle").attr({
+                        //     r: 2,
+                        //     cy: d => yAxisLoad_pump(d.load),
+                        //     cx: d => xAxisPos_pump(d.position)
                         // }).style({
-                        //     fill: 'red'
+                        //     fill: 'blue'
                         // });
-                        // dotSurf.exit().remove();
-                        // dotSurf.attr({
-                        //     r: 3,
-                        //     cy: d => yAxisLoad_surf(d.load),
-                        //     cx: d => xAxisPos_surf(d.position)
+                        // dotPump.exit().remove();
+                        // dotPump.attr({
+                        //     r: 2,
+                        //     cy: d => yAxisLoad_pump(d.load),
+                        //     cx: d => xAxisPos_pump(d.position)
                         // }).style({
-                        //     fill: 'red'
+                        //     fill: 'blue'
                         // })
-                        var dotPump = this.pumpCrdSvgGrp.selectAll("circle").data(pumpCardData);
-                        dotPump.enter().append("circle").attr({
-                            r: 2,
-                            cy: function (d) { return yAxisLoad_pump(d.load); },
-                            cx: function (d) { return xAxisPos_pump(d.position); }
-                        }).style({
-                            fill: 'blue'
-                        });
-                        dotPump.exit().remove();
-                        dotPump.attr({
-                            r: 2,
-                            cy: function (d) { return yAxisLoad_pump(d.load); },
-                            cx: function (d) { return xAxisPos_pump(d.position); }
-                        }).style({
-                            fill: 'blue'
-                        });
                     };
                     Visual.parseSettings = function (dataView) {
                         return dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.VisualSettings.parse(dataView);

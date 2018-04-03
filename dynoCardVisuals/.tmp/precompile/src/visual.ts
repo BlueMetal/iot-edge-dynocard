@@ -29,6 +29,8 @@ module powerbi.extensibility.visual.dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED
         private eventIdDDList;
         private cardTypeDDList;
         private graphData: DataPoint[];
+        private plotteSurfacedPath: any;
+        private plottePumpPath: any;
 
 
         constructor(options: VisualConstructorOptions) {
@@ -89,9 +91,9 @@ module powerbi.extensibility.visual.dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED
             let pumpCardData = _.filter(this.graphData, { 'cardType': 'P' });
 
             console.log("Surface Data Before Short", surfCardData);
-            surfCardData= _.sortBy(surfCardData, 'cardId');
+            surfCardData = _.sortBy(surfCardData, 'cardId');
             //surfCardData= _.sortBy(surfCardData, 'load');
-            console.log("Surface Data After Short", surfCardData );
+            console.log("Surface Data After Short", surfCardData);
             let xMaxPos_surf = d3.max(surfCardData, d => d.position);
             let yMaxLoad_surf = d3.max(surfCardData, d => d.load);
             let xAxisPos_surf = d3.scale.linear().domain([0, xMaxPos_surf]).range([0, svgWidth]);
@@ -103,63 +105,75 @@ module powerbi.extensibility.visual.dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED
             let yAxisLoad_pump = d3.scale.linear().domain(d3.extent(pumpCardData, d => d.load)).range([svgHeight, 0])
 
 
-
             const drawLine: d3.svg.Line<DataPoint> = d3.svg.line<DataPoint>().interpolate("cardinal")
                 .x((dp: DataPoint) => { return xAxisPos_surf(dp.position); })
                 .y((dp: DataPoint) => { return yAxisLoad_surf(dp.load); });
 
-           // let dotSurf = this.surCrdSvgGrp.selectAll("circle").data(surfCardData);
-            let plotPath = this.surCrdSvgGrp.selectAll("path").data([surfCardData]);
-            plotPath.enter().append("path").classed("path-cls",true);
-            plotPath.exit().remove();
-            let plotPathLenght= 2000;
-            console.log("plotPaht Lenght", plotPath, "| Path Node: ", plotPath.node());
-            plotPath.attr("stroke", "red")
-                    .attr("stroke-width", 2)
-                    .attr("fill", "none")
-                    .attr("d", drawLine);
-            
-            plotPath
-            .attr("stroke-dasharray", plotPathLenght + " " + plotPathLenght)
-            .attr("stroke-dashoffset", plotPathLenght)
-            .transition()
-            .duration(2000)
-            .ease("linear")
-            .attr("stroke-dashoffset", 0);           
-                    
-            // dotSurf.enter().append("circle").attr({
-            //     r: 3,
-            //     cy: d => yAxisLoad_surf(d.load),
-            //     cx: d => xAxisPos_surf(d.position)
+
+            const drawPumpLine: d3.svg.Line<DataPoint> = d3.svg.line<DataPoint>().interpolate("cardinal")
+                .x((dp: DataPoint) => { return xAxisPos_pump(dp.position); })
+                .y((dp: DataPoint) => { return yAxisLoad_pump(dp.load); });
+                
+            let plotSurfacePath = this.surCrdSvgGrp.selectAll("path").data([surfCardData]);
+            plotSurfacePath.enter().append("path").classed("path-cls", true);
+            plotSurfacePath.exit().remove();
+            plotSurfacePath.attr("stroke", "red")
+                .attr("stroke-width", 2)
+                .attr("fill", "none")
+                .attr("d", drawLine);
+
+            this.plotteSurfacedPath = d3.select(document.getElementById("surfaceCard")).selectAll("path");
+            let surfacePathLength = this.plotteSurfacedPath.node().getTotalLength();
+            console.log("plotPathLenght Lenght", surfacePathLength);
+
+            plotSurfacePath
+                .attr("stroke-dasharray", surfacePathLength + " " + surfacePathLength)
+                .attr("stroke-dashoffset", surfacePathLength)
+                .transition()
+                .duration(2000)
+                .ease("linear")
+                .attr("stroke-dashoffset", 0);
+
+
+
+            let plotPumpPath = this.pumpCrdSvgGrp.selectAll("path").data([pumpCardData]);
+            plotPumpPath.enter().append("path").classed("path-cls", true);
+            plotPumpPath.exit().remove();
+            plotPumpPath.attr("stroke", "steelblue")
+                .attr("stroke-width", 2)
+                .attr("fill", "none")
+                .attr("d", drawPumpLine);
+
+
+            this.plottePumpPath = d3.select(document.getElementById("pumpCardDiv")).selectAll("path");
+            let pumpPathLength = this.plottePumpPath.node().getTotalLength();
+                console.log("pumpPathLength Lenght", pumpPathLength);
+    
+                plotPumpPath
+                    .attr("stroke-dasharray", pumpPathLength + " " + pumpPathLength)
+                    .attr("stroke-dashoffset", pumpPathLength)
+                    .transition()
+                    .duration(2000)
+                    .ease("linear")
+                    .attr("stroke-dashoffset", 0);
+        
+
+            // let dotPump = this.pumpCrdSvgGrp.selectAll("circle").data(pumpCardData);
+            // dotPump.enter().append("circle").attr({
+            //     r: 2,
+            //     cy: d => yAxisLoad_pump(d.load),
+            //     cx: d => xAxisPos_pump(d.position)
             // }).style({
-            //     fill: 'red'
+            //     fill: 'blue'
             // });
-            // dotSurf.exit().remove();
-            // dotSurf.attr({
-            //     r: 3,
-            //     cy: d => yAxisLoad_surf(d.load),
-            //     cx: d => xAxisPos_surf(d.position)
+            // dotPump.exit().remove();
+            // dotPump.attr({
+            //     r: 2,
+            //     cy: d => yAxisLoad_pump(d.load),
+            //     cx: d => xAxisPos_pump(d.position)
             // }).style({
-            //     fill: 'red'
+            //     fill: 'blue'
             // })
-
-
-            let dotPump = this.pumpCrdSvgGrp.selectAll("circle").data(pumpCardData);
-            dotPump.enter().append("circle").attr({
-                r: 2,
-                cy: d => yAxisLoad_pump(d.load),
-                cx: d => xAxisPos_pump(d.position)
-            }).style({
-                fill: 'blue'
-            });
-            dotPump.exit().remove();
-            dotPump.attr({
-                r: 2,
-                cy: d => yAxisLoad_pump(d.load),
-                cx: d => xAxisPos_pump(d.position)
-            }).style({
-                fill: 'blue'
-            })
 
 
 
@@ -196,7 +210,7 @@ module powerbi.extensibility.visual.dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED
                 retDataView.dataPoints.push({
                     pumpId: <number>+dataView[i][columnPos.indexOf(DataColumns.pumpId)],
                     eventId: <number>+dataView[i][columnPos.indexOf(DataColumns.eventId)],
-                    cardHeaderId:<number>dataView[i][columnPos.indexOf(DataColumns.cardHeaderId)],
+                    cardHeaderId: <number>dataView[i][columnPos.indexOf(DataColumns.cardHeaderId)],
                     cardType: <string>dataView[i][columnPos.indexOf(DataColumns.cardType)],
                     cardId: <number>dataView[i][columnPos.indexOf(DataColumns.cardId)],
                     position: <number>dataView[i][columnPos.indexOf(DataColumns.position)],
@@ -325,7 +339,7 @@ module powerbi.extensibility.visual.dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED
     export class DataColumns {
         static pumpId = "PumpId";
         static eventId = "EventId";
-        static cardHeaderId ="CardHeaderID";
+        static cardHeaderId = "CardHeaderID";
         static cardType = "CardType";
         static cardId = "CardId";
         static position = "Postition";
@@ -334,7 +348,7 @@ module powerbi.extensibility.visual.dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED
     export interface DataPoint {
         pumpId: number;
         eventId: number;
-        cardHeaderId:number;
+        cardHeaderId: number;
         cardType: string;
         cardId: number;
         position: number;
