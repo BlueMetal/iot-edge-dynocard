@@ -28096,9 +28096,17 @@ var powerbi;
                             width: svgCanvasWidth,
                             height: this.svgCanvasHeight
                         });
+                        this.dynoCardSvg.append("line").attr({
+                            x1: this.margin.right,
+                            y1: this.svgCanvasHeight / 2,
+                            x2: svgCanvasWidth,
+                            y2: this.svgCanvasHeight / 2,
+                            "stroke-width": 0.5,
+                            "stroke": "gray"
+                        });
                         //--- Define X & Y  Axis Scale and Line
                         var xMax = d3.max(this.dataSet.dataPoints, function (d) { return d.position; });
-                        this.xAxis_Position = d3.scale.linear().domain([0, xMax]).range([0, svgCanvasWidth]);
+                        this.xAxis_Position = d3.scale.linear().domain([0, xMax]).range([10, svgCanvasWidth]);
                         this.yAxis_Load = d3.scale.linear().domain(d3.extent(this.dataSet.dataPoints, function (d) { return d.load; })).range([this.svgCanvasHeight / 2, 0]);
                         var xAxisLine = d3.svg.axis().scale(this.xAxis_Position).orient("bottom").tickSize(5).tickFormat(function (d) { return d + ' in'; });
                         this.xAxisGroup.call(xAxisLine).attr({
@@ -28191,35 +28199,76 @@ var powerbi;
                         //     fill: 'red'
                         // })
                     };
-                    Visual.prototype.renderCard = function (cardId, dataSet) {
+                    Visual.prototype.renderCard = function (ci, surCardData, pumpCardData) {
+                        console.log("Surface Card Data Point: ", surCardData);
+                        var color = ["red", "green", "blue", "black", "yellow"];
+                        var plotSurfacePath = this.surCrdSvgGrp.selectAll("path" + ci).data([surCardData]);
+                        plotSurfacePath.enter().append("path").classed("path-cls", true);
+                        plotSurfacePath.exit().remove();
+                        plotSurfacePath.attr("stroke", color[ci])
+                            .attr("stroke-width", 2)
+                            .attr("fill", "none")
+                            .attr("d", this.drawLineFunc);
+                        this.plotteSurfacedPath = d3.select(document.getElementById("surfaceCard")).selectAll("path");
+                        var surfacePathLength = this.plotteSurfacedPath.node().getTotalLength();
+                        plotSurfacePath
+                            .attr("stroke-dasharray", surfacePathLength + " " + surfacePathLength)
+                            .attr("stroke-dashoffset", surfacePathLength)
+                            .transition()
+                            .duration(1000)
+                            .ease("linear")
+                            .attr("stroke-dashoffset", 0);
+                        var plotPumpPath = this.pumpCrdSvgGrp.selectAll("path" + ci).data([pumpCardData]);
+                        plotPumpPath.enter().append("path").classed("path-cls", true);
+                        plotPumpPath.exit().remove();
+                        plotPumpPath.attr("stroke", color[ci])
+                            .attr("stroke-width", 2)
+                            .attr("fill", "none")
+                            .attr("d", this.drawLineFunc);
+                        this.plottePumpPath = d3.select(document.getElementById("pumpCard")).selectAll("path");
+                        var pumpPathLength = this.plottePumpPath.node().getTotalLength();
+                        console.log("pumpPathLength Lenght", pumpPathLength);
+                        plotPumpPath
+                            .attr("stroke-dasharray", pumpPathLength + " " + pumpPathLength)
+                            .attr("stroke-dashoffset", pumpPathLength)
+                            .transition()
+                            .duration(1000)
+                            .ease("linear")
+                            .attr("stroke-dashoffset", 0);
+                        this.surCrdSvgGrp.attr({
+                            transform: "translate(10,0)"
+                        });
+                        this.surCrdSvgGrp.attr({
+                            transform: "translate(" + this.margin.right + ",0)"
+                        });
+                        this.pumpCrdSvgGrp.attr({
+                            transform: "translate(" + this.margin.right + "," + (this.svgCanvasHeight / 2 - 30) + ")"
+                        });
                     };
                     Visual.prototype.animateGraph = function () {
+                        var _this = this;
                         var allDataPoints = _.sortBy(this.dataSet.dataPoints, 'cardId');
                         var surfaceDataGrp = _.groupBy(_.filter(allDataPoints, { 'cardType': 'S' }), 'cardHeaderId');
                         var pumpCardDataGrp = _.groupBy(_.filter(allDataPoints, { 'cardType': 'P' }), 'cardHeaderId');
+                        var surCardDataArr = _.map(surfaceDataGrp, surfaceDataGrp.value);
+                        var pumpCardDataArr = _.map(pumpCardDataGrp, pumpCardDataGrp.value);
+                        console.log("SurfaceCard Array: ", surCardDataArr);
                         this.surCrdSvgGrp.selectAll("path").remove();
-                        var color = ["red", "green", "blue", "black", "yellow"];
+                        this.pumpCrdSvgGrp.selectAll("path").remove();
                         var count = 0;
                         var plotSurfacePath;
-                        for (var card in surfaceDataGrp) {
-                            var surCardData = surfaceDataGrp[card];
-                            console.log("Surface Card Data Point: ", surCardData);
-                            plotSurfacePath = this.surCrdSvgGrp.selectAll("path" + card).data([surCardData]);
-                            plotSurfacePath.enter().append("path").classed("path-cls", true);
-                            plotSurfacePath.exit().remove();
-                            plotSurfacePath.attr("stroke", color[count++])
-                                .attr("stroke-width", 2)
-                                .attr("fill", "none")
-                                .attr("d", this.drawLineFunc);
-                            this.plotteSurfacedPath = d3.select(document.getElementById("surfaceCard")).selectAll("path");
-                            var surfacePathLength = this.plotteSurfacedPath.node().getTotalLength();
-                            plotSurfacePath
-                                .attr("stroke-dasharray", surfacePathLength + " " + surfacePathLength)
-                                .attr("stroke-dashoffset", surfacePathLength)
-                                .transition()
-                                .duration(2000)
-                                .ease("linear")
-                                .attr("stroke-dashoffset", 0);
+                        var plotPumpPath;
+                        var _loop_1 = function (ci) {
+                            var surCardData = surCardDataArr[ci];
+                            var pumpCardData = pumpCardDataArr[ci];
+                            setTimeout(function () {
+                                console.log("Going to Render: ", ci);
+                                _this.renderCard(ci, surCardData, pumpCardData);
+                                //setTimeout(()=>console.log("delay"),1000)
+                            }, +ci * 2000);
+                        };
+                        for (var ci in surCardDataArr) {
+                            _loop_1(ci);
                         }
                         //     let plotPumpPath = this.pumpCrdSvgGrp.selectAll("path").data([pumpCardData]);
                         //     plotPumpPath.enter().append("path").classed("path-cls", true);
