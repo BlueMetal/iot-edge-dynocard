@@ -28,6 +28,9 @@ namespace DynoCardAlertModule.Model
 
                 if (registers != null && registers.Count > 0)
                 {
+                    //Sort the list so we know what the first Op name is
+                    registers = registers.OrderBy(r => r.Address).ToList();
+               
                     Console.WriteLine($"Sending output message: {registers}");
                     var processedMessage = new Message(messageBytes);
                     RegisterValues = registers;
@@ -67,47 +70,24 @@ namespace DynoCardAlertModule.Model
 
         public static async Task<DynoCard> ToDynoCard(this ModbusMessage message)
         {
-            DynoCard dynoCard = new DynoCard();
-            bool populateHeader = false;
-
+            DynoCard dynoCard = null;
+            
             if (!string.IsNullOrEmpty(message.DisplayName))
             {
                 if (message.DisplayName.ToLower().Contains("surface"))
                 {
+                    dynoCard = PopulateSurfaceHeaderValue(message);
                     dynoCard.CardType = DynoCardType.Surface;   
                 }
                 else if (message.DisplayName.ToLower().Contains("pump"))
                 {
-                    dynoCard.CardType = DynoCardType.Pump;
-                }
-
-                //Determine if this is the first half (with header info) or the last half (without header info) of the array,
-                //regardles of surface or pump card
-                if (message.DisplayName.ToLower().Contains("batch1"))
-                {
-                    populateHeader = true;
+                    dynoCard = PopulatePumpHeaderValue(message);
+                    dynoCard.CardType = DynoCardType.Surface;
                 }
             } 
             
-            //Default the number of points to the length of the array (in the case of no header values).
-            //If there are header values, overwrite the number with that value.
-            int numberOfCoordinates = message.RegisterValues.Count;
-            if (populateHeader)
-            {
-                dynoCard = PopulateSurfaceHeaderValue(message, dynoCard);
-                numberOfCoordinates = dynoCard.NumberOfPoints;
-            }
-            else
-            {
-                //Look for an existing partially persisted card, since the card are persisted from two reads from the modbus interface
-                dynoCard = await DataHelper.LookupPartialDynoCard();
-
-                if (dynoCard != null)
-                {
-                    numberOfCoordinates = dynoCard.NumberOfPoints;
-                }
-            }
-
+            int numberOfCoordinates = dynoCard.NumberOfPoints;
+            
             var pointsArrayStartProp = ModbusMessage.LayoutConfig.Point;
             if (pointsArrayStartProp != null)
             {
@@ -129,11 +109,13 @@ namespace DynoCardAlertModule.Model
                 dynoCard.CardPoints = dynoCardPoints;
             }
 
-            return dynoCard;           
+            return await Task.FromResult(dynoCard);      
         }
 
-        private static DynoCard PopulateSurfaceHeaderValue(ModbusMessage message, DynoCard dynoCard)
+        private static DynoCard PopulateSurfaceHeaderValue(ModbusMessage message)
         {
+            DynoCard dynoCard = new DynoCard();
+
             var timestampProp = ModbusMessage.LayoutConfig.Timestamp;
             if (timestampProp != null)
             {
@@ -208,6 +190,11 @@ namespace DynoCardAlertModule.Model
             }
 
             return dynoCard;
+        }
+
+        private static DynoCard PopulatePumpHeaderValue(ModbusMessage message)
+        {
+            return null;
         }
 
         private static List<string> GetValueArray(int registerNumber, int length, List<ModbusRegisterValue> valueList)
