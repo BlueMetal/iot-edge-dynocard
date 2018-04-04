@@ -6840,22 +6840,52 @@
 .visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG svg {
   display: block;
 }
-.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG p {
-  font-size: 20px;
-  font-weight: bold;
-  color: steelblue;
-}
-.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG p em {
-  background: yellow;
-  padding: 5px;
-}
-.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .line {
-  fill: none;
-  stroke: steelblue;
-  stroke-width: 2px;
-}
 .visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG #controlDiv {
   padding: 5px;
   margin: 5px;
   background-color: #F7F7F7;
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .x-axis path,
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .x-axis line {
+  fill: none;
+  stroke: brown;
+  shape-rendering: crispEdges;
+  stroke-width: 2px;
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .x-axis text {
+  font-family: sans-serif;
+  font-style: italic;
+  font-size: 14px;
+  font-weight: bold;
+  fill: brown;
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .y-axis path .y-axis line {
+  stroke-width: 2px;
+  fill: blueviolet;
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .y-axis path,
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .y-axis line {
+  fill: none;
+  stroke: brown;
+  shape-rendering: crispEdges;
+  stroke-width: 3px;
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .y-axis text {
+  font-family: sans-serif;
+  font-style: italic;
+  font-size: 14px;
+  fill: brown;
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .y-axis-pump path,
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .y-axis-pump line {
+  fill: none;
+  stroke: steelblue;
+  shape-rendering: crispEdges;
+  stroke-width: 3px;
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .y-axis-pump text {
+  font-family: sans-serif;
+  font-style: italic;
+  font-size: 14px;
+  fill: steelblue;
 }
