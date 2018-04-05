@@ -46701,6 +46701,131 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var powerbi;
+(function (powerbi) {
+    var extensibility;
+    (function (extensibility) {
+        var visual;
+        (function (visual) {
+            var dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3;
+            (function (dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3) {
+                ;
+            })(dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3 = visual.dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3 || (visual.dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3 = {}));
+        })(visual = extensibility.visual || (extensibility.visual = {}));
+    })(extensibility = powerbi.extensibility || (powerbi.extensibility = {}));
+})(powerbi || (powerbi = {}));
+var powerbi;
+(function (powerbi) {
+    var extensibility;
+    (function (extensibility) {
+        var visual;
+        (function (visual) {
+            var dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3;
+            (function (dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3) {
+                var DataColumns = (function () {
+                    function DataColumns() {
+                    }
+                    return DataColumns;
+                }());
+                DataColumns.pumpId = "PumpId";
+                DataColumns.eventId = "EventId";
+                DataColumns.cardHeaderId = "CardHeaderID";
+                DataColumns.cardType = "CardType";
+                DataColumns.cardId = "CardId";
+                DataColumns.position = "Postition";
+                DataColumns.load = "Load";
+                dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.DataColumns = DataColumns;
+            })(dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3 = visual.dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3 || (visual.dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3 = {}));
+        })(visual = extensibility.visual || (extensibility.visual = {}));
+    })(extensibility = powerbi.extensibility || (powerbi.extensibility = {}));
+})(powerbi || (powerbi = {}));
+var powerbi;
+(function (powerbi) {
+    var extensibility;
+    (function (extensibility) {
+        var visual;
+        (function (visual) {
+            var dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3;
+            (function (dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3) {
+                var HtmlControl = (function () {
+                    function HtmlControl() {
+                    }
+                    HtmlControl.createInitialHeader = function () {
+                        var baseDiv = document.createElement("div");
+                        baseDiv.setAttribute("class", "container-fluid");
+                        var reportTitle = document.createElement("p");
+                        reportTitle.setAttribute("class", "text-center");
+                        reportTitle.appendChild(document.createTextNode(" Graph: Dyno Card"));
+                        baseDiv.appendChild(reportTitle);
+                        var controlDivRow = document.createElement("div");
+                        controlDivRow.setAttribute("class", "form-inline");
+                        var controlDiv = document.createElement("div");
+                        controlDiv.setAttribute("id", "controlDiv");
+                        controlDiv.setAttribute("class", "row");
+                        controlDivRow.appendChild(controlDiv);
+                        baseDiv.appendChild(controlDivRow);
+                        var dynoCardDiv = document.createElement("div");
+                        dynoCardDiv.setAttribute("id", "dynoCardDiv");
+                        dynoCardDiv.setAttribute("class", "row");
+                        baseDiv.appendChild(dynoCardDiv);
+                        baseDiv.appendChild(document.createElement("hr"));
+                        var buttonDiv = document.createElement("div");
+                        buttonDiv.setAttribute("id", "buttonDiv");
+                        buttonDiv.setAttribute("class", "row");
+                        baseDiv.appendChild(buttonDiv);
+                        return baseDiv;
+                    };
+                    HtmlControl.createDateTimePicker = function (argDateType) {
+                        var datePickerID = "startDatePicker";
+                        var ddDiv = document.createElement("div");
+                        ddDiv.setAttribute("class", "col-xs-3 form-group");
+                        ddDiv.setAttribute("id", "datePicker1");
+                        var dateDiv = document.createElement("div");
+                        dateDiv.setAttribute("class", "input-group");
+                        var dateInput = document.createElement("input");
+                        dateInput.setAttribute("class", "form-control");
+                        dateInput.setAttribute("type", "text");
+                        var spanOuter = document.createElement("span");
+                        spanOuter.setAttribute("class", "input-group-addon");
+                        var spanIcon = document.createElement("span");
+                        spanIcon.setAttribute("class", "glyphicon glyphicon-calendar");
+                        spanOuter.appendChild(spanIcon);
+                        if (argDateType == "start") {
+                            console.log("Creating START Data Picker");
+                            dateInput.setAttribute("placeholder", "Start Date");
+                        }
+                        else {
+                            console.log("Creating End Data Picker");
+                            dateInput.setAttribute("placeholder", "End Date");
+                            datePickerID = "endDatePicker";
+                        }
+                        dateDiv.setAttribute("id", datePickerID);
+                        spanOuter.onmouseover = function (event) {
+                            $('#' + datePickerID).datetimepicker();
+                        };
+                        dateDiv.appendChild(dateInput);
+                        dateDiv.appendChild(spanOuter);
+                        // ddDiv.appendChild(scriptTag);
+                        ddDiv.appendChild(dateDiv);
+                        return ddDiv;
+                    };
+                    HtmlControl.createAnimationButton = function (argRef) {
+                        var animationButton = document.createElement("button");
+                        animationButton.setAttribute("type", "button");
+                        animationButton.setAttribute("class", "btn btn-success center-block");
+                        animationButton.textContent = "Run DynoCard Animation";
+                        animationButton.onclick = function () {
+                            argRef.animateGraph();
+                        };
+                        return animationButton;
+                    };
+                    return HtmlControl;
+                }());
+                dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.HtmlControl = HtmlControl;
+            })(dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3 = visual.dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3 || (visual.dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3 = {}));
+        })(visual = extensibility.visual || (extensibility.visual = {}));
+    })(extensibility = powerbi.extensibility || (powerbi.extensibility = {}));
+})(powerbi || (powerbi = {}));
 /*
  *  Power BI Visualizations
  *
@@ -46774,19 +46899,18 @@ var powerbi;
         (function (visual) {
             var dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3;
             (function (dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3) {
-                "use strict";
-                var Visual = (function () {
-                    function Visual(options) {
+                // import DataPoint = powerbi.extensibility.visual;
+                var DynoCardVisual = (function () {
+                    function DynoCardVisual(options) {
                         this.eventIdVal = 'all';
                         this.cardTypeVal = 'all';
                         this.isDropDownRender = false;
                         this.margin = { top: 100, right: 50, bottom: 80, left: 5 };
                         this.host = options.host;
-                        this.flagCounter = 0;
                         this.target = options.element;
                         if (typeof document !== "undefined") {
-                            this.target.appendChild(this.createInitialHeader());
-                            var animateButton = this.createButton();
+                            this.target.appendChild(dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.HtmlControl.createInitialHeader());
+                            var animateButton = dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.HtmlControl.createAnimationButton(this);
                             document.getElementById("buttonDiv").appendChild(animateButton);
                             this.dynoCardSvg = d3.select(document.getElementById("dynoCardDiv")).append("svg").classed("dyno-svg-cls", true);
                             // this.surCardSVG = d3.select(document.getElementById("surfaceCard")).append("svg").classed("sur-svg-cls", true);
@@ -46800,7 +46924,7 @@ var powerbi;
                             this.yAxisGroupPump = this.dynoCardSvg.append("g").classed("y-axis-pump", true);
                         }
                     }
-                    Visual.prototype.update = function (options) {
+                    DynoCardVisual.prototype.update = function (options) {
                         var _this = this;
                         this.dataSet = this.getTableData(options);
                         var svgCanvasWidth = options.viewport.width;
@@ -46810,10 +46934,10 @@ var powerbi;
                             height: this.svgCanvasHeight
                         });
                         if (!this.isDropDownRender) {
-                            var pumpDD = this.createDropDown(DataColumns.pumpId);
-                            var eventDD = this.createDropDown(DataColumns.eventId);
-                            var stratDatePicker = this.createDateTimePicker("start");
-                            var endDatePicker = this.createDateTimePicker("end");
+                            var pumpDD = this.createDropDown(dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.DataColumns.pumpId);
+                            var eventDD = this.createDropDown(dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.DataColumns.eventId);
+                            var stratDatePicker = dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.HtmlControl.createDateTimePicker("start");
+                            var endDatePicker = dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.HtmlControl.createDateTimePicker("end");
                             document.getElementById("controlDiv").appendChild(pumpDD);
                             document.getElementById("controlDiv").appendChild(stratDatePicker);
                             document.getElementById("controlDiv").appendChild(endDatePicker);
@@ -46854,15 +46978,10 @@ var powerbi;
                         this.updateDynoCardGraph(options);
                         this.refoptions = options;
                     };
-                    Visual.prototype.updateDynoCardGraph = function (options) {
-                        // this.barGroup.attr("transform", "translate(0,5)");
+                    DynoCardVisual.prototype.updateDynoCardGraph = function (options) {
                         this.graphData = _.sortBy(this.graphData, 'cardId');
                         var surfCardData = _.filter(this.graphData, { 'cardType': 'S' });
                         var pumpCardData = _.filter(this.graphData, { 'cardType': 'P' });
-                        //surfCardData = _.sortBy(surfCardData, 'cardId');
-                        // const drawLine: d3.svg.Line<DataPoint> = d3.svg.line<DataPoint>().interpolate("cardinal")
-                        //     .x((dp: DataPoint) => { return this.xAxis_Position(dp.position); })
-                        //     .y((dp: DataPoint) => { return this.yAxis_Load(dp.load); });
                         var plotSurfacePath = this.surCrdSvgGrp.selectAll("path").data([surfCardData]);
                         plotSurfacePath.enter().append("path").classed("path-cls", true);
                         plotSurfacePath.exit().remove();
@@ -46923,7 +47042,7 @@ var powerbi;
                         //     fill: 'red'
                         // })
                     };
-                    Visual.prototype.renderCard = function (ci, surCardData, pumpCardData) {
+                    DynoCardVisual.prototype.renderCard = function (ci, surCardData, pumpCardData) {
                         console.log("Surface Card Data Point: ", surCardData);
                         var color = ["red", "green", "blue", "black", "yellow"];
                         var plotSurfacePath = this.surCrdSvgGrp.selectAll("path" + ci).data([surCardData]);
@@ -46969,7 +47088,7 @@ var powerbi;
                             transform: "translate(" + this.margin.right + "," + (this.svgCanvasHeight / 2 - 30) + ")"
                         });
                     };
-                    Visual.prototype.animateGraph = function () {
+                    DynoCardVisual.prototype.animateGraph = function () {
                         var _this = this;
                         var allDataPoints = _.sortBy(this.dataSet.dataPoints, 'cardId');
                         var surfaceDataGrp = _.groupBy(_.filter(allDataPoints, { 'cardType': 'S' }), 'cardHeaderId');
@@ -46994,44 +47113,18 @@ var powerbi;
                         for (var ci in surCardDataArr) {
                             _loop_1(ci);
                         }
-                        //     let plotPumpPath = this.pumpCrdSvgGrp.selectAll("path").data([pumpCardData]);
-                        //     plotPumpPath.enter().append("path").classed("path-cls", true);
-                        //     plotPumpPath.exit().remove();
-                        //     plotPumpPath.attr("stroke", "steelblue")
-                        //         .attr("stroke-width", 2)
-                        //         .attr("fill", "none")
-                        //         .attr("d", drawLine);
-                        //     this.plottePumpPath = d3.select(document.getElementById("pumpCard")).selectAll("path");
-                        //     let pumpPathLength = this.plottePumpPath.node().getTotalLength();
-                        //     console.log("pumpPathLength Lenght", pumpPathLength);
-                        //     plotPumpPath
-                        //         .attr("stroke-dasharray", pumpPathLength + " " + pumpPathLength)
-                        //         .attr("stroke-dashoffset", pumpPathLength)
-                        //         .transition()
-                        //         .duration(2000)
-                        //         .ease("linear")
-                        //         .attr("stroke-dashoffset", 0);
-                        //     this.surCrdSvgGrp.attr({
-                        //         transform:"translate(10,0)"
-                        //     });
-                        //     this.surCrdSvgGrp.attr({
-                        //         transform:"translate("+this.margin.right+",0)"
-                        //     });
-                        //     this.pumpCrdSvgGrp.attr({
-                        //             transform:"translate("+this.margin.right+","+(this.svgCanvasHeight/2-30)+")"
-                        //         })
                     };
-                    Visual.parseSettings = function (dataView) {
+                    DynoCardVisual.parseSettings = function (dataView) {
                         return dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.VisualSettings.parse(dataView);
                     };
                     /**
                      * This function gets called for each of the objects defined in the capabilities files and allows you to select which of the
                      * objects and properties you want to expose to the users in the property pane.
                      */
-                    Visual.prototype.enumerateObjectInstances = function (options) {
+                    DynoCardVisual.prototype.enumerateObjectInstances = function (options) {
                         return dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.VisualSettings.enumerateObjectInstances(this.settings || dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.VisualSettings.getDefault(), options);
                     };
-                    Visual.prototype.getTableData = function (options) {
+                    DynoCardVisual.prototype.getTableData = function (options) {
                         var sampleData = [];
                         var retDataView = {
                             dataPoints: sampleData,
@@ -47045,53 +47138,18 @@ var powerbi;
                         }
                         for (var i = 0; i < dataView.length; i++) {
                             retDataView.dataPoints.push({
-                                pumpId: +dataView[i][columnPos.indexOf(DataColumns.pumpId)],
-                                eventId: +dataView[i][columnPos.indexOf(DataColumns.eventId)],
-                                cardHeaderId: dataView[i][columnPos.indexOf(DataColumns.cardHeaderId)],
-                                cardType: dataView[i][columnPos.indexOf(DataColumns.cardType)],
-                                cardId: dataView[i][columnPos.indexOf(DataColumns.cardId)],
-                                position: dataView[i][columnPos.indexOf(DataColumns.position)],
-                                load: +dataView[i][columnPos.indexOf(DataColumns.load)]
+                                pumpId: +dataView[i][columnPos.indexOf(dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.DataColumns.pumpId)],
+                                eventId: +dataView[i][columnPos.indexOf(dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.DataColumns.eventId)],
+                                cardHeaderId: dataView[i][columnPos.indexOf(dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.DataColumns.cardHeaderId)],
+                                cardType: dataView[i][columnPos.indexOf(dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.DataColumns.cardType)],
+                                cardId: dataView[i][columnPos.indexOf(dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.DataColumns.cardId)],
+                                position: dataView[i][columnPos.indexOf(dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.DataColumns.position)],
+                                load: +dataView[i][columnPos.indexOf(dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.DataColumns.load)]
                             });
                         }
-                        console.log("Return Data:", retDataView);
                         return retDataView;
                     };
-                    Visual.prototype.createInitialHeader = function () {
-                        var baseDiv = document.createElement("div");
-                        baseDiv.setAttribute("class", "container-fluid");
-                        var reportTitle = document.createElement("p");
-                        reportTitle.setAttribute("class", "text-center");
-                        reportTitle.appendChild(document.createTextNode(" Graph: Dyno Card"));
-                        baseDiv.appendChild(reportTitle);
-                        var controlDivRow = document.createElement("div");
-                        controlDivRow.setAttribute("class", "form-inline");
-                        var controlDiv = document.createElement("div");
-                        controlDiv.setAttribute("id", "controlDiv");
-                        controlDiv.setAttribute("class", "row");
-                        controlDivRow.appendChild(controlDiv);
-                        baseDiv.appendChild(controlDivRow);
-                        var dynoCardDiv = document.createElement("div");
-                        dynoCardDiv.setAttribute("id", "dynoCardDiv");
-                        dynoCardDiv.setAttribute("class", "row");
-                        baseDiv.appendChild(dynoCardDiv);
-                        // const surfaceCardDiv: HTMLElement = document.createElement("div");
-                        // surfaceCardDiv.setAttribute("id", "surfaceCard");
-                        // surfaceCardDiv.setAttribute("class", "row");
-                        // baseDiv.appendChild(surfaceCardDiv);
-                        // baseDiv.appendChild(document.createElement("hr"));
-                        // const pumpCardDiv: HTMLElement = document.createElement("div");
-                        // pumpCardDiv.setAttribute("id", "pumpCardDiv");
-                        // pumpCardDiv.setAttribute("class", "row");
-                        // baseDiv.appendChild(pumpCardDiv);
-                        baseDiv.appendChild(document.createElement("hr"));
-                        var buttonDiv = document.createElement("div");
-                        buttonDiv.setAttribute("id", "buttonDiv");
-                        buttonDiv.setAttribute("class", "row");
-                        baseDiv.appendChild(buttonDiv);
-                        return baseDiv;
-                    };
-                    Visual.prototype.createDropDown = function (argDropDownType) {
+                    DynoCardVisual.prototype.createDropDown = function (argDropDownType) {
                         var _this = this;
                         var ddDiv = document.createElement("div");
                         var ddLabel;
@@ -47102,17 +47160,17 @@ var powerbi;
                         dropDown.setAttribute("class", "form-control");
                         dropDown.setAttribute("id", argDropDownType);
                         var dropDownData = [];
-                        if (argDropDownType == DataColumns.pumpId) {
+                        if (argDropDownType == dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.DataColumns.pumpId) {
                             labelDiv.appendChild(document.createTextNode("Pump ID"));
                             var pumpIdList = _.uniq(_.map(this.dataSet.dataPoints, 'pumpId'));
                             dropDownData = _.map(pumpIdList, function (item) { return String(item); });
                         }
-                        else if (argDropDownType == DataColumns.cardType) {
+                        else if (argDropDownType == dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.DataColumns.cardType) {
                             labelDiv.appendChild(document.createTextNode("Card Type"));
                             dropDownData = _.uniq(_.map(this.dataSet.dataPoints, 'cardType'));
                             this.cardTypeDDList = dropDownData;
                         }
-                        else if (argDropDownType == DataColumns.eventId) {
+                        else if (argDropDownType == dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.DataColumns.eventId) {
                             labelDiv.appendChild(document.createTextNode("Event ID"));
                             dropDownData = _.uniq(_.map(this.dataSet.dataPoints, 'eventId'));
                             this.eventIdDDList = dropDownData;
@@ -47131,9 +47189,9 @@ var powerbi;
                         dropDown.onchange = function (event) {
                             var selVal = $("#" + argDropDownType).val();
                             console.log("Event for: ", argDropDownType, ' value: ', selVal);
-                            if (argDropDownType == DataColumns.eventId)
+                            if (argDropDownType == dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.DataColumns.eventId)
                                 _this.eventIdVal = selVal;
-                            else if (argDropDownType == DataColumns.cardType)
+                            else if (argDropDownType == dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.DataColumns.cardType)
                                 _this.cardTypeVal = selVal;
                             _this.updateGraphData();
                             _this.updateDynoCardGraph(_this.refoptions);
@@ -47143,7 +47201,7 @@ var powerbi;
                         ddDiv.appendChild(dropDown);
                         return ddDiv;
                     };
-                    Visual.prototype.updateGraphData = function () {
+                    DynoCardVisual.prototype.updateGraphData = function () {
                         if (this.eventIdVal == 'all' && this.cardTypeVal == 'all')
                             this.graphData = this.dataSet.dataPoints;
                         else if (this.eventIdVal != 'all' && this.cardTypeVal == 'all')
@@ -47155,69 +47213,9 @@ var powerbi;
                             this.graphData = _.filter(graphDataFilterByEventId, { 'cardType': this.cardTypeVal });
                         }
                     };
-                    Visual.prototype.createButton = function () {
-                        var tempButton = document.createElement("button");
-                        var clickCount = 0;
-                        var thisRef = this;
-                        tempButton.setAttribute("type", "button");
-                        tempButton.setAttribute("class", "btn btn-success center-block");
-                        tempButton.textContent = "Run DynoCard Animation";
-                        tempButton.onclick = function () {
-                            thisRef.animateGraph();
-                        };
-                        return tempButton;
-                    };
-                    Visual.prototype.createDateTimePicker = function (argDateType) {
-                        var datePickerID = "startDatePicker";
-                        var ddDiv = document.createElement("div");
-                        ddDiv.setAttribute("class", "col-xs-3 form-group");
-                        ddDiv.setAttribute("id", "datePicker1");
-                        var dateDiv = document.createElement("div");
-                        dateDiv.setAttribute("class", "input-group");
-                        var dateInput = document.createElement("input");
-                        dateInput.setAttribute("class", "form-control");
-                        dateInput.setAttribute("type", "text");
-                        var spanOuter = document.createElement("span");
-                        spanOuter.setAttribute("class", "input-group-addon");
-                        var spanIcon = document.createElement("span");
-                        spanIcon.setAttribute("class", "glyphicon glyphicon-calendar");
-                        spanOuter.appendChild(spanIcon);
-                        if (argDateType == "start") {
-                            console.log("Creating START Data Picker");
-                            dateInput.setAttribute("placeholder", "Start Date");
-                        }
-                        else {
-                            console.log("Creating End Data Picker");
-                            dateInput.setAttribute("placeholder", "End Date");
-                            datePickerID = "endDatePicker";
-                        }
-                        dateDiv.setAttribute("id", datePickerID);
-                        spanOuter.onmouseover = function (event) {
-                            $('#' + datePickerID).datetimepicker();
-                        };
-                        dateDiv.appendChild(dateInput);
-                        dateDiv.appendChild(spanOuter);
-                        // ddDiv.appendChild(scriptTag);
-                        ddDiv.appendChild(dateDiv);
-                        return ddDiv;
-                    };
-                    return Visual;
+                    return DynoCardVisual;
                 }());
-                dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.Visual = Visual;
-                var DataColumns = (function () {
-                    function DataColumns() {
-                    }
-                    return DataColumns;
-                }());
-                DataColumns.pumpId = "PumpId";
-                DataColumns.eventId = "EventId";
-                DataColumns.cardHeaderId = "CardHeaderID";
-                DataColumns.cardType = "CardType";
-                DataColumns.cardId = "CardId";
-                DataColumns.position = "Postition";
-                DataColumns.load = "Load";
-                dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.DataColumns = DataColumns;
-                ;
+                dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.DynoCardVisual = DynoCardVisual;
             })(dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3 = visual.dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3 || (visual.dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3 = {}));
         })(visual = extensibility.visual || (extensibility.visual = {}));
     })(extensibility = powerbi.extensibility || (powerbi.extensibility = {}));
@@ -47231,10 +47229,10 @@ var powerbi;
             plugins.dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG = {
                 name: 'dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG',
                 displayName: 'dynoCardVisuals',
-                class: 'Visual',
+                class: 'DynoCardVisual',
                 version: '1.0.0',
                 apiVersion: '1.10.0',
-                create: function (options) { return new powerbi.extensibility.visual.dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.Visual(options); },
+                create: function (options) { return new powerbi.extensibility.visual.dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.DynoCardVisual(options); },
                 custom: true
             };
         })(plugins = visuals.plugins || (visuals.plugins = {}));

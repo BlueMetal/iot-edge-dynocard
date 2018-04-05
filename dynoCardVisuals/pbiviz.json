@@ -3,7 +3,7 @@
     "name": "dynoCardVisuals",
     "displayName": "dynoCardVisuals",
     "guid": "dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3",
-    "visualClassName": "Visual",
+    "visualClassName": "DynoCardVisual",
     "version": "1.0.0",
     "description": "",
     "supportUrl": "",

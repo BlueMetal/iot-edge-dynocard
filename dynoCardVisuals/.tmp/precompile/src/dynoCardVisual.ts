@@ -1,13 +1,12 @@
 
-module powerbi.extensibility.visual {
-    "use strict";
-    export class Visual implements IVisual {
+module powerbi.extensibility.visual.dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3  {
+
+   // import DataPoint = powerbi.extensibility.visual;
+
+    export class DynoCardVisual implements IVisual {
         private target: HTMLElement;
 
         private settings: VisualSettings;
-
-        private flagCounter: number;
-
 
         private refoptions: VisualUpdateOptions;
 
@@ -27,8 +26,6 @@ module powerbi.extensibility.visual {
         private yAxis_Load;
         private svgCanvasHeight: number;
 
-
-
         private dataSet: ViewModel;
         private eventIdVal: any = 'all';
         private cardTypeVal: any = 'all';
@@ -42,12 +39,11 @@ module powerbi.extensibility.visual {
 
         constructor(options: VisualConstructorOptions) {
             this.host = options.host;
-            this.flagCounter = 0;
             this.target = options.element;
 
             if (typeof document !== "undefined") {
-                this.target.appendChild(this.createInitialHeader());
-                let animateButton = this.createButton();
+                this.target.appendChild(HtmlControl.createInitialHeader());
+                let animateButton = HtmlControl.createAnimationButton(this);
                 document.getElementById("buttonDiv").appendChild(animateButton);
 
                 this.dynoCardSvg = d3.select(document.getElementById("dynoCardDiv")).append("svg").classed("dyno-svg-cls", true);
@@ -79,15 +75,13 @@ module powerbi.extensibility.visual {
             if (!this.isDropDownRender) {
                 let pumpDD = this.createDropDown(DataColumns.pumpId);
                 let eventDD = this.createDropDown(DataColumns.eventId);
-                let stratDatePicker = this.createDateTimePicker("start");
-                let endDatePicker=this.createDateTimePicker("end");
+                let stratDatePicker = HtmlControl.createDateTimePicker("start");
+                let endDatePicker=HtmlControl.createDateTimePicker("end");
                 document.getElementById("controlDiv").appendChild(pumpDD);
                
                 document.getElementById("controlDiv").appendChild(stratDatePicker);
                 document.getElementById("controlDiv").appendChild(endDatePicker);
                 document.getElementById("controlDiv").appendChild(eventDD);
-
-
 
                 this.dynoCardSvg.append("line").attr({
                     x1:this.margin.right,
@@ -99,9 +93,6 @@ module powerbi.extensibility.visual {
                 });
                 this.isDropDownRender = true;
             }
-
-
-
 
             //--- Define X & Y  Axis Scale and Line
             let xMax = d3.max(this.dataSet.dataPoints, d => d.position);
@@ -136,18 +127,10 @@ module powerbi.extensibility.visual {
         }
 
         private updateDynoCardGraph(options: VisualUpdateOptions) {
-            // this.barGroup.attr("transform", "translate(0,5)");
 
             this.graphData = _.sortBy(this.graphData, 'cardId')
             let surfCardData = _.filter(this.graphData, { 'cardType': 'S' });
             let pumpCardData = _.filter(this.graphData, { 'cardType': 'P' });
-
-            //surfCardData = _.sortBy(surfCardData, 'cardId');
-
-            // const drawLine: d3.svg.Line<DataPoint> = d3.svg.line<DataPoint>().interpolate("cardinal")
-            //     .x((dp: DataPoint) => { return this.xAxis_Position(dp.position); })
-            //     .y((dp: DataPoint) => { return this.yAxis_Load(dp.load); });
-
 
             let plotSurfacePath = this.surCrdSvgGrp.selectAll("path").data([surfCardData]);
             plotSurfacePath.enter().append("path").classed("path-cls", true);
@@ -200,7 +183,6 @@ module powerbi.extensibility.visual {
             this.pumpCrdSvgGrp.attr({
                 transform: "translate(" + this.margin.right + "," + (this.svgCanvasHeight / 2 - 30) + ")"
             })
-
 
             // let dotPump = this.pumpCrdSvgGrp.selectAll("circle").data(pumpCardData);
             // dotPump.enter().append("circle").attr({
@@ -305,45 +287,6 @@ module powerbi.extensibility.visual {
                 }, +ci*2000);
             }
 
-
-
-
-
-
-
-
-
-
-            //     let plotPumpPath = this.pumpCrdSvgGrp.selectAll("path").data([pumpCardData]);
-            //     plotPumpPath.enter().append("path").classed("path-cls", true);
-            //     plotPumpPath.exit().remove();
-            //     plotPumpPath.attr("stroke", "steelblue")
-            //         .attr("stroke-width", 2)
-            //         .attr("fill", "none")
-            //         .attr("d", drawLine);
-
-
-            //     this.plottePumpPath = d3.select(document.getElementById("pumpCard")).selectAll("path");
-            //     let pumpPathLength = this.plottePumpPath.node().getTotalLength();
-            //     console.log("pumpPathLength Lenght", pumpPathLength);
-
-            //     plotPumpPath
-            //         .attr("stroke-dasharray", pumpPathLength + " " + pumpPathLength)
-            //         .attr("stroke-dashoffset", pumpPathLength)
-            //         .transition()
-            //         .duration(2000)
-            //         .ease("linear")
-            //         .attr("stroke-dashoffset", 0);
-            //     this.surCrdSvgGrp.attr({
-            //         transform:"translate(10,0)"
-            //     });
-            //     this.surCrdSvgGrp.attr({
-            //         transform:"translate("+this.margin.right+",0)"
-            //     });
-            //     this.pumpCrdSvgGrp.attr({
-            //             transform:"translate("+this.margin.right+","+(this.svgCanvasHeight/2-30)+")"
-            //         })
-
         }
 
         private static parseSettings(dataView: DataView): VisualSettings {
@@ -383,53 +326,7 @@ module powerbi.extensibility.visual {
                     load: <number>+dataView[i][columnPos.indexOf(DataColumns.load)]
                 });
             }
-            console.log("Return Data:", retDataView);
             return retDataView;
-        }
-
-
-
-        public createInitialHeader() {
-            const baseDiv: HTMLElement = document.createElement("div");
-            baseDiv.setAttribute("class", "container-fluid");
-
-            const reportTitle: HTMLElement = document.createElement("p");
-            reportTitle.setAttribute("class", "text-center")
-            reportTitle.appendChild(document.createTextNode(" Graph: Dyno Card"));
-            baseDiv.appendChild(reportTitle);
-
-            const controlDivRow: HTMLElement = document.createElement("div");
-            controlDivRow.setAttribute("class", "form-inline");
-            const controlDiv: HTMLElement = document.createElement("div");
-            controlDiv.setAttribute("id", "controlDiv");
-            controlDiv.setAttribute("class", "row");
-            controlDivRow.appendChild(controlDiv);
-            baseDiv.appendChild(controlDivRow);
-
-            const dynoCardDiv: HTMLElement = document.createElement("div");
-            dynoCardDiv.setAttribute("id", "dynoCardDiv");
-            dynoCardDiv.setAttribute("class", "row");
-            baseDiv.appendChild(dynoCardDiv);
-
-            // const surfaceCardDiv: HTMLElement = document.createElement("div");
-            // surfaceCardDiv.setAttribute("id", "surfaceCard");
-            // surfaceCardDiv.setAttribute("class", "row");
-            // baseDiv.appendChild(surfaceCardDiv);
-
-            // baseDiv.appendChild(document.createElement("hr"));
-
-            // const pumpCardDiv: HTMLElement = document.createElement("div");
-            // pumpCardDiv.setAttribute("id", "pumpCardDiv");
-            // pumpCardDiv.setAttribute("class", "row");
-            // baseDiv.appendChild(pumpCardDiv);
-
-            baseDiv.appendChild(document.createElement("hr"));
-            const buttonDiv: HTMLElement = document.createElement("div");
-            buttonDiv.setAttribute("id", "buttonDiv");
-            buttonDiv.setAttribute("class", "row");
-            baseDiv.appendChild(buttonDiv);
-
-            return baseDiv;
         }
 
         public createDropDown(argDropDownType: string) {
@@ -491,89 +388,8 @@ module powerbi.extensibility.visual {
                 let graphDataFilterByEventId = _.filter(this.dataSet.dataPoints, { 'eventId': +this.eventIdVal });
                 this.graphData = _.filter(graphDataFilterByEventId, { 'cardType': this.cardTypeVal });
             }
-
-        }
-
-        public createButton() {
-            let tempButton = document.createElement("button");
-            let clickCount = 0;
-            let thisRef = this;
-            tempButton.setAttribute("type", "button");
-            tempButton.setAttribute("class", "btn btn-success center-block");
-            tempButton.textContent = "Run DynoCard Animation";
-            tempButton.onclick = function () {
-                thisRef.animateGraph();
-            }
-            return tempButton;
-        }
-
-        public createDateTimePicker(argDateType) {
-            let datePickerID="startDatePicker";
-            let ddDiv = document.createElement("div");
-            ddDiv.setAttribute("class", "col-xs-3 form-group");
-            ddDiv.setAttribute("id", "datePicker1");
-            let dateDiv = document.createElement("div");
-            dateDiv.setAttribute("class","input-group");
-            
-
-            let dateInput = document.createElement("input");
-            dateInput.setAttribute("class", "form-control");
-            dateInput.setAttribute("type", "text");
-        
-
-            let spanOuter =document.createElement("span");
-            spanOuter.setAttribute("class","input-group-addon");
-            let spanIcon =document.createElement("span");
-            spanIcon.setAttribute("class","glyphicon glyphicon-calendar");
-            spanOuter.appendChild(spanIcon);
-
-            if(argDateType=="start"){
-                console.log("Creating START Data Picker");
-                dateInput.setAttribute("placeholder","Start Date");
-            }else{
-                console.log("Creating End Data Picker");
-                dateInput.setAttribute("placeholder","End Date");
-                datePickerID="endDatePicker";
-            }
-
-            dateDiv.setAttribute("id",datePickerID);
-            spanOuter.onmouseover= (event: Event) => {
-                $('#'+datePickerID).datetimepicker();
-            }
-
-
-
-            dateDiv.appendChild(dateInput);
-            dateDiv.appendChild(spanOuter);
-           // ddDiv.appendChild(scriptTag);
-            ddDiv.appendChild(dateDiv);
-
-            return ddDiv;
         }
 
     }
 
-    export class DataColumns {
-        static pumpId = "PumpId";
-        static eventId = "EventId";
-        static cardHeaderId = "CardHeaderID";
-        static cardType = "CardType";
-        static cardId = "CardId";
-        static position = "Postition";
-        static load = "Load";
-    }
-    export interface DataPoint {
-        pumpId: number;
-        eventId: number;
-        cardHeaderId: number;
-        cardType: string;
-        cardId: number;
-        position: number;
-        load: number;
-    };
-
-    export interface ViewModel {
-        dataPoints: DataPoint[];
-        maxValue: number;
-    }
 }
