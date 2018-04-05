@@ -46812,12 +46812,12 @@ var powerbi;
                         if (!this.isDropDownRender) {
                             var pumpDD = this.createDropDown(DataColumns.pumpId);
                             var eventDD = this.createDropDown(DataColumns.eventId);
-                            var cardTypeDD = this.createDate("start");
+                            var stratDatePicker = this.createDateTimePicker("start");
+                            var endDatePicker = this.createDateTimePicker("end");
                             document.getElementById("controlDiv").appendChild(pumpDD);
+                            document.getElementById("controlDiv").appendChild(stratDatePicker);
+                            document.getElementById("controlDiv").appendChild(endDatePicker);
                             document.getElementById("controlDiv").appendChild(eventDD);
-                            document.getElementById("controlDiv").appendChild(cardTypeDD);
-                            // let stratDate = this.createDate();
-                            // document.getElementById("controlDiv").appendChild(stratDate);
                             this.dynoCardSvg.append("line").attr({
                                 x1: this.margin.right,
                                 y1: this.svgCanvasHeight / 2,
@@ -47064,10 +47064,13 @@ var powerbi;
                         reportTitle.setAttribute("class", "text-center");
                         reportTitle.appendChild(document.createTextNode(" Graph: Dyno Card"));
                         baseDiv.appendChild(reportTitle);
+                        var controlDivRow = document.createElement("div");
+                        controlDivRow.setAttribute("class", "form-inline");
                         var controlDiv = document.createElement("div");
                         controlDiv.setAttribute("id", "controlDiv");
-                        controlDiv.setAttribute("class", "form-inline");
-                        baseDiv.appendChild(controlDiv);
+                        controlDiv.setAttribute("class", "row");
+                        controlDivRow.appendChild(controlDiv);
+                        baseDiv.appendChild(controlDivRow);
                         var dynoCardDiv = document.createElement("div");
                         dynoCardDiv.setAttribute("id", "dynoCardDiv");
                         dynoCardDiv.setAttribute("class", "row");
@@ -47092,7 +47095,7 @@ var powerbi;
                         var _this = this;
                         var ddDiv = document.createElement("div");
                         var ddLabel;
-                        ddDiv.setAttribute("class", "col-xs-4 input-group");
+                        ddDiv.setAttribute("class", "col-xs-3 input-group");
                         var labelDiv = document.createElement("div");
                         labelDiv.setAttribute("class", "input-group-addon");
                         var dropDown = document.createElement("select");
@@ -47164,12 +47167,13 @@ var powerbi;
                         };
                         return tempButton;
                     };
-                    Visual.prototype.createDate = function (argDateType) {
+                    Visual.prototype.createDateTimePicker = function (argDateType) {
+                        var datePickerID = "startDatePicker";
                         var ddDiv = document.createElement("div");
-                        ddDiv.setAttribute("class", "col-xs-4 form-group");
+                        ddDiv.setAttribute("class", "col-xs-3 form-group");
+                        ddDiv.setAttribute("id", "datePicker1");
                         var dateDiv = document.createElement("div");
-                        dateDiv.setAttribute("class", "input-group date");
-                        dateDiv.setAttribute("id", "datetimepicker1");
+                        dateDiv.setAttribute("class", "input-group");
                         var dateInput = document.createElement("input");
                         dateInput.setAttribute("class", "form-control");
                         dateInput.setAttribute("type", "text");
@@ -47178,16 +47182,22 @@ var powerbi;
                         var spanIcon = document.createElement("span");
                         spanIcon.setAttribute("class", "glyphicon glyphicon-calendar");
                         spanOuter.appendChild(spanIcon);
-                        var scriptTag = document.createElement('script');
-                        scriptTag.type = "text/javascript";
-                        scriptTag.src = "./pbidatepicker.js";
-                        dateInput.onfocus = function (event) {
-                            console.log("In Date Picker");
-                            $('#datetimepicker1').datetimepicker();
+                        if (argDateType == "start") {
+                            console.log("Creating START Data Picker");
+                            dateInput.setAttribute("placeholder", "Start Date");
+                        }
+                        else {
+                            console.log("Creating End Data Picker");
+                            dateInput.setAttribute("placeholder", "End Date");
+                            datePickerID = "endDatePicker";
+                        }
+                        dateDiv.setAttribute("id", datePickerID);
+                        spanOuter.onmouseover = function (event) {
+                            $('#' + datePickerID).datetimepicker();
                         };
                         dateDiv.appendChild(dateInput);
                         dateDiv.appendChild(spanOuter);
-                        ddDiv.appendChild(scriptTag);
+                        // ddDiv.appendChild(scriptTag);
                         ddDiv.appendChild(dateDiv);
                         return ddDiv;
                     };
