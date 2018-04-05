@@ -46730,6 +46730,7 @@ var powerbi;
                 DataColumns.pumpId = "PumpId";
                 DataColumns.eventId = "EventId";
                 DataColumns.cardHeaderId = "CardHeaderID";
+                DataColumns.epocDate = "EpocDate";
                 DataColumns.cardType = "CardType";
                 DataColumns.cardId = "CardId";
                 DataColumns.position = "Postition";
@@ -46899,7 +46900,6 @@ var powerbi;
         (function (visual) {
             var dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3;
             (function (dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3) {
-                // import DataPoint = powerbi.extensibility.visual;
                 var DynoCardVisual = (function () {
                     function DynoCardVisual(options) {
                         this.eventIdVal = 'all';
@@ -46913,14 +46913,12 @@ var powerbi;
                             var animateButton = dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.HtmlControl.createAnimationButton(this);
                             document.getElementById("buttonDiv").appendChild(animateButton);
                             this.dynoCardSvg = d3.select(document.getElementById("dynoCardDiv")).append("svg").classed("dyno-svg-cls", true);
-                            // this.surCardSVG = d3.select(document.getElementById("surfaceCard")).append("svg").classed("sur-svg-cls", true);
                             this.surCrdSvgGrp = this.dynoCardSvg.append("g").classed("sur-svg-grp-cls", true);
                             this.surCrdSvgGrp.attr({ id: "surfaceCard" });
-                            // this.pumpCardSVG = d3.select(document.getElementById("pumpCardDiv")).append("svg").classed("pump-svg-cls", true);
                             this.pumpCrdSvgGrp = this.dynoCardSvg.append("g").classed("pump-svg-grp-cls", true);
                             this.pumpCrdSvgGrp.attr({ id: "pumpCard" });
                             this.xAxisGroup = this.dynoCardSvg.append("g").classed("x-axis", true);
-                            this.yAxisGroup = this.dynoCardSvg.append("g").classed("y-axis", true);
+                            this.yAxisGroupSurface = this.dynoCardSvg.append("g").classed("y-axis", true);
                             this.yAxisGroupPump = this.dynoCardSvg.append("g").classed("y-axis-pump", true);
                         }
                     }
@@ -46961,12 +46959,8 @@ var powerbi;
                             transform: "translate(" + this.margin.right + ", " + (this.svgCanvasHeight - 20) + ")"
                         });
                         var yAxisLine = d3.svg.axis().scale(this.yAxis_Load).orient("left").tickSize(5).tickFormat(function (d) { return Number(d) / 1000 + ' klb'; });
-                        this.yAxisGroup.call(yAxisLine).attr({
+                        this.yAxisGroupSurface.call(yAxisLine).attr({
                             transform: "translate(" + this.margin.right + ", 5)"
-                        }).style({
-                            'fill': "red",
-                            'stroke-width': "7px",
-                            width: "7px"
                         });
                         this.yAxisGroupPump.call(yAxisLine).attr({
                             transform: "translate(" + this.margin.right + ", " + (this.svgCanvasHeight / 2 - 10) + ")"
@@ -47141,12 +47135,14 @@ var powerbi;
                                 pumpId: +dataView[i][columnPos.indexOf(dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.DataColumns.pumpId)],
                                 eventId: +dataView[i][columnPos.indexOf(dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.DataColumns.eventId)],
                                 cardHeaderId: dataView[i][columnPos.indexOf(dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.DataColumns.cardHeaderId)],
+                                epocDate: new Date(+dataView[i][columnPos.indexOf(dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.DataColumns.epocDate)] * 1000),
                                 cardType: dataView[i][columnPos.indexOf(dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.DataColumns.cardType)],
                                 cardId: dataView[i][columnPos.indexOf(dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.DataColumns.cardId)],
                                 position: dataView[i][columnPos.indexOf(dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.DataColumns.position)],
                                 load: +dataView[i][columnPos.indexOf(dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.DataColumns.load)]
                             });
                         }
+                        console.log("Loaded Data: ", retDataView);
                         return retDataView;
                     };
                     DynoCardVisual.prototype.createDropDown = function (argDropDownType) {

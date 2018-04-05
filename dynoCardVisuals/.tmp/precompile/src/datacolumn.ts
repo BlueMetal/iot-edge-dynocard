@@ -3,6 +3,7 @@ module powerbi.extensibility.visual.dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED
         static pumpId = "PumpId";
         static eventId = "EventId";
         static cardHeaderId = "CardHeaderID";
+        static epocDate ="EpocDate";
         static cardType = "CardType";
         static cardId = "CardId";
         static position = "Postition";

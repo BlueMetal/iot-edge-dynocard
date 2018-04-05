@@ -3,6 +3,7 @@ module powerbi.extensibility.visual {
         pumpId: number;
         eventId: number;
         cardHeaderId: number;
+        epocDate:Date;
         cardType: string;
         cardId: number;
         position: number;

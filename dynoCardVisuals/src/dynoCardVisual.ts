@@ -1,31 +1,28 @@
 
 module powerbi.extensibility.visual {
 
-   // import DataPoint = powerbi.extensibility.visual;
-
     export class DynoCardVisual implements IVisual {
+        
+        //---Power Bi
         private target: HTMLElement;
-
+        private host: IVisualHost;
         private settings: VisualSettings;
-
         private refoptions: VisualUpdateOptions;
 
-        //-- declaration Block--------------
-        private host: IVisualHost;
+        //--- SVG 
         private dynoCardSvg: d3.Selection<SVGAElement>;
         private surCrdSvgGrp: d3.Selection<SVGAElement>;
         private pumpCrdSvgGrp: d3.Selection<SVGAElement>;
+        private drawLineFunc: d3.svg.Line<DataPoint>;
+        private svgCanvasHeight: number;
 
         // axis
         private xAxisGroup: d3.Selection<SVGAElement>;
-        private yAxisGroup: d3.Selection<SVGAElement>;
+        private yAxisGroupSurface: d3.Selection<SVGAElement>;
         private yAxisGroupPump: d3.Selection<SVGAElement>;
-        private drawLineFunc: d3.svg.Line<DataPoint>;
-
         private xAxis_Position;
         private yAxis_Load;
-        private svgCanvasHeight: number;
-
+       
         private dataSet: ViewModel;
         private eventIdVal: any = 'all';
         private cardTypeVal: any = 'all';
@@ -48,23 +45,20 @@ module powerbi.extensibility.visual {
 
                 this.dynoCardSvg = d3.select(document.getElementById("dynoCardDiv")).append("svg").classed("dyno-svg-cls", true);
 
-                // this.surCardSVG = d3.select(document.getElementById("surfaceCard")).append("svg").classed("sur-svg-cls", true);
                 this.surCrdSvgGrp = this.dynoCardSvg.append("g").classed("sur-svg-grp-cls", true);
                 this.surCrdSvgGrp.attr({ id: "surfaceCard" });
-                // this.pumpCardSVG = d3.select(document.getElementById("pumpCardDiv")).append("svg").classed("pump-svg-cls", true);
                 this.pumpCrdSvgGrp = this.dynoCardSvg.append("g").classed("pump-svg-grp-cls", true);
                 this.pumpCrdSvgGrp.attr({ id: "pumpCard" });
 
                 this.xAxisGroup = this.dynoCardSvg.append("g").classed("x-axis", true);
-                this.yAxisGroup = this.dynoCardSvg.append("g").classed("y-axis", true);
+                this.yAxisGroupSurface = this.dynoCardSvg.append("g").classed("y-axis", true);
                 this.yAxisGroupPump = this.dynoCardSvg.append("g").classed("y-axis-pump", true);
-
             }
         }
 
         public update(options: VisualUpdateOptions) {
-            this.dataSet = this.getTableData(options);
             
+            this.dataSet = this.getTableData(options);           
             let svgCanvasWidth = options.viewport.width;
             this.svgCanvasHeight = options.viewport.height - this.margin.top - this.margin.bottom;
             this.dynoCardSvg.attr({
@@ -77,8 +71,7 @@ module powerbi.extensibility.visual {
                 let eventDD = this.createDropDown(DataColumns.eventId);
                 let stratDatePicker = HtmlControl.createDateTimePicker("start");
                 let endDatePicker=HtmlControl.createDateTimePicker("end");
-                document.getElementById("controlDiv").appendChild(pumpDD);
-               
+                document.getElementById("controlDiv").appendChild(pumpDD);           
                 document.getElementById("controlDiv").appendChild(stratDatePicker);
                 document.getElementById("controlDiv").appendChild(endDatePicker);
                 document.getElementById("controlDiv").appendChild(eventDD);
@@ -103,16 +96,10 @@ module powerbi.extensibility.visual {
             this.xAxisGroup.call(xAxisLine).attr({
                 transform: "translate(" + this.margin.right + ", " + (this.svgCanvasHeight - 20) + ")"
             });
-
             let yAxisLine = d3.svg.axis().scale(this.yAxis_Load).orient("left").tickSize(5).tickFormat(d => Number(d) / 1000 + ' klb');
-            this.yAxisGroup.call(yAxisLine).attr({
+            this.yAxisGroupSurface.call(yAxisLine).attr({
                 transform: "translate(" + this.margin.right + ", 5)"
-            }).style({
-                'fill': "red",
-                'stroke-width': "7px",
-                width: "7px"
             });
-
             this.yAxisGroupPump.call(yAxisLine).attr({
                 transform: "translate(" + this.margin.right + ", " + (this.svgCanvasHeight / 2-10) + ")"
             });
@@ -151,7 +138,6 @@ module powerbi.extensibility.visual {
                 .duration(2000)
                 .ease("linear")
                 .attr("stroke-dashoffset", 0);
-
 
 
             let plotPumpPath = this.pumpCrdSvgGrp.selectAll("path").data([pumpCardData]);
@@ -200,8 +186,6 @@ module powerbi.extensibility.visual {
             // }).style({
             //     fill: 'red'
             // })
-
-
 
 
         }
@@ -257,15 +241,12 @@ module powerbi.extensibility.visual {
             });
             this.pumpCrdSvgGrp.attr({
                 transform: "translate(" + this.margin.right + "," + (this.svgCanvasHeight / 2 - 30) + ")"
-            })
-
+            });
 
         }
 
         private animateGraph() {
-
             let allDataPoints = _.sortBy(this.dataSet.dataPoints, 'cardId');
-
             let surfaceDataGrp = _.groupBy(_.filter(allDataPoints, { 'cardType': 'S' }), 'cardHeaderId');
             let pumpCardDataGrp = _.groupBy(_.filter(allDataPoints, { 'cardType': 'P' }), 'cardHeaderId');
             let surCardDataArr = _.map(surfaceDataGrp, surfaceDataGrp.value);
@@ -320,12 +301,14 @@ module powerbi.extensibility.visual {
                     pumpId: <number>+dataView[i][columnPos.indexOf(DataColumns.pumpId)],
                     eventId: <number>+dataView[i][columnPos.indexOf(DataColumns.eventId)],
                     cardHeaderId: <number>dataView[i][columnPos.indexOf(DataColumns.cardHeaderId)],
+                    epocDate:<Date> new Date(+dataView[i][columnPos.indexOf(DataColumns.epocDate)]*1000),
                     cardType: <string>dataView[i][columnPos.indexOf(DataColumns.cardType)],
                     cardId: <number>dataView[i][columnPos.indexOf(DataColumns.cardId)],
                     position: <number>dataView[i][columnPos.indexOf(DataColumns.position)],
                     load: <number>+dataView[i][columnPos.indexOf(DataColumns.load)]
                 });
             }
+            console.log("Loaded Data: ", retDataView);
             return retDataView;
         }
 
