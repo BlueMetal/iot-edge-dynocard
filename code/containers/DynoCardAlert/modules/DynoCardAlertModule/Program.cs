@@ -244,20 +244,21 @@ namespace DynoCardAlertModule
                 if (!string.IsNullOrEmpty(messageString))
                 {
                     var anomaly = JsonConvert.DeserializeObject<DynoCardAnomalyResult>(messageString);
-                    var previousCardList = DataHelper.GetPreviousCards(anomaly);
+                    var previousCardList = await DataHelper.GetPreviousCards(anomaly);
                     
-                    var previousCardsMessgeBytes = JsonConvert.SerializeObject(previousCardList);
-                    var previousCardsMessgeBytesString = Encoding.UTF8.GetBytes(previousCardsMessgeBytes);
-                    var previousCardsMessage = new Message(previousCardsMessgeBytesString);
+                    if (previousCardList != null)
+                    {
+                        var previousCardsMessgeBytes = JsonConvert.SerializeObject(previousCardList);
+                        var previousCardsMessgeBytesString = Encoding.UTF8.GetBytes(previousCardsMessgeBytes);
+                        var previousCardsMessage = new Message(previousCardsMessgeBytesString);
 
-                    Console.WriteLine("Sending Alert");
-                    previousCardsMessage.Properties["MessageType"] = "Alert";
-                    
-                    await deviceClient.SendEventAsync("alertOutput", previousCardsMessage);
-                    Console.WriteLine("Completed sending alert");
+                        Console.WriteLine("Sending Alert");
+                        previousCardsMessage.Properties["MessageType"] = "Alert";
+                        
+                        await deviceClient.SendEventAsync("alertOutput", previousCardsMessage);
+                        Console.WriteLine("Completed sending alert");
+                    }
                 }
-
-                await Task.FromResult(true);
 
                 // Indicate that the message treatment is completed
                 return MessageResponse.Completed;
@@ -272,7 +273,7 @@ namespace DynoCardAlertModule
 
                 // Indicate that the message treatment is not completed
                 var deviceClient = (DeviceClient)userContext;
-                return MessageResponse.Abandoned;
+                return MessageResponse.None;
             }
             catch (Exception ex)
             {
@@ -281,7 +282,7 @@ namespace DynoCardAlertModule
 
                 // Indicate that the message treatment is not completed
                 //DeviceClient deviceClient = (DeviceClient)userContext;
-                return MessageResponse.Abandoned;
+                return MessageResponse.None;
             }
         }
     }

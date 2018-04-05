@@ -49,6 +49,16 @@
               "createOptions": ""
             }
           },
+          "fakeAlertModule": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "localhost:5000/fakealertmodule:0.0.1-amd64.debug",
+              "createOptions": ""
+            }
+          },
           "sql": {
             "version": "1.0",
             "type": "docker",
@@ -77,44 +87,44 @@
       }
     },
     "dynoCardAlertModule": {
-        "properties.desired": {
-          "timestamp": {
-            "register": "32669",
-            "length": "2"
-          },
-          "numberOfPoints": {
-            "register": "32671",
-            "length": "1"
-          },
-          "scaledMaxCardLoad": {
-            "register": "32672",
-            "length": "1"
-          },
-          "scaledMinCardLoad": {
-            "register": "32673",
-            "length": "1"
-          },
-          "strokeLength": {
-            "register": "32674",
-            "length": "1"
-          },
-          "strokePeriod": {
-            "register": "32675",
-            "length": "1"
-          },
-          "pointArrayStartRegister": {
-            "register": "32676",
-            "length": "2"
-          },
-          "sqlConnectionString": "Data Source=tcp:sql,1433;Initial Catalog=db4cards;User Id=SA;Password=Strong!Passw0rd;TrustServerCertificate=False;Connection Timeout=30;"
-        }
+      "properties.desired": {
+        "timestamp": {
+          "register": "32669",
+          "length": "2"
+        },
+        "numberOfPoints": {
+          "register": "32671",
+          "length": "1"
+        },
+        "scaledMaxCardLoad": {
+          "register": "32672",
+          "length": "1"
+        },
+        "scaledMinCardLoad": {
+          "register": "32673",
+          "length": "1"
+        },
+        "strokeLength": {
+          "register": "32674",
+          "length": "1"
+        },
+        "strokePeriod": {
+          "register": "32675",
+          "length": "1"
+        },
+        "pointArrayStartRegister": {
+          "register": "32676",
+          "length": "2"
+        },
+        "sqlConnectionString": "Data Source=tcp:sql,1433;Initial Catalog=db4cards;User Id=SA;Password=Strong!Passw0rd;TrustServerCertificate=False;Connection Timeout=30;"
+      }
     },
     "modbus": {
       "properties.desired": {
         "PublishInterval": "10000",
         "SlaveConfigs": {
           "Slave01": {
-            "SlaveConnection": "13.92.170.64",
+            "SlaveConnection": "52.179.102.195",
             "HwId": "Pump1-DynoCard",
             "Operations": {
               "Op01": {

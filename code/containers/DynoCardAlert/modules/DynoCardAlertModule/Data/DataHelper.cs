@@ -61,8 +61,8 @@ namespace DynoCardAlertModule.Data
 
         public static async Task<List<DynoCard>> GetPreviousCards(DynoCardAnomalyResult anomalyCard)
         {
-            DateTime start = anomalyCard.DynoCardTimestamp.Subtract(TimeSpan.FromHours(1));
-            DateTime end = anomalyCard.DynoCardTimestamp;
+            DateTime start = anomalyCard.Timestamp.Subtract(TimeSpan.FromHours(1));
+            DateTime end = anomalyCard.Timestamp;
             string startDateString = start.ToString("s");
             string endDateString = end.ToString("s");
 
