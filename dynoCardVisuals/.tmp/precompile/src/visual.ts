@@ -49,6 +49,7 @@ module powerbi.extensibility.visual.dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED
                 this.target.appendChild(this.createInitialHeader());
                 let animateButton = this.createButton();
                 document.getElementById("buttonDiv").appendChild(animateButton);
+
                 this.dynoCardSvg = d3.select(document.getElementById("dynoCardDiv")).append("svg").classed("dyno-svg-cls", true);
 
                 // this.surCardSVG = d3.select(document.getElementById("surfaceCard")).append("svg").classed("sur-svg-cls", true);
@@ -67,17 +68,7 @@ module powerbi.extensibility.visual.dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED
 
         public update(options: VisualUpdateOptions) {
             this.dataSet = this.getTableData(options);
-
-            if (!this.isDropDownRender) {
-                let pumpDD = this.createDropDown(DataColumns.pumpId);
-                let eventDD = this.createDropDown(DataColumns.eventId);
-                let cardTypeDD = this.createDropDown(DataColumns.cardType);
-                document.getElementById("controlDiv").appendChild(pumpDD);
-                document.getElementById("controlDiv").appendChild(eventDD);
-                document.getElementById("controlDiv").appendChild(cardTypeDD);
-                this.isDropDownRender = true;
-            }
-
+            
             let svgCanvasWidth = options.viewport.width;
             this.svgCanvasHeight = options.viewport.height - this.margin.top - this.margin.bottom;
             this.dynoCardSvg.attr({
@@ -85,17 +76,34 @@ module powerbi.extensibility.visual.dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED
                 height: this.svgCanvasHeight
             });
 
-            this.dynoCardSvg.append("line").attr({
-                x1:this.margin.right,
-                y1:this.svgCanvasHeight/2,
-                x2:svgCanvasWidth,
-                y2:this.svgCanvasHeight/2,
-                "stroke-width": 0.5,
-                "stroke": "gray"
-            });
+            if (!this.isDropDownRender) {
+                let pumpDD = this.createDropDown(DataColumns.pumpId);
+                let eventDD = this.createDropDown(DataColumns.eventId);
+                let cardTypeDD = this.createDate("start");
+                document.getElementById("controlDiv").appendChild(pumpDD);
+                document.getElementById("controlDiv").appendChild(eventDD);
+                document.getElementById("controlDiv").appendChild(cardTypeDD);
+
+                // let stratDate = this.createDate();
+                // document.getElementById("controlDiv").appendChild(stratDate);
+
+                this.dynoCardSvg.append("line").attr({
+                    x1:this.margin.right,
+                    y1:this.svgCanvasHeight/2,
+                    x2:svgCanvasWidth,
+                    y2:this.svgCanvasHeight/2,
+                    "stroke-width": 0.5,
+                    "stroke": "gray"
+                });
+                this.isDropDownRender = true;
+            }
+
+
+
+
             //--- Define X & Y  Axis Scale and Line
             let xMax = d3.max(this.dataSet.dataPoints, d => d.position);
-            this.xAxis_Position = d3.scale.linear().domain([0, xMax]).range([10, svgCanvasWidth]);
+            this.xAxis_Position = d3.scale.linear().domain([-1, xMax]).range([0, svgCanvasWidth]);
             this.yAxis_Load = d3.scale.linear().domain(d3.extent(this.dataSet.dataPoints, d => d.load)).range([this.svgCanvasHeight / 2, 0]);
 
             let xAxisLine = d3.svg.axis().scale(this.xAxis_Position).orient("bottom").tickSize(5).tickFormat(d => d + ' in');
@@ -113,7 +121,7 @@ module powerbi.extensibility.visual.dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED
             });
 
             this.yAxisGroupPump.call(yAxisLine).attr({
-                transform: "translate(" + this.margin.right + ", " + this.svgCanvasHeight / 2 + ")"
+                transform: "translate(" + this.margin.right + ", " + (this.svgCanvasHeight / 2-10) + ")"
             });
 
             //-- Define Path Draw function
@@ -492,6 +500,42 @@ module powerbi.extensibility.visual.dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED
                 thisRef.animateGraph();
             }
             return tempButton;
+        }
+
+        public createDate(argDateType) {
+            let ddDiv = document.createElement("div");
+            ddDiv.setAttribute("class", "col-xs-4 form-group");
+
+            let dateDiv = document.createElement("div");
+            dateDiv.setAttribute("class","input-group date");
+            dateDiv.setAttribute("id","datetimepicker1");
+
+            let dateInput = document.createElement("input");
+            dateInput.setAttribute("class", "form-control");
+            dateInput.setAttribute("type", "text");
+
+            let spanOuter =document.createElement("span");
+            spanOuter.setAttribute("class","input-group-addon");
+            let spanIcon =document.createElement("span");
+            spanIcon.setAttribute("class","glyphicon glyphicon-calendar");
+            spanOuter.appendChild(spanIcon);
+
+            let scriptTag = document.createElement('script');
+            scriptTag.type="text/javascript";
+            scriptTag.src="./pbidatepicker.js"
+
+
+            dateInput.onfocus = (event: Event) => {
+                console.log("In Date Picker");
+                $('#datetimepicker1').datetimepicker();
+            }
+
+            dateDiv.appendChild(dateInput);
+            dateDiv.appendChild(spanOuter);
+            ddDiv.appendChild(scriptTag);
+            ddDiv.appendChild(dateDiv);
+
+            return ddDiv;
         }
 
     }
