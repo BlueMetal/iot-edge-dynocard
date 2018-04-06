@@ -12,9 +12,9 @@ namespace DynoCardWebAPI.Models
         public float PumpFillage { get; set; }
         public float FluidLoad { get; set; }
 
-        public PumpCard()
+        public PumpCard() : base()
         {
-            base.CardType = "Surface";
+            base.CardType = "P";
         }
     }
 }

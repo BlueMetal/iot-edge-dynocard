@@ -8,7 +8,7 @@ namespace DynoCardWebAPI.Models
     public class DynoCardAnomalyEvent
     {
         public int PumpId { get; set; }
-        public double Epoch { get; set; }
+        public int Epoch { get; set; }
         public List<DynoCard> dynoCards = new List<DynoCard>();
     }
 }

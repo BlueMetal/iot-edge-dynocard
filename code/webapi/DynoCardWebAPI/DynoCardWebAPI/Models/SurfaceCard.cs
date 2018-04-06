@@ -10,9 +10,9 @@ namespace DynoCardWebAPI.Models
         public float StrokeLength { get; set; }
         public float StrokePeriod { get; set; }
 
-        public SurfaceCard()
+        public SurfaceCard() : base()
         {
-            base.CardType = "Surface";
+            base.CardType = "S";
         }
     }
 }
