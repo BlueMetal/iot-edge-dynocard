@@ -19,6 +19,7 @@
     "src/viewmodel.ts",
     "src/datacolumn.ts",
     "src/htmlcontrol.ts",
+    "src/data-handler.ts",
     "src/settings.ts",
     "src/dynoCardVisual.ts"
   ]

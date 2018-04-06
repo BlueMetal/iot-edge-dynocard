@@ -33,44 +33,35 @@ module powerbi.extensibility.visual {
         }
 
         public static createDateTimePicker(argDateType) {
-            let datePickerID="startDatePicker";
+
             let ddDiv = document.createElement("div");
             ddDiv.setAttribute("class", "col-xs-3 form-group");
             ddDiv.setAttribute("id", "datePicker1");
             let dateDiv = document.createElement("div");
             dateDiv.setAttribute("class","input-group");
+            dateDiv.setAttribute("id",argDateType+"Picker");
             
-
             let dateInput = document.createElement("input");
             dateInput.setAttribute("class", "form-control");
             dateInput.setAttribute("type", "text");
+            dateInput.setAttribute("id",argDateType);
         
-
             let spanOuter =document.createElement("span");
             spanOuter.setAttribute("class","input-group-addon");
             let spanIcon =document.createElement("span");
             spanIcon.setAttribute("class","glyphicon glyphicon-calendar");
             spanOuter.appendChild(spanIcon);
 
-            if(argDateType=="start"){
-                console.log("Creating START Data Picker");
-                dateInput.setAttribute("placeholder","Start Date");
-            }else{
-                console.log("Creating End Data Picker");
-                dateInput.setAttribute("placeholder","End Date");
-                datePickerID="endDatePicker";
-            }
+            if(argDateType==DataColumns.startDate)  dateInput.setAttribute("placeholder","Start Date");
+            else dateInput.setAttribute("placeholder","End Date");
 
-            dateDiv.setAttribute("id",datePickerID);
+            
             spanOuter.onmouseover= (event: Event) => {
-                $('#'+datePickerID).datetimepicker();
+                $('#'+argDateType+"Picker").datetimepicker();
             }
-
-
 
             dateDiv.appendChild(dateInput);
             dateDiv.appendChild(spanOuter);
-           // ddDiv.appendChild(scriptTag);
             ddDiv.appendChild(dateDiv);
 
             return ddDiv;
@@ -82,7 +73,10 @@ module powerbi.extensibility.visual {
             animationButton.setAttribute("class", "btn btn-success center-block");
             animationButton.textContent = "Run DynoCard Animation";
             animationButton.onclick = function () {
-                argRef.animateGraph();
+
+                console.log("Final DataSET: ", argRef.updateGraphData());
+                
+                argRef.animateGraph(argRef.updateGraphData());
             }
             return animationButton;
         }

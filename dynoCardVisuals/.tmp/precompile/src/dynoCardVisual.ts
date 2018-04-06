@@ -2,7 +2,7 @@
 module powerbi.extensibility.visual.dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3  {
 
     export class DynoCardVisual implements IVisual {
-        
+
         //---Power Bi
         private target: HTMLElement;
         private host: IVisualHost;
@@ -22,13 +22,12 @@ module powerbi.extensibility.visual.dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED
         private yAxisGroupPump: d3.Selection<SVGAElement>;
         private xAxis_Position;
         private yAxis_Load;
-       
+
         private dataSet: ViewModel;
-        private eventIdVal: any = 'all';
-        private cardTypeVal: any = 'all';
+        private eventSelVal: any = 'all';
+        private pumpSelVal: any = 'all';
         private eventIdDDList;
         private cardTypeDDList;
-        private graphData: DataPoint[];
         private plotteSurfacedPath: any;
         private plottePumpPath: any;
         private isDropDownRender: boolean = false;
@@ -57,8 +56,7 @@ module powerbi.extensibility.visual.dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED
         }
 
         public update(options: VisualUpdateOptions) {
-            
-            this.dataSet = this.getTableData(options);           
+            this.dataSet = DataHandler.getTableData(options);
             let svgCanvasWidth = options.viewport.width;
             this.svgCanvasHeight = options.viewport.height - this.margin.top - this.margin.bottom;
             this.dynoCardSvg.attr({
@@ -69,23 +67,23 @@ module powerbi.extensibility.visual.dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED
             if (!this.isDropDownRender) {
                 let pumpDD = this.createDropDown(DataColumns.pumpId);
                 let eventDD = this.createDropDown(DataColumns.eventId);
-                let stratDatePicker = HtmlControl.createDateTimePicker("start");
-                let endDatePicker=HtmlControl.createDateTimePicker("end");
-                document.getElementById("controlDiv").appendChild(pumpDD);           
+                let stratDatePicker = HtmlControl.createDateTimePicker(DataColumns.startDate);
+                let endDatePicker = HtmlControl.createDateTimePicker(DataColumns.endDate);
+                document.getElementById("controlDiv").appendChild(pumpDD);
                 document.getElementById("controlDiv").appendChild(stratDatePicker);
                 document.getElementById("controlDiv").appendChild(endDatePicker);
                 document.getElementById("controlDiv").appendChild(eventDD);
-
-                this.dynoCardSvg.append("line").attr({
-                    x1:this.margin.right,
-                    y1:this.svgCanvasHeight/2,
-                    x2:svgCanvasWidth,
-                    y2:this.svgCanvasHeight/2,
-                    "stroke-width": 0.5,
-                    "stroke": "gray"
-                });
                 this.isDropDownRender = true;
             }
+            this.dynoCardSvg.selectAll("line").remove();
+            this.dynoCardSvg.append("line").attr({
+                x1: this.margin.right,
+                y1: this.svgCanvasHeight / 2,
+                x2: svgCanvasWidth,
+                y2: this.svgCanvasHeight / 2,
+                "stroke-width": 0.5,
+                "stroke": "gray"
+            });
 
             //--- Define X & Y  Axis Scale and Line
             let xMax = d3.max(this.dataSet.dataPoints, d => d.position);
@@ -101,7 +99,7 @@ module powerbi.extensibility.visual.dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED
                 transform: "translate(" + this.margin.right + ", 5)"
             });
             this.yAxisGroupPump.call(yAxisLine).attr({
-                transform: "translate(" + this.margin.right + ", " + (this.svgCanvasHeight / 2-10) + ")"
+                transform: "translate(" + this.margin.right + ", " + (this.svgCanvasHeight / 2 - 10) + ")"
             });
 
             //-- Define Path Draw function
@@ -109,90 +107,15 @@ module powerbi.extensibility.visual.dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED
                 .x((dp: DataPoint) => { return this.xAxis_Position(dp.position); })
                 .y((dp: DataPoint) => { return this.yAxis_Load(dp.load); });
 
-            this.updateDynoCardGraph(options);
+            //this.updateDynoCardGraph(options);
+            this.animateGraph(this.updateGraphData());
             this.refoptions = options;
         }
 
-        private updateDynoCardGraph(options: VisualUpdateOptions) {
-
-            this.graphData = _.sortBy(this.graphData, 'cardId')
-            let surfCardData = _.filter(this.graphData, { 'cardType': 'S' });
-            let pumpCardData = _.filter(this.graphData, { 'cardType': 'P' });
-
-            let plotSurfacePath = this.surCrdSvgGrp.selectAll("path").data([surfCardData]);
-            plotSurfacePath.enter().append("path").classed("path-cls", true);
-            plotSurfacePath.exit().remove();
-            plotSurfacePath.attr("stroke", "red")
-                .attr("stroke-width", 2)
-                .attr("fill", "none")
-                .attr("d", this.drawLineFunc);
-
-            this.plotteSurfacedPath = d3.select(document.getElementById("surfaceCard")).selectAll("path");
-            let surfacePathLength = this.plotteSurfacedPath.node().getTotalLength();
-            console.log("plotPathLenght Lenght", surfacePathLength);
-
-            plotSurfacePath
-                .attr("stroke-dasharray", surfacePathLength + " " + surfacePathLength)
-                .attr("stroke-dashoffset", surfacePathLength)
-                .transition()
-                .duration(2000)
-                .ease("linear")
-                .attr("stroke-dashoffset", 0);
-
-
-            let plotPumpPath = this.pumpCrdSvgGrp.selectAll("path").data([pumpCardData]);
-            plotPumpPath.enter().append("path").classed("path-cls", true);
-            plotPumpPath.exit().remove();
-            plotPumpPath.attr("stroke", "steelblue")
-                .attr("stroke-width", 2)
-                .attr("fill", "none")
-                .attr("d", this.drawLineFunc);
-
-
-            this.plottePumpPath = d3.select(document.getElementById("pumpCard")).selectAll("path");
-            let pumpPathLength = this.plottePumpPath.node().getTotalLength();
-            console.log("pumpPathLength Lenght", pumpPathLength);
-
-            plotPumpPath
-                .attr("stroke-dasharray", pumpPathLength + " " + pumpPathLength)
-                .attr("stroke-dashoffset", pumpPathLength)
-                .transition()
-                .duration(2000)
-                .ease("linear")
-                .attr("stroke-dashoffset", 0);
-            this.surCrdSvgGrp.attr({
-                transform: "translate(10,0)"
-            });
-            this.surCrdSvgGrp.attr({
-                transform: "translate(" + this.margin.right + ",0)"
-            });
-            this.pumpCrdSvgGrp.attr({
-                transform: "translate(" + this.margin.right + "," + (this.svgCanvasHeight / 2 - 30) + ")"
-            })
-
-            // let dotPump = this.pumpCrdSvgGrp.selectAll("circle").data(pumpCardData);
-            // dotPump.enter().append("circle").attr({
-            //     r: 2,
-            //     cy: d => this.yAxis_Load(d.load),
-            //     cx: d => this.xAxis_Position(d.position)
-            // }).style({
-            //     fill: 'blue'
-            // });
-            // dotPump.exit().remove();
-            // dotPump.attr({
-            //     r: 2,
-            //     cy: d => this.yAxis_Load(d.load),
-            //     cx: d => this.xAxis_Position(d.position)
-            // }).style({
-            //     fill: 'red'
-            // })
-
-
-        }
+       
 
         private renderCard(ci, surCardData, pumpCardData) {
 
-            console.log("Surface Card Data Point: ", surCardData);
             let color = ["red", "green", "blue", "black", "yellow"];
             let plotSurfacePath = this.surCrdSvgGrp.selectAll("path" + ci).data([surCardData]);
             plotSurfacePath.enter().append("path").classed("path-cls", true);
@@ -221,10 +144,8 @@ module powerbi.extensibility.visual.dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED
                 .attr("fill", "none")
                 .attr("d", this.drawLineFunc);
 
-
             this.plottePumpPath = d3.select(document.getElementById("pumpCard")).selectAll("path");
             let pumpPathLength = this.plottePumpPath.node().getTotalLength();
-            console.log("pumpPathLength Lenght", pumpPathLength);
 
             plotPumpPath
                 .attr("stroke-dasharray", pumpPathLength + " " + pumpPathLength)
@@ -245,27 +166,21 @@ module powerbi.extensibility.visual.dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED
 
         }
 
-        private animateGraph() {
-            let allDataPoints = _.sortBy(this.dataSet.dataPoints, 'cardId');
+        private animateGraph(argGraphDataSet: DataPoint[]) {
+            let allDataPoints = _.sortBy(argGraphDataSet, 'cardId');
             let surfaceDataGrp = _.groupBy(_.filter(allDataPoints, { 'cardType': 'S' }), 'cardHeaderId');
             let pumpCardDataGrp = _.groupBy(_.filter(allDataPoints, { 'cardType': 'P' }), 'cardHeaderId');
             let surCardDataArr = _.map(surfaceDataGrp, surfaceDataGrp.value);
             let pumpCardDataArr = _.map(pumpCardDataGrp, pumpCardDataGrp.value);
-            console.log("SurfaceCard Array: ", surCardDataArr);
             this.surCrdSvgGrp.selectAll("path").remove();
             this.pumpCrdSvgGrp.selectAll("path").remove();
 
-            let count = 0;
-            let plotSurfacePath;
-            let plotPumpPath;
             for (let ci in surCardDataArr) {
                 let surCardData = surCardDataArr[ci];
                 let pumpCardData = pumpCardDataArr[ci];
                 setTimeout(() => {
-                    console.log("Going to Render: ", ci);
                     this.renderCard(ci, surCardData, pumpCardData);
-                    //setTimeout(()=>console.log("delay"),1000)
-                }, +ci*2000);
+                }, +ci * 2000);
             }
 
         }
@@ -282,35 +197,6 @@ module powerbi.extensibility.visual.dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED
             return VisualSettings.enumerateObjectInstances(this.settings || VisualSettings.getDefault(), options);
         }
 
-
-        public getTableData(options: VisualUpdateOptions): ViewModel {
-            let sampleData: DataPoint[] = [];
-            let retDataView: ViewModel = {
-                dataPoints: sampleData,
-                maxValue: d3.max(sampleData, d => d.load)
-            }
-
-            let dataView = options.dataViews[0].table.rows;
-            let columnArr = options.dataViews[0].table.columns;
-            let columnPos: any[] = [];
-            for (let i = 0; i < columnArr.length; i++) {
-                columnPos.push(String(Object.keys(columnArr[i].roles)[0]));
-            }
-            for (let i = 0; i < dataView.length; i++) {
-                retDataView.dataPoints.push({
-                    pumpId: <number>+dataView[i][columnPos.indexOf(DataColumns.pumpId)],
-                    eventId: <number>+dataView[i][columnPos.indexOf(DataColumns.eventId)],
-                    cardHeaderId: <number>dataView[i][columnPos.indexOf(DataColumns.cardHeaderId)],
-                    epocDate:<Date> new Date(+dataView[i][columnPos.indexOf(DataColumns.epocDate)]*1000),
-                    cardType: <string>dataView[i][columnPos.indexOf(DataColumns.cardType)],
-                    cardId: <number>dataView[i][columnPos.indexOf(DataColumns.cardId)],
-                    position: <number>dataView[i][columnPos.indexOf(DataColumns.position)],
-                    load: <number>+dataView[i][columnPos.indexOf(DataColumns.load)]
-                });
-            }
-            console.log("Loaded Data: ", retDataView);
-            return retDataView;
-        }
 
         public createDropDown(argDropDownType: string) {
             let ddDiv = document.createElement("div");
@@ -350,12 +236,13 @@ module powerbi.extensibility.visual.dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED
             }
             dropDown.onchange = (event: Event) => {
                 let selVal = $("#" + argDropDownType).val();
-                console.log("Event for: ", argDropDownType, ' value: ', selVal);
-                if (argDropDownType == DataColumns.eventId) this.eventIdVal = selVal;
-                else if (argDropDownType == DataColumns.cardType) this.cardTypeVal = selVal;
-                this.updateGraphData();
-                this.updateDynoCardGraph(this.refoptions);
-                console.log("Current Graph Data:", this.graphData);
+                if (argDropDownType == DataColumns.pumpId) {
+                    this.pumpSelVal = selVal;
+                    this.resetOtherControls();
+                }
+                else if (argDropDownType == DataColumns.eventId) this.eventSelVal = selVal;
+
+                this.animateGraph(this.updateGraphData());
             }
 
             ddDiv.appendChild(labelDiv);
@@ -363,14 +250,31 @@ module powerbi.extensibility.visual.dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED
             return ddDiv;
         }
 
-        public updateGraphData() {
-            if (this.eventIdVal == 'all' && this.cardTypeVal == 'all') this.graphData = this.dataSet.dataPoints;
-            else if (this.eventIdVal != 'all' && this.cardTypeVal == 'all') this.graphData = _.filter(this.dataSet.dataPoints, { 'eventId': +this.eventIdVal });
-            else if (this.eventIdVal == 'all' && this.cardTypeVal != 'all') this.graphData = _.filter(this.dataSet.dataPoints, { 'cardType': this.cardTypeVal });
-            else if (this.eventIdVal != 'all' && this.cardTypeVal != 'all') {
-                let graphDataFilterByEventId = _.filter(this.dataSet.dataPoints, { 'eventId': +this.eventIdVal });
-                this.graphData = _.filter(graphDataFilterByEventId, { 'cardType': this.cardTypeVal });
+        private resetOtherControls() {
+            $("#" + DataColumns.eventId).val('all');
+            $("#" + DataColumns.startDate).val('');
+            $("#" + DataColumns.endDate).val('');
+            this.eventSelVal = 'all';
+        }
+
+        public updateGraphData(): DataPoint[] {
+            let retGraphDataSet: DataPoint[] = _.sortBy(this.dataSet.dataPoints, 'cardId');
+
+            if (this.pumpSelVal != 'all') retGraphDataSet = _.filter(this.dataSet.dataPoints, { 'pumpId': +this.pumpSelVal });
+            let startDateTime = new Date(String($("#" + DataColumns.startDate).val())).getTime() / 1000;
+            let endDateTime = new Date(String($("#" + DataColumns.endDate).val())).getTime() / 1000;
+
+            if (!isNaN(startDateTime) && !isNaN(endDateTime)) {
+                retGraphDataSet = _.filter(this.dataSet.dataPoints, (d) => {
+                    if (d.epocDate >= startDateTime && d.epocDate <= endDateTime) {
+                        return true;
+                    }
+                });
             }
+
+            if (this.eventSelVal != 'all') retGraphDataSet = _.filter(retGraphDataSet, { 'eventId': +this.eventSelVal });
+
+            return retGraphDataSet;
         }
 
     }

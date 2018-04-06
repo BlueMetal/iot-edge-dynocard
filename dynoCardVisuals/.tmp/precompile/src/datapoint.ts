@@ -3,7 +3,7 @@ module powerbi.extensibility.visual.dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED
         pumpId: number;
         eventId: number;
         cardHeaderId: number;
-        epocDate:Date;
+        epocDate:number;
         cardType: string;
         cardId: number;
         position: number;
