@@ -1,4 +1,14 @@
 @import (less) "node_modules/bootstrap/dist/css/bootstrap.css";
+@import (less) "node_modules/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css";
+
+
+
+@font-face {
+    font-family: 'Glyphicons Halflings';
+  
+    src: url('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/fonts/glyphicons-halflings-regular.eot');
+    src: url('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/fonts/glyphicons-halflings-regular.woff2') format('woff2'), url('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/fonts/glyphicons-halflings-regular.woff') format('woff'), url('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
+  }
 
 svg{
     display: block;
@@ -8,21 +18,76 @@ p {
     font-size: 20px;
     font-weight: bold;
     color: steelblue;
-    em {
-        background: yellow;
-        padding: 5px;
-        
-    }
 }
 
-.line{
-    fill: none;
-    stroke:steelblue;
-    stroke-width: 2px;
+#datePicker1{
+    float: none;
 }
+// .line{
+//     fill: none;
+//     stroke:steelblue;
+//     stroke-width: 2px;
+// }
 
 #controlDiv {
     padding: 5px;
     margin: 5px;
     background-color: #F7F7F7;
 }
+
+
+.x-axis path,
+.x-axis line {
+  fill: none;
+  stroke: brown;
+  shape-rendering: crispEdges;
+  stroke-width: 2px;
+}
+
+.x-axis text{
+    font-family: sans-serif;
+    font-style: italic;
+    font-size: 14px;
+    font-weight: bold;
+    fill: brown;
+    
+}
+
+.y-axis path .y-axis line{
+    stroke-width: 2px;
+    fill: blueviolet;
+}
+
+.y-axis path,
+.y-axis line {
+  fill: none;
+  stroke:brown;
+  shape-rendering: crispEdges;
+  stroke-width: 3px;
+}
+.y-axis text{
+    font-family: sans-serif;
+    font-style: italic;
+    font-size: 14px;
+    fill: brown;
+    
+}
+
+
+.y-axis-pump path,
+.y-axis-pump line {
+  fill: none;
+  stroke:steelblue;
+  shape-rendering: crispEdges;
+  stroke-width: 3px;
+}
+
+.y-axis-pump text{
+    font-family: sans-serif;
+    font-style: italic;
+    font-size: 14px;
+    fill: steelblue;
+    
+}
+
+

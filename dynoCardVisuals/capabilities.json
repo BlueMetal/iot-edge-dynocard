@@ -16,6 +16,11 @@
             "kind": "Grouping"
         },
         {
+            "displayName": "Epoc Date",
+            "name": "EpocDate",
+            "kind": "Grouping"
+        },
+        {
             "displayName": "Card Type",
             "name": "CardType",
             "kind": "Grouping"
@@ -96,6 +101,7 @@
                             { "for": {  "in": "PumpId"}},
                             { "for": {  "in": "EventId"}},
                             { "for": {  "in": "CardHeaderID"}},
+                            { "for": {  "in": "EpocDate"}},
                             { "for": {  "in": "CardType"}},
                             { "for": {  "in": "CardId"}},
                             { "for": {  "in": "Postition"}},

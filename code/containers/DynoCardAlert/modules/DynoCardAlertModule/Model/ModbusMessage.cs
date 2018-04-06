@@ -6,6 +6,8 @@ using Microsoft.Azure.Devices.Client;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using DynoCardAlertModule.Config;
+using DynoCardAlertModule.Data;
+using System.Threading.Tasks;
 
 namespace DynoCardAlertModule.Model
 {
@@ -26,7 +28,10 @@ namespace DynoCardAlertModule.Model
 
                 if (registers != null && registers.Count > 0)
                 {
-                    Console.WriteLine("Sending output message");
+                    //Sort the list so we know what the first Op name is
+                    registers = registers.OrderBy(r => r.Address).ToList();
+               
+                    Console.WriteLine($"Sending output message: {registers}");
                     var processedMessage = new Message(messageBytes);
                     RegisterValues = registers;
 
@@ -62,23 +67,55 @@ namespace DynoCardAlertModule.Model
 
             return dynoCardMessage;
         }
-        public static DynoCard ToDynoCard(this ModbusMessage message)
-        {
-            //Convert modbus message to dynocard here
-            DynoCard dynoCard = new DynoCard();
 
+        public static async Task<DynoCard> ToDynoCard(this ModbusMessage message)
+        {
+            DynoCard dynoCard = null;
+            
             if (!string.IsNullOrEmpty(message.DisplayName))
             {
                 if (message.DisplayName.ToLower().Contains("surface"))
                 {
-                    dynoCard.CardType = DynoCardType.Surface;
+                    dynoCard = PopulateSurfaceHeaderValue(message);
+                    dynoCard.CardType = DynoCardType.Surface;   
                 }
                 else if (message.DisplayName.ToLower().Contains("pump"))
                 {
-                    dynoCard.CardType = DynoCardType.Pump;
+                    dynoCard = PopulatePumpHeaderValue(message);
+                    dynoCard.CardType = DynoCardType.Surface;
                 }
             } 
             
+            int numberOfCoordinates = dynoCard.NumberOfPoints;
+            
+            var pointsArrayStartProp = ModbusMessage.LayoutConfig.Point;
+            if (pointsArrayStartProp != null)
+            {
+                List<DynoCardPoint> dynoCardPoints = new List<DynoCardPoint>();
+
+                for(int i = 0; i < numberOfCoordinates; i += pointsArrayStartProp.NumberOfRegisters)
+                {
+                    var pointsArray = GetValueArray(pointsArrayStartProp.RegisterNumber + i, pointsArrayStartProp.NumberOfRegisters, message.RegisterValues);
+                    if (pointsArray != null && pointsArray.Count > 1)
+                    {
+                        dynoCardPoints.Add(new DynoCardPoint()
+                        {
+                            Load = Int32.Parse(pointsArray[0]),
+                            Position = Int32.Parse(pointsArray[1])
+                        });
+                    }
+                }
+
+                dynoCard.CardPoints = dynoCardPoints;
+            }
+
+            return await Task.FromResult(dynoCard);      
+        }
+
+        private static DynoCard PopulateSurfaceHeaderValue(ModbusMessage message)
+        {
+            DynoCard dynoCard = new DynoCard();
+
             var timestampProp = ModbusMessage.LayoutConfig.Timestamp;
             if (timestampProp != null)
             {
@@ -87,8 +124,8 @@ namespace DynoCardAlertModule.Model
 
                 if (timeStampValues != null && timeStampValues.Count > 1)
                 {
-                    short left = Int16.Parse(timeStampValues[0]);
-                    short right = Int16.Parse(timeStampValues[1]);
+                    short left = (short)Int32.Parse(timeStampValues[0]);
+                    short right = (short)Int32.Parse(timeStampValues[1]);
 
                     timestamp = left;
                     timestamp = (timestamp << 16);
@@ -131,7 +168,7 @@ namespace DynoCardAlertModule.Model
             }
 
             var strokePeriodProp = ModbusMessage.LayoutConfig.StrokePeriod;
-            if(strokePeriodProp != null)
+            if (strokePeriodProp != null)
             {
                 var strokePeriodValues = GetValueArray(strokePeriodProp.RegisterNumber, strokePeriodProp.NumberOfRegisters, message.RegisterValues);
                 if (strokePeriodValues != null && strokePeriodValues.Count > 0)
@@ -152,28 +189,12 @@ namespace DynoCardAlertModule.Model
                 }
             }
 
-            var pointsArrayStartProp = ModbusMessage.LayoutConfig.Point;
-            if (pointsArrayStartProp != null)
-            {
-                List<DynoCardPoint> dynoCardPoints = new List<DynoCardPoint>();
+            return dynoCard;
+        }
 
-                for(int i = 0; i < numberOfDataPoints; i += pointsArrayStartProp.NumberOfRegisters)
-                {
-                    var pointsArray = GetValueArray(pointsArrayStartProp.RegisterNumber + i, pointsArrayStartProp.NumberOfRegisters, message.RegisterValues);
-                    if (pointsArray != null && pointsArray.Count > 1)
-                    {
-                        dynoCardPoints.Add(new DynoCardPoint()
-                        {
-                            Load = Int32.Parse(pointsArray[0]),
-                            Position = Int32.Parse(pointsArray[1])
-                        });
-                    }
-                }
-
-                dynoCard.CardPoints = dynoCardPoints;
-            }
-
-            return dynoCard;           
+        private static DynoCard PopulatePumpHeaderValue(ModbusMessage message)
+        {
+            return null;
         }
 
         private static List<string> GetValueArray(int registerNumber, int length, List<ModbusRegisterValue> valueList)
@@ -183,11 +204,25 @@ namespace DynoCardAlertModule.Model
 
             for (int i = 0; i < length; i++)
             {
-                string result = valueList.Where(v => v.Address == (registerNumber + i)).SingleOrDefault()?.Value;
-                if (!string.IsNullOrEmpty(result))
+                var results = valueList.Where(v => v.Address == (registerNumber + i));
+
+                if (results.Count() == 1)
                 {
-                    returnValues.Add(result);
-                    System.Console.WriteLine($"Result: {result}");
+                    string result = results.First().Value;
+                    if (!string.IsNullOrEmpty(result))
+                    {
+                        returnValues.Add(result);
+                        Console.WriteLine($"Result: {result}");
+                    }
+                }
+                else if (results.Count() > 1)
+                {
+                    Console.WriteLine($"More than one entry found for register {registerNumber}");
+                    foreach (var value in results)
+                    {
+                        string json = JsonConvert.SerializeObject(value);
+                        Console.WriteLine(json);
+                    }
                 }
             }
 

@@ -3,6 +3,7 @@
   
   
   
+  
 }
 .visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG html {
   font-family: sans-serif;
@@ -6837,6 +6838,380 @@
     display: none !important;
   }
 }
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget {
+  list-style: none;
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget.dropdown-menu {
+  display: block;
+  margin: 2px 0;
+  padding: 4px;
+  width: 19em;
+}
+@media (min-width: 768px) {
+  .visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget.dropdown-menu.timepicker-sbs {
+    width: 38em;
+  }
+}
+@media (min-width: 992px) {
+  .visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget.dropdown-menu.timepicker-sbs {
+    width: 38em;
+  }
+}
+@media (min-width: 1200px) {
+  .visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget.dropdown-menu.timepicker-sbs {
+    width: 38em;
+  }
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget.dropdown-menu:before,
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget.dropdown-menu:after {
+  content: '';
+  display: inline-block;
+  position: absolute;
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget.dropdown-menu.bottom:before {
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-bottom: 7px solid #ccc;
+  border-bottom-color: rgba(0, 0, 0, 0.2);
+  top: -7px;
+  left: 7px;
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget.dropdown-menu.bottom:after {
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 6px solid white;
+  top: -6px;
+  left: 8px;
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget.dropdown-menu.top:before {
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-top: 7px solid #ccc;
+  border-top-color: rgba(0, 0, 0, 0.2);
+  bottom: -7px;
+  left: 6px;
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget.dropdown-menu.top:after {
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid white;
+  bottom: -6px;
+  left: 7px;
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget.dropdown-menu.pull-right:before {
+  left: auto;
+  right: 6px;
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget.dropdown-menu.pull-right:after {
+  left: auto;
+  right: 7px;
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget .list-unstyled {
+  margin: 0;
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget a[data-action] {
+  padding: 6px 0;
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget a[data-action]:active {
+  box-shadow: none;
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget .timepicker-hour,
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget .timepicker-minute,
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget .timepicker-second {
+  width: 54px;
+  font-weight: bold;
+  font-size: 1.2em;
+  margin: 0;
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget button[data-action] {
+  padding: 6px;
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget .btn[data-action="incrementHours"]::after {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+  content: "Increment Hours";
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget .btn[data-action="incrementMinutes"]::after {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+  content: "Increment Minutes";
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget .btn[data-action="decrementHours"]::after {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+  content: "Decrement Hours";
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget .btn[data-action="decrementMinutes"]::after {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+  content: "Decrement Minutes";
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget .btn[data-action="showHours"]::after {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+  content: "Show Hours";
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget .btn[data-action="showMinutes"]::after {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+  content: "Show Minutes";
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget .btn[data-action="togglePeriod"]::after {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+  content: "Toggle AM/PM";
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget .btn[data-action="clear"]::after {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+  content: "Clear the picker";
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget .btn[data-action="today"]::after {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+  content: "Set the date to today";
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget .picker-switch {
+  text-align: center;
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget .picker-switch::after {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+  content: "Toggle Date and Time Screens";
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget .picker-switch td {
+  padding: 0;
+  margin: 0;
+  height: auto;
+  width: auto;
+  line-height: inherit;
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget .picker-switch td span {
+  line-height: 2.5;
+  height: 2.5em;
+  width: 100%;
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget table {
+  width: 100%;
+  margin: 0;
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget table td,
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget table th {
+  text-align: center;
+  border-radius: 4px;
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget table th {
+  height: 20px;
+  line-height: 20px;
+  width: 20px;
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget table th.picker-switch {
+  width: 145px;
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget table th.disabled,
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget table th.disabled:hover {
+  background: none;
+  color: #777;
+  cursor: not-allowed;
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget table th.prev::after {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+  content: "Previous Month";
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget table th.next::after {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+  content: "Next Month";
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget table thead tr:first-child th {
+  cursor: pointer;
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget table thead tr:first-child th:hover {
+  background: #eee;
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget table td {
+  height: 54px;
+  line-height: 54px;
+  width: 54px;
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget table td.cw {
+  font-size: .8em;
+  height: 20px;
+  line-height: 20px;
+  color: #777;
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget table td.day {
+  height: 20px;
+  line-height: 20px;
+  width: 20px;
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget table td.day:hover,
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget table td.hour:hover,
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget table td.minute:hover,
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget table td.second:hover {
+  background: #eee;
+  cursor: pointer;
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget table td.old,
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget table td.new {
+  color: #777;
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget table td.today {
+  position: relative;
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget table td.today:before {
+  content: '';
+  display: inline-block;
+  border: solid transparent;
+  border-width: 0 0 7px 7px;
+  border-bottom-color: #337ab7;
+  border-top-color: rgba(0, 0, 0, 0.2);
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget table td.active,
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget table td.active:hover {
+  background-color: #337ab7;
+  color: #fff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget table td.active.today:before {
+  border-bottom-color: #fff;
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget table td.disabled,
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget table td.disabled:hover {
+  background: none;
+  color: #777;
+  cursor: not-allowed;
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget table td span {
+  display: inline-block;
+  width: 54px;
+  height: 54px;
+  line-height: 54px;
+  margin: 2px 1.5px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget table td span:hover {
+  background: #eee;
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget table td span.active {
+  background-color: #337ab7;
+  color: #fff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget table td span.old {
+  color: #777;
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget table td span.disabled,
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget table td span.disabled:hover {
+  background: none;
+  color: #777;
+  cursor: not-allowed;
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget.usetwentyfour td.hour {
+  height: 27px;
+  line-height: 27px;
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget.wider {
+  width: 21em;
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .bootstrap-datetimepicker-widget .datepicker-decades .decade {
+  line-height: 1.8em !important;
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .input-group.date .input-group-addon {
+  cursor: pointer;
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+@font-face {
+  font-family: 'Glyphicons Halflings';
+  src: url('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/fonts/glyphicons-halflings-regular.eot');
+  src: url('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/fonts/glyphicons-halflings-regular.woff2') format('woff2'), url('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/fonts/glyphicons-halflings-regular.woff') format('woff'), url('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
+}
 .visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG svg {
   display: block;
 }
@@ -6845,17 +7220,55 @@
   font-weight: bold;
   color: steelblue;
 }
-.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG p em {
-  background: yellow;
-  padding: 5px;
-}
-.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .line {
-  fill: none;
-  stroke: steelblue;
-  stroke-width: 2px;
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG #datePicker1 {
+  float: none;
 }
 .visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG #controlDiv {
   padding: 5px;
   margin: 5px;
   background-color: #F7F7F7;
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .x-axis path,
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .x-axis line {
+  fill: none;
+  stroke: brown;
+  shape-rendering: crispEdges;
+  stroke-width: 2px;
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .x-axis text {
+  font-family: sans-serif;
+  font-style: italic;
+  font-size: 14px;
+  font-weight: bold;
+  fill: brown;
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .y-axis path .y-axis line {
+  stroke-width: 2px;
+  fill: blueviolet;
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .y-axis path,
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .y-axis line {
+  fill: none;
+  stroke: brown;
+  shape-rendering: crispEdges;
+  stroke-width: 3px;
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .y-axis text {
+  font-family: sans-serif;
+  font-style: italic;
+  font-size: 14px;
+  fill: brown;
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .y-axis-pump path,
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .y-axis-pump line {
+  fill: none;
+  stroke: steelblue;
+  shape-rendering: crispEdges;
+  stroke-width: 3px;
+}
+.visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .y-axis-pump text {
+  font-family: sans-serif;
+  font-style: italic;
+  font-size: 14px;
+  fill: steelblue;
 }
