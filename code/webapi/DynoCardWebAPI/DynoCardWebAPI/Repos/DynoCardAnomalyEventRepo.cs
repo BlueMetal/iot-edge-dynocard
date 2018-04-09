@@ -109,7 +109,7 @@ namespace DynoCardWebAPI.Repos
 
             sqlCmd = new SqlCommand(cmdText, sqlConn, sqlTrans);
             sqlCmd.Parameters.AddWithValue("@PumpId", dcae.PumpId);
-            sqlCmd.Parameters.AddWithValue("@EpochDate", dcae.Epoch);
+            sqlCmd.Parameters.AddWithValue("@EpochDate", TimeHelper.ConvertToEpoch(dcae.Timestamp));
             return (int)sqlCmd.ExecuteScalar();
         }
 
@@ -189,7 +189,7 @@ namespace DynoCardWebAPI.Repos
 
             sqlCmd = new SqlCommand(cmdText, sqlConn, sqlTrans);
             sqlCmd.Parameters.AddWithValue("@DcId", dynoCardId);
-            sqlCmd.Parameters.AddWithValue("@EpocDate", dynoCard.surfaceCard.Epoch);
+            sqlCmd.Parameters.AddWithValue("@EpocDate", TimeHelper.ConvertToEpoch(dynoCard.surfaceCard.Timestamp));
             sqlCmd.Parameters.AddWithValue("@NumPoints", dynoCard.surfaceCard.NumPoints);
             sqlCmd.Parameters.AddWithValue("@ScaledMaxLoad", dynoCard.surfaceCard.ScaledMaxLoad);
             sqlCmd.Parameters.AddWithValue("@ScaledMinLoad", dynoCard.surfaceCard.ScaledMinLoad);
@@ -229,7 +229,7 @@ namespace DynoCardWebAPI.Repos
 
             sqlCmd = new SqlCommand(cmdText, sqlConn, sqlTrans);
             sqlCmd.Parameters.AddWithValue("@DcId", dynoCardId);
-            sqlCmd.Parameters.AddWithValue("@EpocDate", dynoCard.pumpCard.Epoch);
+            sqlCmd.Parameters.AddWithValue("@EpocDate", TimeHelper.ConvertToEpoch(dynoCard.pumpCard.Timestamp));
             sqlCmd.Parameters.AddWithValue("@NumPoints", dynoCard.pumpCard.NumPoints);
             sqlCmd.Parameters.AddWithValue("@GrossStroke", dynoCard.pumpCard.GrossStroke);
             sqlCmd.Parameters.AddWithValue("@NetStroke", dynoCard.pumpCard.NetStroke);

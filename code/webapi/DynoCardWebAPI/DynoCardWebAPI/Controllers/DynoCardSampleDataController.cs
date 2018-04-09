@@ -39,10 +39,11 @@ namespace DynoCardWebAPI.Controllers
         private DynoCardAnomalyEvent GetDynoCardMsg()
         {
             DynoCardAnomalyEvent dcae = new DynoCardAnomalyEvent();
+            string dateFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss";
 
             // Add dyno card header Info
             dcae.PumpId = 1;
-            dcae.Epoch = TimeHelper.GetEpoch();
+            dcae.Timestamp = DateTime.UtcNow.ToString(dateFormat);
 
             DynoCard dynoCard = null;
 
@@ -54,7 +55,7 @@ namespace DynoCardWebAPI.Controllers
 
             // Add Surface Card #1
             dynoCard.surfaceCard = new SurfaceCard();
-            dynoCard.surfaceCard.Epoch = TimeHelper.GetEpoch();
+            dynoCard.surfaceCard.Timestamp = DateTime.UtcNow.ToString(dateFormat);
             dynoCard.surfaceCard.NumPoints = 100;
             dynoCard.surfaceCard.ScaledMaxLoad = 101;
             dynoCard.surfaceCard.ScaledMinLoad = 102;
@@ -67,7 +68,7 @@ namespace DynoCardWebAPI.Controllers
 
             // Add Pump Card #1
             dynoCard.pumpCard = new PumpCard();
-            dynoCard.pumpCard.Epoch = TimeHelper.GetEpoch();
+            dynoCard.pumpCard.Timestamp = DateTime.UtcNow.ToString(dateFormat);
             dynoCard.pumpCard.FluidLoad = 200;
             dynoCard.pumpCard.GrossStroke = 201;
             dynoCard.pumpCard.NetStroke = 202;
@@ -90,7 +91,7 @@ namespace DynoCardWebAPI.Controllers
 
             // Add Surface Card #3
             dynoCard.surfaceCard = new SurfaceCard();
-            dynoCard.surfaceCard.Epoch = TimeHelper.GetEpoch();
+            dynoCard.surfaceCard.Timestamp = DateTime.UtcNow.ToString(dateFormat);
             dynoCard.surfaceCard.NumPoints = 300;
             dynoCard.surfaceCard.ScaledMaxLoad = 301;
             dynoCard.surfaceCard.ScaledMinLoad = 302;
@@ -103,7 +104,7 @@ namespace DynoCardWebAPI.Controllers
 
             // Add Pump Card #4
             dynoCard.pumpCard = new PumpCard();
-            dynoCard.pumpCard.Epoch = TimeHelper.GetEpoch();
+            dynoCard.pumpCard.Timestamp = DateTime.UtcNow.ToString(dateFormat);
             dynoCard.pumpCard.FluidLoad = 400;
             dynoCard.pumpCard.GrossStroke = 401;
             dynoCard.pumpCard.NetStroke = 402;

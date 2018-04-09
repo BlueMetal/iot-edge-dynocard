@@ -7,7 +7,7 @@ namespace DynoCardWebAPI.Models
 {
     public class CardBase
     {
-        public int Epoch { get; set; }
+        public string Timestamp { get; set; }
         public int NumPoints { get; set; }
         public float ScaledMaxLoad { get; set; }
         public float ScaledMinLoad { get; set; }
