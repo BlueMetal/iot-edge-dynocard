@@ -46972,17 +46972,18 @@ var powerbi;
                             width: svgCanvasWidth,
                             height: this.svgCanvasHeight
                         });
-                        if (!this.isDropDownRender) {
-                            var pumpDD = this.createDropDown(dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.DataColumns.pumpId);
-                            var eventDD = this.createDropDown(dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.DataColumns.eventId);
-                            var stratDatePicker = dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.HtmlControl.createDateTimePicker(dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.DataColumns.startDate);
-                            var endDatePicker = dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.HtmlControl.createDateTimePicker(dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.DataColumns.endDate);
-                            document.getElementById("controlDiv").appendChild(pumpDD);
-                            document.getElementById("controlDiv").appendChild(stratDatePicker);
-                            document.getElementById("controlDiv").appendChild(endDatePicker);
-                            document.getElementById("controlDiv").appendChild(eventDD);
-                            this.isDropDownRender = true;
+                        var childNodes = document.getElementById("controlDiv");
+                        while (childNodes.firstChild) {
+                            childNodes.removeChild(childNodes.firstChild);
                         }
+                        var pumpDD = this.createDropDown(dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.DataColumns.pumpId);
+                        var eventDD = this.createDropDown(dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.DataColumns.eventId);
+                        var stratDatePicker = dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.HtmlControl.createDateTimePicker(dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.DataColumns.startDate);
+                        var endDatePicker = dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.HtmlControl.createDateTimePicker(dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.DataColumns.endDate);
+                        document.getElementById("controlDiv").appendChild(pumpDD);
+                        document.getElementById("controlDiv").appendChild(stratDatePicker);
+                        document.getElementById("controlDiv").appendChild(endDatePicker);
+                        document.getElementById("controlDiv").appendChild(eventDD);
                         this.dynoCardSvg.selectAll("line").remove();
                         this.dynoCardSvg.append("line").attr({
                             x1: this.margin.right,
@@ -47016,11 +47017,10 @@ var powerbi;
                         this.refoptions = options;
                     };
                     DynoCardVisual.prototype.renderCard = function (ci, surCardData, pumpCardData) {
-                        var color = ["red", "green", "blue", "black", "yellow"];
                         var plotSurfacePath = this.surCrdSvgGrp.selectAll("path" + ci).data([surCardData]);
                         plotSurfacePath.enter().append("path").classed("path-cls", true);
                         plotSurfacePath.exit().remove();
-                        plotSurfacePath.attr("stroke", color[ci])
+                        plotSurfacePath.attr("stroke", "steelblue")
                             .attr("stroke-width", 2)
                             .attr("fill", "none")
                             .attr("d", this.drawLineFunc);
@@ -47036,7 +47036,7 @@ var powerbi;
                         var plotPumpPath = this.pumpCrdSvgGrp.selectAll("path" + ci).data([pumpCardData]);
                         plotPumpPath.enter().append("path").classed("path-cls", true);
                         plotPumpPath.exit().remove();
-                        plotPumpPath.attr("stroke", color[ci])
+                        plotPumpPath.attr("stroke", "brown")
                             .attr("stroke-width", 2)
                             .attr("fill", "none")
                             .attr("d", this.drawLineFunc);
