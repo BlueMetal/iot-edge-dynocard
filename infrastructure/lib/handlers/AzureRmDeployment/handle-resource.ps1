@@ -53,7 +53,7 @@ function destroy {
     $result = Remove-AzureRmResourceGroupDeployment -name $name -resourceGroup $resource.resource_group
     if($result) { write-info "Destruction of deployment '$name' succeeded" }
 
-    write-info "Destroying resource group '$resource.resource_group'..."
+    write-info ("Destroying resource group '{0}'..." -f $resource.resource_group)
     Remove-AzureRmResourceGroup -name $resource.resource_group -Force
     if($result) { write-info ("Destruction of resource group '{0}' succeeded." -f $resource.resource_group)}
 }

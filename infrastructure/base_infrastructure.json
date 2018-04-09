@@ -434,7 +434,8 @@
           "actions": {
             "HTTP": {
               "inputs": {
-                "body": "@substring(base64ToString(triggerBody()?['ContentData']), indexof(base64ToString(triggerBody()?['ContentData']), '{'), sub(add(lastindexof(base64ToString(triggerBody()?['ContentData']), '}'),1),indexof(base64ToString(triggerBody()?['ContentData']),'{')))",
+                "body":
+                  "@substring(base64ToString(triggerBody()?['ContentData']), indexof(base64ToString(triggerBody()?['ContentData']), '{'), sub(add(lastindexof(base64ToString(triggerBody()?['ContentData']), '}'),1),indexof(base64ToString(triggerBody()?['ContentData']),'{')))",
                 "headers": {
                   "Content-Type": "application/json"
                 },
@@ -464,6 +465,23 @@
     }
   ],
   "outputs": {
+    "dynocardDbServerName": {
+      "type": "string",
+      "value":
+        "[reference(resourceId('Microsoft.Sql/servers', parameters('databaseServerName'))).fullyQualifiedDomainName]"
+    },
+    "dynocardDbName": {
+      "type": "string",
+      "value": "[parameters('databaseName')]"
+    },
+    "dynocardDbAdminUsername": {
+      "type": "string",
+      "value": "[parameters('databaseAdminUsername')]"
+    },
+    "dynocardDbAdminPassword": {
+      "type": "string",
+      "value": "[parameters('databaseAdminPassword')]"
+    },
     "serviceBusNamespaceConnectionString": {
       "type": "string",
       "value":

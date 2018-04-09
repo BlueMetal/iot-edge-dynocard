@@ -26,6 +26,16 @@
                 "appSvcPlanSku" : "S1"
             }
         },
+        "db_schema" : {
+            "type" : "AzureRMDeploymentDatabaseInitalizer",
+            "resource_group" : "iot-dynocard-test",
+            "deployment_name" : "base_infrastructure",
+            "database_server_name_key"    : "dynocardDbServerName",
+            "database_name_key"           : "dynocardDbName",
+            "database_admin_username_key" : "dynocardDbAdminUsername",
+            "database_admin_password_key" : "dynocardDbAdminPassword",
+            "initalization_script" : "../code/containers/mssql_db/create-dynocard-schema.sql"
+        },
         "vnet" : {
             "resource_group":"iot-dynocard-test",
             "location" : "eastus",
@@ -35,49 +45,6 @@
                 "addressPrefix": "10.0.0.0/16",
                 "edgeDeviceSubnetName"   : "edge_devices",
                 "edgeDeviceSubnetPrefix" : "10.0.1.0/24"
-            }
-        },
-        "iot_hub" : {
-            "type" : "AzureRMDeployment",
-            "resource_group":"iot-dynocard-test",
-            "location" : "eastus",
-            "template" : "./templates/iot_hub.json",
-            "parameters" : {
-                "resourceName" : "iot-dynocard-test-hub",
-                "sku_name": "B1",
-                "sku_units": "1",
-                "d2c_partitions" : "4"
-            }
-        },
-        "datalake" : {
-            "type" : "AzureRMDeployment",
-            "resource_group":"iot-dynocard-test",
-            "location" : "eastus",
-            "template" : "./templates/data_lake_store.json",
-            "parameters" : {
-                "resourceName" : "iot-dynocard-test-data"
-            }
-        },
-        "datalake_items" : {
-            "type" : "AzureDatalakeChildItem",
-            "datalake" : "",
-            "items" : [
-                {
-                    "type" : "folder",
-                    "path" :["/dynocard"]
-                }
-            ]
-        },
-        "sql_database" : {
-            "type" : "AzureRMDeployment",
-            "resource_group":"iot-dynocard-test",
-            "location" : "eastus",
-            "template" : "./templates/sql_database.json",
-            "parameters" : {
-                "serverName" : "iot-dynocard-test-dbhost",
-                "adminUsername" : "azuser",
-                "adminPassword" : "tzi61HcJjczlD6wBAvOM37PBPCUJkiTurwEV",
-                "databaseName"  : "dynocard"
             }
         },
         "edge_device_1" : {
