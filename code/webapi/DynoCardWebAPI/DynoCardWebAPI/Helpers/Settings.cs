@@ -8,6 +8,8 @@ namespace DynoCardWebAPI.Helpers
     public class Settings
     {
         public string ConnectionString { get; set; }
+        public string DeviceConnectionString { get; set; }
+
         public Settings()
         {
         }

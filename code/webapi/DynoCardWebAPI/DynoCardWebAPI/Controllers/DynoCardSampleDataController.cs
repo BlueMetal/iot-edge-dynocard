@@ -4,7 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using DynoCardWebAPI.Helpers;
 using DynoCardWebAPI.Models;
+using DynoCardWebAPI.Repos;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 
 namespace DynoCardWebAPI.Controllers
@@ -15,8 +17,26 @@ namespace DynoCardWebAPI.Controllers
     [Route("api/[controller]")]
     public class DynoCardSampleDataController : Controller
     {
+        private IDynoCardAnomalyMsgGenRepo dynoCardAnomalyMsgGenRepo;
+
+        public DynoCardSampleDataController(IOptions<Settings> settings, IDynoCardAnomalyMsgGenRepo dynoCardAnomalyMsgGenRepo)
+        {
+            this.dynoCardAnomalyMsgGenRepo = dynoCardAnomalyMsgGenRepo;
+        }
+
+        [HttpPost]
+        public void Post()
+        {
+            this.dynoCardAnomalyMsgGenRepo.Send(GetDynoCardMsg());
+        }
+
         [HttpGet]
         public string Get()
+        {
+            return JsonConvert.SerializeObject(GetDynoCardMsg());
+        }
+
+        private DynoCardAnomalyEvent GetDynoCardMsg()
         {
             DynoCardAnomalyEvent dcae = new DynoCardAnomalyEvent();
 
@@ -98,7 +118,7 @@ namespace DynoCardWebAPI.Controllers
 
             dcae.dynoCards.Add(dynoCard);
 
-            return JsonConvert.SerializeObject(dcae);
+            return dcae;
         }
 
     }
