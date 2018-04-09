@@ -64,17 +64,20 @@ module powerbi.extensibility.visual.dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED
                 height: this.svgCanvasHeight
             });
 
-            if (!this.isDropDownRender) {
-                let pumpDD = this.createDropDown(DataColumns.pumpId);
-                let eventDD = this.createDropDown(DataColumns.eventId);
-                let stratDatePicker = HtmlControl.createDateTimePicker(DataColumns.startDate);
-                let endDatePicker = HtmlControl.createDateTimePicker(DataColumns.endDate);
-                document.getElementById("controlDiv").appendChild(pumpDD);
-                document.getElementById("controlDiv").appendChild(stratDatePicker);
-                document.getElementById("controlDiv").appendChild(endDatePicker);
-                document.getElementById("controlDiv").appendChild(eventDD);
-                this.isDropDownRender = true;
+            var childNodes = document.getElementById("controlDiv");
+            while (childNodes.firstChild) {
+                childNodes.removeChild(childNodes.firstChild);
             }
+
+            let pumpDD = this.createDropDown(DataColumns.pumpId);
+            let eventDD = this.createDropDown(DataColumns.eventId);
+            let stratDatePicker = HtmlControl.createDateTimePicker(DataColumns.startDate);
+            let endDatePicker = HtmlControl.createDateTimePicker(DataColumns.endDate);
+            document.getElementById("controlDiv").appendChild(pumpDD);
+            document.getElementById("controlDiv").appendChild(stratDatePicker);
+            document.getElementById("controlDiv").appendChild(endDatePicker);
+            document.getElementById("controlDiv").appendChild(eventDD);
+
             this.dynoCardSvg.selectAll("line").remove();
             this.dynoCardSvg.append("line").attr({
                 x1: this.margin.right,
@@ -112,15 +115,12 @@ module powerbi.extensibility.visual.dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED
             this.refoptions = options;
         }
 
-       
 
         private renderCard(ci, surCardData, pumpCardData) {
-
-            let color = ["red", "green", "blue", "black", "yellow"];
             let plotSurfacePath = this.surCrdSvgGrp.selectAll("path" + ci).data([surCardData]);
             plotSurfacePath.enter().append("path").classed("path-cls", true);
             plotSurfacePath.exit().remove();
-            plotSurfacePath.attr("stroke", color[ci])
+            plotSurfacePath.attr("stroke", "steelblue")
                 .attr("stroke-width", 2)
                 .attr("fill", "none")
                 .attr("d", this.drawLineFunc);
@@ -135,11 +135,10 @@ module powerbi.extensibility.visual.dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED
                 .ease("linear")
                 .attr("stroke-dashoffset", 0);
 
-
             let plotPumpPath = this.pumpCrdSvgGrp.selectAll("path" + ci).data([pumpCardData]);
             plotPumpPath.enter().append("path").classed("path-cls", true);
             plotPumpPath.exit().remove();
-            plotPumpPath.attr("stroke", color[ci])
+            plotPumpPath.attr("stroke", "brown")
                 .attr("stroke-width", 2)
                 .attr("fill", "none")
                 .attr("d", this.drawLineFunc);
@@ -163,7 +162,6 @@ module powerbi.extensibility.visual.dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED
             this.pumpCrdSvgGrp.attr({
                 transform: "translate(" + this.margin.right + "," + (this.svgCanvasHeight / 2 - 30) + ")"
             });
-
         }
 
         private animateGraph(argGraphDataSet: DataPoint[]) {
