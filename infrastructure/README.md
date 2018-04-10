@@ -40,7 +40,24 @@ In order for the WebAPI to operate the database must be initialized with the pro
 ./iot-dynocard-demo.ps1 deploy db_schema
 ```
 
+*** Note: Be sure to configure the database connection string within the App Service.
+
 ### Step 5: Deploy and configure WebAPI
 The base infrastructure deployment created an Azure App Service into which the `/code/webapi/DynoCardWebAPI` application must be deployed. If you have Visual Studio Team Services (VSTS) you can easily build and deploy the application via [App Services Continuous Delivery](https://blogs.msdn.microsoft.com/devops/2016/11/17/azure-app-services-continuous-delivery/).
+
+### Step 6: Deploy ModBus Controller
+
+### Step 7: Deploy PowerBI visualization
+
 ## Operational Walkthrough
+### Modbus Controller, Edge Device, and IoT Hub 
+The Edge Devices are configured to read data from the Modbus Controller via the ?? protocol. The devices are configured via the IoT Edge to read data registers of the ModBus controller. The initial configuration of IoT Edge (and thus the devices) is controlled by the content in `/infrastructure/iot_edge_device.json`.
+
+Among other things, the edge device configuration controls the docker containers (location, tag/version, environment vars, etc..) that the edge device runs. If you create custom containers, you will need to modify the container image names in this file to point to the new images.
+
+### IoT Hub and Service Bus
+
+### Service Bus, Logic App, WebAPI, and SQL Database
+
+### Service Bus, Stream Analytics, and Data Lake
 
