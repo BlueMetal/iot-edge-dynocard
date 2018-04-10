@@ -14,8 +14,10 @@ namespace DynoCardAlertModule.Model
      public class ModbusMessage
     {
         public string DisplayName { get; set; }
-        public List<ModbusRegisterValue> RegisterValues { get; set; }
-        public static ModbusLayoutConfig LayoutConfig { get; set; }
+        public List<ModbusRegisterValue> SurfaceCardRegisterValues { get; set; }
+        public List<ModbusRegisterValue> PumpCardRegisterValues { get; set; }
+        public static SurfaceCardConfig SurfaceLayoutConfig { get; set; }
+        public static PumpCardConfig PumpLayoutConfig { get; set; }
 
         public ModbusMessage(Message message)
         {
@@ -31,14 +33,10 @@ namespace DynoCardAlertModule.Model
                     //Sort the list so we know what the first Op name is
                     registers = registers.OrderBy(r => r.Address).ToList();
                
-                    Console.WriteLine($"Sending output message: {registers}");
-                    var processedMessage = new Message(messageBytes);
-                    RegisterValues = registers;
-
-                    //Preserve the display name off one value to determine what it represents
-                    DisplayName = registers[0].DisplayName;
-
-                    Console.WriteLine("Completed output message");
+                    SurfaceCardRegisterValues = FilterSurfaceCardRegisters(registers);
+                    PumpCardRegisterValues = FilterPumpCardRegisters(registers);
+                    
+                    Console.WriteLine("Completed creating modbus message");
                 }
                 else
                 {
@@ -49,6 +47,20 @@ namespace DynoCardAlertModule.Model
             {
                 Console.WriteLine("Empty modbus message received");
             }
+        }
+
+        private static List<ModbusRegisterValue> FilterSurfaceCardRegisters(List<ModbusRegisterValue> fullList)
+        {
+            var surfaceCardRegisters = fullList.Where(c => c.Address >= SurfaceLayoutConfig.Timestamp.RegisterNumber && c.Address < PumpLayoutConfig.Timestamp.RegisterNumber);
+            var sortedList = surfaceCardRegisters.OrderBy(r => r.Address).ToList();
+            return sortedList;
+        }
+
+        private static List<ModbusRegisterValue> FilterPumpCardRegisters(List<ModbusRegisterValue> fullList)
+        {
+            var pumpCardRegisters = fullList.Where(c => c.Address >= PumpLayoutConfig.Timestamp.RegisterNumber);
+            var sortedList = pumpCardRegisters.OrderBy(r => r.Address).ToList();
+            return sortedList;
         }
     }
 
@@ -68,59 +80,39 @@ namespace DynoCardAlertModule.Model
             return dynoCardMessage;
         }
 
-        public static async Task<DynoCard> ToDynoCard(this ModbusMessage message)
+        public static async Task<DynoCard> ToDynoCard(this ModbusMessage modbus)
         {
-            DynoCard dynoCard = null;
-            
-            if (!string.IsNullOrEmpty(message.DisplayName))
+            DynoCard dynoCard = new DynoCard()
             {
-                if (message.DisplayName.ToLower().Contains("surface"))
-                {
-                    dynoCard = PopulateSurfaceHeaderValue(message);
-                    dynoCard.CardType = DynoCardType.Surface;   
-                }
-                else if (message.DisplayName.ToLower().Contains("pump"))
-                {
-                    dynoCard = PopulatePumpHeaderValue(message);
-                    dynoCard.CardType = DynoCardType.Surface;
-                }
-            } 
-            
-            int numberOfCoordinates = dynoCard.NumberOfPoints;
-            
-            var pointsArrayStartProp = ModbusMessage.LayoutConfig.Point;
-            if (pointsArrayStartProp != null)
+                SurfaceCard = PopulateSurfaceCard(modbus.SurfaceCardRegisterValues),
+                PumpCard = PopulatePumpCard(modbus.PumpCardRegisterValues),
+                TriggeredEvents = false
+            };
+
+            if (dynoCard.SurfaceCard != null)
             {
-                List<DynoCardPoint> dynoCardPoints = new List<DynoCardPoint>();
-
-                for(int i = 0; i < numberOfCoordinates; i += pointsArrayStartProp.NumberOfRegisters)
-                {
-                    var pointsArray = GetValueArray(pointsArrayStartProp.RegisterNumber + i, pointsArrayStartProp.NumberOfRegisters, message.RegisterValues);
-                    if (pointsArray != null && pointsArray.Count > 1)
-                    {
-                        dynoCardPoints.Add(new DynoCardPoint()
-                        {
-                            Load = Int32.Parse(pointsArray[0]),
-                            Position = Int32.Parse(pointsArray[1])
-                        });
-                    }
-                }
-
-                dynoCard.CardPoints = dynoCardPoints;
+                dynoCard.Timestamp = dynoCard.SurfaceCard.Timestamp;
             }
-
+            
             return await Task.FromResult(dynoCard);      
         }
 
-        private static DynoCard PopulateSurfaceHeaderValue(ModbusMessage message)
+        private static SurfaceCard PopulateSurfaceCard(List<ModbusRegisterValue> registerValues)
         {
-            DynoCard dynoCard = new DynoCard();
+            if (registerValues == null || registerValues.Count == 0)
+            {
+                System.Console.WriteLine("Empty register values passed.");
+                return null;
+            }
 
-            var timestampProp = ModbusMessage.LayoutConfig.Timestamp;
+            System.Console.WriteLine("Parsing surface card.");
+            SurfaceCard surfaceCard = new SurfaceCard();
+
+            var timestampProp = ModbusMessage.SurfaceLayoutConfig.Timestamp;
             if (timestampProp != null)
             {
                 int timestamp = 0;
-                var timeStampValues = GetValueArray(timestampProp.RegisterNumber, timestampProp.NumberOfRegisters, message.RegisterValues);
+                var timeStampValues = GetValueArray(timestampProp.RegisterNumber, timestampProp.NumberOfRegisters, registerValues);
 
                 if (timeStampValues != null && timeStampValues.Count > 1)
                 {
@@ -134,73 +126,211 @@ namespace DynoCardAlertModule.Model
 
                 DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
                 dateTime = dateTime.AddSeconds(timestamp).ToLocalTime();
-                dynoCard.Timestamp = dateTime;
+                surfaceCard.Timestamp = dateTime;
             }
 
-            var maxLoadProp = ModbusMessage.LayoutConfig.MaxLoad;
+            var maxLoadProp = ModbusMessage.SurfaceLayoutConfig.MaxLoad;
             if (maxLoadProp != null)
             {
-                var maxLoadpValues = GetValueArray(maxLoadProp.RegisterNumber, maxLoadProp.NumberOfRegisters, message.RegisterValues);
+                var maxLoadpValues = GetValueArray(maxLoadProp.RegisterNumber, maxLoadProp.NumberOfRegisters, registerValues);
                 if (maxLoadpValues != null && maxLoadpValues.Count > 0)
                 {
-                    dynoCard.MaxLoad = Int32.Parse(maxLoadpValues.First());
+                    surfaceCard.ScaledMaxLoad = Int32.Parse(maxLoadpValues.First());
                 }
             }
 
-            var minLoadProp = ModbusMessage.LayoutConfig.MinLoad;
+            var minLoadProp = ModbusMessage.SurfaceLayoutConfig.MinLoad;
             if (minLoadProp != null)
             {
-                var minLoadValues = GetValueArray(minLoadProp.RegisterNumber, minLoadProp.NumberOfRegisters, message.RegisterValues);
+                var minLoadValues = GetValueArray(minLoadProp.RegisterNumber, minLoadProp.NumberOfRegisters, registerValues);
                 if (minLoadValues != null && minLoadValues.Count > 0)
                 {
-                    dynoCard.MinLoad = Int32.Parse(minLoadValues.First());
+                    surfaceCard.ScaledMinLoad = Int32.Parse(minLoadValues.First());
                 }
             }
 
-            var strokeLengthProp = ModbusMessage.LayoutConfig.StrokeLength;
+            var strokeLengthProp = ModbusMessage.SurfaceLayoutConfig.StrokeLength;
             if (strokeLengthProp != null)
             {
-                var strokeLengthValues = GetValueArray(strokeLengthProp.RegisterNumber, strokeLengthProp.NumberOfRegisters, message.RegisterValues);
+                var strokeLengthValues = GetValueArray(strokeLengthProp.RegisterNumber, strokeLengthProp.NumberOfRegisters, registerValues);
                 if (strokeLengthValues != null && strokeLengthValues.Count > 0)
                 {
-                    dynoCard.StrokeLength = Int32.Parse(strokeLengthValues.First());
+                    surfaceCard.StrokeLength = Int32.Parse(strokeLengthValues.First());
                 }
             }
 
-            var strokePeriodProp = ModbusMessage.LayoutConfig.StrokePeriod;
+            var strokePeriodProp = ModbusMessage.SurfaceLayoutConfig.StrokePeriod;
             if (strokePeriodProp != null)
             {
-                var strokePeriodValues = GetValueArray(strokePeriodProp.RegisterNumber, strokePeriodProp.NumberOfRegisters, message.RegisterValues);
+                var strokePeriodValues = GetValueArray(strokePeriodProp.RegisterNumber, strokePeriodProp.NumberOfRegisters, registerValues);
                 if (strokePeriodValues != null && strokePeriodValues.Count > 0)
                 {
-                    dynoCard.StrokePeriod = Int32.Parse(strokePeriodValues.First());
+                    surfaceCard.StrokePeriod = Int32.Parse(strokePeriodValues.First());
                 }
             }
 
-            var numberOfPointsProp = ModbusMessage.LayoutConfig.NumberOfPoints;
+            var numberOfPointsProp = ModbusMessage.SurfaceLayoutConfig.NumberOfPoints;
             int numberOfDataPoints = 0;
             if (numberOfPointsProp != null)
             {
-                var numberOfPointsValues = GetValueArray(numberOfPointsProp.RegisterNumber, numberOfPointsProp.NumberOfRegisters, message.RegisterValues);
+                var numberOfPointsValues = GetValueArray(numberOfPointsProp.RegisterNumber, numberOfPointsProp.NumberOfRegisters, registerValues);
                 if (numberOfPointsValues != null && numberOfPointsValues.Count > 0)
                 {
                     numberOfDataPoints = Int32.Parse(numberOfPointsValues.First());
-                    dynoCard.NumberOfPoints = numberOfDataPoints;
+                    surfaceCard.NumberOfPoints = numberOfDataPoints;
+                }
+
+                List<CardCoordinate> cardCoordinates = new List<CardCoordinate>();
+                var pointArrayProperty = ModbusMessage.SurfaceLayoutConfig.Point;
+
+                for (int i = 0; i < surfaceCard.NumberOfPoints; i += numberOfPointsProp.NumberOfRegisters)
+                {
+                    var pointsArray = GetValueArray(pointArrayProperty.RegisterNumber + i, pointArrayProperty.NumberOfRegisters, registerValues);
+                    if (pointsArray != null && pointsArray.Count > 1)
+                    {
+                        cardCoordinates.Add(new CardCoordinate()
+                        {
+                            Load = Int32.Parse(pointsArray[0]),
+                            Position = Int32.Parse(pointsArray[1])
+                        });
+                    }
+                }
+
+                surfaceCard.CardCoordinates = cardCoordinates;
+            }
+
+            return surfaceCard;
+        }
+
+        private static PumpCard PopulatePumpCard(List<ModbusRegisterValue> registerValues)
+        {
+            if (registerValues == null || registerValues.Count == 0)
+            {
+                System.Console.WriteLine("Empty register values passed.");
+                return null;
+            }
+
+            PumpCard pumpCard = new PumpCard();
+            Console.WriteLine("Parsing pump card.");
+
+            var timestampProp = ModbusMessage.PumpLayoutConfig.Timestamp;
+            if (timestampProp != null)
+            {
+                int timestamp = 0;
+                var timeStampValues = GetValueArray(timestampProp.RegisterNumber, timestampProp.NumberOfRegisters, registerValues);
+
+                if (timeStampValues != null && timeStampValues.Count > 1)
+                {
+                    short left = (short)Int32.Parse(timeStampValues[0]);
+                    short right = (short)Int32.Parse(timeStampValues[1]);
+
+                    timestamp = left;
+                    timestamp = (timestamp << 16);
+                    timestamp = timestamp | (int)(ushort)right;
+                }
+
+                DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+                dateTime = dateTime.AddSeconds(timestamp).ToLocalTime();
+                pumpCard.Timestamp = dateTime;
+            }
+
+            var maxLoadProp = ModbusMessage.PumpLayoutConfig.MaxLoad;
+            if (maxLoadProp != null)
+            {
+                var maxLoadpValues = GetValueArray(maxLoadProp.RegisterNumber, maxLoadProp.NumberOfRegisters, registerValues);
+                if (maxLoadpValues != null && maxLoadpValues.Count > 0)
+                {
+                    pumpCard.ScaledMaxLoad = Int32.Parse(maxLoadpValues.First());
                 }
             }
 
-            return dynoCard;
-        }
+            var minLoadProp = ModbusMessage.PumpLayoutConfig.MinLoad;
+            if (minLoadProp != null)
+            {
+                var minLoadValues = GetValueArray(minLoadProp.RegisterNumber, minLoadProp.NumberOfRegisters, registerValues);
+                if (minLoadValues != null && minLoadValues.Count > 0)
+                {
+                    pumpCard.ScaledMinLoad = Int32.Parse(minLoadValues.First());
+                }
+            }
 
-        private static DynoCard PopulatePumpHeaderValue(ModbusMessage message)
-        {
-            return null;
+            var grossStroke = ModbusMessage.PumpLayoutConfig.GrossStroke;
+            if (grossStroke != null)
+            {
+                var grossStrokeValues = GetValueArray(grossStroke.RegisterNumber, grossStroke.NumberOfRegisters, registerValues);
+                if (grossStrokeValues != null && grossStrokeValues.Count > 0)
+                {
+                    pumpCard.GrossStroke = Int32.Parse(grossStrokeValues.First());
+                }
+            }
+
+            var netStroke = ModbusMessage.PumpLayoutConfig.NetStroke;
+            if (netStroke != null)
+            {
+                var netStrokeValues = GetValueArray(netStroke.RegisterNumber, netStroke.NumberOfRegisters, registerValues);
+                if (netStrokeValues != null && netStrokeValues.Count > 0)
+                {
+                    pumpCard.NetStroke = Int32.Parse(netStrokeValues.First());
+                }
+            }
+
+            var fluidLoad = ModbusMessage.PumpLayoutConfig.NetStroke;
+            if (fluidLoad != null)
+            {
+                var fluidLoadValues = GetValueArray(fluidLoad.RegisterNumber, fluidLoad.NumberOfRegisters, registerValues);
+                if (fluidLoadValues != null && fluidLoadValues.Count > 0)
+                {
+                    pumpCard.FluidLoad = Int32.Parse(fluidLoadValues.First());
+                }
+            }
+
+            var pumpFillage = ModbusMessage.PumpLayoutConfig.NetStroke;
+            if (pumpFillage != null)
+            {
+                var pumpFillageValues = GetValueArray(pumpFillage.RegisterNumber, pumpFillage.NumberOfRegisters, registerValues);
+                if (pumpFillageValues != null && pumpFillageValues.Count > 0)
+                {
+                    pumpCard.PumpFillage = Int32.Parse(pumpFillageValues.First());
+                }
+            }
+
+            var numberOfPointsProp = ModbusMessage.PumpLayoutConfig.NumberOfPoints;
+            int numberOfDataPoints = 0;
+            if (numberOfPointsProp != null)
+            {
+                var numberOfPointsValues = GetValueArray(numberOfPointsProp.RegisterNumber, numberOfPointsProp.NumberOfRegisters, registerValues);
+                if (numberOfPointsValues != null && numberOfPointsValues.Count > 0)
+                {
+                    numberOfDataPoints = Int32.Parse(numberOfPointsValues.First());
+                    pumpCard.NumberOfPoints = numberOfDataPoints;
+                }
+
+                List<CardCoordinate> cardCoordinates = new List<CardCoordinate>();
+                var pointArrayProperty = ModbusMessage.PumpLayoutConfig.Point;
+
+                for (int i = 0; i < pumpCard.NumberOfPoints; i += numberOfPointsProp.NumberOfRegisters)
+                {
+                    var pointsArray = GetValueArray(pointArrayProperty.RegisterNumber + i, pointArrayProperty.NumberOfRegisters, registerValues);
+                    if (pointsArray != null && pointsArray.Count > 1)
+                    {
+                        cardCoordinates.Add(new CardCoordinate()
+                        {
+                            Load = Int32.Parse(pointsArray[0]),
+                            Position = Int32.Parse(pointsArray[1])
+                        });
+                    }
+                }
+
+                pumpCard.CardCoordinates = cardCoordinates;
+            }
+
+            return pumpCard;
         }
 
         private static List<string> GetValueArray(int registerNumber, int length, List<ModbusRegisterValue> valueList)
         {
             List<string> returnValues = new List<string>();
-            System.Console.WriteLine($"Regsiter: {registerNumber}, Length: {length}");
+            //System.Console.WriteLine($"Regsiter: {registerNumber}, Length: {length}");
 
             for (int i = 0; i < length; i++)
             {
@@ -212,7 +342,7 @@ namespace DynoCardAlertModule.Model
                     if (!string.IsNullOrEmpty(result))
                     {
                         returnValues.Add(result);
-                        Console.WriteLine($"Result: {result}");
+                        //Console.WriteLine($"Result: {result}");
                     }
                 }
                 else if (results.Count() > 1)
@@ -221,7 +351,7 @@ namespace DynoCardAlertModule.Model
                     foreach (var value in results)
                     {
                         string json = JsonConvert.SerializeObject(value);
-                        Console.WriteLine(json);
+                        //Console.WriteLine(json);
                     }
                 }
             }
