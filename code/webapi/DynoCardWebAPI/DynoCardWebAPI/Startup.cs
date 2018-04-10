@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DynoCardWebAPI.Helpers;
+using DynoCardWebAPI.Repos;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -24,6 +26,11 @@ namespace DynoCardWebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            services.AddOptions();
+            services.Configure<Settings>(Configuration);
+
+            services.AddTransient<IDynoCardAnomalyEventRepo, DynoCardAnomalyEventRepo>();
+            services.AddTransient<IDynoCardAnomalyMsgGenRepo, DynoCardAnomalyMsgGenRepo>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

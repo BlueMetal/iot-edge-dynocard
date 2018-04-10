@@ -79,13 +79,15 @@ module powerbi.extensibility.visual.dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED
             if (!this.isDropDownRender) {
                 let pumpDD = this.createDropDown(DataColumns.pumpId);
                 let eventDD = this.createDropDown(DataColumns.eventId);
-                let cardTypeDD = this.createDate("start");
+                let stratDatePicker = this.createDateTimePicker("start");
+                let endDatePicker=this.createDateTimePicker("end");
                 document.getElementById("controlDiv").appendChild(pumpDD);
+               
+                document.getElementById("controlDiv").appendChild(stratDatePicker);
+                document.getElementById("controlDiv").appendChild(endDatePicker);
                 document.getElementById("controlDiv").appendChild(eventDD);
-                document.getElementById("controlDiv").appendChild(cardTypeDD);
 
-                // let stratDate = this.createDate();
-                // document.getElementById("controlDiv").appendChild(stratDate);
+
 
                 this.dynoCardSvg.append("line").attr({
                     x1:this.margin.right,
@@ -396,10 +398,13 @@ module powerbi.extensibility.visual.dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED
             reportTitle.appendChild(document.createTextNode(" Graph: Dyno Card"));
             baseDiv.appendChild(reportTitle);
 
+            const controlDivRow: HTMLElement = document.createElement("div");
+            controlDivRow.setAttribute("class", "form-inline");
             const controlDiv: HTMLElement = document.createElement("div");
             controlDiv.setAttribute("id", "controlDiv");
-            controlDiv.setAttribute("class", "form-inline");
-            baseDiv.appendChild(controlDiv);
+            controlDiv.setAttribute("class", "row");
+            controlDivRow.appendChild(controlDiv);
+            baseDiv.appendChild(controlDivRow);
 
             const dynoCardDiv: HTMLElement = document.createElement("div");
             dynoCardDiv.setAttribute("id", "dynoCardDiv");
@@ -430,7 +435,7 @@ module powerbi.extensibility.visual.dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED
         public createDropDown(argDropDownType: string) {
             let ddDiv = document.createElement("div");
             let ddLabel: HTMLElement;
-            ddDiv.setAttribute("class", "col-xs-4 input-group");
+            ddDiv.setAttribute("class", "col-xs-3 input-group");
             let labelDiv = document.createElement("div");
             labelDiv.setAttribute("class", "input-group-addon");
             let dropDown = document.createElement("select");
@@ -502,17 +507,19 @@ module powerbi.extensibility.visual.dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED
             return tempButton;
         }
 
-        public createDate(argDateType) {
+        public createDateTimePicker(argDateType) {
+            let datePickerID="startDatePicker";
             let ddDiv = document.createElement("div");
-            ddDiv.setAttribute("class", "col-xs-4 form-group");
-
+            ddDiv.setAttribute("class", "col-xs-3 form-group");
+            ddDiv.setAttribute("id", "datePicker1");
             let dateDiv = document.createElement("div");
-            dateDiv.setAttribute("class","input-group date");
-            dateDiv.setAttribute("id","datetimepicker1");
+            dateDiv.setAttribute("class","input-group");
+            
 
             let dateInput = document.createElement("input");
             dateInput.setAttribute("class", "form-control");
             dateInput.setAttribute("type", "text");
+        
 
             let spanOuter =document.createElement("span");
             spanOuter.setAttribute("class","input-group-addon");
@@ -520,19 +527,25 @@ module powerbi.extensibility.visual.dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED
             spanIcon.setAttribute("class","glyphicon glyphicon-calendar");
             spanOuter.appendChild(spanIcon);
 
-            let scriptTag = document.createElement('script');
-            scriptTag.type="text/javascript";
-            scriptTag.src="./pbidatepicker.js"
-
-
-            dateInput.onfocus = (event: Event) => {
-                console.log("In Date Picker");
-                $('#datetimepicker1').datetimepicker();
+            if(argDateType=="start"){
+                console.log("Creating START Data Picker");
+                dateInput.setAttribute("placeholder","Start Date");
+            }else{
+                console.log("Creating End Data Picker");
+                dateInput.setAttribute("placeholder","End Date");
+                datePickerID="endDatePicker";
             }
+
+            dateDiv.setAttribute("id",datePickerID);
+            spanOuter.onmouseover= (event: Event) => {
+                $('#'+datePickerID).datetimepicker();
+            }
+
+
 
             dateDiv.appendChild(dateInput);
             dateDiv.appendChild(spanOuter);
-            ddDiv.appendChild(scriptTag);
+           // ddDiv.appendChild(scriptTag);
             ddDiv.appendChild(dateDiv);
 
             return ddDiv;

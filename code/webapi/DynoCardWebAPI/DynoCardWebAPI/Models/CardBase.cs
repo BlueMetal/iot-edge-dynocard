@@ -7,11 +7,16 @@ namespace DynoCardWebAPI.Models
 {
     public class CardBase
     {
-        public double Epoch { get; set; }
+        public string Timestamp { get; set; }
         public int NumPoints { get; set; }
         public float ScaledMaxLoad { get; set; }
         public float ScaledMinLoad { get; set; }
-        public List<CardCoordinate> cardCoordinates = new List<CardCoordinate>();
+        public List<CardCoordinate> cardCoordinates;
         public string CardType { get; set; }
+
+        public CardBase()
+        {
+            cardCoordinates = new List<CardCoordinate>(5);
+        }
     }
 }

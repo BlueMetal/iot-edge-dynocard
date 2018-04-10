@@ -15,7 +15,12 @@
     "node_modules/@types/jquery/index.d.ts",
     "node_modules/@types/jqueryui/index.d.ts",
     "node_modules/moment/moment.d.ts",
+    "src/datapoint.ts",
+    "src/viewmodel.ts",
+    "src/datacolumn.ts",
+    "src/htmlcontrol.ts",
+    "src/data-handler.ts",
     "src/settings.ts",
-    "src/visual.ts"
+    "src/dynoCardVisual.ts"
   ]
 }

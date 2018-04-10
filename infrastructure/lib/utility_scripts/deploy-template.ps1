@@ -34,4 +34,4 @@ $deployment = New-AzureRmResourceGroupDeployment `
     -TemplateFile $template `
     -TemplateParameterObject $parameters
 Write-Host ("Deployment of '$name' {0}." -f $deployment.ProvisioningState.toLower())
-$deployment
+return $deployment

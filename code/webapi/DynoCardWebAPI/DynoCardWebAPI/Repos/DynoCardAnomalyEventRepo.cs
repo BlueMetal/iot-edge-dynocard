@@ -6,18 +6,24 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Data.SqlClient;
+using DynoCardWebAPI.Helpers;
+using Microsoft.Extensions.Options;
 
 namespace DynoCardWebAPI.Repos
 {
-    public class DynoCardAnomalyEventRepo
+    public class DynoCardAnomalyEventRepo : IDynoCardAnomalyEventRepo
     {
-        public void Add(DynoCardAnomalyEvent dcae, IConfiguration config)
+        private Settings settings { get; set; }
+        public DynoCardAnomalyEventRepo(IOptions<Settings> settings)
         {
-            // Get the connection string
-            string connString = config["ConfigurationSettings:db4cards"];
+            this.settings = settings.Value;
+        }
+
+        public void Add(DynoCardAnomalyEvent dcae)
+        {
 
             // Create a new SQL Connection
-            using (SqlConnection sqlConn = new SqlConnection(connString))
+            using (SqlConnection sqlConn = new SqlConnection(this.settings.ConnectionString))
             {
                 // Open a connection to the database
                 sqlConn.Open();
@@ -38,7 +44,7 @@ namespace DynoCardWebAPI.Repos
                         int dynoCardId = InsertDynoCard(sqlConn, sqlTrans, dcae);
 
                         // Associate the event with the dyno card
-                        InsertEventDetail(sqlConn, sqlTrans, eventId, dynoCardId, dynoCard.TriggeredEvents);
+                        int eventDetailId = InsertEventDetail(sqlConn, sqlTrans, eventId, dynoCardId, dynoCard.TriggeredEvents);
 
                         /////
                         // Insert surface and pump card for the dyno card
@@ -54,7 +60,7 @@ namespace DynoCardWebAPI.Repos
                         }
 
                         // Insert Pump Card
-                        int pumpCardId = InsertSurfaceCardHeader(sqlConn, sqlTrans, dynoCardId, dynoCard);
+                        int pumpCardId = InsertPumpCardHeader(sqlConn, sqlTrans, dynoCardId, dynoCard);
 
                         // Loop through all of the coordinates and save them to the database
                         foreach (var cardCoordinate in dynoCard.pumpCard.cardCoordinates)
@@ -72,11 +78,13 @@ namespace DynoCardWebAPI.Repos
                     sqlTrans.Rollback();
                     throw;
                 }
-
-                // Close the database connection
-                if (sqlConn != null & sqlConn.State == System.Data.ConnectionState.Open)
+                finally
                 {
-                    sqlConn.Close();
+                    // Close the database connection
+                    if (sqlConn != null & sqlConn.State == System.Data.ConnectionState.Open)
+                    {
+                        sqlConn.Close();
+                    }
                 }
             }
         }
@@ -90,9 +98,9 @@ namespace DynoCardWebAPI.Repos
             cmdText = "INSERT INTO ACTIVE.EVENT " +
                         "(PU_ID, " +
                         "EV_EPOC_DATE, " +
-                        "EV_UPDATED_UPDATE_DATE, " +
-                        "EV_UPDATED_UPDATE_BY) " +
-                        "OUTPUT INSERTED.ID " +
+                        "EV_UPDATE_DATE, " +
+                        "EV_UPDATE_BY) " +
+                        "OUTPUT INSERTED.EV_ID " +
                         "VALUES(" +
                         "@PumpId, " +
                         "@EpochDate, " +
@@ -101,7 +109,7 @@ namespace DynoCardWebAPI.Repos
 
             sqlCmd = new SqlCommand(cmdText, sqlConn, sqlTrans);
             sqlCmd.Parameters.AddWithValue("@PumpId", dcae.PumpId);
-            sqlCmd.Parameters.AddWithValue("@EpochDate", dcae.Epoch);
+            sqlCmd.Parameters.AddWithValue("@EpochDate", TimeHelper.ConvertToEpoch(dcae.Timestamp));
             return (int)sqlCmd.ExecuteScalar();
         }
 
@@ -113,9 +121,9 @@ namespace DynoCardWebAPI.Repos
             // Insert into the Dyno Card Table
             cmdText = "INSERT INTO ACTIVE.DYNO_CARD " +
                         "(PU_ID, " +
-                        "DC_UPDATED_UPDATE_DATE, " +
-                        "DC_UPDATED_UPDATE_BY) " +
-                        "OUTPUT INSERTED.ID " +
+                        "DC_UPDATE_DATE, " +
+                        "DC_UPDATE_BY) " +
+                        "OUTPUT INSERTED.DC_ID " +
                         "VALUES(" +
                         "@PumpId, " +
                         "GETUTCDATE(), " +
@@ -136,8 +144,9 @@ namespace DynoCardWebAPI.Repos
                         "(EV_ID, " +
                         "DC_ID, " +
                         "ED_TRIGGERED_EVENTS, " +
-                        "ED_UPDATED_UPDATE_DATE, " +
-                        "ED_UPDATED_UPDATE_BY) " +
+                        "ED_UPDATE_DATE, " +
+                        "ED_UPDATE_BY) " +
+                        "OUTPUT INSERTED.ED_ID " +
                         "VALUES(" +
                         "@EventId, " +
                         "@DynoCardId, " +
@@ -163,11 +172,11 @@ namespace DynoCardWebAPI.Repos
                         "CH_CARD_TYPE, " +
                         "CH_EPOC_DATE, " +
                         "CH_NUMBER_OF_POINTS, " +
-                        "CH_UPDATED_UPDATE_DATE, " +
-                        "CH_UPDATED_UPDATE_BY, " +
+                        "CH_UPDATE_DATE, " +
+                        "CH_UPDATE_BY, " +
                         "CH_STROKE_LENGTH, " +
                         "CH_STROKE_PERIOD) " +
-                        "OUTPUT INSERTED.ID " +
+                        "OUTPUT INSERTED.CH_ID " +
                         "VALUES" +
                         "(@DcId, " +
                         "'S', " +
@@ -180,7 +189,7 @@ namespace DynoCardWebAPI.Repos
 
             sqlCmd = new SqlCommand(cmdText, sqlConn, sqlTrans);
             sqlCmd.Parameters.AddWithValue("@DcId", dynoCardId);
-            sqlCmd.Parameters.AddWithValue("@EpocDate", dynoCard.surfaceCard.Epoch);
+            sqlCmd.Parameters.AddWithValue("@EpocDate", TimeHelper.ConvertToEpoch(dynoCard.surfaceCard.Timestamp));
             sqlCmd.Parameters.AddWithValue("@NumPoints", dynoCard.surfaceCard.NumPoints);
             sqlCmd.Parameters.AddWithValue("@ScaledMaxLoad", dynoCard.surfaceCard.ScaledMaxLoad);
             sqlCmd.Parameters.AddWithValue("@ScaledMinLoad", dynoCard.surfaceCard.ScaledMinLoad);
@@ -199,13 +208,13 @@ namespace DynoCardWebAPI.Repos
                         "CH_CARD_TYPE, " +
                         "CH_EPOC_DATE, " +
                         "CH_NUMBER_OF_POINTS, " +
-                        "CH_UPDATED_UPDATE_DATE, " +
-                        "CH_UPDATED_UPDATE_BY, " +
+                        "CH_UPDATE_DATE, " +
+                        "CH_UPDATE_BY, " +
                         "CH_GROSS_STROKE, " +
                         "CH_NET_STROKE, " +
                         "CH_PUMP_FILLAGE, " +
                         "CH_FLUID_LOAD) " +
-                        "OUTPUT INSERTED.ID " +
+                        "OUTPUT INSERTED.CH_ID " +
                         "VALUES" +
                         "(@DcId, " +
                         "'P', " +
@@ -220,7 +229,7 @@ namespace DynoCardWebAPI.Repos
 
             sqlCmd = new SqlCommand(cmdText, sqlConn, sqlTrans);
             sqlCmd.Parameters.AddWithValue("@DcId", dynoCardId);
-            sqlCmd.Parameters.AddWithValue("@EpocDate", dynoCard.pumpCard.Epoch);
+            sqlCmd.Parameters.AddWithValue("@EpocDate", TimeHelper.ConvertToEpoch(dynoCard.pumpCard.Timestamp));
             sqlCmd.Parameters.AddWithValue("@NumPoints", dynoCard.pumpCard.NumPoints);
             sqlCmd.Parameters.AddWithValue("@GrossStroke", dynoCard.pumpCard.GrossStroke);
             sqlCmd.Parameters.AddWithValue("@NetStroke", dynoCard.pumpCard.NetStroke);
@@ -240,8 +249,8 @@ namespace DynoCardWebAPI.Repos
                         "(CH_ID, " +
                         "CD_POSITION, " +
                         "CD_LOAD, " +
-                        "CD_UPDATED_UPDATE_DATE, " +
-                        "CD_UPDATED_UPDATE_BY) " +
+                        "CD_UPDATE_DATE, " +
+                        "CD_UPDATE_BY) " +
                         "VALUES" +
                         "(@ChId, " +
                         "@Position, " +
