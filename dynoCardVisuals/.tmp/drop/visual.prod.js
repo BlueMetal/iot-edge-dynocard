@@ -46947,6 +46947,7 @@ var powerbi;
                         this.pumpSelVal = 'all';
                         this.isDropDownRender = false;
                         this.margin = { top: 100, right: 50, bottom: 80, left: 5 };
+                        this.totalAnimationTime = 2000;
                         this.host = options.host;
                         this.target = options.element;
                         if (typeof document !== "undefined") {
@@ -47073,8 +47074,9 @@ var powerbi;
                             var pumpCardData = pumpCardDataArr[ci];
                             setTimeout(function () {
                                 _this.renderCard(ci, surCardData, pumpCardData);
-                            }, +ci * 2000);
+                            }, +ci * this_1.totalAnimationTime);
                         };
+                        var this_1 = this;
                         for (var ci in surCardDataArr) {
                             _loop_1(ci);
                         }

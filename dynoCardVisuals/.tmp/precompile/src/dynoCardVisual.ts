@@ -32,6 +32,7 @@ module powerbi.extensibility.visual.dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED
         private plottePumpPath: any;
         private isDropDownRender: boolean = false;
         private margin = { top: 100, right: 50, bottom: 80, left: 5 }
+        private totalAnimationTime :number = 2000;
 
         constructor(options: VisualConstructorOptions) {
             this.host = options.host;
@@ -178,7 +179,7 @@ module powerbi.extensibility.visual.dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED
                 let pumpCardData = pumpCardDataArr[ci];
                 setTimeout(() => {
                     this.renderCard(ci, surCardData, pumpCardData);
-                }, +ci * 2000);
+                }, +ci * this.totalAnimationTime);
             }
 
         }
