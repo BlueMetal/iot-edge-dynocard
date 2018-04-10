@@ -192,8 +192,11 @@ namespace DynoCardAlertModule
                 {
                     var dynoCard = await modbusMessage.ToDynoCard();
                     
-                    cards.Add(dynoCard);
-                    Console.WriteLine("Parsing dyno card values.");
+                    if (dynoCard.SurfaceCard != null && dynoCard.PumpCard != null)
+                    {
+                        cards.Add(dynoCard);
+                        Console.WriteLine("Parsing dyno card values.");
+                    }
                 }
 
                 foreach (var card in cards)
@@ -203,7 +206,7 @@ namespace DynoCardAlertModule
 
                     int cardID = await DataHelper.PersistDynoCard(card);
                     card.Id = cardID;
-                    
+
                     var dynoCardMessage = card.ToDeviceMessage();
                     await deviceClient.SendEventAsync("output1", dynoCardMessage);
                 }
@@ -288,7 +291,17 @@ namespace DynoCardAlertModule
                                 previousCardBytes = CreateByteArray(previousCardList);
                             }
 
-                            var previousCardsMessage = new Message(previousCardBytes);
+                            DynoCardAnomalyEvent dynoCardAnomaly = new DynoCardAnomalyEvent()
+                            {
+                                Id = Int32.Parse(alertMessage.Id),
+                                Timestamp = alertMessage.Timestamp,
+                                DynoCards = previousCardList,
+                                Pump = 1
+                            };
+
+                            var dynoCardAnomalyString = JsonConvert.SerializeObject(dynoCardAnomaly);
+                            var dynoCardAnomalyBytes = Encoding.UTF8.GetBytes(dynoCardAnomalyString);
+                            var previousCardsMessage = new Message(dynoCardAnomalyBytes);
 
                             Console.WriteLine("Sending Alert");
                             previousCardsMessage.Properties["MessageType"] = "Alert";

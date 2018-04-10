@@ -89,7 +89,11 @@ namespace DynoCardAlertModule.Model
                 TriggeredEvents = false
             };
 
-            dynoCard.Timestamp = dynoCard.SurfaceCard.Timestamp;
+            if (dynoCard.SurfaceCard != null)
+            {
+                dynoCard.Timestamp = dynoCard.SurfaceCard.Timestamp;
+            }
+            
             return await Task.FromResult(dynoCard);      
         }
 

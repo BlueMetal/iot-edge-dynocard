@@ -93,7 +93,7 @@ namespace DynoCardAlertModule.Data
 
         public static async Task<List<DynoCard>> GetPreviousCards(DynoCardAnomalyResult anomalyCard)
         {
-            DateTime start = anomalyCard.Timestamp.Subtract(TimeSpan.FromHours(1));
+            DateTime start = anomalyCard.Timestamp.Subtract(TimeSpan.FromMinutes(30));
             DateTime end = anomalyCard.Timestamp;
             int startEpoch = (int)(start.ToUniversalTime().Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
             int endEpoch = (int)(end.ToUniversalTime().Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
@@ -185,7 +185,6 @@ namespace DynoCardAlertModule.Data
                                         dynoCard = new DynoCard();
                                         dynoCard.Id = dynoCardID;
                                         dynoCard.Timestamp = surfaceCard.Timestamp;
-                                        dynoCard.Pump = results.GetInt32(15);
                                     }
 
                                     dynoCard.SurfaceCard = surfaceCard;
@@ -234,7 +233,6 @@ namespace DynoCardAlertModule.Data
                                         dynoCard = new DynoCard();
                                         dynoCard.Id = dynoCardID;
                                         dynoCard.Timestamp = pumpCard.Timestamp;
-                                        dynoCard.Pump = results.GetInt32(15);
                                     }
 
                                     dynoCard.PumpCard = pumpCard;
