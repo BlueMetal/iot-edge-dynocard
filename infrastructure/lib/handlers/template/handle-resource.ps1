@@ -31,13 +31,7 @@ function deploy {
         [parameter(Mandatory=$true)]
         [hashtable] $resource
     )
-    $deployment = deploy-template `
-        -name $name `
-        -resourceGroup $resource.resource_group `
-        -location $resource.location `
-        -template $resource.template `
-        -parameters $resource.parameters
-    write-host $deployment.ProvisioningState
+    write-warning "$SELF_PATH does not implement the 'deploy' action."
 }
 
 function destroy {
@@ -48,14 +42,7 @@ function destroy {
         [parameter(Mandatory=$true)]
         [hashtable] $resource
     )
-    
-    write-info "Destroying deployment '$name'..."
-    $result = Remove-AzureRmResourceGroupDeployment -name $name -resourceGroup $resource.resource_group
-    if($result) { write-info "Destruction of deployment '$name' succeeded" }
-
-    write-info ("Destroying resource group '{0}'..." -f $resource.resource_group)
-    Remove-AzureRmResourceGroup -name $resource.resource_group -Force
-    if($result) { write-info ("Destruction of resource group '{0}' succeeded." -f $resource.resource_group)}
+    write-warning "$SELF_PATH does not implement the 'destroy' action."
 }
 
 function info {
@@ -66,7 +53,7 @@ function info {
         [parameter(Mandatory=$true)]
         [hashtable] $resource
     )
-    Get-AzureRmResourceGroupDeployment -name $name -resourceGroup $resource.resource_group
+    write-warning "$SELF_PATH does not implement the 'info' action." 
 }
 
 switch($action) {

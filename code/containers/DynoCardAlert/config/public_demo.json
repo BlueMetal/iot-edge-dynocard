@@ -49,13 +49,13 @@
               "createOptions": ""
             }
           },
-          "mlAlertModule": {
+          "fakeAlertModule": {
             "version": "1.0",
             "type": "docker",
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "mlcrpacr0fb48784fde8.azurecr.io/websvc4dc:11",
+              "image": "localhost:5000/fakealertmodule:0.0.1-amd64.debug",
               "createOptions": ""
             }
           },
@@ -77,8 +77,8 @@
         "schemaVersion": "1.0",
         "routes": {
           "modbusToDynoCard": "FROM /messages/modules/modbus/outputs/modbusOutput INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/modbusInput\")",
-          "sensorToFakeAlert": "FROM /messages/modules/dynoCardAlertModule/outputs/output1 INTO BrokeredEndpoint(\"/modules/mlAlertModule/inputs/amlInput\")",
-          "fakeAlertTofilterAlert": "FROM /messages/modules/mlAlertModule/outputs/amlOutput INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/alertInput\")",
+          "sensorToFakeAlert": "FROM /messages/modules/dynoCardAlertModule/outputs/output1 INTO BrokeredEndpoint(\"/modules/fakeAlertModule/inputs/input1\")",
+          "fakeAlertTofilterAlert": "FROM /messages/modules/fakeAlertModule/outputs/output1 INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/alertInput\")",
           "filterToIoTHub": "FROM /messages/modules/dynoCardAlertModule/outputs/alertOutput INTO $upstream"
         },
         "storeAndForwardConfiguration": {
@@ -88,73 +88,33 @@
     },
     "dynoCardAlertModule": {
       "properties.desired": {
-        "surfaceCardConfig" : {
-          "timestamp": {
-            "register": "32669",
-            "length": "2"
-          },
-          "numberOfPoints": {
-            "register": "32671",
-            "length": "1"
-          },
-          "scaledMaxCardLoad": {
-            "register": "32672",
-            "length": "1"
-          },
-          "scaledMinCardLoad": {
-            "register": "32673",
-            "length": "1"
-          },
-          "strokeLength": {
-            "register": "32674",
-            "length": "1"
-          },
-          "strokePeriod": {
-            "register": "32675",
-            "length": "1"
-          },
-          "pointArrayStartRegister": {
-            "register": "32676",
-            "length": "2"
-          }
+        "timestamp": {
+          "register": "32669",
+          "length": "2"
         },
-        "pumpCardConfig": {
-          "timestamp": {
-            "register": "34704",
-            "length": "2"
-          },
-          "scaledMaxCardLoad": {
-            "register": "34706",
-            "length": "1"
-          },
-          "scaledMinCardLoad": {
-            "register": "34707",
-            "length": "1"
-          },
-          "numberOfPoints": {
-            "register": "34708",
-            "length": "1"
-          },
-         "grossStroke": {
-            "register": "34709",
-            "length": "1"
-          },
-          "netStroke": {
-            "register": "34710",
-            "length": "1"
-          },
-          "pumpFillage": {
-            "register": "34711",
-            "length": "1"
-          },
-          "fluidLoad": {
-            "register": "34712",
-            "length": "1"
-          },
-          "pointArrayStartRegister": {
-            "register": "34713",
-            "length": "2"
-          }
+        "numberOfPoints": {
+          "register": "32671",
+          "length": "1"
+        },
+        "scaledMaxCardLoad": {
+          "register": "32672",
+          "length": "1"
+        },
+        "scaledMinCardLoad": {
+          "register": "32673",
+          "length": "1"
+        },
+        "strokeLength": {
+          "register": "32674",
+          "length": "1"
+        },
+        "strokePeriod": {
+          "register": "32675",
+          "length": "1"
+        },
+        "pointArrayStartRegister": {
+          "register": "32676",
+          "length": "2"
         },
         "sqlConnectionString": "Data Source=tcp:sql,1433;Initial Catalog=db4cards;User Id=SA;Password=Strong!Passw0rd;TrustServerCertificate=False;Connection Timeout=30;"
       }
@@ -164,7 +124,7 @@
         "PublishInterval": "10000",
         "SlaveConfigs": {
           "Slave01": {
-            "SlaveConnection": "52.186.11.164",
+            "SlaveConnection": "52.179.102.195",
             "HwId": "Pump1-DynoCard",
             "Operations": {
               "Op01": {
@@ -223,33 +183,12 @@
                 "Count": "50",
                 "DisplayName": "SurfaceCard-Batch8"
               },
-              "Op09": {
-                "PollingInterval": "10000",
-                "UnitId": "1",
-                "StartAddress": "34704",
-                "Count": "59",
-                "DisplayName": "PumpCard-Batch1"
-              },
               "Op10": {
-                "PollingInterval": "10000",
-                "UnitId": "1",
-                "StartAddress": "34763",
-                "Count": "50",
-                "DisplayName": "PumpCard-Batch2"
-              },
-              "Op11": {
-                "PollingInterval": "10000",
-                "UnitId": "1",
-                "StartAddress": "34813",
-                "Count": "50",
-                "DisplayName": "PumpCard-Batch3"
-              },
-              "Op12": {
-                "PollingInterval": "10000",
-                "UnitId": "1",
-                "StartAddress": "34863",
-                "Count": "50",
-                "DisplayName": "PumpCard-Batch4"
+                "PollingInterval": "-1",
+                "UnitId": "2",
+                "StartAddress": "40407",
+                "Count": "0",
+                "DisplayName": "PumpCard"
               }
             }
           }

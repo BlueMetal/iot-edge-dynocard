@@ -14,6 +14,7 @@ Param(
 $BASE_PATH = resolve-path (join-path (split-path -parent $MyInvocation.MyCommand.path) "../../..")
 
 ## figure out some info about ourself
+$SELF_TYPE = $resource.type
 $SELF_PATH = split-path -parent $MyInvocation.MyCommand.Path
 $SELF_NAME = split-path -leaf $MyInvocation.PSCommandPath
 
@@ -31,13 +32,21 @@ function deploy {
         [parameter(Mandatory=$true)]
         [hashtable] $resource
     )
-    $deployment = deploy-template `
-        -name $name `
-        -resourceGroup $resource.resource_group `
-        -location $resource.location `
-        -template $resource.template `
-        -parameters $resource.parameters
-    write-host $deployment.ProvisioningState
+
+    foreach($item in $resource.items) {
+        switch($item.type) {
+            "folder" {
+                $item.path | %{
+                    New-AzureRmDataLakeStoreItem -Folder -AccountName $resource.datalake -Path $_
+                    #$newItem = Get-AzureRmDataLakeStoreItem -AccountName $resource.datalake -Path $_
+                    write-info "Created data lake folder '$_' in '$resource.datalake'"
+                }
+            }
+            default {
+                write-error "$SELF_TYPE - Unknown item type '$item.type'"
+            }
+        }
+    }
 }
 
 function destroy {
@@ -48,14 +57,7 @@ function destroy {
         [parameter(Mandatory=$true)]
         [hashtable] $resource
     )
-    
-    write-info "Destroying deployment '$name'..."
-    $result = Remove-AzureRmResourceGroupDeployment -name $name -resourceGroup $resource.resource_group
-    if($result) { write-info "Destruction of deployment '$name' succeeded" }
-
-    write-info ("Destroying resource group '{0}'..." -f $resource.resource_group)
-    Remove-AzureRmResourceGroup -name $resource.resource_group -Force
-    if($result) { write-info ("Destruction of resource group '{0}' succeeded." -f $resource.resource_group)}
+    write-warning "$SELF_PATH does not implement the 'destroy' action."
 }
 
 function info {
@@ -66,7 +68,7 @@ function info {
         [parameter(Mandatory=$true)]
         [hashtable] $resource
     )
-    Get-AzureRmResourceGroupDeployment -name $name -resourceGroup $resource.resource_group
+    write-warning "$SELF_PATH does not implement the 'info' action." 
 }
 
 switch($action) {

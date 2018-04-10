@@ -2,7 +2,7 @@ using System;
 
 namespace DynoCardAlertModule.Model
 {
-    public class DynoCardPoint
+    public class CardCoordinate
     {
         public int Load { get; set; }
         public int Position { get; set; }

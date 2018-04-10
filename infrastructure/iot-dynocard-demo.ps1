@@ -78,8 +78,7 @@ function handle-resource {
     $handlerScript = (join-path $handlerPath 'handle-resource.ps1')
     if(test-path $handlerScript) {
         [hashtable] $resource = $resource | ConvertTo-Hashtable
-        & $handlerScript -action $action -name $name -resource $resource
-
+        write-output (& $handlerScript -action $action -name $name -resource $resource)
     } else {
         write-error ("No handler of type '{0}' found for resource '{1}'." -f $resource.type,$name)
     }
@@ -114,7 +113,10 @@ if((Get-AzureRmContext).subscription.id -ne $config.subscription_id) {
 }
 
 ## register resource providers
-$resourceProviders = @("microsoft.devices")
+$resourceProviders = @(
+    "microsoft.devices",
+    "Microsoft.DataLakeStore"
+)
 $resourceProviders |  %{
     if(-not (get-AzureRmResourceProvider -ProviderNamespace $_)) {
         Write-Host "Registering resource provider '$_'"
