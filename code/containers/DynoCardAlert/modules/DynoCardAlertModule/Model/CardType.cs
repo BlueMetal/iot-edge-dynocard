@@ -2,7 +2,7 @@ using System;
 
 namespace DynoCardAlertModule.Model
 {
-    public enum DynoCardType
+    public enum CardType
     {
         Surface,
         Pump

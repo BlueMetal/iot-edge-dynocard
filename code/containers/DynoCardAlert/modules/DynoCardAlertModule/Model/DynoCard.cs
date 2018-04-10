@@ -6,13 +6,16 @@ namespace DynoCardAlertModule.Model
     public class DynoCard
     {
         public int Id { get; set; }
+
+        public SurfaceCard SurfaceCard { get; set; }
+
+        public PumpCard PumpCard { get; set; }
+
+        //Bool flag indicating if this card was the anomaly that triggered the alert
+        public bool TriggeredEvents { get; set; }
+
         public DateTime Timestamp { get; set; }
-        public int NumberOfPoints { get; set; }
-        public int MaxLoad { get; set; }
-        public int MinLoad { get; set; }
-        public int StrokeLength { get; set; }
-        public int StrokePeriod { get; set; }
-        public DynoCardType CardType { get; set; }
-        public List<DynoCardPoint> CardPoints { get; set; }
+
+        public int Pump { get; set; }
     }
 }

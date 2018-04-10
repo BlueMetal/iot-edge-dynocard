@@ -104,7 +104,8 @@ namespace DynoCardAlertModule
 
             string json = JsonConvert.SerializeObject(desiredProperties);
             ModbusLayoutConfig modbusConfig = JsonConvert.DeserializeObject<ModbusLayoutConfig>(json);
-            ModbusMessage.LayoutConfig = modbusConfig;
+            ModbusMessage.SurfaceLayoutConfig = modbusConfig.SurfaceCardConfiguration;
+            ModbusMessage.PumpLayoutConfig = modbusConfig.PumpCardConfiguration;
 
             string sqlConnectionString = desiredProperties["sqlConnectionString"];
             DataHelper.ConnectionString = sqlConnectionString;
@@ -145,7 +146,8 @@ namespace DynoCardAlertModule
                 Console.WriteLine("Desired property change:");
 
                 ModbusLayoutConfig modbusConfig = JsonConvert.DeserializeObject<ModbusLayoutConfig>(json);
-                ModbusMessage.LayoutConfig = modbusConfig;
+                ModbusMessage.SurfaceLayoutConfig = modbusConfig.SurfaceCardConfiguration;
+                ModbusMessage.PumpLayoutConfig = modbusConfig.PumpCardConfiguration;
 
                 string sqlConnectionString = desiredProperties["sqlConnectionString"];
                 DataHelper.ConnectionString = sqlConnectionString;
@@ -183,15 +185,28 @@ namespace DynoCardAlertModule
             {
                 DeviceClient deviceClient = (DeviceClient)userContext;
                 var modbusMessage = new ModbusMessage(message);
-                var dynoCard = await modbusMessage.ToDynoCard();
+                List<DynoCard> cards = new List<DynoCard>();
 
-                string json = JsonConvert.SerializeObject(dynoCard);
-                System.Console.WriteLine(json);
+                //Both surface and pump card values are in a single reading. Both are used to create a single dyno card.
+                if (modbusMessage != null )
+                {
+                    var dynoCard = await modbusMessage.ToDynoCard();
+                    
+                    cards.Add(dynoCard);
+                    Console.WriteLine("Parsing dyno card values.");
+                }
 
-                await DataHelper.PersistDynoCard(dynoCard);
-                
-                var dynoCardMessage = dynoCard.ToDeviceMessage();
-                await deviceClient.SendEventAsync("output1", dynoCardMessage);
+                foreach (var card in cards)
+                {
+                    string json = JsonConvert.SerializeObject(card);
+                    //System.Console.WriteLine(json);
+
+                    int cardID = await DataHelper.PersistDynoCard(card);
+                    card.Id = cardID;
+                    
+                    var dynoCardMessage = card.ToDeviceMessage();
+                    await deviceClient.SendEventAsync("output1", dynoCardMessage);
+                }
 
                 // Indicate that the message treatment is completed
                 return MessageResponse.Completed;
@@ -239,24 +254,48 @@ namespace DynoCardAlertModule
 
                 var messageBytes = message.GetBytes();
                 var messageString = Encoding.UTF8.GetString(messageBytes);
-                Console.WriteLine($"Received alert {counterValue}: [{messageString}]");
+                Console.WriteLine($"Received anomaly notification {counterValue}: [{messageString}]");
 
                 if (!string.IsNullOrEmpty(messageString))
                 {
-                    var anomaly = JsonConvert.DeserializeObject<DynoCardAnomalyResult>(messageString);
-                    var previousCardList = await DataHelper.GetPreviousCards(anomaly);
-                    
-                    if (previousCardList != null)
-                    {
-                        var previousCardsMessgeBytes = JsonConvert.SerializeObject(previousCardList);
-                        var previousCardsMessgeBytesString = Encoding.UTF8.GetBytes(previousCardsMessgeBytes);
-                        var previousCardsMessage = new Message(previousCardsMessgeBytesString);
+                    var alertMessage = JsonConvert.DeserializeObject<DynoCardAnomalyResult>(messageString);
+                    string anomalyString = alertMessage.Anomaly;
+                    bool isAnomaly = false;
 
-                        Console.WriteLine("Sending Alert");
-                        previousCardsMessage.Properties["MessageType"] = "Alert";
-                        
-                        await deviceClient.SendEventAsync("alertOutput", previousCardsMessage);
-                        Console.WriteLine("Completed sending alert");
+                    if (!(string.IsNullOrEmpty(anomalyString)))
+                    {
+                        isAnomaly = Boolean.Parse(anomalyString);
+                    }
+
+                    if (isAnomaly)
+                    {
+                        var previousCardList = await DataHelper.GetPreviousCards(alertMessage);
+
+                        if (previousCardList != null && previousCardList.Count > 0)
+                        {
+                            Console.WriteLine($"Number of previous entries: {previousCardList.Count}");
+
+                            var previousCardBytes = CreateByteArray(previousCardList); 
+                            Console.WriteLine($"Number bytes in the array: {previousCardBytes.Length}");
+
+                            //Device-to-Cloud message size limit is 256KB, so we need to limit it if the message is larger than that
+                            while (previousCardBytes.Length > 256 * 1000)
+                            {
+                                var card = previousCardList[0];
+                                Console.WriteLine($"Removing card #: {card.Id}, to reduce message size");
+
+                                previousCardList.RemoveAt(0);
+                                previousCardBytes = CreateByteArray(previousCardList);
+                            }
+
+                            var previousCardsMessage = new Message(previousCardBytes);
+
+                            Console.WriteLine("Sending Alert");
+                            previousCardsMessage.Properties["MessageType"] = "Alert";
+                            
+                            await deviceClient.SendEventAsync("alertOutput", previousCardsMessage);
+                            Console.WriteLine("Completed sending alert");
+                        }
                     }
                 }
 
@@ -284,6 +323,14 @@ namespace DynoCardAlertModule
                 //DeviceClient deviceClient = (DeviceClient)userContext;
                 return MessageResponse.None;
             }
+        }
+
+        private static byte[] CreateByteArray(List<DynoCard> cardList)
+        {
+            var cardListString = JsonConvert.SerializeObject(cardList);
+            var cardListBytes = Encoding.UTF8.GetBytes(cardListString);
+
+            return cardListBytes;
         }
     }
 }
