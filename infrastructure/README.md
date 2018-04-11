@@ -40,14 +40,45 @@ In order for the WebAPI to operate the database must be initialized with the pro
 ./iot-dynocard-demo.ps1 deploy db_schema
 ```
 
-*** Note: Be sure to configure the database connection string within the App Service.
+**Note: Be sure to configure the database connection string within the App Service.
 
 ### Step 5: Deploy and configure WebAPI
 The base infrastructure deployment created an Azure App Service into which the `/code/webapi/DynoCardWebAPI` application must be deployed. If you have Visual Studio Team Services (VSTS) you can easily build and deploy the application via [App Services Continuous Delivery](https://blogs.msdn.microsoft.com/devops/2016/11/17/azure-app-services-continuous-delivery/).
 
+<MS, is the API app able to pull its database connection string from the configuration section of the App Service blade of the azure portal?>
+
+### Step ?: Deploy Stream Analytics Job
+[Placeholder for Mike>]
+
 ### Step 6: Deploy ModBus Controller
+[Placeholder for David J]
 
 ### Step 7: Deploy PowerBI visualization
+[Placeholder for Mike]
+
+### Step 8: Deploy Edge Device VMs
+For this demo, the edge devices are represented by Ubutntu VMs running within Azure. This solution already has 3 VMs configured, but more can be added by simply duplicating their configuration blocks within `/infrastructure/config.json`.
+
+First deploy a virtual network to hold the machines:
+```
+./iot-dynocard-demo.ps1 deploy vnet
+```
+
+Then, to deploy the first edge device, issue the following command:
+```
+./iot-dynocard-demo.ps1 deploy edge_device_1
+```
+
+Deploy the remaining edge devices (edge_device_2, edge_device_3) as you'd expect.
+
+### Destroying the resources
+To destroy/remove all the resources you've created, first destroy all of your edge devices and then destroy the base_infrastructure. The PowerBI configuration will need to be removed manually.
+```
+./iot-dynocard-demo.ps1 destroy edge_device_3
+./iot-dynocard-demo.ps1 destroy edge_device_2
+./iot-dynocard-demo.ps1 destroy edge_device_1
+./iot-dynocard-demo.ps1 destroy base_infrastructure
+```
 
 ## Operational Walkthrough
 ### Modbus Controller, Edge Device, and IoT Hub 
@@ -55,9 +86,36 @@ The Edge Devices are configured to read data from the Modbus Controller via the 
 
 Among other things, the edge device configuration controls the docker containers (location, tag/version, environment vars, etc..) that the edge device runs. If you create custom containers, you will need to modify the container image names in this file to point to the new images.
 
+
+<DJ, do you want to add more detail about communication within the edge device itself?>
+
 ### IoT Hub and Service Bus
+When a message is sent by the IoT Edge device to the IoT Hub in Azure, that message is read by the Azure Service bus and duplicated into two queues, `IoTHubLoopback` and `MessageProcessing`.
+
+**Note: This is configured within the `routes` section of of the `Microsoft.Devices/IotHubs` resource definition in `base_infrastructure.json`.
+```
+"routes": [
+    {
+        "name": "IoTHubLoopback",
+        "source": "DeviceMessages",
+        "condition": "true",
+        "endpointNames": ["events"],
+        "isEnabled": true
+    },
+    {
+        "name": "MessageProcessing",
+        "source": "DeviceMessages",
+        "condition": "true",
+        "endpointNames": ["dynocard-output"],
+        "isEnabled": true
+    }
+]
+```
 
 ### Service Bus, Logic App, WebAPI, and SQL Database
+The Azure Logic App is triggered when a message is received by the MessageProcessing queue. The Logic App takes the message and pushes it into the SQL database via the Web API. This is configured
+
+**Note: This is configured within the `Microsoft.Logic/workflows` resource definition in `base_infrastructure.json`.
 
 ### Service Bus, Stream Analytics, and Data Lake
-
+The Stream Analytics job reads from the IoT Hub and saves the messages in the Data Lake
