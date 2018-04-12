@@ -55,7 +55,7 @@
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "mlcrpacr0fb48784fde8.azurecr.io/websvc4dc:11",
+              "image": "bluemetal/iot_dynocard_demo_edgeml:latest",
               "createOptions": ""
             }
           },
