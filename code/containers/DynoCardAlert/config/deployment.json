@@ -39,6 +39,16 @@
               "createOptions": ""
             }
           },
+          "opc": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "localhost:5000/opcpublisher:latest",
+              "createOptions": "{\"Hostname\": \"publisher\", \"Cmd\": [\"dotnet\", \"/build/out/OpcPublisher.dll\", \"publisher\", \"--dc\", \"HostName=oxy-dynocard-demp.azure-devices.net;DeviceId=localdev-device;SharedAccessKey=tbucBYuOtKnovFhcs1jjrP3unShoGLBurETcQI0Sn9c=\", \"--pf\", \"/docker/publishednodes.json\", \"--lf\", \"/docker/publisher.log.txt\", \"--di\", \"10\", \"--oi\", \"10000\", \"--di\", \"10000\", \"--fd\", \"true\", \"--tm\", \"true\", \"--as\", \"true\", \"--vc\", \"true\", \"--ih\", \"Mqtt_Tcp_Only\" ], \"HostConfig\": { \"Binds\": [ \"//d/docker/docker:/docker\" ]}}"
+            }
+          },
           "dynoCardAlertModule": {
             "version": "1.0",
             "type": "docker",
@@ -77,8 +87,9 @@
         "schemaVersion": "1.0",
         "routes": {
           "modbusToDynoCard": "FROM /messages/modules/modbus/outputs/modbusOutput INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/modbusInput\")",
-          "sensorToFakeAlert": "FROM /messages/modules/dynoCardAlertModule/outputs/output1 INTO BrokeredEndpoint(\"/modules/mlAlertModule/inputs/amlInput\")",
-          "fakeAlertTofilterAlert": "FROM /messages/modules/mlAlertModule/outputs/amlOutput INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/alertInput\")",
+          "opcToDynoCard": "FROM /messages/modules/opc/outputs/* INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/opcInput\")",
+          "sensorToAlert": "FROM /messages/modules/dynoCardAlertModule/outputs/output1 INTO BrokeredEndpoint(\"/modules/mlAlertModule/inputs/amlInput\")",
+          "alertTofilterAlert": "FROM /messages/modules/mlAlertModule/outputs/amlOutput INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/alertInput\")",
           "filterToIoTHub": "FROM /messages/modules/dynoCardAlertModule/outputs/alertOutput INTO $upstream"
         },
         "storeAndForwardConfiguration": {

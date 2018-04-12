@@ -237,7 +237,7 @@ namespace DynoCardAlertModule
 
         private static async Task<MessageResponse> ProcessOPCInput(Message message, object userContext)
         {
-            Console.WriteLine("In the Filter Message handler");
+            Console.WriteLine("In the OPC Filter Message handler");
 
             var counterValue = Interlocked.Increment(ref counter);
             await Task.FromResult(true);
@@ -305,8 +305,13 @@ namespace DynoCardAlertModule
 
                             Console.WriteLine("Sending Alert");
                             previousCardsMessage.Properties["MessageType"] = "Alert";
-                            
                             await deviceClient.SendEventAsync("alertOutput", previousCardsMessage);
+
+                            var stopModbusString = JsonConvert.SerializeObject(new StopModbusMessage());
+                            var stopModbusBytes = Encoding.UTF8.GetBytes(stopModbusString);
+                            var stopModbusMessage = new Message(stopModbusBytes);
+                            await deviceClient.SendEventAsync("shutdownOutput", stopModbusMessage);
+
                             Console.WriteLine("Completed sending alert");
                         }
                     }
