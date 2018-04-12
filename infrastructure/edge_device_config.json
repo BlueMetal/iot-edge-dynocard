@@ -39,13 +39,13 @@
               "createOptions": ""
             }
           },
-          "dynoCardAlertModule": {
+           "dynoCardAlertModule": {
             "version": "1.0",
             "type": "docker",
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "localhost:5000/dynocardalertmodule:0.0.1-amd64.debug",
+              "image": "bluemetal/iot_dynocard_demo_alert:latest",
               "createOptions": ""
             }
           },
@@ -65,7 +65,7 @@
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "microsoft/mssql-server-linux:2017-latest",
+              "image": "bluemetal/iot_dynocard_demo_edgedb",
               "createOptions": "{\"Env\": [\"ACCEPT_EULA=Y\",\"MSSQL_SA_PASSWORD=Strong!Passw0rd\"],\"HostConfig\": {\"Mounts\": [{\"Target\": \"/var/opt/mssql\",\"Source\": \"sqlVolume\",\"Type\": \"volume\"}],\"PortBindings\": {\"1433/tcp\": [{\"HostPort\": \"1401\"}]}}}"
             }
           }
