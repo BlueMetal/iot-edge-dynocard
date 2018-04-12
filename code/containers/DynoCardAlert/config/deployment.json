@@ -65,7 +65,7 @@
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "mlcrpacr0fb48784fde8.azurecr.io/websvc4dc:11",
+              "image": "bluemetal/iot_dynocard_demo_edgeml:latest",
               "createOptions": ""
             }
           },
@@ -87,7 +87,7 @@
         "schemaVersion": "1.0",
         "routes": {
           "modbusToDynoCard": "FROM /messages/modules/modbus/outputs/modbusOutput INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/modbusInput\")",
-          "opcToDynoCard": "FROM /messages/modules/opc/outputs/* INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/opcInput\")",
+          "opcToCustomHandler": "FROM /messages/modules/opc/* INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/opcInput\")",
           "sensorToAlert": "FROM /messages/modules/dynoCardAlertModule/outputs/output1 INTO BrokeredEndpoint(\"/modules/mlAlertModule/inputs/amlInput\")",
           "alertTofilterAlert": "FROM /messages/modules/mlAlertModule/outputs/amlOutput INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/alertInput\")",
           "filterToIoTHub": "FROM /messages/modules/dynoCardAlertModule/outputs/alertOutput INTO $upstream"
