@@ -7249,7 +7249,7 @@
 .visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .y-axis path,
 .visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .y-axis line {
   fill: none;
-  stroke: brown;
+  stroke: steelblue;
   shape-rendering: crispEdges;
   stroke-width: 3px;
 }
@@ -7257,12 +7257,12 @@
   font-family: sans-serif;
   font-style: italic;
   font-size: 14px;
-  fill: brown;
+  fill: steelblue;
 }
 .visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .y-axis-pump path,
 .visual-dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG .y-axis-pump line {
   fill: none;
-  stroke: steelblue;
+  stroke: brown;
   shape-rendering: crispEdges;
   stroke-width: 3px;
 }
@@ -7270,5 +7270,5 @@
   font-family: sans-serif;
   font-style: italic;
   font-size: 14px;
-  fill: steelblue;
+  fill: brown;
 }

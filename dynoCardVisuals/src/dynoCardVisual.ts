@@ -32,6 +32,7 @@ module powerbi.extensibility.visual {
         private plottePumpPath: any;
         private isDropDownRender: boolean = false;
         private margin = { top: 100, right: 50, bottom: 80, left: 5 }
+        private totalAnimationTime :number = 2000;
 
         constructor(options: VisualConstructorOptions) {
             this.host = options.host;
@@ -178,7 +179,7 @@ module powerbi.extensibility.visual {
                 let pumpCardData = pumpCardDataArr[ci];
                 setTimeout(() => {
                     this.renderCard(ci, surCardData, pumpCardData);
-                }, +ci * 2000);
+                }, +ci * this.totalAnimationTime);
             }
 
         }
