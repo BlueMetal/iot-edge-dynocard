@@ -72,8 +72,8 @@ module powerbi.extensibility.visual.dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED
 
             let pumpDD = this.createDropDown(DataColumns.pumpId);
             let eventDD = this.createDropDown(DataColumns.eventId);
-            let stratDatePicker = HtmlControl.createDateTimePicker(DataColumns.startDate);
-            let endDatePicker = HtmlControl.createDateTimePicker(DataColumns.endDate);
+            let stratDatePicker = HtmlControl.createDateTimePicker(DataColumns.startDate,this);
+            let endDatePicker = HtmlControl.createDateTimePicker(DataColumns.endDate,this);
             document.getElementById("controlDiv").appendChild(pumpDD);
             document.getElementById("controlDiv").appendChild(stratDatePicker);
             document.getElementById("controlDiv").appendChild(endDatePicker);
@@ -196,7 +196,33 @@ module powerbi.extensibility.visual.dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED
             return VisualSettings.enumerateObjectInstances(this.settings || VisualSettings.getDefault(), options);
         }
 
+        public rerenderEventDropDown(){
+            var eventDD = document.getElementById(DataColumns.eventId);
+            while (eventDD.firstChild) {
+                eventDD.removeChild(eventDD.firstChild);
+            }
+            this.eventSelVal ='all';
+            let updatedDataSet =  this.updateGraphData();
+            let tmpEventDDList = _.uniq(_.map(updatedDataSet, 'eventId'));
 
+            let allOp = document.createElement("option");
+            if(tmpEventDDList.length>0){
+                allOp.text = "All";
+                allOp.value = "all";
+            }else{
+                allOp.text = "No Event";
+                allOp.value = "No";
+            }
+          
+            eventDD.appendChild(allOp);
+            for (let i = 0; i < tmpEventDDList.length; i++) {
+                let option = document.createElement("option");
+                option.value = String(tmpEventDDList[i]);
+                option.text = String(tmpEventDDList[i]);
+                eventDD.appendChild(option);
+            }
+        }
+        
         public createDropDown(argDropDownType: string) {
             let ddDiv = document.createElement("div");
             let ddLabel: HTMLElement;
@@ -209,7 +235,7 @@ module powerbi.extensibility.visual.dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED
             let dropDownData = [];
 
             if (argDropDownType == DataColumns.pumpId) {
-                labelDiv.appendChild(document.createTextNode("Pump ID"))
+                labelDiv.appendChild(document.createTextNode("Pump: "))
                 let pumpIdList = _.uniq(_.map(this.dataSet.dataPoints, 'pumpId'));
                 dropDownData = _.map(pumpIdList, item => String(item))
             } else if (argDropDownType == DataColumns.cardType) {
@@ -217,7 +243,7 @@ module powerbi.extensibility.visual.dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED
                 dropDownData = _.uniq(_.map(this.dataSet.dataPoints, 'cardType'));
                 this.cardTypeDDList = dropDownData;
             } else if (argDropDownType == DataColumns.eventId) {
-                labelDiv.appendChild(document.createTextNode("Event ID"))
+                labelDiv.appendChild(document.createTextNode("Event:  "))
                 dropDownData = _.uniq(_.map(this.dataSet.dataPoints, 'eventId'));
                 this.eventIdDDList = dropDownData;
             }
@@ -233,6 +259,11 @@ module powerbi.extensibility.visual.dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED
                 option.text = dropDownData[i];
                 dropDown.appendChild(option);
             }
+            // dropDown.ondblclick=()=>{
+            //     if (argDropDownType == DataColumns.eventId){
+            //         this.rerenderEventDropDown();
+            //     }
+            // }
             dropDown.onchange = (event: Event) => {
                 let selVal = $("#" + argDropDownType).val();
                 if (argDropDownType == DataColumns.pumpId) {
@@ -240,6 +271,7 @@ module powerbi.extensibility.visual.dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED
                     this.resetOtherControls();
                 }
                 else if (argDropDownType == DataColumns.eventId) this.eventSelVal = selVal;
+                
 
                 this.animateGraph(this.updateGraphData());
             }

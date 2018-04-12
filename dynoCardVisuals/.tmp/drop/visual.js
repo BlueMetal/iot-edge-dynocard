@@ -46778,7 +46778,7 @@ var powerbi;
                         baseDiv.appendChild(buttonDiv);
                         return baseDiv;
                     };
-                    HtmlControl.createDateTimePicker = function (argDateType) {
+                    HtmlControl.createDateTimePicker = function (argDateType, argRef) {
                         var ddDiv = document.createElement("div");
                         ddDiv.setAttribute("class", "col-xs-3 form-group");
                         ddDiv.setAttribute("id", "datePicker1");
@@ -46789,6 +46789,9 @@ var powerbi;
                         dateInput.setAttribute("class", "form-control");
                         dateInput.setAttribute("type", "text");
                         dateInput.setAttribute("id", argDateType);
+                        dateInput.onchange = function () {
+                            argRef.rerenderEventDropDown();
+                        };
                         var spanOuter = document.createElement("span");
                         spanOuter.setAttribute("class", "input-group-addon");
                         var spanIcon = document.createElement("span");
@@ -46801,6 +46804,9 @@ var powerbi;
                         spanOuter.onmouseover = function (event) {
                             $('#' + argDateType + "Picker").datetimepicker();
                         };
+                        spanOuter.onclick = function () {
+                            argRef.rerenderEventDropDown();
+                        };
                         dateDiv.appendChild(dateInput);
                         dateDiv.appendChild(spanOuter);
                         ddDiv.appendChild(dateDiv);
@@ -46812,7 +46818,6 @@ var powerbi;
                         animationButton.setAttribute("class", "btn btn-success center-block");
                         animationButton.textContent = "Run DynoCard Animation";
                         animationButton.onclick = function () {
-                            console.log("Final DataSET: ", argRef.updateGraphData());
                             argRef.animateGraph(argRef.updateGraphData());
                         };
                         return animationButton;
@@ -46979,8 +46984,8 @@ var powerbi;
                         }
                         var pumpDD = this.createDropDown(dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.DataColumns.pumpId);
                         var eventDD = this.createDropDown(dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.DataColumns.eventId);
-                        var stratDatePicker = dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.HtmlControl.createDateTimePicker(dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.DataColumns.startDate);
-                        var endDatePicker = dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.HtmlControl.createDateTimePicker(dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.DataColumns.endDate);
+                        var stratDatePicker = dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.HtmlControl.createDateTimePicker(dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.DataColumns.startDate, this);
+                        var endDatePicker = dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.HtmlControl.createDateTimePicker(dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.DataColumns.endDate, this);
                         document.getElementById("controlDiv").appendChild(pumpDD);
                         document.getElementById("controlDiv").appendChild(stratDatePicker);
                         document.getElementById("controlDiv").appendChild(endDatePicker);
@@ -47091,6 +47096,31 @@ var powerbi;
                     DynoCardVisual.prototype.enumerateObjectInstances = function (options) {
                         return dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.VisualSettings.enumerateObjectInstances(this.settings || dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.VisualSettings.getDefault(), options);
                     };
+                    DynoCardVisual.prototype.rerenderEventDropDown = function () {
+                        var eventDD = document.getElementById(dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.DataColumns.eventId);
+                        while (eventDD.firstChild) {
+                            eventDD.removeChild(eventDD.firstChild);
+                        }
+                        this.eventSelVal = 'all';
+                        var updatedDataSet = this.updateGraphData();
+                        var tmpEventDDList = _.uniq(_.map(updatedDataSet, 'eventId'));
+                        var allOp = document.createElement("option");
+                        if (tmpEventDDList.length > 0) {
+                            allOp.text = "All";
+                            allOp.value = "all";
+                        }
+                        else {
+                            allOp.text = "No Event";
+                            allOp.value = "No";
+                        }
+                        eventDD.appendChild(allOp);
+                        for (var i = 0; i < tmpEventDDList.length; i++) {
+                            var option = document.createElement("option");
+                            option.value = String(tmpEventDDList[i]);
+                            option.text = String(tmpEventDDList[i]);
+                            eventDD.appendChild(option);
+                        }
+                    };
                     DynoCardVisual.prototype.createDropDown = function (argDropDownType) {
                         var _this = this;
                         var ddDiv = document.createElement("div");
@@ -47103,7 +47133,7 @@ var powerbi;
                         dropDown.setAttribute("id", argDropDownType);
                         var dropDownData = [];
                         if (argDropDownType == dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.DataColumns.pumpId) {
-                            labelDiv.appendChild(document.createTextNode("Pump ID"));
+                            labelDiv.appendChild(document.createTextNode("Pump: "));
                             var pumpIdList = _.uniq(_.map(this.dataSet.dataPoints, 'pumpId'));
                             dropDownData = _.map(pumpIdList, function (item) { return String(item); });
                         }
@@ -47113,7 +47143,7 @@ var powerbi;
                             this.cardTypeDDList = dropDownData;
                         }
                         else if (argDropDownType == dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.DataColumns.eventId) {
-                            labelDiv.appendChild(document.createTextNode("Event ID"));
+                            labelDiv.appendChild(document.createTextNode("Event:  "));
                             dropDownData = _.uniq(_.map(this.dataSet.dataPoints, 'eventId'));
                             this.eventIdDDList = dropDownData;
                         }
@@ -47128,6 +47158,11 @@ var powerbi;
                             option.text = dropDownData[i];
                             dropDown.appendChild(option);
                         }
+                        // dropDown.ondblclick=()=>{
+                        //     if (argDropDownType == DataColumns.eventId){
+                        //         this.rerenderEventDropDown();
+                        //     }
+                        // }
                         dropDown.onchange = function (event) {
                             var selVal = $("#" + argDropDownType).val();
                             if (argDropDownType == dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3.DataColumns.pumpId) {
@@ -47178,8 +47213,8 @@ var powerbi;
     (function (visuals) {
         var plugins;
         (function (plugins) {
-            plugins.dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG = {
-                name: 'dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG',
+            plugins.dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3 = {
+                name: 'dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3',
                 displayName: 'dynoCardVisuals',
                 class: 'DynoCardVisual',
                 version: '1.0.0',
