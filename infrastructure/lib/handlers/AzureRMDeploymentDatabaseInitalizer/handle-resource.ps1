@@ -53,10 +53,10 @@ function deploy {
     write-info ("Initializing database {0}/{1}..." -f $dbHost,$dbName)
     sqlcmd -S $dbHost -d $dbName -U $dbUser -P $dbPass -i $script
     if($LASTEXITCODE -eq 0) { 
-        $dbInitSuccess = true
+        $dbInitSuccess = $true
         write-info "Database initalization was successful."
      } else {
-        $dbInitSuccess = false
+        $dbInitSuccess = $false
      }
 
     ## remove self from firewall
