@@ -1,6 +1,6 @@
 module powerbi.visuals.plugins {
-    export var dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG = {
-        name: 'dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3_DEBUG',
+    export var dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3 = {
+        name: 'dynoCardVisuals8DD0D1F7BB764FE1A1556C3E004ED3E3',
         displayName: 'dynoCardVisuals',
         class: 'DynoCardVisual',
         version: '1.0.0',
