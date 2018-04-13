@@ -3,7 +3,7 @@
 ## init.sh - Container initalization and startup script
 ##
 SLEEP_TIME=5
-DB_INIT_SQL_FILE='schema.sql'
+DB_INIT_SQL_FILE='create-dynocard-schema.sql'
 
 ## start MSSQL in the background
 echo "[INFO] init.sh: Starting SQL Server in the background..."
