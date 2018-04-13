@@ -317,7 +317,14 @@
                 "endpointNames": ["dynocard-output"],
                 "isEnabled": true
               }
-            ]
+            ],
+            "fallbackRoute": {
+              "name": "$fallback",
+              "source": "DeviceMessages",
+              "condition": "true",
+              "endpointNames": ["events"],
+              "isEnabled": false
+            }
           }
         },
         "features": "[parameters('iotHubFeatures')]"
