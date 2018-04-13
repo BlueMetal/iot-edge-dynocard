@@ -15,20 +15,25 @@
 
 -- Delete existing database
 
+
 --IF  NOT CAST(ServerProperty('Edition') AS varchar) = 'SQL Azure' print 'sql azure';
 USE [master]
 IF EXISTS (SELECT name FROM sys.databases WHERE name = N'db4cards')
 	DROP DATABASE [db4cards]
 GO
 
+DECLARE @CreateStatement VARCHAR(250);
+
 -- Step #1. Create new database
---IF CAST(ServerProperty('Edition') AS varchar) = 'SQL Azure'
---	CREATE DATABASE [db4cards]
---	ON PRIMARY
---	(MAXSIZE = 500 MB, EDITION = 'basic', SERVICE_OBJECTIVE = 'basic')
---ELSE
-	CREATE DATABASE [db4cards]
+IF CAST(ServerProperty('Edition') AS varchar) = 'SQL Azure'
+	SET @CreateStatement = 'CREATE DATABASE [db4cards]	( MAXSIZE = 500 MB, EDITION = ''basic'',	SERVICE_OBJECTIVE = ''basic'')'
+ELSE
+	SET @CreateStatement = 'CREATE DATABASE [db4cards]'
+
+EXEC (@CreateStatement)
 GO
+
+
 
 ALTER DATABASE [db4cards] SET COMPATIBILITY_LEVEL = 140
 GO
