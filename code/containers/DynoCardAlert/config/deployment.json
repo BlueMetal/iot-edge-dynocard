@@ -76,6 +76,7 @@
       "properties.desired": {
         "schemaVersion": "1.0",
         "routes": {
+          "modbusWrite": "FROM /messages/modules/dynoCardAlertModule/outputs/modbusWriteOutput INTO BrokeredEndpoint(\"/messages/modules/modbus/inputs/input1\")",
           "modbusToDynoCard": "FROM /messages/modules/modbus/outputs/modbusOutput INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/modbusInput\")",
           "opcToCustomHandler": "FROM /messages/modules/opc/* INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/opcInput\")",
           "sensorToAlert": "FROM /messages/modules/dynoCardAlertModule/outputs/output1 INTO BrokeredEndpoint(\"/modules/mlAlertModule/inputs/amlInput\")",
@@ -166,8 +167,8 @@
         "SlaveConfigs": {
           "Slave01": {
             "SlaveConnection": "/dev/ttyUSB0",
-            "RetryCount" : "10",
-            "RetryInterval" : "1500",
+            "RetryCount": "10",
+            "RetryInterval": "50",
             "BaudRate": "9600",
             "DataBits": "8",
             "StopBits": "1",
@@ -175,13 +176,6 @@
             "FlowControl": "NONE",
             "HwId": "Pump1-DynoCard",
             "Operations": {
-              "Op13": {
-                "PollingInterval": "1500",
-                "UnitId": "1",
-                "StartAddress": "30001",
-                "Count": "10",
-                "DisplayName": "SurfaceCard-Batch0"
-              },
               "Op01": {
                 "PollingInterval": "1500",
                 "UnitId": "1",
