@@ -169,6 +169,21 @@ namespace DynoCardAlertModule
 
             return Task.CompletedTask;
         }
+        
+        private static async Task<MessageResponse> WriteModusValue(string message, DeviceClient client)
+        {
+            //Write the message back to the modbus interface
+            Console.WriteLine($"Processing modbus write value: {message}");
+
+            var bytes = Encoding.UTF8.GetBytes(message);
+            Message modbusWriteMessage = new Message(bytes);
+            modbusWriteMessage.Properties.Add("command-type", "ModbusWrite");
+            
+            await client.SendEventAsync("modbusWriteOutput", modbusWriteMessage);
+            Console.WriteLine("Completed modbus write value");
+
+            return MessageResponse.Completed;
+        }
 
         /// <summary>
         /// This method is called whenever the module is sent a message from the EdgeHub. 
@@ -210,6 +225,9 @@ namespace DynoCardAlertModule
                     var dynoCardMessage = card.ToDeviceMessage();
                     await deviceClient.SendEventAsync("output1", dynoCardMessage);
                 }
+
+                string writeMessage = "{\"HwId\": \"Pump1-DynoCard\", \"UId\":\"1\", \"Address\":\"00109\", \"Value\":\"1\"}";
+                await WriteModusValue("", deviceClient);
 
                 // Indicate that the message treatment is completed
                 return MessageResponse.Completed;

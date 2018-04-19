@@ -36,17 +36,7 @@
             "restartPolicy": "always",
             "settings": {
               "image": "microsoft/azureiotedge-modbus-tcp:1.0.2-preview",
-              "createOptions": ""
-            }
-          },
-          "opc": {
-            "version": "1.0",
-            "type": "docker",
-            "status": "running",
-            "restartPolicy": "always",
-            "settings": {
-              "image": "localhost:5000/opcpublisher:latest",
-              "createOptions": "{\"Hostname\": \"publisher\", \"Cmd\": [\"dotnet\", \"/build/out/OpcPublisher.dll\", \"publisher\", \"--dc\", \"HostName=oxy-dynocard-demp.azure-devices.net;DeviceId=localdev-device;SharedAccessKey=tbucBYuOtKnovFhcs1jjrP3unShoGLBurETcQI0Sn9c=\", \"--pf\", \"/docker/publishednodes.json\", \"--lf\", \"/docker/publisher.log.txt\", \"--di\", \"10\", \"--oi\", \"10000\", \"--di\", \"10000\", \"--fd\", \"true\", \"--tm\", \"true\", \"--as\", \"true\", \"--vc\", \"true\", \"--ih\", \"Mqtt_Tcp_Only\" ], \"HostConfig\": { \"Binds\": [ \"//d/docker/docker:/docker\" ]}}"
+              "createOptions": "{\"HostConfig\":{\"Devices\": [{\"PathOnHost\": \"/dev/ttyUSB0\",\"PathInContainer\": \"/dev/ttyUSB0\",\"CgroupPermissions\": \"rwm\"}]}}"
             }
           },
           "dynoCardAlertModule": {
@@ -55,7 +45,7 @@
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "localhost:5000/dynocardalertmodule:0.0.1-amd64.debug",
+              "image": "bluemetal/iot_dynocard_demo_alert:latest",
               "createOptions": ""
             }
           },
@@ -75,7 +65,7 @@
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "microsoft/mssql-server-linux:2017-latest",
+              "image": "bluemetal/iot_dynocard_demo_edgedb:latest",
               "createOptions": "{\"Env\": [\"ACCEPT_EULA=Y\",\"MSSQL_SA_PASSWORD=Strong!Passw0rd\"],\"HostConfig\": {\"Mounts\": [{\"Target\": \"/var/opt/mssql\",\"Source\": \"sqlVolume\",\"Type\": \"volume\"}],\"PortBindings\": {\"1433/tcp\": [{\"HostPort\": \"1401\"}]}}}"
             }
           }
@@ -86,6 +76,7 @@
       "properties.desired": {
         "schemaVersion": "1.0",
         "routes": {
+          "modbusWrite": "FROM /messages/modules/dynoCardAlertModule/outputs/modbusWriteOutput INTO BrokeredEndpoint(\"/messages/modules/modbus/inputs/input1\")",
           "modbusToDynoCard": "FROM /messages/modules/modbus/outputs/modbusOutput INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/modbusInput\")",
           "opcToCustomHandler": "FROM /messages/modules/opc/* INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/opcInput\")",
           "sensorToAlert": "FROM /messages/modules/dynoCardAlertModule/outputs/output1 INTO BrokeredEndpoint(\"/modules/mlAlertModule/inputs/amlInput\")",
@@ -99,7 +90,7 @@
     },
     "dynoCardAlertModule": {
       "properties.desired": {
-        "surfaceCardConfig" : {
+        "surfaceCardConfig": {
           "timestamp": {
             "register": "32669",
             "length": "2"
@@ -146,7 +137,7 @@
             "register": "34708",
             "length": "1"
           },
-         "grossStroke": {
+          "grossStroke": {
             "register": "34709",
             "length": "1"
           },
@@ -175,88 +166,95 @@
         "PublishInterval": "10000",
         "SlaveConfigs": {
           "Slave01": {
-            "SlaveConnection": "52.186.11.164",
+            "SlaveConnection": "/dev/ttyUSB0",
+            "RetryCount" : "10",
+            "RetryInterval" : "50",
+            "BaudRate": "9600",
+            "DataBits": "8",
+            "StopBits": "1",
+            "Parity": "NONE",
+            "FlowControl": "NONE",
             "HwId": "Pump1-DynoCard",
             "Operations": {
               "Op01": {
-                "PollingInterval": "10000",
+                "PollingInterval": "1500",
                 "UnitId": "1",
                 "StartAddress": "32669",
                 "Count": "57",
                 "DisplayName": "SurfaceCard-Batch1"
               },
               "Op02": {
-                "PollingInterval": "10000",
+                "PollingInterval": "1500",
                 "UnitId": "1",
                 "StartAddress": "32726",
                 "Count": "50",
                 "DisplayName": "SurfaceCard-Batch2"
               },
               "Op03": {
-                "PollingInterval": "10000",
+                "PollingInterval": "1500",
                 "UnitId": "1",
                 "StartAddress": "32776",
                 "Count": "50",
                 "DisplayName": "SurfaceCard-Batch3"
               },
               "Op04": {
-                "PollingInterval": "10000",
+                "PollingInterval": "1500",
                 "UnitId": "1",
                 "StartAddress": "32826",
                 "Count": "50",
                 "DisplayName": "SurfaceCard-Batch4"
               },
               "Op05": {
-                "PollingInterval": "10000",
+                "PollingInterval": "1500",
                 "UnitId": "1",
                 "StartAddress": "32876",
                 "Count": "50",
                 "DisplayName": "SurfaceCard-Batch5"
               },
               "Op06": {
-                "PollingInterval": "10000",
+                "PollingInterval": "1500",
                 "UnitId": "1",
                 "StartAddress": "32926",
                 "Count": "50",
                 "DisplayName": "SurfaceCard-Batch6"
               },
               "Op07": {
-                "PollingInterval": "10000",
+                "PollingInterval": "1500",
                 "UnitId": "1",
                 "StartAddress": "32976",
                 "Count": "50",
                 "DisplayName": "SurfaceCard-Batch7"
               },
               "Op08": {
-                "PollingInterval": "10000",
+                "PollingInterval": "1500",
                 "UnitId": "1",
                 "StartAddress": "33026",
                 "Count": "50",
                 "DisplayName": "SurfaceCard-Batch8"
               },
               "Op09": {
-                "PollingInterval": "10000",
+                "PollingInterval": "1500",
                 "UnitId": "1",
                 "StartAddress": "34704",
                 "Count": "59",
                 "DisplayName": "PumpCard-Batch1"
               },
               "Op10": {
-                "PollingInterval": "10000",
+                "PollingInterval": "1500",
                 "UnitId": "1",
                 "StartAddress": "34763",
                 "Count": "50",
                 "DisplayName": "PumpCard-Batch2"
               },
               "Op11": {
-                "PollingInterval": "10000",
+                "PollingInterval": "1500",
                 "UnitId": "1",
                 "StartAddress": "34813",
                 "Count": "50",
                 "DisplayName": "PumpCard-Batch3"
               },
               "Op12": {
-                "PollingInterval": "10000",
+                "PollingInterval": "1500",
                 "UnitId": "1",
                 "StartAddress": "34863",
                 "Count": "50",
