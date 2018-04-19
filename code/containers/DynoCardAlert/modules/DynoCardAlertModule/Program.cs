@@ -179,7 +179,7 @@ namespace DynoCardAlertModule
             Message modbusWriteMessage = new Message(bytes);
             modbusWriteMessage.Properties.Add("command-type", "ModbusWrite");
             
-            await client.SendEventAsync("modbusWriteOutput", modbusWriteMessage);
+            await client.SendEventAsync("modbusWriteOutput", message);
             Console.WriteLine("Completed modbus write value");
 
             return MessageResponse.Completed;
@@ -226,8 +226,13 @@ namespace DynoCardAlertModule
                     await deviceClient.SendEventAsync("output1", dynoCardMessage);
                 }
 
-                string writeMessage = "{\"HwId\": \"Pump1-DynoCard\", \"UId\":\"1\", \"Address\":\"00109\", \"Value\":\"1\"}";
-                await WriteModusValue("", deviceClient);
+                //Reset regsiter value to 0
+                string writeMessage0 = "{\"HwId\": \"Pump1-DynoCard\", \"UId\":\"1\", \"Address\":\"00109\", \"Value\":\"0\"}";
+                await WriteModusValue(writeMessage0, deviceClient);
+
+                //Reset register value to 1 to refresh buffer
+                string writeMessage1 = "{\"HwId\": \"Pump1-DynoCard\", \"UId\":\"1\", \"Address\":\"00109\", \"Value\":\"1\"}";
+                await WriteModusValue(writeMessage1, deviceClient);
 
                 // Indicate that the message treatment is completed
                 return MessageResponse.Completed;
