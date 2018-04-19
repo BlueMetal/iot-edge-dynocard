@@ -227,12 +227,12 @@ namespace DynoCardAlertModule
                 }
 
                 //Reset regsiter value to 0
-                string writeMessage0 = "{\"HwId\": \"Pump1-DynoCard\", \"UId\":\"1\", \"Address\":\"00109\", \"Value\":\"0\"}";
-                await WriteModusValue(writeMessage0, deviceClient);
-
-                //Reset register value to 1 to refresh buffer
                 string writeMessage1 = "{\"HwId\": \"Pump1-DynoCard\", \"UId\":\"1\", \"Address\":\"00109\", \"Value\":\"1\"}";
                 await WriteModusValue(writeMessage1, deviceClient);
+
+                //Reset register value to 1 to refresh buffer
+                string writeMessage0 = "{\"HwId\": \"Pump1-DynoCard\", \"UId\":\"1\", \"Address\":\"00109\", \"Value\":\"0\"}";
+                await WriteModusValue(writeMessage0, deviceClient);
 
                 // Indicate that the message treatment is completed
                 return MessageResponse.Completed;
