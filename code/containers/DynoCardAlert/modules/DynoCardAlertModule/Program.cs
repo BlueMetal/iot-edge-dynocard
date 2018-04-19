@@ -179,7 +179,7 @@ namespace DynoCardAlertModule
             Message modbusWriteMessage = new Message(bytes);
             modbusWriteMessage.Properties.Add("command-type", "ModbusWrite");
             
-            await client.SendEventAsync("modbusWriteOutput", message);
+            await client.SendEventAsync("modbusWriteOutput", modbusWriteMessage);
             Console.WriteLine("Completed modbus write value");
 
             return MessageResponse.Completed;
