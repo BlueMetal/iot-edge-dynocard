@@ -299,7 +299,7 @@
               {
                 "name": "dynocard-output",
                 "connectionString":
-                  "[concat(listkeys(variables('serviceBusAuthRuleResourceId'), '2017-04-01').primaryConnectionString,';EntityPath=msft-dynocard-queue')]"
+                  "[concat(listkeys(variables('serviceBusAuthRuleResourceId'), '2017-04-01').primaryConnectionString,';EntityPath=dynocard-output')]"
               }
             ],
             "routes": [
@@ -317,7 +317,14 @@
                 "endpointNames": ["dynocard-output"],
                 "isEnabled": true
               }
-            ]
+            ],
+            "fallbackRoute": {
+              "name": "$fallback",
+              "source": "DeviceMessages",
+              "condition": "true",
+              "endpointNames": ["events"],
+              "isEnabled": false
+            }
           }
         },
         "features": "[parameters('iotHubFeatures')]"
@@ -419,7 +426,7 @@
                 },
                 "method": "get",
                 "path":
-                  "/@{encodeURIComponent(encodeURIComponent('msft-dynocard-queue'))}/messages/head",
+                  "/@{encodeURIComponent(encodeURIComponent('dynocard-output'))}/messages/head",
                 "queries": {
                   "queueType": "Main"
                 }

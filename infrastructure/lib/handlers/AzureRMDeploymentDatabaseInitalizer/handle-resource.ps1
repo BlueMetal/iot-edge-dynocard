@@ -20,7 +20,7 @@ $SELF_NAME = split-path -leaf $MyInvocation.PSCommandPath
 ## add utilty_scripts to our path
 $SCRIPTS_PATH = (join-path $BASE_PATH "lib/utility_scripts")
 if($ENV:PATH -notcontains $SCRIPTS_PATH) {
-    $ENV:PATH  = ("{0}:{1}" -f $ENV:PATH,$SCRIPTS_PATH)
+    $ENV:PATH  = ("{0}{1}{2}" -f $ENV:PATH,[IO.Path]::PathSeparator,$SCRIPTS_PATH)
 }
 
 function deploy {
@@ -53,10 +53,10 @@ function deploy {
     write-info ("Initializing database {0}/{1}..." -f $dbHost,$dbName)
     sqlcmd -S $dbHost -d $dbName -U $dbUser -P $dbPass -i $script
     if($LASTEXITCODE -eq 0) { 
-        $dbInitSuccess = true
+        $dbInitSuccess = $true
         write-info "Database initalization was successful."
      } else {
-        $dbInitSuccess = false
+        $dbInitSuccess = $false
      }
 
     ## remove self from firewall

@@ -169,6 +169,21 @@ namespace DynoCardAlertModule
 
             return Task.CompletedTask;
         }
+        
+        private static async Task<MessageResponse> WriteModusValue(string message, DeviceClient client)
+        {
+            //Write the message back to the modbus interface
+            Console.WriteLine($"Processing modbus write value: {message}");
+
+            var bytes = Encoding.UTF8.GetBytes(message);
+            Message modbusWriteMessage = new Message(bytes);
+            modbusWriteMessage.Properties.Add("command-type", "ModbusWrite");
+            
+            await client.SendEventAsync("modbusWriteOutput", modbusWriteMessage);
+            Console.WriteLine("Completed modbus write value");
+
+            return MessageResponse.Completed;
+        }
 
         /// <summary>
         /// This method is called whenever the module is sent a message from the EdgeHub. 
@@ -211,6 +226,14 @@ namespace DynoCardAlertModule
                     await deviceClient.SendEventAsync("output1", dynoCardMessage);
                 }
 
+                //Reset regsiter value to 0
+                string writeMessage1 = "{\"HwId\": \"Pump1-DynoCard\", \"UId\":\"1\", \"Address\":\"00109\", \"Value\":\"1\"}";
+                await WriteModusValue(writeMessage1, deviceClient);
+
+                //Reset register value to 1 to refresh buffer
+                string writeMessage0 = "{\"HwId\": \"Pump1-DynoCard\", \"UId\":\"1\", \"Address\":\"00109\", \"Value\":\"0\"}";
+                await WriteModusValue(writeMessage0, deviceClient);
+
                 // Indicate that the message treatment is completed
                 return MessageResponse.Completed;
             }
@@ -237,7 +260,7 @@ namespace DynoCardAlertModule
 
         private static async Task<MessageResponse> ProcessOPCInput(Message message, object userContext)
         {
-            Console.WriteLine("In the Filter Message handler");
+            Console.WriteLine("In the OPC Filter Message handler");
 
             var counterValue = Interlocked.Increment(ref counter);
             await Task.FromResult(true);
@@ -305,8 +328,13 @@ namespace DynoCardAlertModule
 
                             Console.WriteLine("Sending Alert");
                             previousCardsMessage.Properties["MessageType"] = "Alert";
-                            
                             await deviceClient.SendEventAsync("alertOutput", previousCardsMessage);
+
+                            var stopModbusString = JsonConvert.SerializeObject(new StopModbusMessage());
+                            var stopModbusBytes = Encoding.UTF8.GetBytes(stopModbusString);
+                            var stopModbusMessage = new Message(stopModbusBytes);
+                            await deviceClient.SendEventAsync("shutdownOutput", stopModbusMessage);
+
                             Console.WriteLine("Completed sending alert");
                         }
                     }

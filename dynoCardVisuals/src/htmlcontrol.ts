@@ -32,7 +32,7 @@ module powerbi.extensibility.visual {
             return baseDiv;
         }
 
-        public static createDateTimePicker(argDateType) {
+        public static createDateTimePicker(argDateType, argRef) {
 
             let ddDiv = document.createElement("div");
             ddDiv.setAttribute("class", "col-xs-3 form-group");
@@ -45,7 +45,10 @@ module powerbi.extensibility.visual {
             dateInput.setAttribute("class", "form-control");
             dateInput.setAttribute("type", "text");
             dateInput.setAttribute("id",argDateType);
-        
+            dateInput.onchange=()=>{
+                argRef.rerenderEventDropDown();
+            }
+
             let spanOuter =document.createElement("span");
             spanOuter.setAttribute("class","input-group-addon");
             let spanIcon =document.createElement("span");
@@ -58,6 +61,10 @@ module powerbi.extensibility.visual {
             
             spanOuter.onmouseover= (event: Event) => {
                 $('#'+argDateType+"Picker").datetimepicker();
+            }
+
+            spanOuter.onclick=()=>{
+                argRef.rerenderEventDropDown();
             }
 
             dateDiv.appendChild(dateInput);
@@ -73,9 +80,6 @@ module powerbi.extensibility.visual {
             animationButton.setAttribute("class", "btn btn-success center-block");
             animationButton.textContent = "Run DynoCard Animation";
             animationButton.onclick = function () {
-
-                console.log("Final DataSET: ", argRef.updateGraphData());
-                
                 argRef.animateGraph(argRef.updateGraphData());
             }
             return animationButton;

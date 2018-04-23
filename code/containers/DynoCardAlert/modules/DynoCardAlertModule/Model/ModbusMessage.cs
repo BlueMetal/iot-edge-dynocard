@@ -176,7 +176,13 @@ namespace DynoCardAlertModule.Model
                 var numberOfPointsValues = GetValueArray(numberOfPointsProp.RegisterNumber, numberOfPointsProp.NumberOfRegisters, registerValues);
                 if (numberOfPointsValues != null && numberOfPointsValues.Count > 0)
                 {
+                    //Get just the low byte of the value
                     numberOfDataPoints = Int32.Parse(numberOfPointsValues.First());
+                    Console.WriteLine($"Number of surface points 16-bit value: {numberOfDataPoints}");
+
+                    numberOfDataPoints = (int)(ushort)numberOfDataPoints;
+                    Console.WriteLine($"Number of surface points 8-bit value: {numberOfDataPoints}");
+                    
                     surfaceCard.NumberOfPoints = numberOfDataPoints;
                 }
 
@@ -302,6 +308,13 @@ namespace DynoCardAlertModule.Model
                 if (numberOfPointsValues != null && numberOfPointsValues.Count > 0)
                 {
                     numberOfDataPoints = Int32.Parse(numberOfPointsValues.First());
+                     
+                     //Get just the low byte of the value
+                    numberOfDataPoints = Int32.Parse(numberOfPointsValues.First());
+                    Console.WriteLine($"Number of pump card points 16-bit value: {numberOfDataPoints}");
+
+                    numberOfDataPoints = (int)(ushort)numberOfDataPoints;
+                    Console.WriteLine($"Number of pump card points 8-bit value: {numberOfDataPoints}");
                     pumpCard.NumberOfPoints = numberOfDataPoints;
                 }
 

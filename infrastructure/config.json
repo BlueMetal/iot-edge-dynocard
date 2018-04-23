@@ -37,6 +37,7 @@
             "initalization_script" : "../code/containers/mssql_db/create-dynocard-schema.sql"
         },
         "vnet" : {
+            "type" : "AzureRMDeployment",
             "resource_group":"iot-dynocard-test",
             "location" : "eastus",
             "template" : "./templates/vnet.json",

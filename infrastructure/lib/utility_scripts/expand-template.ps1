@@ -8,7 +8,7 @@ param(
 
 begin {
     $output = @()
-    $undefinedToken = false
+    $undefinedToken = $false
     $lineNum = 0
 }
 
@@ -20,7 +20,7 @@ process {
             $name = $token.groups['name'].value
             
             if(-not $tokens.ContainsKey($name)) {
-                $undefinedToken = true
+                $undefinedToken = $true
                 write-error ("Line {0}: undefined token name '{1}'" -f $lineNum,$name)
             }
 

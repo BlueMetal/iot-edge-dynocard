@@ -4,7 +4,7 @@ FROM microsoft/mssql-server-linux:2017-latest
 ## accept the SQL Server EULA
 ENV ACCEPT_EULA=true
 
-ENV SA_PASSWORD='DemoPass01#'
+ENV SA_PASSWORD='Strong!Passw0rd'
 
 ## MSSQL Product ID (Developer, Express, Standard, EnterpriseCore, Enterprise, etc...)
 ENV MSSQL_PID='Developer'

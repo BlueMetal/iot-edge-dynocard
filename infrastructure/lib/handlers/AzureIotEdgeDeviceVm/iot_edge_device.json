@@ -71,7 +71,7 @@
       "publicIPAddressName": "[concat(parameters('resourceName'),'-ip0')]",
       "publicIPAddressType": "Dynamic",
       "vmName": "[parameters('resourceName')]",
-      "vmSize": "Standard_A1",
+      "vmSize": "Standard_A2",
       "vnetID": "[resourceId(parameters('vnetGroup'), 'Microsoft.Network/virtualNetworks', parameters('vnetName'))]",
       "subnetId": "[concat(variables('vnetID'),'/subnets/',parameters('subnetName'))]"
     },
