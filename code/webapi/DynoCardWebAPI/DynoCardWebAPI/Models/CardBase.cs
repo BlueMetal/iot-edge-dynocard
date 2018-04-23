@@ -12,7 +12,7 @@ namespace DynoCardWebAPI.Models
         public float ScaledMaxLoad { get; set; }
         public float ScaledMinLoad { get; set; }
         public List<CardCoordinate> cardCoordinates;
-        public string CardType { get; set; }
+        public int CardType { get; set; }
 
         public CardBase()
         {

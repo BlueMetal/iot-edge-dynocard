@@ -14,7 +14,7 @@ namespace DynoCardWebAPI.Models
 
         public PumpCard() : base()
         {
-            base.CardType = "P";
+            base.CardType = 1;
         }
     }
 }

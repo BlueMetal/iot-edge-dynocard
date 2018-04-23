@@ -22,12 +22,15 @@ namespace DynoCardWebAPI.Repos
         public void Add(DynoCardAnomalyEvent dcae)
         {
 
+            // validate that the main objects are present
+            if (dcae == null || dcae.DynoCard == null || dcae.DynoCard.surfaceCard == null || dcae.DynoCard.pumpCard == null)
+                return;
+
             // Create a new SQL Connection
             using (SqlConnection sqlConn = new SqlConnection(this.settings.ConnectionString))
             {
                 // Open a connection to the database
                 sqlConn.Open();
-
                 // Begin a SQL transaction
                 var sqlTrans = sqlConn.BeginTransaction();
                 string cmdText = string.Empty;
@@ -37,37 +40,32 @@ namespace DynoCardWebAPI.Repos
                     // Insert into the Event Table
                     int eventId = InsertEvent(sqlConn, sqlTrans, dcae);
 
-                    // Loop through all dyno cards in the event
-                    foreach (var dynoCard in dcae.dynoCards)
+                    // Insert the dyno card into the database
+                    int dynoCardId = InsertDynoCard(sqlConn, sqlTrans, dcae);
+
+                    // Associate the event with the dyno card
+                    int eventDetailId = InsertEventDetail(sqlConn, sqlTrans, eventId, dynoCardId, dcae.DynoCard.TriggeredEvents);
+
+                    /////
+                    // Insert surface and pump card for the dyno card
+                    /////
+
+                    // Insert Surface Card
+                    int surfaceCardId = InsertSurfaceCardHeader(sqlConn, sqlTrans, dynoCardId, dcae.DynoCard);
+
+                    // Loop through all of the coordinates and save them to the database
+                    foreach (var cardCoordinate in dcae.DynoCard.surfaceCard.cardCoordinates)
                     {
-                        // Insert the dyno card into the database
-                        int dynoCardId = InsertDynoCard(sqlConn, sqlTrans, dcae);
+                        InsertCardCoordinates(sqlConn, sqlTrans, surfaceCardId, cardCoordinate);
+                    }
 
-                        // Associate the event with the dyno card
-                        int eventDetailId = InsertEventDetail(sqlConn, sqlTrans, eventId, dynoCardId, dynoCard.TriggeredEvents);
+                    // Insert Pump Card
+                    int pumpCardId = InsertPumpCardHeader(sqlConn, sqlTrans, dynoCardId, dcae.DynoCard);
 
-                        /////
-                        // Insert surface and pump card for the dyno card
-                        /////
-
-                        // Insert Surface Card
-                        int surfaceCardId = InsertSurfaceCardHeader(sqlConn, sqlTrans, dynoCardId, dynoCard);
-
-                        // Loop through all of the coordinates and save them to the database
-                        foreach (var cardCoordinate in dynoCard.surfaceCard.cardCoordinates)
-                        {
-                            InsertCardCoordinates(sqlConn, sqlTrans, surfaceCardId, cardCoordinate);
-                        }
-
-                        // Insert Pump Card
-                        int pumpCardId = InsertPumpCardHeader(sqlConn, sqlTrans, dynoCardId, dynoCard);
-
-                        // Loop through all of the coordinates and save them to the database
-                        foreach (var cardCoordinate in dynoCard.pumpCard.cardCoordinates)
-                        {
-                            InsertCardCoordinates(sqlConn, sqlTrans, pumpCardId, cardCoordinate);
-                        }
-
+                    // Loop through all of the coordinates and save them to the database
+                    foreach (var cardCoordinate in dcae.DynoCard.pumpCard.cardCoordinates)
+                    {
+                        InsertCardCoordinates(sqlConn, sqlTrans, pumpCardId, cardCoordinate);
                     }
 
                     // Commit the transaction
@@ -199,44 +197,51 @@ namespace DynoCardWebAPI.Repos
 
         private int InsertPumpCardHeader(SqlConnection sqlConn, SqlTransaction sqlTrans, int dynoCardId, DynoCard dynoCard)
         {
-            string cmdText = string.Empty;
-            SqlCommand sqlCmd = null;
+            try
+            {
+                SqlCommand sqlCmd = null;
 
-            // Insert surface card header for the dyno card
-            cmdText = "INSERT INTO ACTIVE.CARD_HEADER " +
-                        "(DC_ID, " +
-                        "CH_CARD_TYPE, " +
-                        "CH_EPOC_DATE, " +
-                        "CH_NUMBER_OF_POINTS, " +
-                        "CH_UPDATE_DATE, " +
-                        "CH_UPDATE_BY, " +
-                        "CH_GROSS_STROKE, " +
-                        "CH_NET_STROKE, " +
-                        "CH_PUMP_FILLAGE, " +
-                        "CH_FLUID_LOAD) " +
-                        "OUTPUT INSERTED.CH_ID " +
-                        "VALUES" +
-                        "(@DcId, " +
-                        "'P', " +
-                        "@EpocDate, " +
-                        "@NumPoints, " +
-                        "GETUTCDATE(), " +
-                        "'SYSTEM', " +
-                        "@GrossStroke, " +
-                        "@NetStroke, " +
-                        "@PumpFillage, " +
-                        "@FluidLoad)";
+                string cmdText = string.Empty;
 
-            sqlCmd = new SqlCommand(cmdText, sqlConn, sqlTrans);
-            sqlCmd.Parameters.AddWithValue("@DcId", dynoCardId);
-            sqlCmd.Parameters.AddWithValue("@EpocDate", TimeHelper.ConvertToEpoch(dynoCard.pumpCard.Timestamp));
-            sqlCmd.Parameters.AddWithValue("@NumPoints", dynoCard.pumpCard.NumPoints);
-            sqlCmd.Parameters.AddWithValue("@GrossStroke", dynoCard.pumpCard.GrossStroke);
-            sqlCmd.Parameters.AddWithValue("@NetStroke", dynoCard.pumpCard.NetStroke);
-            sqlCmd.Parameters.AddWithValue("@PumpFillage", dynoCard.pumpCard.PumpFillage);
-            sqlCmd.Parameters.AddWithValue("@FluidLoad", dynoCard.pumpCard.FluidLoad);
-            return (int)sqlCmd.ExecuteScalar();
+                // Insert surface card header for the dyno card
+                cmdText = "INSERT INTO ACTIVE.CARD_HEADER " +
+                            "(DC_ID, " +
+                            "CH_CARD_TYPE, " +
+                            "CH_EPOC_DATE, " +
+                            "CH_NUMBER_OF_POINTS, " +
+                            "CH_UPDATE_DATE, " +
+                            "CH_UPDATE_BY, " +
+                            "CH_GROSS_STROKE, " +
+                            "CH_NET_STROKE, " +
+                            "CH_PUMP_FILLAGE, " +
+                            "CH_FLUID_LOAD) " +
+                            "OUTPUT INSERTED.CH_ID " +
+                            "VALUES" +
+                            "(@DcId, " +
+                            "'P', " +
+                            "@EpocDate, " +
+                            "@NumPoints, " +
+                            "GETUTCDATE(), " +
+                            "'SYSTEM', " +
+                            "@GrossStroke, " +
+                            "@NetStroke, " +
+                            "@PumpFillage, " +
+                            "@FluidLoad)";
 
+                sqlCmd = new SqlCommand(cmdText, sqlConn, sqlTrans);
+                sqlCmd.Parameters.AddWithValue("@DcId", dynoCardId);
+                sqlCmd.Parameters.AddWithValue("@EpocDate", TimeHelper.ConvertToEpoch(dynoCard.pumpCard.Timestamp));
+                sqlCmd.Parameters.AddWithValue("@NumPoints", dynoCard.pumpCard.NumPoints);
+                sqlCmd.Parameters.AddWithValue("@GrossStroke", dynoCard.pumpCard.GrossStroke);
+                sqlCmd.Parameters.AddWithValue("@NetStroke", dynoCard.pumpCard.NetStroke);
+                sqlCmd.Parameters.AddWithValue("@PumpFillage", dynoCard.pumpCard.PumpFillage);
+                sqlCmd.Parameters.AddWithValue("@FluidLoad", dynoCard.pumpCard.FluidLoad);
+                return (int)sqlCmd.ExecuteScalar();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         private void InsertCardCoordinates(SqlConnection sqlConn, SqlTransaction sqlTrans, int cardHeaderId, CardCoordinate cardCoordinate)

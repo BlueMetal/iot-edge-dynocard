@@ -44,6 +44,7 @@ namespace DynoCardWebAPI.Controllers
             // Add dyno card header Info
             dcae.PumpId = 1;
             dcae.Timestamp = DateTime.UtcNow.ToString(dateFormat);
+            dcae.AnomalyId = Guid.NewGuid();
 
             DynoCard dynoCard = null;
 
@@ -81,8 +82,9 @@ namespace DynoCardWebAPI.Controllers
             dynoCard.pumpCard.cardCoordinates.Add(new CardCoordinate(2.3F, 2.4F));
             dynoCard.pumpCard.cardCoordinates.Add(new CardCoordinate(2.5F, 2.6F));
 
-            dcae.dynoCards.Add(dynoCard);
+            dcae.DynoCard = dynoCard;
 
+            /*
             //////
             // Add Dyno Card #2
             //////
@@ -118,6 +120,7 @@ namespace DynoCardWebAPI.Controllers
             dynoCard.pumpCard.cardCoordinates.Add(new CardCoordinate(4.5F, 4.6F));
 
             dcae.dynoCards.Add(dynoCard);
+            */
 
             return dcae;
         }
