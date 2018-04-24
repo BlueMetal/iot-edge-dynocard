@@ -92,23 +92,35 @@ namespace DynoCardWebAPI.Repos
             string cmdText = string.Empty;
             SqlCommand sqlCmd = null;
 
-            // Insert into the Dyno Card Table
-            cmdText = "INSERT INTO ACTIVE.EVENT " +
-                        "(PU_ID, " +
-                        "EV_EPOC_DATE, " +
-                        "EV_UPDATE_DATE, " +
-                        "EV_UPDATE_BY) " +
-                        "OUTPUT INSERTED.EV_ID " +
-                        "VALUES(" +
-                        "@PumpId, " +
-                        "@EpochDate, " +
-                        "GETUTCDATE(), " +
-                        "'SYSTEM')";
+            cmdText = "DECLARE @EventId AS INT " +
+                "SELECT @EventId = EV_ID FROM ACTIVE.EVENT WITH(UPDLOCK, HOLDLOCK) WHERE EV_ANOMALY_ID = @AnomalyId; " +
+                "IF ISNULL(@EventId, 0) = 0 " +
+                " BEGIN " +
+                    "INSERT INTO ACTIVE.EVENT( " +
+                    "PU_ID, " +
+                    "EV_EPOC_DATE, " +
+                    "EV_ANOMALY_ID, " +
+                    "EV_UPDATE_DATE, " +
+                    "EV_UPDATE_BY) " +
+                    "OUTPUT INSERTED.EV_ID " +
+                    "VALUES( " +
+                    "@PumpId, " +
+                    "@EpochDate, " +
+                    "@AnomalyId, " +
+                    "GETUTCDATE(), " +
+                    "'SYSTEM') " +
+                " END " +
+                "ELSE " +
+                " BEGIN " +
+                "   SELECT @EventId " +
+                " END";
 
             sqlCmd = new SqlCommand(cmdText, sqlConn, sqlTrans);
             sqlCmd.Parameters.AddWithValue("@PumpId", dcae.PumpId);
             sqlCmd.Parameters.AddWithValue("@EpochDate", TimeHelper.ConvertToEpoch(dcae.Timestamp));
-            return (int)sqlCmd.ExecuteScalar();
+            sqlCmd.Parameters.AddWithValue("@AnomalyId", dcae.AnomalyId.ToString());
+            var eventId = sqlCmd.ExecuteScalar();
+            return (int)eventId;
         }
 
         private int InsertDynoCard(SqlConnection sqlConn, SqlTransaction sqlTrans, DynoCardAnomalyEvent dcae)
