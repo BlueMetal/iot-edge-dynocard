@@ -9,52 +9,8 @@
  * 
  ******************************************************/
 
---
--- Create the database (run from master)
---
-
--- Delete existing database
-
-
---IF  NOT CAST(ServerProperty('Edition') AS varchar) = 'SQL Azure' print 'sql azure';
-USE [master]
-IF EXISTS (SELECT name FROM sys.databases WHERE name = N'db4cards')
-	DROP DATABASE [db4cards]
-GO
-
-DECLARE @CreateStatement VARCHAR(250);
-
--- Step #1. Create new database
-IF CAST(ServerProperty('Edition') AS varchar) = 'SQL Azure'
-	SET @CreateStatement = 'CREATE DATABASE [db4cards]	( MAXSIZE = 500 MB, EDITION = ''basic'',	SERVICE_OBJECTIVE = ''basic'')'
-ELSE
-	SET @CreateStatement = 'CREATE DATABASE [db4cards]'
-
-EXEC (@CreateStatement)
-GO
-
-
-
-ALTER DATABASE [db4cards] SET COMPATIBILITY_LEVEL = 140
-GO
-
-USE [db4cards]
-EXEC sp_configure 'contained database authentication', 1
-GO
-RECONFIGURE
-GO
-
-ALTER DATABASE [db4cards]
-SET CONTAINMENT = PARTIAL
-GO
-
--- Step #2. Change to [db4cards] database
-
--- Step #3. Change to [db4cards] database
-
---
--- Create Contained database user
---
+-- Assumes that the [db4cards] database has already been created
+-- Ensure that [db4cards] database is being used
 
 -- Service Account
 CREATE USER [dyno_user] WITH PASSWORD = 'GMZNAQ]Q6R6Ljz9>';
@@ -74,8 +30,6 @@ GO
 CREATE SCHEMA [ACTIVE] AUTHORIZATION [dbo]
 GO
 
-
-
 --
 -- Create STAGE schema
 --
@@ -87,8 +41,6 @@ GO
 -- Add new schema.
 CREATE SCHEMA [STAGE] AUTHORIZATION [dbo]
 GO
-
-
 
 --
 -- Create PUMP table
@@ -158,6 +110,7 @@ CREATE TABLE [ACTIVE].[EVENT]
   EV_ID INT IDENTITY(1, 1) NOT NULL,
   PU_ID INT NOT NULL,
   EV_EPOC_DATE INT NULL,
+  EV_ANOMALY_ID UNIQUEIDENTIFIER NULL,
   EV_UPDATE_DATE DATETIME CONSTRAINT [DF_EVENT_UPD_DATE] DEFAULT (getdate()) ,
   EV_UPDATE_BY VARCHAR(128) CONSTRAINT [DF_EVENT_UPD_BY] DEFAULT (coalesce(suser_sname(),'?')),
   CONSTRAINT [PK_EVENT_ID] PRIMARY KEY CLUSTERED (EV_ID ASC)
@@ -273,7 +226,7 @@ GO
 --
 
 -- Delete existing table
--- DROP TABLE IF EXISTS [STAGE].[SURFACE_DATA]
+DROP TABLE IF EXISTS [STAGE].[SURFACE_DATA]
 GO
  
 -- Create new table
@@ -291,7 +244,7 @@ CREATE TABLE [STAGE].[SURFACE_DATA]
 --
 
 -- Delete existing table
--- DROP TABLE IF EXISTS [STAGE].[PUMP_DATA]
+DROP TABLE IF EXISTS [STAGE].[PUMP_DATA]
 GO
  
 -- Create new table
