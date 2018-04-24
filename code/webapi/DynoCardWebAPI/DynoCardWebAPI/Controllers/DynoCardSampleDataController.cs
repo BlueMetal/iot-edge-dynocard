@@ -42,7 +42,7 @@ namespace DynoCardWebAPI.Controllers
             string dateFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss";
 
             // Add dyno card header Info
-            dcae.Pump = 1;
+            dcae.PumpId = 1;
             dcae.Timestamp = DateTime.UtcNow.ToString(dateFormat);
             dcae.AnomalyId = Guid.NewGuid();
 

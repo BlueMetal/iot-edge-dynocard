@@ -116,7 +116,7 @@ namespace DynoCardWebAPI.Repos
                 " END";
 
             sqlCmd = new SqlCommand(cmdText, sqlConn, sqlTrans);
-            sqlCmd.Parameters.AddWithValue("@PumpId", dcae.Pump);
+            sqlCmd.Parameters.AddWithValue("@PumpId", dcae.PumpId);
             sqlCmd.Parameters.AddWithValue("@EpochDate", TimeHelper.ConvertToEpoch(dcae.Timestamp));
             sqlCmd.Parameters.AddWithValue("@AnomalyId", dcae.AnomalyId.ToString());
             var eventId = sqlCmd.ExecuteScalar();
@@ -140,7 +140,7 @@ namespace DynoCardWebAPI.Repos
                         "'SYSTEM')";
 
             sqlCmd = new SqlCommand(cmdText, sqlConn, sqlTrans);
-            sqlCmd.Parameters.AddWithValue("@PumpId", dcae.Pump);
+            sqlCmd.Parameters.AddWithValue("@PumpId", dcae.PumpId);
             return (int)sqlCmd.ExecuteScalar();
         }
 
