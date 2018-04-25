@@ -18,6 +18,12 @@ namespace DynoCardAlertModule.Data
         {
             int cardID = -1;
 
+            if (card.SurfaceCard == null || card.SurfaceCard.NumberOfPoints == 0)
+            {
+                //If there's no surface card, return without inserting.
+                return -1;
+            }
+
             try
             {
                 // //Store the data in SQL DB
@@ -49,12 +55,6 @@ namespace DynoCardAlertModule.Data
 
                     using (Sql.SqlCommand dynoCardCommand = new Sql.SqlCommand())
                     {
-                        if (card.SurfaceCard == null)
-                        {
-                            //If there's no surface card, return without inserting.
-                            return -1;
-                        }
-
                         //Insert the DynoCard record
                         dynoCardCommand.Connection = conn;
                         string dynoCardInsertStatement = insertDynoCard.ToString();
@@ -69,23 +69,16 @@ namespace DynoCardAlertModule.Data
                         dynoCardCommand.CommandText = surfaceCardInsertStatement;
                         var headerID = await dynoCardCommand.ExecuteScalarAsync();
                         
-                        try
+                        //Insert the Surface card detail records
+                        foreach (var point in card.SurfaceCard.CardCoordinates)
                         {
-                            //Insert the Surface card detail records
-                            foreach (var point in card.SurfaceCard.CardCoordinates)
-                            {
-                                string detailStatement = string.Format(insertDetail, headerID, point.Position, point.Load, DateTime.Now);
-                                //Console.WriteLine($"Surface Detail Statement: {detailStatement}");
-                                dynoCardCommand.CommandText = detailStatement;
-                                await dynoCardCommand.ExecuteNonQueryAsync();
-                            }
+                            string detailStatement = string.Format(insertDetail, headerID, point.Position, point.Load, DateTime.Now);
+                            //Console.WriteLine($"Surface Detail Statement: {detailStatement}");
+                            dynoCardCommand.CommandText = detailStatement;
+                            await dynoCardCommand.ExecuteNonQueryAsync();
                         }
-                        catch(Exception)
-                        {
-
-                        }
-
-                        if (card.PumpCard != null)
+                        
+                        if (card.PumpCard != null && card.PumpCard.NumberOfPoints != 0)
                         {
                             //Insert the Pump card header record
                             string pumpCardInsertStatement = string.Format(insertPumpCard.ToString(), dynoCardID);
@@ -93,20 +86,13 @@ namespace DynoCardAlertModule.Data
                             dynoCardCommand.CommandText = pumpCardInsertStatement;
                             headerID = await dynoCardCommand.ExecuteScalarAsync();
 
-                            try
+                            //Insert the Pump card detail records
+                            foreach (var point in card.PumpCard.CardCoordinates)
                             {
-                                //Insert the Pump card detail records
-                                foreach (var point in card.PumpCard.CardCoordinates)
-                                {
-                                    string detailStatement = string.Format(insertDetail, headerID, point.Position, point.Load, DateTime.Now);
-                                    //Console.WriteLine($"Pump Detail Statement: {detailStatement}"); 
-                                    dynoCardCommand.CommandText = detailStatement;
-                                    await dynoCardCommand.ExecuteNonQueryAsync();
-                                }
-                            }
-                            catch(Exception)
-                            {
-
+                                string detailStatement = string.Format(insertDetail, headerID, point.Position, point.Load, DateTime.Now);
+                                //Console.WriteLine($"Pump Detail Statement: {detailStatement}"); 
+                                dynoCardCommand.CommandText = detailStatement;
+                                await dynoCardCommand.ExecuteNonQueryAsync();
                             }
                         }
                     }
