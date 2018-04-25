@@ -169,21 +169,6 @@ namespace DynoCardAlertModule
 
             return Task.CompletedTask;
         }
-        
-        private static async Task<MessageResponse> WriteModusValue(string message, DeviceClient client)
-        {
-            //Write the message back to the modbus interface
-            Console.WriteLine($"Processing modbus write value: {message}");
-
-            var bytes = Encoding.UTF8.GetBytes(message);
-            Message modbusWriteMessage = new Message(bytes);
-            modbusWriteMessage.Properties.Add("command-type", "ModbusWrite");
-            
-            await client.SendEventAsync("modbusWriteOutput", modbusWriteMessage);
-            Console.WriteLine("Completed modbus write value");
-
-            return MessageResponse.Completed;
-        }
 
         /// <summary>
         /// This method is called whenever the module is sent a message from the EdgeHub. 
@@ -220,19 +205,15 @@ namespace DynoCardAlertModule
                     //System.Console.WriteLine(json);
 
                     int cardID = await DataHelper.PersistDynoCard(card);
-                    card.Id = cardID;
+                    
+                    if (cardID > 0)
+                    {
+                        card.Id = cardID;
 
-                    var dynoCardMessage = card.ToDeviceMessage();
-                    await deviceClient.SendEventAsync("output1", dynoCardMessage);
+                        var dynoCardMessage = card.ToDeviceMessage();
+                        await deviceClient.SendEventAsync("output1", dynoCardMessage);
+                    }
                 }
-
-                //Reset regsiter value to 0
-                string writeMessage1 = "{\"HwId\": \"Pump1-DynoCard\", \"UId\":\"1\", \"Address\":\"00109\", \"Value\":\"1\"}";
-                await WriteModusValue(writeMessage1, deviceClient);
-
-                //Reset register value to 1 to refresh buffer
-                string writeMessage0 = "{\"HwId\": \"Pump1-DynoCard\", \"UId\":\"1\", \"Address\":\"00109\", \"Value\":\"0\"}";
-                await WriteModusValue(writeMessage0, deviceClient);
 
                 // Indicate that the message treatment is completed
                 return MessageResponse.Completed;
@@ -300,42 +281,36 @@ namespace DynoCardAlertModule
                         if (previousCardList != null && previousCardList.Count > 0)
                         {
                             Console.WriteLine($"Number of previous entries: {previousCardList.Count}");
+                            Guid anomalyEventId = Guid.NewGuid();
 
-                            var previousCardBytes = CreateByteArray(previousCardList); 
-                            Console.WriteLine($"Number bytes in the array: {previousCardBytes.Length}");
+                           foreach(var card in previousCardList)
+                           {
+                                DynoCardAnomalyEvent dynoCardAnomaly = new DynoCardAnomalyEvent()
+                                {
+                                    AnomalyId = anomalyEventId,
+                                    Timestamp = alertMessage.Timestamp,
+                                    DynoCard = card,
+                                    PumpId = 1
+                                };
 
-                            //Device-to-Cloud message size limit is 256KB, so we need to limit it if the message is larger than that
-                            while (previousCardBytes.Length > 256 * 1000)
-                            {
-                                var card = previousCardList[0];
-                                Console.WriteLine($"Removing card #: {card.Id}, to reduce message size");
+                                var dynoCardAnomalyString = JsonConvert.SerializeObject(dynoCardAnomaly);
+                                var dynoCardAnomalyBytes = Encoding.UTF8.GetBytes(dynoCardAnomalyString);
+                                var previousCardsMessage = new Message(dynoCardAnomalyBytes);
 
-                                previousCardList.RemoveAt(0);
-                                previousCardBytes = CreateByteArray(previousCardList);
-                            }
+                                Console.WriteLine($"Sending anomaly ID: {anomalyEventId}, with dyno card #: {card.Id}");
+                                previousCardsMessage.Properties["MessageType"] = "Alert";
+                                await deviceClient.SendEventAsync("alertOutput", previousCardsMessage);
+                           }
 
-                            DynoCardAnomalyEvent dynoCardAnomaly = new DynoCardAnomalyEvent()
-                            {
-                                Id = Int32.Parse(alertMessage.Id),
-                                Timestamp = alertMessage.Timestamp,
-                                DynoCards = previousCardList,
-                                Pump = 1
-                            };
-
-                            var dynoCardAnomalyString = JsonConvert.SerializeObject(dynoCardAnomaly);
-                            var dynoCardAnomalyBytes = Encoding.UTF8.GetBytes(dynoCardAnomalyString);
-                            var previousCardsMessage = new Message(dynoCardAnomalyBytes);
-
-                            Console.WriteLine("Sending Alert");
-                            previousCardsMessage.Properties["MessageType"] = "Alert";
-                            await deviceClient.SendEventAsync("alertOutput", previousCardsMessage);
-
+                            //Need to add logic to know what register to use for the shut down event
+                            // string writeMessage1 = "{\"HwId\": \"Pump1-DynoCard\", \"UId\":\"1\", \"Address\":\"00109\", \"Value\":\"1\"}";
+                            // await WriteModbusValue(writeMessage1, deviceClient);
                             var stopModbusString = JsonConvert.SerializeObject(new StopModbusMessage());
                             var stopModbusBytes = Encoding.UTF8.GetBytes(stopModbusString);
                             var stopModbusMessage = new Message(stopModbusBytes);
                             await deviceClient.SendEventAsync("shutdownOutput", stopModbusMessage);
 
-                            Console.WriteLine("Completed sending alert");
+                            Console.WriteLine("Completed processing alert");
                         }
                     }
                 }
@@ -364,6 +339,21 @@ namespace DynoCardAlertModule
                 //DeviceClient deviceClient = (DeviceClient)userContext;
                 return MessageResponse.None;
             }
+        }
+
+        private static async Task<MessageResponse> WriteModbusValue(string message, DeviceClient client)
+        {
+            //Write the message back to the modbus interface
+            Console.WriteLine($"Processing modbus write value: {message}");
+
+            var bytes = Encoding.UTF8.GetBytes(message);
+            Message modbusWriteMessage = new Message(bytes);
+            modbusWriteMessage.Properties.Add("command-type", "ModbusWrite");
+
+            await client.SendEventAsync("modbusWriteOutput", modbusWriteMessage);
+            Console.WriteLine("Completed modbus write value");
+
+            return MessageResponse.Completed;
         }
 
         private static byte[] CreateByteArray(List<DynoCard> cardList)

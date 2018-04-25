@@ -36,7 +36,7 @@
             "restartPolicy": "always",
             "settings": {
               "image": "microsoft/azureiotedge-modbus-tcp:1.0.2-preview",
-              "createOptions": "{\"HostConfig\":{\"Devices\": [{\"PathOnHost\": \"/dev/ttyUSB0\",\"PathInContainer\": \"/dev/ttyUSB0\",\"CgroupPermissions\": \"rwm\"}]}}"
+              "createOptions": "{\"HostConfig\":{\"Devices\": [{\"PathOnHost\": \"\",\"PathInContainer\": \"/dev/ttyUSB0\",\"CgroupPermissions\": \"rwm\"}]}}"
             }
           },
           "dynoCardAlertModule": {

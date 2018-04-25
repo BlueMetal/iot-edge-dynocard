@@ -6,16 +6,16 @@ namespace DynoCardAlertModule.Model
 {
     public class DynoCardAnomalyEvent
     {
-        [JsonProperty("id")]
-        public int Id { get; set; }
+        [JsonProperty("anomalyId")]
+        public Guid AnomalyId { get; set; }
 
         [JsonProperty("timestamp")]
         public DateTime Timestamp { get; set; }
 
-        [JsonProperty("pump")]
-        public int Pump { get; set; }
+        [JsonProperty("pumpId")]
+        public int PumpId { get; set; }
 
-        [JsonProperty("dynoCards")]
-        public List<DynoCard> DynoCards { get; set; }
+        [JsonProperty("dynoCard")]
+        public DynoCard DynoCard { get; set; }
     }
 }

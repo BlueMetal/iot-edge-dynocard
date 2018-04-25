@@ -106,7 +106,10 @@ namespace DynoCardAlertModule.Model
             }
 
             System.Console.WriteLine("Parsing surface card.");
-            SurfaceCard surfaceCard = new SurfaceCard();
+            SurfaceCard surfaceCard = new SurfaceCard()
+            {
+                CardCoordinates = new List<CardCoordinate>()
+            };
 
             var timestampProp = ModbusMessage.SurfaceLayoutConfig.Timestamp;
             if (timestampProp != null)
@@ -184,25 +187,32 @@ namespace DynoCardAlertModule.Model
                     Console.WriteLine($"Number of surface points 8-bit value: {numberOfDataPoints}");
                     
                     surfaceCard.NumberOfPoints = numberOfDataPoints;
-                }
 
-                List<CardCoordinate> cardCoordinates = new List<CardCoordinate>();
-                var pointArrayProperty = ModbusMessage.SurfaceLayoutConfig.Point;
-
-                for (int i = 0; i < surfaceCard.NumberOfPoints; i += numberOfPointsProp.NumberOfRegisters)
-                {
-                    var pointsArray = GetValueArray(pointArrayProperty.RegisterNumber + i, pointArrayProperty.NumberOfRegisters, registerValues);
-                    if (pointsArray != null && pointsArray.Count > 1)
+                    if (numberOfDataPoints == 0)
                     {
-                        cardCoordinates.Add(new CardCoordinate()
-                        {
-                            Load = Int32.Parse(pointsArray[0]),
-                            Position = Int32.Parse(pointsArray[1])
-                        });
+                        //If the number of detail points is 0, that's an indication we have bad data.
+                        Console.WriteLine("Zero coordinates found. Returning null card.");
+                        return null;
                     }
-                }
 
-                surfaceCard.CardCoordinates = cardCoordinates;
+                    List<CardCoordinate> cardCoordinates = new List<CardCoordinate>();
+                    var pointArrayProperty = ModbusMessage.SurfaceLayoutConfig.Point;
+
+                    for (int i = 0; i < surfaceCard.NumberOfPoints; i += pointArrayProperty.NumberOfRegisters)
+                    {
+                        var pointsArray = GetValueArray(pointArrayProperty.RegisterNumber + i, pointArrayProperty.NumberOfRegisters, registerValues);
+                        if (pointsArray != null && pointsArray.Count > 1)
+                        {
+                            cardCoordinates.Add(new CardCoordinate()
+                            {
+                                Load = Int32.Parse(pointsArray[0]),
+                                Position = Int32.Parse(pointsArray[1])
+                            });
+                        }
+                    }
+
+                    surfaceCard.CardCoordinates = cardCoordinates;
+                }
             }
 
             return surfaceCard;
@@ -216,8 +226,11 @@ namespace DynoCardAlertModule.Model
                 return null;
             }
 
-            PumpCard pumpCard = new PumpCard();
             Console.WriteLine("Parsing pump card.");
+            PumpCard pumpCard = new PumpCard()
+            {
+                CardCoordinates = new List<CardCoordinate>()
+            };
 
             var timestampProp = ModbusMessage.PumpLayoutConfig.Timestamp;
             if (timestampProp != null)
@@ -316,25 +329,32 @@ namespace DynoCardAlertModule.Model
                     numberOfDataPoints = (int)(ushort)numberOfDataPoints;
                     Console.WriteLine($"Number of pump card points 8-bit value: {numberOfDataPoints}");
                     pumpCard.NumberOfPoints = numberOfDataPoints;
-                }
 
-                List<CardCoordinate> cardCoordinates = new List<CardCoordinate>();
-                var pointArrayProperty = ModbusMessage.PumpLayoutConfig.Point;
-
-                for (int i = 0; i < pumpCard.NumberOfPoints; i += numberOfPointsProp.NumberOfRegisters)
-                {
-                    var pointsArray = GetValueArray(pointArrayProperty.RegisterNumber + i, pointArrayProperty.NumberOfRegisters, registerValues);
-                    if (pointsArray != null && pointsArray.Count > 1)
+                    if (numberOfDataPoints == 0)
                     {
-                        cardCoordinates.Add(new CardCoordinate()
-                        {
-                            Load = Int32.Parse(pointsArray[0]),
-                            Position = Int32.Parse(pointsArray[1])
-                        });
+                        //If the number of detail points is 0, that's an indication we have bad data.
+                        Console.WriteLine("Zero coordinates found. Returning null card."); 
+                        return null;
                     }
-                }
 
-                pumpCard.CardCoordinates = cardCoordinates;
+                    List<CardCoordinate> cardCoordinates = new List<CardCoordinate>();
+                    var pointArrayProperty = ModbusMessage.PumpLayoutConfig.Point;
+
+                    for (int i = 0; i < pumpCard.NumberOfPoints; i += pointArrayProperty.NumberOfRegisters)
+                    {
+                        var pointsArray = GetValueArray(pointArrayProperty.RegisterNumber + i, pointArrayProperty.NumberOfRegisters, registerValues);
+                        if (pointsArray != null && pointsArray.Count > 1)
+                        {
+                            cardCoordinates.Add(new CardCoordinate()
+                            {
+                                Load = Int32.Parse(pointsArray[0]),
+                                Position = Int32.Parse(pointsArray[1])
+                            });
+                        }
+                    }
+
+                    pumpCard.CardCoordinates = cardCoordinates;
+                }
             }
 
             return pumpCard;
