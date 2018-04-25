@@ -1,6 +1,6 @@
 /******************************************************
  *
- * Name:         create-dynocard-db.sql
+ * Name:         create-dynocard-db-azure.sql
  *     
  * Design Phase:
  *     Author:   Mike Shir
