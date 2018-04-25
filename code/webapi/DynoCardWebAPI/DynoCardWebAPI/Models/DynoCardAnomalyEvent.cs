@@ -7,9 +7,9 @@ namespace DynoCardWebAPI.Models
 {
     public class DynoCardAnomalyEvent
     {
-        public int PumpId { get; set; }
-        public int Id { get; set; }
-        public string Timestamp { get; set; }
-        public List<DynoCard> dynoCards = new List<DynoCard>();
+        public Guid AnomalyId { get; set; } // Correlates all dyno cards for this anomaly
+        public string Timestamp { get; set; }  // Timestamp of the anomaly
+        public int PumpId { get; set; } // Pump ID that generated the anomaly
+        public DynoCard DynoCard = new DynoCard();
     }
 }

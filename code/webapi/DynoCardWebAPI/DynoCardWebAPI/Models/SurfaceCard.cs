@@ -12,7 +12,7 @@ namespace DynoCardWebAPI.Models
 
         public SurfaceCard() : base()
         {
-            base.CardType = "S";
+            base.CardType = 0;
         }
     }
 }
