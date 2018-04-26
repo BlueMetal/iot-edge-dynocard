@@ -204,7 +204,7 @@ namespace DynoCardAlertModule
                     string json = JsonConvert.SerializeObject(card);
                     //System.Console.WriteLine(json);
 
-                    int cardID = await DataHelper.PersistDynoCard(card);
+                    int cardID = await (new DataHelper()).PersistDynoCard(card);
                     
                     if (cardID > 0)
                     {
@@ -276,7 +276,7 @@ namespace DynoCardAlertModule
 
                     if (isAnomaly)
                     {
-                        var previousCardList = await DataHelper.GetPreviousCards(alertMessage);
+                        var previousCardList = await (new DataHelper()).GetPreviousCards(alertMessage);
 
                         if (previousCardList != null && previousCardList.Count > 0)
                         {
