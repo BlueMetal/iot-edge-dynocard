@@ -51,14 +51,17 @@ function deploy {
 
     ## run db initialization script
     write-info ("Initializing database {0}/{1}..." -f $dbHost,$dbName)
-    sqlcmd -S $dbHost -d $dbName -U $dbUser -P $dbPass -i $script
-    if($LASTEXITCODE -eq 0) { 
-        $dbInitSuccess = $true
-        write-info "Database initalization was successful."
-     } else {
-        $dbInitSuccess = $false
-     }
-
+    foreach($script in $resource.initalization_scripts) {
+        $scriptPath = (resolve-path (join-path $BASE_PATH $script))
+        write-info ("Executing script: {0}" -f $script)
+        sqlcmd -S $dbHost -d $dbName -U $dbUser -P $dbPass -i $scriptPath
+        if($LASTEXITCODE -eq 0) { 
+            $dbInitSuccess = $true
+            write-info ("Execution of script {0} was successful." -f $script)
+        } else {
+            $dbInitSuccess = $false
+        }
+    }
     ## remove self from firewall
     write-info ("Removing database firewall rule '{0}'..." -f $ruleName,$myIp)
     az sql server firewall-rule delete `
