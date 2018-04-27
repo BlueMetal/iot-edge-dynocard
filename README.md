@@ -3,7 +3,7 @@
 ## Business Problem
 Sucker pumps are a a mainstay of many oil companies.  They run continually, extracting oil from wells in remote areas of the world.
 
-![Sucker Pump](.\images\oil-field-sucker-pump.jpg)
+![Sucker Pump](./images/oil-field-sucker-pump.jpg)
 
 Oil and Gas companies want to operate the sucker pumps in an efficient, safe and environmentally responsible manner.  Companies use dynamometers (dyno) surveys to determine the condition of the pump operating beneath the ground or downhole.  Medium to large oil companies can have thousands of these pumps scattered throughout remote areas of the world.  It is very costly to inspect thousands of Dyno Cards individually.
 
