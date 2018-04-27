@@ -38,7 +38,7 @@ function ConvertTo-Hashtable {
             )
             Write-Output -NoEnumerate $collection
         }
-        elseif($InputObject -is [psobject]) {
+        elseif($InputObject -is [psobject] -and $InputObject -isnot [string]) {
             $hash = @{}
             $InputObject.PSObject.Properties | %{
                 $hash[$_.Name] = ConvertTo-Hashtable $_.Value
@@ -96,20 +96,23 @@ if( ($resource_name -ne "all") -and ($resource_names -notcontains $resource_name
     exit
 }
 
-## log in with Service Principal
-Write-Info "Logging into Azure...";
-if($config.client_id -and $config.client_secret) {
-    $pass = $config.client_secret | ConvertTo-SecureString -AsPlainText -Force
-    $cred = new-object -typename System.Management.Automation.PSCredential -argumentlist $config.client_id, $pass
-    $account = Add-AzureRmAccount -Credential $cred -Tenant $config.tenant_id -SubscriptionId $config.subscription_id-ServicePrincipal
-} elseif (! (get-azurermcontext -ErrorAction SilentlyContinue).Account) {
+## Authenticate to Azure
+Write-Info "Authenticating Azure Powershell with Azure...";
+if (! (get-azurermcontext -ErrorAction SilentlyContinue).Account) {
     Login-AzureRmAccount
+}
+
+Write-Info "Authenticating Azure CLI with Azure...";
+az account get-access-token --subscription $config.subscription_id --output json 2>&1 > $null
+if ($LastExitCode -ne 0) {
+    az login
 }
 
 ## select subscription
 if((Get-AzureRmContext).subscription.id -ne $config.subscription_id) {
     Write-Host ("Selecting subscription '{0}'" -f $config.subscription_id)
     $subscription = Select-AzureRmSubscription -SubscriptionId $config.subscription_id
+    az account set --subscription $config.subscription_id
 }
 
 ## register resource providers

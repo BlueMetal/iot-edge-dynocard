@@ -10,13 +10,19 @@ using DynoCardAlertModule.Model;
 
 namespace DynoCardAlertModule.Data
 {
-    public static class DataHelper
+    public class DataHelper
     {
         public static string ConnectionString { get; set; }
 
-        public static async Task<int> PersistDynoCard(DynoCard card)
+        public async Task<int> PersistDynoCard(DynoCard card)
         {
             int cardID = -1;
+
+            if (card.SurfaceCard == null || card.SurfaceCard.NumberOfPoints == 0)
+            {
+                //If there's no surface card, return without inserting.
+                return -1;
+            }
 
             try
             {
@@ -49,12 +55,6 @@ namespace DynoCardAlertModule.Data
 
                     using (Sql.SqlCommand dynoCardCommand = new Sql.SqlCommand())
                     {
-                        if (card.SurfaceCard == null)
-                        {
-                            //If there's no surface card, return without inserting.
-                            return -1;
-                        }
-
                         //Insert the DynoCard record
                         dynoCardCommand.Connection = conn;
                         string dynoCardInsertStatement = insertDynoCard.ToString();
@@ -69,23 +69,16 @@ namespace DynoCardAlertModule.Data
                         dynoCardCommand.CommandText = surfaceCardInsertStatement;
                         var headerID = await dynoCardCommand.ExecuteScalarAsync();
                         
-                        try
+                        //Insert the Surface card detail records
+                        foreach (var point in card.SurfaceCard.CardCoordinates)
                         {
-                            //Insert the Surface card detail records
-                            foreach (var point in card.SurfaceCard.CardCoordinates)
-                            {
-                                string detailStatement = string.Format(insertDetail, headerID, point.Position, point.Load, DateTime.Now);
-                                //Console.WriteLine($"Surface Detail Statement: {detailStatement}");
-                                dynoCardCommand.CommandText = detailStatement;
-                                await dynoCardCommand.ExecuteNonQueryAsync();
-                            }
+                            string detailStatement = string.Format(insertDetail, headerID, point.Position, point.Load, DateTime.Now);
+                            //Console.WriteLine($"Surface Detail Statement: {detailStatement}");
+                            dynoCardCommand.CommandText = detailStatement;
+                            await dynoCardCommand.ExecuteNonQueryAsync();
                         }
-                        catch(Exception)
-                        {
-
-                        }
-
-                        if (card.PumpCard != null)
+                        
+                        if (card.PumpCard != null && card.PumpCard.NumberOfPoints != 0)
                         {
                             //Insert the Pump card header record
                             string pumpCardInsertStatement = string.Format(insertPumpCard.ToString(), dynoCardID);
@@ -93,20 +86,13 @@ namespace DynoCardAlertModule.Data
                             dynoCardCommand.CommandText = pumpCardInsertStatement;
                             headerID = await dynoCardCommand.ExecuteScalarAsync();
 
-                            try
+                            //Insert the Pump card detail records
+                            foreach (var point in card.PumpCard.CardCoordinates)
                             {
-                                //Insert the Pump card detail records
-                                foreach (var point in card.PumpCard.CardCoordinates)
-                                {
-                                    string detailStatement = string.Format(insertDetail, headerID, point.Position, point.Load, DateTime.Now);
-                                    //Console.WriteLine($"Pump Detail Statement: {detailStatement}"); 
-                                    dynoCardCommand.CommandText = detailStatement;
-                                    await dynoCardCommand.ExecuteNonQueryAsync();
-                                }
-                            }
-                            catch(Exception)
-                            {
-
+                                string detailStatement = string.Format(insertDetail, headerID, point.Position, point.Load, DateTime.Now);
+                                //Console.WriteLine($"Pump Detail Statement: {detailStatement}"); 
+                                dynoCardCommand.CommandText = detailStatement;
+                                await dynoCardCommand.ExecuteNonQueryAsync();
                             }
                         }
                     }
@@ -122,14 +108,31 @@ namespace DynoCardAlertModule.Data
             return await Task.FromResult(cardID);
         }
 
-        public static async Task<List<DynoCard>> GetPreviousCards(DynoCardAnomalyResult anomalyCard)
+        public async Task<List<DynoCard>> GetPreviousCards(DynoCardAnomalyResult anomalyCard)
         {
             DateTime start = anomalyCard.Timestamp.Subtract(TimeSpan.FromMinutes(30));
             DateTime end = anomalyCard.Timestamp;
             int startEpoch = (int)(start.ToUniversalTime().Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
             int endEpoch = (int)(end.ToUniversalTime().Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
 
-            var sql = new StringBuilder("SELECT h.CH_CARD_TYPE, ")
+            System.Console.WriteLine($"Start: {startEpoch}");
+            System.Console.WriteLine($"End: {endEpoch}");
+
+            var sql = new StringBuilder()
+            .Append("WITH cteEndCardID (cardID) ")
+            .Append("AS ( ")
+            .Append("SELECT TOP 1 h.DC_ID ")
+            .Append("FROM ACTIVE.CARD_HEADER h ")
+            .Append($"WHERE h.CH_EPOC_DATE >= {endEpoch} ")
+            .Append("ORDER BY h.CH_EPOC_DATE ), ")
+            .Append("cteStartCardID(cardID) ")
+            .Append("AS ( ")
+            .Append("SELECT TOP 1 h.DC_ID ")
+            .Append("FROM ACTIVE.CARD_HEADER h ")
+            .Append($"WHERE h.CH_EPOC_DATE <= {startEpoch} ")
+            .Append("OR h.CH_EPOC_DATE = (SELECT MIN(CH_EPOC_DATE) FROM ACTIVE.CARD_HEADER) ")
+            .Append("ORDER BY h.DC_ID DESC) ")
+            .Append("SELECT h.CH_CARD_TYPE, ")
             .Append("dc.DC_ID, ")
             .Append("h.CH_ID, ")
             .Append("h.CH_SCALED_MAX_LOAD, ")
@@ -144,12 +147,13 @@ namespace DynoCardAlertModule.Data
             .Append("d.CD_POSITION, ")
             .Append("d.CD_LOAD, ")
             .Append("h.CH_EPOC_DATE, ")
-            .Append("dc.PU_ID ")
+            .Append("dc.PU_ID, ")
+            .Append("h.CH_NUMBER_OF_POINTS ")
             .Append("FROM [ACTIVE].[DYNO_CARD] dc ")
             .Append("JOIN [ACTIVE].[CARD_HEADER] h ON dc.DC_ID = h.DC_ID ")
             .Append("JOIN [ACTIVE].[CARD_DETAIL] d ON h.CH_ID = d.CH_ID ")
-            .Append($"WHERE h.CH_EPOC_DATE >= {startEpoch} ")
-            .Append($"AND h.CH_EPOC_DATE <= {endEpoch} ")
+            .Append("JOIN cteStartCardID sc ON h.DC_ID >= sc.cardID ")
+            .Append("JOIN cteEndCardID ec ON h.DC_ID <= ec.cardID ")
             .Append("ORDER BY h.CH_ID DESC");
 
             Dictionary<int, DynoCard> cardList = new Dictionary<int, DynoCard>();
@@ -183,7 +187,7 @@ namespace DynoCardAlertModule.Data
                                 pumpCard = null;
                                 surfaceCard = null;
                             }
-
+                            
                             if (cardType == CardType.Surface)
                             {
                                 if (surfaceCard == null)
@@ -196,6 +200,7 @@ namespace DynoCardAlertModule.Data
                                         ScaledMinLoad = (int)results.GetFloat(4),
                                         StrokeLength = (int)results.GetFloat(5),
                                         StrokePeriod = (int)results.GetFloat(6),
+                                        NumberOfPoints = results.GetInt32(16),
                                         CardType = cardType,
                                         CardCoordinates = new List<CardCoordinate>()
                                     };
@@ -244,6 +249,7 @@ namespace DynoCardAlertModule.Data
                                         NetStroke = (int)results.GetFloat(8),
                                         PumpFillage = (int)results.GetFloat(9),
                                         FluidLoad = (int)results.GetFloat(10),
+                                        NumberOfPoints = results.GetInt32(16),
                                         CardType = cardType,
                                         CardCoordinates = new List<CardCoordinate>()
                                     };
@@ -289,7 +295,7 @@ namespace DynoCardAlertModule.Data
             {
                 cards.Last().TriggeredEvents = true;
             }
-            
+
             return await Task.FromResult(cards);
         }
     }
