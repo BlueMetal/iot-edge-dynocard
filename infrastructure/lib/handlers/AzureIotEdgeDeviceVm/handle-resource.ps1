@@ -7,7 +7,7 @@
 #     "deviceHub"  : "iot-edge-dev-hub",
 #     "deviceUsername" : "edgeuser",
 #     "devicePassword" : "tzi61HcJjczlD6wBAvOM37PBPCUJkiTurwEV",
-#     "vnetName"   :  "oxy-iot-edge-dev-vnet",
+#     "vnetName"   :  "iot-edge-dev-vnet",
 #     "subnetName" : "edge_devices"
 # }
 Param(
