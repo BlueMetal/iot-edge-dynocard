@@ -7,12 +7,19 @@ namespace DynoCardWebAPI.Helpers
 {
     public class Settings
     {
-        public string ConnectionString { get; set; }
-        public string DeviceConnectionString { get; set; }
-
+        public ConnectionStrings ConnectionStrings { get; set; }
         public Settings()
         {
         }
 
+    }
+
+    public class ConnectionStrings
+    {
+        public string DynoCardDbConnString { get; set; }
+        public string DeviceConnectionString { get; set; }
+
+        public ConnectionStrings()
+        { }
     }
 }

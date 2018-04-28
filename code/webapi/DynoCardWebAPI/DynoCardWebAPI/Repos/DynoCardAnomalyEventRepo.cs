@@ -1,10 +1,5 @@
 ﻿using DynoCardWebAPI.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using System.Data.SqlClient;
 using DynoCardWebAPI.Helpers;
 using Microsoft.Extensions.Options;
@@ -27,7 +22,7 @@ namespace DynoCardWebAPI.Repos
                 return;
 
             // Create a new SQL Connection
-            using (SqlConnection sqlConn = new SqlConnection(this.settings.ConnectionString))
+            using (SqlConnection sqlConn = new SqlConnection(this.settings.ConnectionStrings.DynoCardDbConnString))
             {
                 // Open a connection to the database
                 sqlConn.Open();
@@ -79,7 +74,7 @@ namespace DynoCardWebAPI.Repos
                 finally
                 {
                     // Close the database connection
-                    if (sqlConn != null & sqlConn.State == System.Data.ConnectionState.Open)
+                    if (sqlConn != null && sqlConn.State == System.Data.ConnectionState.Open)
                     {
                         sqlConn.Close();
                     }

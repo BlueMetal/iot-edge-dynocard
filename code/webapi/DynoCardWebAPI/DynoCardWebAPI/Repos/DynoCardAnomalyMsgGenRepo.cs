@@ -1,11 +1,6 @@
 ﻿using DynoCardWebAPI.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using System.Data.SqlClient;
 using DynoCardWebAPI.Helpers;
 using Microsoft.Extensions.Options;
 using Microsoft.Azure.Devices.Client;
@@ -24,7 +19,7 @@ namespace DynoCardWebAPI.Repos
 
         public void Send(DynoCardAnomalyEvent dcae)
         {
-            DeviceClient deviceClient = DeviceClient.CreateFromConnectionString(settings.DeviceConnectionString);
+            DeviceClient deviceClient = DeviceClient.CreateFromConnectionString(settings.ConnectionStrings.DeviceConnectionString);
 
             if (deviceClient == null)
             {

@@ -18,12 +18,6 @@ namespace DynoCardWebAPI.Controllers
             this.dynoCardAnomalyEventRepo = dynoCardAnomalyEventRepo;
         }
 
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "dyno card 1", "dyno card 2" };
-        }
-
         // POST api/values
         [HttpPost]
         public void Post([FromBody]DynoCardAnomalyEvent dcae)

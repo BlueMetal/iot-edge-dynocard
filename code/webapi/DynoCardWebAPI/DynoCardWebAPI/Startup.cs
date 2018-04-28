@@ -15,11 +15,13 @@ namespace DynoCardWebAPI
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IHostingEnvironment environment, IConfiguration configuration)
         {
             Configuration = configuration;
+            Environment = environment;
         }
 
+        public IHostingEnvironment Environment { get; }
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -31,6 +33,7 @@ namespace DynoCardWebAPI
 
             services.AddTransient<IDynoCardAnomalyEventRepo, DynoCardAnomalyEventRepo>();
             services.AddTransient<IDynoCardAnomalyMsgGenRepo, DynoCardAnomalyMsgGenRepo>();
+            services.AddTransient<IDynoCardHealthRepo, DynoCardHealthRepo>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
