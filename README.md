@@ -3,18 +3,18 @@
 ## Business Problem
 Sucker pumps are a a mainstay of many oil companies.  They run continually, extracting oil from wells in remote areas of the world.
 
-[Image of Sucker Pump - TBD]
+![Sucker Pump](./images/oil-field-sucker-pump.jpg)
 
-Oil and Gas companies want to operate the sucker pumps in an efficient, safe and environmentally responsible manner.  Companies use dynamometers (dyno) surveys determine the condition of the pump operating beneath the ground or downhole.  Medium to large oil companies can have thousands of these pumps scattered throughout remote areas of the world.  It is very costly to inspect the Dyno Cards individually for thousands of these pumps.
+Oil and Gas companies want to operate the sucker pumps in an efficient, safe and environmentally responsible manner.  Companies use dynamometers (dyno) surveys to determine the condition of the pump operating beneath the ground or downhole.  Medium to large oil companies can have thousands of these pumps scattered throughout remote areas of the world.  It is very costly to inspect thousands of Dyno Cards individually.
 
-If the dyno card output can be evaluated on the sucker pump to determine if the pump in not operating correctly then the pump can be stopped or potentially slowed down.
+A technology solution can be implemented to detect issues with the pump using data points captured from the Dyno Card, capture historical data, potentially stop the pump and alert field technicians.
 
 ## Business Solution Demo
-The goal of this Dyno Card demo is to show how Azure technologies can be applied to 
+The goal of this Dyno Card demo is to show how Azure technologies can be applied to meet this challenge.  Azure IoT Edge technologies will be applied to:
 
 ```
 1. Detect issues at the edge
-2. Send both immediate and historical dyno card messagse to the cloud
+2. Send both immediate and historical dyno card messages to the cloud.  These messages can used to issue alerts.
 3. Visualize both the surface and pump card
 ```
 
@@ -33,4 +33,4 @@ This github repo demostrates how to utilize:
 
 ![cover](./images/iot-edge-dynocard-arch.JPG)
 
-The [[Wiki|WikiLink]] contains more information about each of the individual portion of this demo.
+The [Wiki](https://github.com/BlueMetal/iot-edge-dynocard/wiki) contains more information about each of the individual portion of this demo.
