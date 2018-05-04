@@ -13,6 +13,7 @@ using Microsoft.Azure.Devices.Client.Transport.Mqtt;
 using System.Collections.Generic;     // for KeyValuePair<>
 using Microsoft.Azure.Devices.Shared; // for TwinCollection
 using Newtonsoft.Json;                // for JsonConvert
+using Newtonsoft.Json.Linq;
 using DynoCardAlertModule.Model;
 using DynoCardAlertModule.Data;
 using DynoCardAlertModule.Config;
@@ -129,6 +130,10 @@ namespace DynoCardAlertModule
                 // Register callback to be called when an alert is received by the module
                 await ioTHubModuleClient.SetInputMessageHandlerAsync("alertInput", ProcessAlert, ioTHubModuleClient);
 
+                Console.WriteLine("Setting config update direct method handler");
+                // Register callback to be called when an alert is received by the module
+                await ioTHubModuleClient.SetMethodHandlerAsync("configUpdate", ConfigurationUpdate, ioTHubModuleClient);
+
                 Console.WriteLine("Done setting inputs");
             }
             catch (Exception ex)
@@ -136,6 +141,49 @@ namespace DynoCardAlertModule
                 Console.WriteLine($"Exception during Init: {ex.Message}");
                 Console.WriteLine(ex.StackTrace);
             }
+        }
+
+        private static async Task<MethodResponse> ConfigurationUpdate(MethodRequest methodRequest, object userContext)
+        {
+            Console.WriteLine("\nReceiving cloud to device messages from service");
+
+            try
+            {
+                var messageBody = JObject.Parse(methodRequest.DataAsJson);
+                string destinationOutput = messageBody.GetValue("destination")?.ToString();
+                System.Console.WriteLine($"Recevied message for output: {destinationOutput}");
+
+                string content = messageBody.GetValue("content")?.ToString();
+                System.Console.WriteLine($"Message content: {content}");
+
+                var configUpdateMessageContent = JsonConvert.SerializeObject(content);
+                var configUpdateMessagByteString = Encoding.UTF8.GetBytes(configUpdateMessageContent);
+                Message configUpdateMessage = new Message(configUpdateMessagByteString);
+
+                DeviceClient deviceClient = (DeviceClient)userContext;
+                await deviceClient.SendEventAsync(destinationOutput, configUpdateMessage);
+            }
+            catch (AggregateException ex)
+            {
+                foreach (Exception exception in ex.InnerExceptions)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("Error in sample: {0}", exception);
+                }
+                
+                // Indicate that the message treatment is not completed
+                return new MethodResponse(500);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine();
+                Console.WriteLine("Error in sample: {0}", ex.Message);
+                
+                // Indicate that the message treatment is not completed
+                return new MethodResponse(500);
+            }
+
+            return new MethodResponse(200);
         }
 
         private static Task OnDesiredPropertiesUpdate(TwinCollection desiredProperties, object userContext)
