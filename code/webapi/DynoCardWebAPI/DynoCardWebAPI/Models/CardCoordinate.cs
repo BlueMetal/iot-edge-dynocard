@@ -9,11 +9,13 @@ namespace DynoCardWebAPI.Models
     {
         public float Position { get; set; }
         public float Load { get; set; }
+        public int Order { get; set; }
 
-        public CardCoordinate(float position, float load)
+        public CardCoordinate(int order, float position, float load)
         {
             this.Position = position;
             this.Load = load;
+            this.Order = order;
         }
     }
 }
