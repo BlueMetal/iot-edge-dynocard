@@ -36,6 +36,26 @@
                 "../code/containers/mssql_db/create-dynocard-schema.sql"
             ]
         },
+        "sample_data" : {
+            "type" : "DatabaseScriptExecutor",
+            "resource_group" : "iot-dynocard-demo",
+            "hostname" : {
+                "type" : "AzureRMDeploymentOutput",
+                "resource_group" : "iot-dynocard-demo",
+                "deployment_name" : "base_infrastructure",
+                "key" : "dynocardDbServerName"
+            },
+            "database" : "db4cards",
+            "username" : "dyno_user",
+            "password" : "GMZNAQ]Q6R6Ljz9>",
+            "scripts" : [
+                "../code/containers/mssql_db/insert-pump-data-set1.sql",
+                "../code/containers/mssql_db/insert-pump-data-set2.sql",
+                "../code/containers/mssql_db/insert-surface-data-set1.sql",
+                "../code/containers/mssql_db/insert-surface-data-set2.sql",
+                "../code/containers/mssql_db/load-dynocard-data.sql"
+            ]
+        },
         "vnet" : {
             "type" : "AzureRMDeployment",
             "resource_group":"iot-dynocard-demo-devices",
