@@ -12,12 +12,13 @@
 -- Assumes that the [db4cards] database has already been created
 -- Ensure that [db4cards] database is being used
 
--- Service Account
+-- Service Accounts
 CREATE USER [dyno_user] WITH PASSWORD = 'GMZNAQ]Q6R6Ljz9>';
+--CREATE USER [dyno_user] WITH PASSWORD = 'GMZNAQdQ6R6Ljz97';
 
 -- Give rights
 EXEC sp_addrolemember 'db_owner', 'dyno_user'  
-
+EXEC sp_addrolemember 'db_datareader', 'dyno_pbi_user'
 --
 -- Create ACTIVE schema
 --
@@ -206,6 +207,7 @@ CREATE TABLE [ACTIVE].[CARD_DETAIL]
 (
   CD_ID INT IDENTITY(1, 1) NOT NULL,
   CH_ID INT NOT NULL,
+  CD_EDGE_ID INT NULL,
   CD_POSITION REAL NOT NULL,
   CD_LOAD REAL NOT NULL,
   CD_UPDATE_DATE DATETIME CONSTRAINT [DF_CARD_DTL_UPD_DATE] DEFAULT (getdate()) ,
@@ -258,11 +260,6 @@ CREATE TABLE [STAGE].[PUMP_DATA]
   CONSTRAINT [PK_PUMP_DATA_ID] PRIMARY KEY CLUSTERED (PD_ID ASC)
 );
 
---
--- Create Dyno Card Anomaly View
---
-
--- Delete the view if it exists
 DROP VIEW IF EXISTS [ACTIVE].[DYNO_CARD_ANOMALY_VIEW]
 GO
 
@@ -274,7 +271,7 @@ CREATE VIEW [ACTIVE].[DYNO_CARD_ANOMALY_VIEW] AS
 		   CD.CH_ID as CardHeader_ID,
 		   CH.CH_CARD_TYPE as Card_Type,
 		   CH.CH_EPOC_DATE as EPOC_DATE,
-		   CD.CD_ID as Card_ID,
+		   CD.CD_EDGE_ID as Card_ID,
 		   CD.CD_POSITION as Postion,
 		   CD.CD_LOAD as Load
 	FROM

@@ -3,7 +3,6 @@
 ## init.sh - Container initalization and startup script
 ##
 SLEEP_TIME=5
-DB_INIT_SQL_FILE='create-dynocard-schema.sql'
 
 ## start MSSQL in the background
 echo "[INFO] init.sh: Starting SQL Server in the background..."
@@ -21,8 +20,11 @@ echo "[INFO] init.sh: SQL Server is UP!"
 echo $SQL_OUTPUT
 
 ## import the initial schema
-echo "[INFO] init.sh: Initalizing database..."
-/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -d master -e -i $DB_INIT_SQL_FILE
+echo "[INFO] init.sh: Initalizing db4cards database..."
+/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -d master -e -i create-dynocard-db-edge.sql
+
+echo "[INFO] init.sh: Initalizing db4cards database schema..."
+/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -d db4cards -e -i create-dynocard-schema.sql
 
 ## if initial schema load was successful, wait on MSSQL server process (forever) if not, die.
 if [ $? -eq 0 ]; then
