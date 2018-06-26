@@ -63,9 +63,9 @@ namespace DynoCardWebAPI.Controllers
             dynoCard.surfaceCard.StrokeLength = 103;
             dynoCard.surfaceCard.StrokePeriod = 104;
 
-            dynoCard.surfaceCard.cardCoordinates.Add(new CardCoordinate(1.1F, 1.2F));
-            dynoCard.surfaceCard.cardCoordinates.Add(new CardCoordinate(1.3F, 1.4F));
-            dynoCard.surfaceCard.cardCoordinates.Add(new CardCoordinate(1.5F, 1.6F));
+            dynoCard.surfaceCard.cardCoordinates.Add(new CardCoordinate(1, 1.1F, 1.2F));
+            dynoCard.surfaceCard.cardCoordinates.Add(new CardCoordinate(2, 1.3F, 1.4F));
+            dynoCard.surfaceCard.cardCoordinates.Add(new CardCoordinate(3, 1.5F, 1.6F));
 
             // Add Pump Card #1
             dynoCard.pumpCard = new PumpCard();
@@ -78,9 +78,9 @@ namespace DynoCardWebAPI.Controllers
             dynoCard.pumpCard.ScaledMaxLoad = 205;
             dynoCard.pumpCard.ScaledMinLoad = 206;
 
-            dynoCard.pumpCard.cardCoordinates.Add(new CardCoordinate(2.1F, 1.2F));
-            dynoCard.pumpCard.cardCoordinates.Add(new CardCoordinate(2.3F, 2.4F));
-            dynoCard.pumpCard.cardCoordinates.Add(new CardCoordinate(2.5F, 2.6F));
+            dynoCard.pumpCard.cardCoordinates.Add(new CardCoordinate(1, 2.1F, 1.2F));
+            dynoCard.pumpCard.cardCoordinates.Add(new CardCoordinate(2, 2.3F, 2.4F));
+            dynoCard.pumpCard.cardCoordinates.Add(new CardCoordinate(3, 2.5F, 2.6F));
 
             dcae.DynoCard = dynoCard;
 

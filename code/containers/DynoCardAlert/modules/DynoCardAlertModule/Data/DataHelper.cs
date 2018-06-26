@@ -207,6 +207,7 @@ namespace DynoCardAlertModule.Data
 
                                     surfaceCard.CardCoordinates.Add(new CardCoordinate()
                                     {
+                                        Order = results.GetInt32(11),
                                         Position = (int)results.GetFloat(12),
                                         Load = (int)results.GetFloat(13)
                                     });
@@ -256,6 +257,7 @@ namespace DynoCardAlertModule.Data
 
                                     pumpCard.CardCoordinates.Add(new CardCoordinate()
                                     {
+                                        Order = results.GetInt32(11),
                                         Position = (int)results.GetFloat(12),
                                         Load = (int)results.GetFloat(13)
                                     });
