@@ -1,0 +1,139 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "streamAnalytics": {
+            "type": "object"
+        },
+        "iotHub":{
+            "type": "object"
+        },
+        "dataLake":{
+            "type":"object"
+        },
+        "omsSettings":{
+            "type":"object"
+        }
+    },
+    "resources": [
+        {
+            "name": "[parameters('streamAnalytics').name]",
+            "type": "Microsoft.StreamAnalytics/StreamingJobs",
+            "apiVersion": "2016-03-01",
+            "location": "[parameters('streamAnalytics').location]",
+            "properties": {
+                "sku": {
+                    "name": "[parameters('streamAnalytics').sku]"
+                },
+                "outputErrorPolicy": "stop",
+                "eventsOutOfOrderPolicy": "adjust",
+                "eventsOutOfOrderMaxDelayInSeconds": 0,
+                "eventsLateArrivalMaxDelayInSeconds": 5,
+                "dataLocale": "en-US",
+                "inputs": [
+                    {
+                        "Name": "IoTHub",
+                        "Properties": {
+                            "DataSource": {
+                                "Properties": {
+                                    "iotHubNamespace": "[parameters('iotHub').name]",
+                                    "sharedAccessPolicyKey": "[listkeys(resourceId('Microsoft.Devices/IotHubs/IotHubKeys',parameters('iotHub').name, 'iothubowner'),'2016-02-03').primaryKey]",
+                                    "sharedAccessPolicyName": "iothubowner",
+                                    "endpoint": "messages/events"
+                                },
+                                "Type": "Microsoft.Devices/IotHubs"
+                            },
+                            "Serialization": {
+                                "Properties": {
+                                    "Encoding": "UTF8"
+                                },
+                                "Type": "Json"
+                            },
+                            "Type": "Stream"
+                        }
+                    }
+                ],
+                "outputs": [
+                    {
+                        "type": "Microsoft.StreamAnalytics/streamingjobs/outputs",
+                        "name": "DataLake",
+                        "apiVersion": "2016-03-01",
+                        "scale": null,
+                        "properties": {
+                            "datasource": {
+                                "type": "[concat('Microsoft.DataLake/Accounts')]",
+                                "properties": {
+                                    "filePathPrefix": "dynocards/{date}",
+                                    "accountName": "[parameters('dataLake').name]",
+                                    "tenantId": "[parameters('streamAnalytics').tenantId]",
+                                    "dateFormat": "yyyy-MM-dd",
+                                    "timeFormat": "HH",
+                                    "refreshToken": "PLACEHOLDER_DO_NOT_REMOVE",
+                                    "accessToken": null,
+                                    "tokenUserPrincipalName": "[parameters('streamAnalytics').tokenUserPrincipalName]",
+                                    "tokenUserDisplayName": "azure"
+                                }
+                            },
+                            "serialization": {
+                                "type": "Json",
+                                "properties": {
+                                    "encoding": "UTF8",
+                                    "format": "LineSeparated"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "transformation": {
+                    "name": "Transformation",
+                    "properties": {
+                        "streamingUnits": 1,
+                        "query": "SELECT\r\n    *\r\nINTO\r\n    [DataLake]\r\nFROM\r\n    [IoTHub]"
+                    }
+                }
+            },
+            "resources": [
+                {
+                    "name": "Microsoft.Insights/service",
+                    "type": "providers/diagnosticSettings",
+                    "apiVersion": "[parameters('omsSettings').omsEnableApiVersion]",
+                    "dependsOn": [
+                        "[concat('Microsoft.StreamAnalytics/StreamingJobs/', parameters('streamAnalytics').name)]"
+                    ],
+                    "properties": {
+                        "workspaceId": "[resourceId('Microsoft.OperationalInsights/workspaces/', parameters('omsSettings').omsWorkspaceName)]",
+                        "logs": [
+                            {
+                                "category": "Execution",
+                                "enabled": true,
+                                "retentionPolicy": {
+                                    "days": 0,
+                                    "enabled": false
+                                }
+                            },
+                            {
+                                "category": "Authoring",
+                                "enabled": true,
+                                "retentionPolicy": {
+                                    "days": 0,
+                                    "enabled": false
+                                }
+                            }
+                        ],
+                        "metrics": [
+                            {
+                                "timeGrain": "AllMetrics",
+                                "category": "AllMetrics",
+                                "enabled": true,
+                                "retentionPolicy": {
+                                    "enabled": false,
+                                    "days": 0
+                                }
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
+    ]
+}

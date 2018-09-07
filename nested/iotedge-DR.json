@@ -1,0 +1,130 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "edgeVmSettings": {
+            "type": "object"
+        },
+        "vnetSettings":{
+            "type": "object"
+        },
+        "dynocardip":{
+            "type": "string"
+        }
+    },
+    "variables": {
+        "vnetId": "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetSettings').vnetName)]",
+        "subnetRef": "[concat(variables('vnetId'), '/subnets/', parameters('vnetSettings').subnetName1)]"
+    },
+    "resources": [
+         {
+            "apiVersion": "2017-04-01",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "name": "[parameters('edgeVmSettings').pipName]",
+            "location": "[parameters('edgeVmSettings').location]",
+            "properties": {
+                "publicIPAllocationMethod": "[parameters('edgeVmSettings').publicIPAddressType]",
+                "dnsSettings": {
+                    "domainNameLabel": "[parameters('edgeVmSettings').dnsLabelPrefix]"
+                }
+            }
+        },
+        {
+            "apiVersion": "2017-04-01",
+            "type": "Microsoft.Network/networkInterfaces",
+            "name": "[parameters('edgeVmSettings').nicName]",
+            "location": "[parameters('edgeVmSettings').location]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/publicIPAddresses/', parameters('edgeVmSettings').pipName)]"
+            ],
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "properties": {
+                            "privateIPAllocationMethod": "Dynamic",
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses',parameters('edgeVmSettings').pipName)]"
+                            },
+                            "subnet": {
+                                "id": "[variables('subnetRef')]"
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "apiVersion": "2017-03-30",
+            "type": "Microsoft.Compute/virtualMachines",
+            "name": "[parameters('edgeVmSettings').edgeVmName]",
+            "location": "[parameters('edgeVmSettings').location]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/networkInterfaces/', parameters('edgeVmSettings').nicName)]"
+            ],
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "[parameters('edgeVmSettings').edgevmSize]"
+                },
+                "osProfile": {
+                    "computerName": "[parameters('edgeVmSettings').edgeVmName]",
+                    "adminUsername": "[parameters('edgeVmSettings').edgeUsername]",
+                    "adminPassword": "[parameters('edgeVmSettings').edgePassword]"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "[parameters('edgeVmSettings').imagePublisher]",
+                        "offer": "[parameters('edgeVmSettings').imageOffer]",
+                        "sku": "[parameters('edgeVmSettings').ubuntuOSVersion]",
+                        "version": "latest"
+                    },
+                    "osDisk": {
+                        "createOption": "FromImage"
+                    },
+                    "dataDisks": [
+                        {
+                            "diskSizeGB": 1023,
+                            "lun": 0,
+                            "createOption": "Empty"
+                        }
+                    ]
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces',parameters('edgeVmSettings').nicName)]"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "name": "[concat(parameters('edgeVmSettings').edgeVmName,'/Extensions')]",
+            "location": "[parameters('edgeVmSettings').location]",
+            "apiVersion": "2017-03-30",
+            "dependsOn": [
+                "[concat('Microsoft.Compute/virtualMachines/',parameters('edgeVmSettings').edgeVmName)]"
+            ],
+            "properties": {
+                "publisher": "Microsoft.Azure.Extensions",
+                "type": "CustomScript",
+                "typeHandlerVersion": "2.0",
+                "autoUpgradeMinorVersion": true,
+                "settings": {
+                    "fileUris": [
+                        "[parameters('edgeVmSettings').fileUri]"
+                    ],
+                    "commandToExecute": "[concat('sh iot-edge.sh', ' ', parameters('edgeVmSettings').edgeUsername, ' ',parameters('edgeVmSettings').iothubName, ' ',parameters('edgeVmSettings').functionAppUrl, ' ',parameters('edgeVmSettings').DeviceConfig, ' ',parameters('edgeVmSettings').deviceId, ' ',parameters('edgeVmSettings').iothubPrimaryKey, ' ',parameters('dynocardip'))]"
+                }
+            }
+        }
+    ],
+    "outputs": {
+        "edgePip": {
+            "type":"string",
+            "value" :  "[reference(concat('Microsoft.Network/publicIpAddresses/', parameters('edgeVmSettings').pipName)).ipAddress]"
+          
+        }
+    }
+}

@@ -1,0 +1,112 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "webApp": {
+            "type": "object"
+        },
+        "omsSettings":{
+            "type":"object"
+        }
+    },
+    "resources": [
+        {
+            "name": "[parameters('webApp').nameDr]",
+            "type": "Microsoft.Logic/workflows",
+            "apiVersion": "2016-06-01",
+            "location": "[parameters('webApp').locationDr]",
+            "properties": {
+                "definition": {
+                    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {
+                        "$connections": {
+                            "defaultValue": {},
+                            "type": "Object"
+                        }
+                    },
+                    "triggers": {
+                        "When_a_message_is_received_in_a_queue_(auto-complete)": {
+                            "inputs": {
+                                "host": {
+                                    "connection": {
+                                        "name": "@parameters('$connections')['servicebus']['connectionId']"
+                                    }
+                                },
+                                "method": "get",
+                                "path": "/@{encodeURIComponent(encodeURIComponent('dynocard-output'))}/messages/head",
+                                "queries": {
+                                    "queueType": "Main"
+                                }
+                            },
+                            "recurrence": {
+                                "frequency": "Second",
+                                "interval": 10
+                            },
+                            "type": "ApiConnection"
+                        }
+                    },
+                    "actions": {
+                        "HTTP": {
+                            "inputs": {
+                                "body": "@substring(base64ToString(triggerBody()?['ContentData']), indexof(base64ToString(triggerBody()?['ContentData']), '{'), sub(add(lastindexof(base64ToString(triggerBody()?['ContentData']), '}'),1),indexof(base64ToString(triggerBody()?['ContentData']),'{')))",
+                                "headers": {
+                                    "Content-Type": "application/json"
+                                },
+                                "method": "POST",
+                                "uri": "[concat('http://',concat(parameters('webApp').webSiteNameDr,'.azurewebsites.net'),'/api/dynocard')]"
+                            },
+                            "runAfter": {},
+                            "type": "Http"
+                        }
+                    },
+                    "outputs": {}
+                },
+                "parameters": {
+                    "$connections": {
+                        "value": {
+                            "servicebus": {
+                                "id": "[concat(subscription().id,'/providers/Microsoft.Web/locations/', parameters('webApp').locationDr, '/managedApis/servicebus')]",
+                                "connectionId": "[resourceId('Microsoft.Web/connections', 'servicebusDr')]"
+                            }
+                        }
+                    }
+                }
+            },
+            "resources": [
+                {
+                    "name": "Microsoft.Insights/service",
+                    "type": "providers/diagnosticSettings",
+                    "apiVersion": "2015-07-01",
+                    "dependsOn": [
+                        "[concat('Microsoft.Logic/workflows/', parameters('webApp').nameDr)]"
+                    ],
+                    "properties": {
+                        "workspaceId": "[resourceId('Microsoft.OperationalInsights/workspaces/', parameters('omsSettings').omsWorkspaceName)]",
+                        "logs": [
+                            {
+                                "category": "WorkflowRuntime",
+                                "enabled": true,
+                                "retentionPolicy": {
+                                    "days": 0,
+                                    "enabled": false
+                                }
+                            }
+                        ],
+                        "metrics": [
+                            {
+                                "timeGrain": "AllMetrics",
+                                "category": "AllMetrics",
+                                "enabled": true,
+                                "retentionPolicy": {
+                                    "enabled": false,
+                                    "days": 0
+                                }
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
+    ]
+}

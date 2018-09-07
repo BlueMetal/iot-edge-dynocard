@@ -1,0 +1,182 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "sqlServer": {
+            "type": "object"
+        },
+        "omsSettings": {
+            "type": "object"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "name": "[parameters('sqlServer').serverName]",
+            "type": "Microsoft.Sql/servers",
+            "apiVersion": "2014-04-01",
+            "location": "[parameters('sqlServer').location]",
+            "properties": {
+                "administratorLogin": "[parameters('sqlServer').sqlAdministratorLogin]",
+                "administratorLoginPassword": "[parameters('sqlServer').sqlAdministratorLoginPassword]",
+                "version": "12.0"
+            },
+            "resources": [
+                {
+                    "name": "[parameters('sqlServer').databaseName]",
+                    "apiVersion": "2014-04-01",
+                    "type": "databases",
+                    "location": "[parameters('sqlServer').location]",
+                    "dependsOn": [
+                        "[concat('Microsoft.Sql/servers/', parameters('sqlServer').serverName)]"
+                    ],
+                    "properties": {
+                        "edition": "[parameters('sqlServer').databaseEdition]",
+                        "collation": "[parameters('sqlServer').databaseCollation]",
+                        "maxSizeBytes": "[parameters('sqlServer').databaseMaxSizeBytes]",
+                        "requestedServiceObjectiveName": "[parameters('sqlServer').databaseRequestedServiceObjectiveName]"
+                    },
+                    "resources": [
+                        {
+                            "name": "myImport",
+                            "type": "extensions",
+                            "apiVersion": "2014-04-01-preview",
+                            "dependsOn": [
+                                "[parameters('sqlServer').serverName]",
+                                "[parameters('sqlServer').databaseName]"
+                            ],
+                            "tags": {
+                                "displayName": "myImport"
+                            },
+                            "properties": {
+                                "storageKeyType": "[parameters('sqlServer').storageKeyType]",
+                                "storageKey": "[parameters('sqlServer').storageKey]",
+                                "storageUri": "[parameters('sqlServer').storageUri]",
+                                "administratorLogin": "[parameters('sqlServer').sqlAdministratorLogin]",
+                                "administratorLoginPassword": "[parameters('sqlServer').sqlAdministratorLoginPassword]",
+                                "operationMode": "Import"
+                            }
+                        },
+                        {
+                            "name": "Microsoft.Insights/service",
+                            "type": "providers/diagnosticSettings",
+                            "apiVersion": "2015-07-01",
+                            "dependsOn": [
+                                "[concat('Microsoft.Sql/servers/', parameters('sqlServer').serverName)]",
+                                "[concat('Microsoft.Sql/servers/',parameters('sqlServer').serverName, '/databases/', parameters('sqlServer').databaseName)]"
+                            ],
+                            "properties": {
+                                "workspaceId": "[resourceId('Microsoft.OperationalInsights/workspaces/', parameters('omsSettings').omsWorkspaceName)]",
+                                "logs": [
+                                    {
+                                        "category": "QueryStoreRuntimeStatistics",
+                                        "enabled": true,
+                                        "retentionPolicy": {
+                                            "days": 0,
+                                            "enabled": false
+                                        }
+                                    },
+                                    {
+                                        "category": "QueryStoreWaitStatistics",
+                                        "enabled": true,
+                                        "retentionPolicy": {
+                                            "days": 0,
+                                            "enabled": false
+                                        }
+                                    },
+                                    {
+                                        "category": "Errors",
+                                        "enabled": true,
+                                        "retentionPolicy": {
+                                            "days": 0,
+                                            "enabled": false
+                                        }
+                                    },
+                                    {
+                                        "category": "DatabaseWaitStatistics",
+                                        "enabled": true,
+                                        "retentionPolicy": {
+                                            "days": 0,
+                                            "enabled": false
+                                        }
+                                    },
+                                    {
+                                        "category": "Timeouts",
+                                        "enabled": true,
+                                        "retentionPolicy": {
+                                            "days": 0,
+                                            "enabled": false
+                                        }
+                                    },
+                                    {
+                                        "category": "Blocks",
+                                        "enabled": true,
+                                        "retentionPolicy": {
+                                            "days": 0,
+                                            "enabled": false
+                                        }
+                                    },
+                                    {
+                                        "category": "SQLInsights",
+                                        "enabled": true,
+                                        "retentionPolicy": {
+                                            "days": 0,
+                                            "enabled": false
+                                        }
+                                    },
+                                    {
+                                        "category": "Audit",
+                                        "enabled": true,
+                                        "retentionPolicy": {
+                                            "days": 0,
+                                            "enabled": false
+                                        }
+                                    },
+                                    {
+                                        "category": "SQLSecurityAuditEvents",
+                                        "enabled": true,
+                                        "retentionPolicy": {
+                                            "days": 0,
+                                            "enabled": false
+                                        }
+                                    }
+                                ],
+                                "metrics": [
+                                    {
+                                        "timeGrain": "AllMetrics",
+                                        "category": "AllMetrics",
+                                        "enabled": true,
+                                        "retentionPolicy": {
+                                            "enabled": false,
+                                            "days": 0
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+
+                {
+                    "name": "[concat(parameters('sqlServer').serverName,'/','allowall')]",
+                    "type": "Microsoft.Sql/servers/firewallRules",
+                    "apiVersion": "2014-04-01",
+                    "location": "[parameters('sqlServer').location]",
+                    "dependsOn": [
+                        "[concat('Microsoft.Sql/servers/', parameters('sqlServer').serverName)]"
+                    ],
+                    "properties": {
+                        "endIpAddress": "0.0.0.0",
+                        "startIpAddress": "0.0.0.0"
+                    }
+                }
+            ]
+        }
+    ],
+    "outputs": {
+        "sqlServerFqdn": {
+            "type": "string",
+            "value": "[reference(parameters('sqlServer').serverName).fullyQualifiedDomainName]"
+        }
+    }
+}

@@ -1,0 +1,167 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vmsUsername": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "username to Login into Modbus VM and Edge VM. please make a note of Username this will be used further"
+            }
+        },
+        "vmsPassword": {
+            "type": "securestring",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Please provide VM login password, please make a note of Password this will be used further"
+            }
+        },
+        "iothubName":{
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Please provide Name of the IoTHub in which we are trying to create the edge-device"
+            }
+        },
+        "functionAppUrl":{
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Please provide functionapp trigger url to create the edge device"
+            }
+        },
+        "iothubPrimaryKey":{
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description":"Please provide IoTHub primarykey value"
+            }
+        }
+
+    },
+    "variables":{
+        "vnetSettings": {
+            "vnetName": "virtualNetwork",
+            "location": "[variables('location')]",
+            "addressPrefix": "10.0.0.0/16",
+            "subnetName1": "edgesubnet",
+            "subnetName2": "dynocardsubnet",
+            "subnetPrefix1": "10.0.1.0/24",
+            "subnetprefix2": "10.0.2.0/24"            
+        },
+        "dynocardVmSettings": {
+            "dynoCardVmName": "dynocardVM",
+            "location": "[variables('location')]",
+            "networkInterfaceName": "dynocard-nic",
+            "dynoUsername": "[parameters('vmsUsername')]",
+            "dynoVmPassword": "[parameters('vmsPassword')]",
+            "imagePublisher": "MicrosoftWindowsDesktop",
+            "imageOffer": "Windows-10",
+            "sku": "RS3-Pro",
+            "dnsLabelPrefix": "[concat('dynodns',variables('suffix'))]",
+            "publicIpAddressName": "[concat('dynocardpip',variables('suffix'))]",
+            "publicIpAddressSku": "Basic",
+            "networkSecurityGroupName": "dynocard-nsg",
+            "publicIpAddressType": "Static",
+            "vmSize": "standard_A1",
+            "modbusUrl": "[concat(variables('baseUrl'),'scripts/modbus.ps1?token=AT7l1Y56rQORyHt3rkV9BdGed3s0N1fUks5bhNtvwA%3D%3D')]",
+            "plcsimulatorv1": "https://projectiot.blob.core.windows.net/oilgas-iot/ModbusSimulator/SimSetup.msi",
+            "vcredist": "https://projectiot.blob.core.windows.net/oilgas-iot/ModbusSimulator/vcredist_x86.exe",
+            "plcsimulatorv2": "https://projectiot.blob.core.windows.net/oilgas-iot/ModbusSimulator/ModRSsim2.exe",
+            "dynocard": "https://projectiot.blob.core.windows.net/oilgas-iot/ModbusSimulator/DynoCard.vbs"
+        },
+        "edgeVmSettings": {
+            "location": "[variables('location')]",
+            "pipName": "[concat('edgepip',variables('suffix'))]",
+            "publicIpAddressType": "Static",
+            "dnsLabelPrefix": "[concat('edgedns',variables('suffix'))]",
+            "nicName": "edge-nic",
+            "edgeVmName": "iotEdge",
+            "edgevmSize": "standard_A2",
+            "edgeUsername": "[parameters('vmsUsername')]",
+            "edgePassword": "[parameters('vmsPassword')]",
+            "DeviceConfig": "[concat(variables('baseUrl'),'nested/edge_device_config.json?token=AT7l1W35ZhQ16wqWLUwLDLkyhBes5WYnks5bhN0zwA%3D%3D')]",
+            "fileUri": "[concat(variables('baseUrl'),'scripts/iot-edge.sh?token=AT7l1XpOpSLauvPLk_yIbpKPMgZ5M3muks5bhNtswA%3D%3D')]",
+            "imagePublisher": "Canonical",
+            "imageOffer": "UbuntuServer",
+            "ubuntuOSVersion": "16.04.0-LTS",
+            "iothubName":"[parameters('iothubName')]",
+            "functionAppUrl":"[parameters('functionAppUrl')]",
+            "deviceId":"iot-dynocard-demo-device_1",
+            "iothubPrimaryKey":"[parameters('iothubPrimaryKey')]"
+        },
+        "location": "[resourceGroup().location]",
+        "baseUrl": "https://raw.githubusercontent.com/sysgain/Oil-Gas/master/",
+        "suffix": "[substring(uniqueString(resourceGroup().id), 0, 5)]",
+        "apiVersion": "2016-02-01"
+    },
+    "resources": [
+        {
+            "name": "Vnet",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[variables('apiVersion')]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('baseUrl'),'nested/vnet1.json?token=AT7l1VBEOqsDzP_7P6Pn7NVfhWEAplqrks5bhN03wA%3D%3D')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "vnetSettings": {
+                        "value": "[variables('vnetSettings')]"
+                    }
+                }
+            }
+        },
+        {
+            "name": "DynoCardVm",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[variables('apiVersion')]",
+            "dependsOn": [
+                "Vnet"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('baseUrl'),'nested/dynocardvm.json?token=AT7l1a_wAUWmVkb8peOPTg6KPN7Pcmmiks5bhN0pwA%3D%3D')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "vnetSettings": {
+                        "value": "[variables('vnetSettings')]"
+                    },
+                    "dynocardVmSettings": {
+                        "value": "[variables('dynocardVmSettings')]"
+                    }
+                }
+            }
+        },
+        {
+            "name": "IOTEdgeVm",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[variables('apiVersion')]",
+            "dependsOn": [
+                "Vnet",
+                "DynoCardVm"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('baseUrl'),'nested/iotedge-DR.json?token=AT7l1Qzm91-re6ab7TKEhnlyD6ihRSEsks5bhN2EwA%3D%3D')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "edgeVmSettings":{ 
+                        "value": "[variables('edgeVmSettings')]"
+                    },
+                    "vnetSettings":{ 
+                        "value": "[variables('vnetSettings')]"
+                    },
+                    "dynocardip":{
+                        "value":"[concat(variables('dynocardVmSettings').dnsLabelPrefix,'.',variables('location'),'.cloudapp.azure.com')]"
+                    }
+                }
+            }
+        }
+    ]
+}

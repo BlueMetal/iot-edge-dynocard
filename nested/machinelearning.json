@@ -1,0 +1,91 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "machineLearning": {
+            "type":"object"
+        }        
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.MachineLearningExperimentation/accounts",
+            "apiVersion": "2017-05-01-preview",
+            "name": "[parameters('machineLearning').expaccname]",
+            "location": "[parameters('machineLearning').location]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('machineLearning').storageAccountName)]"
+            ],
+            "properties": {
+                "storageAccount": {
+                    "storageAccountId": "[resourceId('Microsoft.Storage/storageAccounts', parameters('machineLearning').storageAccountName)]",
+                    "accessKey": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('machineLearning').storageAccountName), '2016-12-01').keys[0].value]"
+                },
+                "seats": "[parameters('machineLearning').seatCount]"
+            }
+        },
+        {
+            "type": "Microsoft.MachineLearningExperimentation/accounts/workspaces",
+            "apiVersion": "2017-05-01-preview",
+            "name": "[concat(parameters('machineLearning').expaccname, '/', parameters('machineLearning').workspacename)]",
+            "location": "[parameters('machineLearning').location]",
+            
+            "dependsOn": [
+                "[resourceId('Microsoft.MachineLearningExperimentation/accounts', parameters('machineLearning').expaccname)]"
+            ],
+            "properties": {
+                "friendlyName": "[parameters('machineLearning').workspacename]"
+            }
+        },
+        
+        {
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2016-12-01",
+            "name": "[parameters('machineLearning').storageAccountName]",
+            "location": "[parameters('machineLearning').location]",
+            
+            "sku": {
+                "name": "Standard_LRS"
+            },
+            "kind": "Storage",
+            "tags": {
+                "mlteamAccount": "[parameters('machineLearning').expaccname]"
+            },
+            "properties": {
+                "networkAcls": {
+                    "bypass": "AzureServices",
+                    "virtualNetworkRules": [],
+                    "ipRules": [],
+                    "defaultAction": "Allow"
+                },
+                "supportsHttpsTrafficOnly": false,
+                "encryption": {
+                    "services": {
+                        "file": {
+                            "enabled": true
+                        },
+                        "blob": {
+                            "enabled": true
+                        }
+                    },
+                    "keySource": "Microsoft.Storage"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "apiVersion": "2017-09-01-preview",
+            "name": "[parameters('machineLearning').modelManagementAccountName]",
+            "location": "[parameters('machineLearning').location]",
+            "type": "Microsoft.MachineLearningModelManagement/accounts",
+            "properties": {
+                "description": ""
+            },
+            "sku": {
+                "name": "[parameters('machineLearning').modelManagementAccountSkuName]",
+                "tier": "[parameters('machineLearning').modelManagementAccountSkuTier]",
+                "capacity": 1
+            }
+        }
+    ]
+}

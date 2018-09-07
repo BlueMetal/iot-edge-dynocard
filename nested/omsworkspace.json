@@ -1,0 +1,73 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "omsSettings": {
+            "type": "object"
+        }
+    },
+    "variables": {
+        "batch1": {
+            "solutions": [
+                {
+                    "name": "[concat('AzureSQLAnalytics', '(', parameters('omsSettings').omsWorkspaceName, ')')]",
+                    "marketplaceName": "AzureSQLAnalytics"
+                },
+                {
+                    "name": "[concat('LogicAppsManagement', '(', parameters('omsSettings').omsWorkspaceName, ')')]",
+                    "marketplaceName": "LogicAppsManagement"
+                }
+            ]
+        }
+    },
+    "resources": [
+        {
+            "apiVersion": "2015-03-20",
+            "location": "[parameters('omsSettings').omsWorkspaceRegion]",
+            "name": "[parameters('omsSettings').omsWorkspaceName]",
+            "type": "Microsoft.OperationalInsights/workspaces",
+            "comments": "Log Analytics workspace",
+            "properties": {
+                "sku": {
+                    "name": "[parameters('omsSettings').omsLogAnalyticsSku]"
+                }
+            }
+        },
+        {
+            "apiVersion": "2015-11-01-preview",
+            "type": "Microsoft.OperationsManagement/solutions",
+            "name": "[concat(variables('batch1').solutions[copyIndex()].Name)]",
+            "location": "[parameters('omsSettings').omsWorkspaceRegion]",
+            "dependsOn": [
+                "[concat('Microsoft.OperationalInsights/workspaces/', parameters('omsSettings').omsWorkspaceName)]"
+            ],
+            "copy": {
+                "name": "solutionCopy",
+                "count": "[length(variables('batch1').solutions)]"
+            },
+            "properties": {
+                "workspaceResourceId": "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('omsSettings').omsWorkspaceName)]"
+            },
+            "plan": {
+                "name": "[variables('batch1').solutions[copyIndex()].name]",
+                "product": "[concat('OMSGallery/', variables('batch1').solutions[copyIndex()].marketplaceName)]",
+                "promotionCode": "",
+                "publisher": "Microsoft"
+            }
+        }
+    ],
+    "outputs": {
+        "workspaceCustomerId": {
+            "value": "[reference(concat('Microsoft.OperationalInsights/workspaces/', parameters('omsSettings').omsWorkspaceName), '2015-11-01-preview').customerId]",
+            "type": "string"
+        },
+        "workspacePrimarySharedKey": {
+            "value": "[listKeys(resourceId('Microsoft.OperationalInsights/workspaces', parameters('omsSettings').omsWorkspaceName), '2015-11-01-preview').primarySharedKey]",
+            "type": "string"
+        },
+        "workspaceSecondarySharedKey": {
+            "value": "[listKeys(parameters('omsSettings').omsWorkspaceName, '2015-11-01-preview').secondarySharedKey]",
+            "type": "securestring"
+        }
+    }
+}

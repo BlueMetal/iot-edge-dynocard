@@ -1,0 +1,262 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "geo-paired-region":{
+            "type": "string",
+            "defaultValue": "",
+            "allowedValues": [
+                "EastUS2",
+                "CentralUS",
+                "WestUS2",
+                "WestCentralUS",
+                "CanadaCentral",
+                "CanadaEast",
+                "AustraliaEast",
+                "AustraliaSouthEast",
+                "CentralIndia",
+                "SouthIndia",
+                "EastAsia",
+                "SouthEastAsia",
+                "JapanWest",
+                "JapanEast",
+                "KoreaCentral",
+                "KoreaSouth",
+                "UKSouth",
+                "UKWest"
+                
+            ],
+            "metadata": {
+                "description": "Choose location for geo-paired-region, for more information about the geo-paired-region navigate to section 6 in the Readme.md(https://github.com/sysgain/Oil-Gas/blob/master/README.md)"
+            }
+        },
+        "sqlAdministratorLogin": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "provide the user name for the SQL server, please make a note of Username this will be used further"
+            }
+        },
+        "sqlAdministratorLoginPassword": {
+            "type": "securestring",
+            "defaultValue": "",
+            "metadata": {
+                "description": "provide the password for the SQL server, make a note of the Password this will be used further"
+            }
+        },
+        "azureLogin": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "provide the user name to Login to Azure environment. This will be helpful to authenticate data lake store account."
+            }
+        },
+        "tenantId": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Tenant Id for the subscription. This will be helpful to authenticate data lake store account."
+            }
+        }
+    },
+    "variables": {
+        "serviceBusProperties": {
+            "serviceBusNameDr": "servicebusdr",
+            "locationDr": "[variables('locationDR')]",
+            "skuName": "Standard",
+            "serviceBusNamespaceNameDr": "[variables('serviceBusNamespaceNameDr')]",
+            "serviceBusQueueNameDr": "SBQueuedr",
+            "serviceBusDefaultSASKeyName": "[variables('serviceBusDefaultSASKeyName')]",
+            "serviceBusAuthRuleResourceIdDr": "[resourceId('Microsoft.ServiceBus/namespaces/authorizationRules', variables('serviceBusNamespaceNameDr'), variables('serviceBusDefaultSASKeyName'))]"
+        },
+        "webApp": {
+            "webSiteNameDr": "[concat('Recovery',variables('webSiteName'),variables('suffix'))]",
+            "appSvcPlanSku1": "S1",
+            "appSvcPlanNameDr": "[concat('AppServPlanDr',variables('suffix'))]",
+            "nameDr": "[concat('logicappdr',variables('suffix'))]",
+            "locationDr": "[variables('locationDR')]",
+            "DynoCardDbConnString1": "[concat('Server=tcp:',variables('sqlFailoverGroupName'),'.database.windows.net;Database=','db4cards','; User ID=',parameters('sqlAdministratorLogin'),'; Password=',parameters('sqlAdministratorLoginPassword'),'; Trusted_Connection=False; Encrypt=True;')]",
+            "dynocardURIwm": "https://projectiot.blob.core.windows.net/oilgas-iot/DynoCardAPI_with_appinsights.zip"
+        },
+        "dataLake": {
+            "nameDr": "[concat('datalakestoredr',variables('suffix'))]",
+            "dataLakelocationDr": "[variables('locationDR')]"
+        },
+        "iotHub": {
+            "name": "[variables('iotHubName')]",
+            "locationDr": "[variables('locationDR')]",
+            "retentionTimeInDays": 1,
+            "partitionCount": 2,
+            "skuName1": "S1",
+            "skuCapacity": 1,
+            "iotHubResourceId": "[resourceId('Microsoft.Devices/Iothubs',variables('iotHubName'))]",
+            "iotHubKeyResource": "[resourceId('Microsoft.Devices/Iothubs/Iothubkeys', variables('iotHubName'), variables('iotHubKeyName'))]",
+            "iotHubKeyName": "[variables('iotHubKeyName')]"
+        },
+        "streamAnalytics": {
+            "nameDr": "[concat('StreamAnalyticsdr',variables('suffix'))]",
+            "locationDr": "[variables('locationDR')]",
+            "sku": "Standard",
+            "tenantId": "[parameters('tenantId')]",
+            "tokenUserPrincipalName": "[parameters('azureLogin')]"
+        },
+        "omsSettings": {
+            "omsWorkspaceName": "[concat('omswsoilgas', variables('suffix'))]",
+            "omsEnableApiVersion": "2015-07-01"
+        },
+        "appInsights": {
+            "appInsightsApiVersion": "2014-04-01",
+            "appInsightResourceName": "[concat('AppInsights', variables('suffix'))]"
+        },
+        "baseUrl": "https://raw.githubusercontent.com/sysgain/Oil-Gas/master/",
+        "suffix": "[substring(uniqueString(resourceGroup().id), 0, 5)]",
+        "serviceBusNamespaceNameDr": "[concat('snamespacedr',variables('suffix'))]",
+        "serviceBusDefaultSASKeyName": "RootManageSharedAccessKey",
+        "deviceName": "iot-dynocard-demo-device_1",
+        "iotHubName": "[concat('iothub',variables('suffix'))]",
+        "iotHubKeyName": "iothubowner",
+        "sqlFailoverGroupName": "[concat('azuresqlfailover', variables('suffix'))]",
+        "apiVersion": "2016-02-01",
+        "webSiteName": "WebApi",
+
+        "EastUS2": "CentralUS",
+        "CentralUS": "EastUS2",
+        "WestUS2": "West Central US",
+        "WestCentralUS": "WestUS2",
+        "CanadaCentral": "CanadaEast",
+        "CanadaEast": "CanadaCentral",
+        "AustraliaEast": "AustraliaSouthEast",
+        "AustraliaSouthEast": "AustraliaEast",
+        "CentralIndia": "SouthIndia",
+        "SouthIndia": "CentralIndia",
+        "EastAsia": "SouthEastAsia",
+        "SouthEastAsia": "EastAsia",
+        "JapanWest": "JapanEast",
+        "JapanEast": "JapanWest",
+        "KoreaCentral": "KoreaSouth",
+        "KoreaSouth": "KoreaCentral",
+        "UKSouth": "UKWest",
+        "UKWest": "UKSouth",
+        "locationDR":"[variables(parameters('geo-paired-region'))]"
+    },
+    "resources": [
+        {
+            "name": "DataLakeStore",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[variables('apiVersion')]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('baseUrl'),'nested/datalakestore-r2.json?token=AT7l1WRx3eNq1y3r3BxrqIf_nglxhJ5gks5bhAUnwA%3D%3D')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "datalake": {
+                        "value": "[variables('dataLake')]"
+                    },
+                    "omsSettings": {
+                        "value": "[variables('omsSettings')]"
+                    }
+                }
+            }
+        },
+        {
+            "name": "ServiceBusnamespace",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[variables('apiVersion')]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('baseUrl'),'nested/servicebusnamespace-r2.json?token=AT7l1RLqR0m6uO1KniG1--ZIIGjeoiFnks5bhAVswA%3D%3D')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "serviceBusProperties": {
+                        "value": "[variables('serviceBusProperties')]"
+                    },
+                    "omsSettings": {
+                        "value": "[variables('omsSettings')]"
+                    }
+                }
+            }
+        },
+        {
+            "name": "StreamAnalytics",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[variables('apiVersion')]",
+            "dependsOn": [
+                "DataLakeStore"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('baseUrl'),'nested/streamanalytics-r2.json?token=AT7l1Z4DrKswpD3RznuDgWnZ8MSWtbslks5bhAV-wA%3D%3D')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "streamAnalytics": {
+                        "value": "[variables('streamAnalytics')]"
+                    },
+                    "iotHub": {
+                        "value": "[variables('iotHub')]"
+                    },
+                    "dataLake": {
+                        "value": "[variables('dataLake')]"
+                    },
+                    "omsSettings": {
+                        "value": "[variables('omsSettings')]"
+                    }
+                }
+            }
+        },
+        {
+            "name": "LogicApp",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[variables('apiVersion')]",
+            "dependsOn": [
+                "ServiceBusnamespace",
+                "WebApp"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('baseUrl'),'nested/logicapp-r2.json?token=AT7l1VMT5TDRFozu6ziBnLIquBE0K2mwks5bhAVVwA%3D%3D')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "webApp": {
+                        "value": "[variables('webApp')]"
+                    },
+                    "omsSettings": {
+                        "value": "[variables('omsSettings')]"
+                    }
+                }
+            }
+        },
+        {
+            "name": "WebApp",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "[variables('apiVersion')]",
+            "dependsOn": [
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('baseUrl'),'nested/webapp-r2.json?token=AT7l1ZKf-7cFOwrtQvTynqqTMnlNLZkBks5bhAWKwA%3D%3D')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "webApp": {
+                        "value": "[variables('webApp')]"
+                    },
+                    "deviceConnectionString": {
+                        "value": "[concat('HostName=',variables('iotHub').name, '.azure-devices.net;DeviceId=',variables('deviceName'), ';SharedAccessKey=')]"
+                    },
+                    "appInsights": {
+                        "value": "[variables('appInsights')]"
+                    }
+                }
+            }
+        }
+    ]
+}
