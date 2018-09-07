@@ -27,7 +27,7 @@
                 
             ],
             "metadata": {
-                "description": "Choose location for geo-paired-region, for more information about the geo-paired-region navigate to section 6 in the Readme.md(https://github.com/sysgain/Oil-Gas/blob/master/README.md)"
+                "description": "Choose location for geo-paired-region, for more information about the geo-paired-region navigate to section 6 in the Readme.md(https://github.com/sysgain/iot-edge-dynocard/wiki/Deployment-Guide)"
             }
         },
         "sqlAdministratorLogin": {
@@ -108,7 +108,7 @@
             "appInsightsApiVersion": "2014-04-01",
             "appInsightResourceName": "[concat('AppInsights', variables('suffix'))]"
         },
-        "baseUrl": "https://raw.githubusercontent.com/sysgain/Oil-Gas/master/",
+        "baseUrl": "https://raw.githubusercontent.com/sysgain/iot-edge-dynocard/master/",
         "suffix": "[substring(uniqueString(resourceGroup().id), 0, 5)]",
         "serviceBusNamespaceNameDr": "[concat('snamespacedr',variables('suffix'))]",
         "serviceBusDefaultSASKeyName": "RootManageSharedAccessKey",
@@ -147,7 +147,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[concat(variables('baseUrl'),'nested/datalakestore-r2.json?token=AT7l1WRx3eNq1y3r3BxrqIf_nglxhJ5gks5bhAUnwA%3D%3D')]",
+                    "uri": "[concat(variables('baseUrl'),'nested/datalakestore-r2.json')]",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
@@ -167,7 +167,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[concat(variables('baseUrl'),'nested/servicebusnamespace-r2.json?token=AT7l1RLqR0m6uO1KniG1--ZIIGjeoiFnks5bhAVswA%3D%3D')]",
+                    "uri": "[concat(variables('baseUrl'),'nested/servicebusnamespace-r2.json')]",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
@@ -190,7 +190,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[concat(variables('baseUrl'),'nested/streamanalytics-r2.json?token=AT7l1Z4DrKswpD3RznuDgWnZ8MSWtbslks5bhAV-wA%3D%3D')]",
+                    "uri": "[concat(variables('baseUrl'),'nested/streamanalytics-r2.json')]",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
@@ -220,7 +220,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[concat(variables('baseUrl'),'nested/logicapp-r2.json?token=AT7l1VMT5TDRFozu6ziBnLIquBE0K2mwks5bhAVVwA%3D%3D')]",
+                    "uri": "[concat(variables('baseUrl'),'nested/logicapp-r2.json')]",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
@@ -242,7 +242,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[concat(variables('baseUrl'),'nested/webapp-r2.json?token=AT7l1ZKf-7cFOwrtQvTynqqTMnlNLZkBks5bhAWKwA%3D%3D')]",
+                    "uri": "[concat(variables('baseUrl'),'nested/webapp-r2.json')]",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
