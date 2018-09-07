@@ -64,7 +64,7 @@
             "networkSecurityGroupName": "dynocard-nsg",
             "publicIpAddressType": "Static",
             "vmSize": "standard_A1",
-            "modbusUrl": "[concat(variables('baseUrl'),'scripts/modbus.ps1?token=AT7l1Y56rQORyHt3rkV9BdGed3s0N1fUks5bhNtvwA%3D%3D')]",
+            "modbusUrl": "[concat(variables('baseUrl'),'scripts/modbus.ps1')]",
             "plcsimulatorv1": "https://projectiot.blob.core.windows.net/oilgas-iot/ModbusSimulator/SimSetup.msi",
             "vcredist": "https://projectiot.blob.core.windows.net/oilgas-iot/ModbusSimulator/vcredist_x86.exe",
             "plcsimulatorv2": "https://projectiot.blob.core.windows.net/oilgas-iot/ModbusSimulator/ModRSsim2.exe",
@@ -80,8 +80,8 @@
             "edgevmSize": "standard_A2",
             "edgeUsername": "[parameters('vmsUsername')]",
             "edgePassword": "[parameters('vmsPassword')]",
-            "DeviceConfig": "[concat(variables('baseUrl'),'nested/edge_device_config.json?token=AT7l1W35ZhQ16wqWLUwLDLkyhBes5WYnks5bhN0zwA%3D%3D')]",
-            "fileUri": "[concat(variables('baseUrl'),'scripts/iot-edge.sh?token=AT7l1XpOpSLauvPLk_yIbpKPMgZ5M3muks5bhNtswA%3D%3D')]",
+            "DeviceConfig": "[concat(variables('baseUrl'),'nested/edge_device_config.json')]",
+            "fileUri": "[concat(variables('baseUrl'),'scripts/iot-edge.sh')]",
             "imagePublisher": "Canonical",
             "imageOffer": "UbuntuServer",
             "ubuntuOSVersion": "16.04.0-LTS",
@@ -91,7 +91,7 @@
             "iothubPrimaryKey":"[parameters('iothubPrimaryKey')]"
         },
         "location": "[resourceGroup().location]",
-        "baseUrl": "https://raw.githubusercontent.com/sysgain/Oil-Gas/master/",
+        "baseUrl": "https://raw.githubusercontent.com/sysgain/iot-edge-dynocard/master/",
         "suffix": "[substring(uniqueString(resourceGroup().id), 0, 5)]",
         "apiVersion": "2016-02-01"
     },
@@ -103,7 +103,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[concat(variables('baseUrl'),'nested/vnet1.json?token=AT7l1VBEOqsDzP_7P6Pn7NVfhWEAplqrks5bhN03wA%3D%3D')]",
+                    "uri": "[concat(variables('baseUrl'),'nested/vnet1.json')]",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
@@ -123,7 +123,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[concat(variables('baseUrl'),'nested/dynocardvm.json?token=AT7l1a_wAUWmVkb8peOPTg6KPN7Pcmmiks5bhN0pwA%3D%3D')]",
+                    "uri": "[concat(variables('baseUrl'),'nested/dynocardvm.json')]",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
@@ -147,7 +147,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[concat(variables('baseUrl'),'nested/iotedge-DR.json?token=AT7l1Qzm91-re6ab7TKEhnlyD6ihRSEsks5bhN2EwA%3D%3D')]",
+                    "uri": "[concat(variables('baseUrl'),'nested/iotedge-DR.json')]",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
