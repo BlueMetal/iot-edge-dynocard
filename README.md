@@ -4,4 +4,4 @@
 
    A technology solution can be implemented to detect issues with the pump using data points captured from the Dyno Card, capture historical data,potentially stop the pump and alert field technicians.
 
-For more information on how to use the Solution and different Components involved in the solution, please refer **[Wiki](https://github.com/sysgain/Oil-Gas/wiki)** URL
+For more information on how to use the Solution and different Components involved in the solution, please refer **[Wiki](https://github.com/sysgain/iot-edge-dynocard/wiki)** URL
