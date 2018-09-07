@@ -11,7 +11,7 @@
               "Premium"
           ],
           "metadata": {
-              "description": "Choose the solution deployment type from the drop down, for more information about the solution deployment type navigate to https://github.com/sysgain/Oil-Gas/wiki/Deployment-Guide in wiki"
+              "description": "Choose the solution deployment type from the drop down, for more information about the solution deployment type navigate to https://github.com/sysgain/iot-edge-dynocard/wiki/Deployment-Guide in wiki"
           }
       },
       "Edge VM + Simulator VM": {
@@ -22,7 +22,7 @@
               "No"
           ],
           "metadata": {
-              "description": "Choose Yes/No to add Modbus VM as part of Solution deployment, for more information about the Modbus VM navigate to https://github.com/sysgain/Oil-Gas/wiki/Deployment-Guide in wiki"
+              "description": "Choose Yes/No to add Modbus VM as part of Solution deployment, for more information about the Modbus VM navigate to https://github.com/sysgain/iot-edge-dynocard/wiki/Deployment-Guide in wiki"
           }
       },
       "MLVM": {
@@ -33,7 +33,7 @@
               "No"
           ],
           "metadata": {
-              "description": "Choose Yes/No to add ML VM as part of Solution deployment, for more information about the ML VM navigate to https://github.com/sysgain/Oil-Gas/wiki/Deployment-Guide in wiki"
+              "description": "Choose Yes/No to add ML VM as part of Solution deployment, for more information about the ML VM navigate to https://github.com/sysgain/iot-edge-dynocard/wiki/Deployment-Guide in wiki"
           }
       },
       "dataLakelocation": {
@@ -46,7 +46,7 @@
               "westeurope"
           ],
           "metadata": {
-              "description": "Choose location for Data Lake Store, for more information about the Data Lake Store navigate to https://github.com/sysgain/Oil-Gas/wiki/Deployment-Guide in wiki"
+              "description": "Choose location for Data Lake Store, for more information about the Data Lake Store navigate to https://github.com/sysgain/iot-edge-dynocard/wiki/Deployment-Guide in wiki"
           }
       },
       "machineLearningLocation": {
@@ -60,7 +60,7 @@
               "westeurope"
           ],
           "metadata": {
-              "description": "Choose location for machine learning account, for more information about the machine learning location navigate to https://github.com/sysgain/Oil-Gas/wiki/Deployment-Guide in wiki"
+              "description": "Choose location for machine learning account, for more information about the machine learning location navigate to https://github.com/sysgain/iot-edge-dynocard/wiki/Deployment-Guide in wiki"
           }
       },
       "geo-paired-primary-region": {
@@ -87,7 +87,7 @@
               "UKWest"
           ],
           "metadata": {
-              "description": "Choose geo-paired region,if you have selected standard (or) premium option in the solution type inputparameter, for more information about the geo-paired-region navigate to https://github.com/sysgain/Oil-Gas/wiki/Deployment-Guide in wiki"
+              "description": "Choose geo-paired region,if you have selected standard (or) premium option in the solution type inputparameter, for more information about the geo-paired-region navigate to https://github.com/sysgain/iot-edge-dynocard/wiki/Deployment-Guide in wiki"
           }
       },
       "oms-region": {
@@ -104,7 +104,7 @@
               "westeurope"
           ],
           "metadata": {
-              "description": "Choose location for OMS Log Analytics, for more information about the oms-region navigate to https://github.com/sysgain/Oil-Gas/wiki/Deployment-Guide in wiki"
+              "description": "Choose location for OMS Log Analytics, for more information about the oms-region navigate to https://github.com/sysgain/iot-edge-dynocard/wiki/Deployment-Guide in wiki"
           }
       },
       "appInsightsLocation": {
@@ -119,7 +119,7 @@
               "westus2"
           ],
           "metadata": {
-              "description": "specify the region for application insights, for more information about the appInsightsLocation navigate to https://github.com/sysgain/Oil-Gas/wiki/Deployment-Guide in wiki"
+              "description": "specify the region for application insights, for more information about the appInsightsLocation navigate to https://github.com/sysgain/iot-edge-dynocard/wiki/Deployment-Guide in wiki"
           }
       },
       "sqlAdministratorLogin": {
@@ -279,8 +279,8 @@
           "edgevmSize": "standard_A2",
           "edgeUsername": "[parameters('vmsUsername')]",
           "edgePassword": "[parameters('vmsPassword')]",
-          "DeviceConfig": "[concat(variables('baseUrl'),'nested/edge_device_config.json?token=AT7l1Y6MmTGlj5sB6uvYlI427qXb8hhqks5bjg8EwA%3D%3D')]",
-          "fileUri": "[concat(variables('baseUrl'),'scripts/iot-edge.sh?token=AT7l1RLwCG95FIBGzyrJ2o-lNSFrbvPNks5bjhCdwA%3D%3D')]",
+          "DeviceConfig": "[concat(variables('baseUrl'),'nested/edge_device_config.json')]",
+          "fileUri": "[concat(variables('baseUrl'),'scripts/iot-edge.sh')]",
           "imagePublisher": "Canonical",
           "imageOffer": "UbuntuServer",
           "ubuntuOSVersion": "16.04.0-LTS"
@@ -311,7 +311,7 @@
           "networkSecurityGroupName": "dynocard-nsg",
           "publicIpAddressType": "Static",
           "vmSize": "standard_A1",
-          "modbusUrl": "[concat(variables('baseUrl'),'scripts/modbus.ps1?token=AT7l1fd4To6gdo8zi8pllEveEdTQwRdCks5bjhCfwA%3D%3D')]",
+          "modbusUrl": "[concat(variables('baseUrl'),'scripts/modbus.ps1')]",
           "plcsimulatorv1": "https://projectiot.blob.core.windows.net/oilgas-iot/ModbusSimulator/SimSetup.msi",
           "vcredist": "https://projectiot.blob.core.windows.net/oilgas-iot/ModbusSimulator/vcredist_x86.exe",
           "plcsimulatorv2": "https://projectiot.blob.core.windows.net/oilgas-iot/ModbusSimulator/ModRSsim2.exe",
@@ -331,8 +331,8 @@
           "publicIpAddressSku": "Basic",
           "networkSecurityGroupName": "ml-nsg",
           "publicIpAddressType": "Static",
-          "mlUrl": "[concat(variables('baseUrl'),'scripts/customscript.ps1?token=AT7l1dVrBf8j3kSH1kwdIqeoZCBQKc7Yks5bjhCWwA%3D%3D')]",
-          "installdocker": "[concat(variables('baseUrl'),'scripts/installdocker.ps1?token=AT7l1ew5mEJmhb-vbwEte5nU0ZJHInumks5bjhCYwA%3D%3D')]"
+          "mlUrl": "[concat(variables('baseUrl'),'scripts/customscript.ps1')]",
+          "installdocker": "[concat(variables('baseUrl'),'scripts/installdocker.ps1')]"
       },
       "machineLearning": {
           "storageAccountName": "[concat('oilgasstorage',variables('suffix'))]",
@@ -345,7 +345,7 @@
           "modelManagementAccountSkuTier": "DEVTEST",
           "rgname": "[resourceGroup().name]"
       },
-      "baseUrl": "https://raw.githubusercontent.com/sysgain/Oil-Gas/master/",
+      "baseUrl": "https://raw.githubusercontent.com/sysgain/iot-edge-dynocard/master/",
       "suffix": "[substring(uniqueString(resourceGroup().id), 0, 5)]",
       "serviceBusNamespaceName": "[concat('snamespace',variables('suffix'))]",
       "serviceBusNamespaceNameDr": "[concat('snamespacedr',variables('suffix'))]",
@@ -384,7 +384,7 @@
           "properties": {
               "mode": "Incremental",
               "templateLink": {
-                  "uri": "[concat(variables('baseUrl'),'nested/vnet.json?token=AT7l1RU-vbD8V9AiCoxTSrwvEauFULy4ks5bjgi9wA%3D%3D')]",
+                  "uri": "[concat(variables('baseUrl'),'nested/vnet.json')]",
                   "contentVersion": "1.0.0.0"
               },
               "parameters": {
@@ -408,7 +408,7 @@
           "properties": {
               "mode": "Incremental",
               "templateLink": {
-                  "uri": "[concat(variables('baseUrl'),'nested/iotedge.json?token=AT7l1ZJwD28dy5719EkpMIZG8GE_xqFGks5bjgi6wA%3D%3D')]",
+                  "uri": "[concat(variables('baseUrl'),'nested/iotedge.json')]",
                   "contentVersion": "1.0.0.0"
               },
               "parameters": {
@@ -447,7 +447,7 @@
           "properties": {
               "mode": "Incremental",
               "templateLink": {
-                  "uri": "[concat(variables('baseUrl'),'nested/iotedge.json?token=AT7l1ZJwD28dy5719EkpMIZG8GE_xqFGks5bjgi6wA%3D%3D')]",
+                  "uri": "[concat(variables('baseUrl'),'nested/iotedge.json')]",
                   "contentVersion": "1.0.0.0"
               },
               "parameters": {
@@ -486,7 +486,7 @@
           "properties": {
               "mode": "Incremental",
               "templateLink": {
-                  "uri": "[concat(variables('baseUrl'),'nested/iotedge.json?token=AT7l1ZJwD28dy5719EkpMIZG8GE_xqFGks5bjgi6wA%3D%3D')]",
+                  "uri": "[concat(variables('baseUrl'),'nested/iotedge.json')]",
                   "contentVersion": "1.0.0.0"
               },
               "parameters": {
@@ -522,7 +522,7 @@
           "properties": {
               "mode": "Incremental",
               "templateLink": {
-                  "uri": "[concat(variables('baseUrl'),'nested/dynocardvm.json?token=AT7l1WKaQAv9aMfu0AuMcgNUerB9_p6zks5bjgjBwA%3D%3D')]",
+                  "uri": "[concat(variables('baseUrl'),'nested/dynocardvm.json')]",
                   "contentVersion": "1.0.0.0"
               },
               "parameters": {
@@ -546,7 +546,7 @@
           "properties": {
               "mode": "Incremental",
               "templateLink": {
-                  "uri": "[concat(variables('baseUrl'),'nested/azuremlvm.json?token=AT7l1QCs6K2bOPxrdYFMJ_oGJQXsIQZTks5bjgjEwA%3D%3D')]",
+                  "uri": "[concat(variables('baseUrl'),'nested/azuremlvm.json')]",
                   "contentVersion": "1.0.0.0"
               },
               "parameters": {
@@ -567,7 +567,7 @@
           "properties": {
               "mode": "Incremental",
               "templateLink": {
-                  "uri": "[concat(variables('baseUrl'),'nested/machinelearning.json?token=AT7l1TlqHUYKKk3IVxuahvyZ4XWCFiUqks5bjgjHwA%3D%3D')]",
+                  "uri": "[concat(variables('baseUrl'),'nested/machinelearning.json')]",
                   "contentVersion": "1.0.0.0"
               },
               "parameters": {
@@ -584,7 +584,7 @@
           "properties": {
               "mode": "Incremental",
               "templateLink": {
-                  "uri": "[concat(variables('baseUrl'),'nested/omsworkspace.json?token=AT7l1d0qxBuSE1gye6F4qXmWqrerTaTkks5bjgjKwA%3D%3D')]",
+                  "uri": "[concat(variables('baseUrl'),'nested/omsworkspace.json')]",
                   "contentVersion": "1.0.0.0"
               },
               "parameters": {
@@ -601,7 +601,7 @@
           "properties": {
               "mode": "Incremental",
               "templateLink": {
-                  "uri": "[concat(variables('baseUrl'),'nested/appinsights.json?token=AT7l1UYfBXeN8ob6wa9qVH169UgghxFkks5bjgjNwA%3D%3D')]",
+                  "uri": "[concat(variables('baseUrl'),'nested/appinsights.json')]",
                   "contentVersion": "1.0.0.0"
               },
               "parameters": {
@@ -622,7 +622,7 @@
           "properties": {
               "mode": "Incremental",
               "templateLink": {
-                  "uri": "[concat(variables('baseUrl'),'nested/datalakestore-wm.json?token=AT7l1fAkN9adMJ4S6HeDgehv9w4ydGojks5bjgjTwA%3D%3D')]",
+                  "uri": "[concat(variables('baseUrl'),'nested/datalakestore-wm.json')]",
                   "contentVersion": "1.0.0.0"
               },
               "parameters": {
@@ -646,7 +646,7 @@
           "properties": {
               "mode": "Incremental",
               "templateLink": {
-                  "uri": "[concat(variables('baseUrl'),'nested/servicebusnamespace-wm.json?token=AT7l1SHLkfjyauTEr28LRYW46QyCAo8Uks5bjgjXwA%3D%3D')]",
+                  "uri": "[concat(variables('baseUrl'),'nested/servicebusnamespace-wm.json')]",
                   "contentVersion": "1.0.0.0"
               },
               "parameters": {
@@ -670,7 +670,7 @@
           "properties": {
               "mode": "Incremental",
               "templateLink": {
-                  "uri": "[concat(variables('baseUrl'),'nested/azurefunction.json?token=AT7l1c1_OIgckpt5jYOwneOfHQ_IgVA1ks5bjg7_wA%3D%3D')]",
+                  "uri": "[concat(variables('baseUrl'),'nested/azurefunction.json')]",
                   "contentVersion": "1.0.0.0"
               },
               "parameters": {
@@ -696,7 +696,7 @@
           "properties": {
               "mode": "Incremental",
               "templateLink": {
-                  "uri": "[concat(variables('baseUrl'),'nested/streamanalytics-wm.json?token=AT7l1SPc0R-kNhnSM-ElMqn2jsW5QgX6ks5bjg8dwA%3D%3D')]",
+                  "uri": "[concat(variables('baseUrl'),'nested/streamanalytics-wm.json')]",
                   "contentVersion": "1.0.0.0"
               },
               "parameters": {
@@ -728,7 +728,7 @@
           "properties": {
               "mode": "Incremental",
               "templateLink": {
-                  "uri": "[concat(variables('baseUrl'),'nested/logicapp-wm.json?token=AT7l1Txsm_GTgPTr4h1HuwKDu6EgSCxOks5bjg8RwA%3D%3D')]",
+                  "uri": "[concat(variables('baseUrl'),'nested/logicapp-wm.json')]",
                   "contentVersion": "1.0.0.0"
               },
               "parameters": {
@@ -753,7 +753,7 @@
           "properties": {
               "mode": "Incremental",
               "templateLink": {
-                  "uri": "[concat(variables('baseUrl'),'nested/iothub-wm.json?token=AT7l1UDc0Z1sgLDRFztHn9BbjEV4otllks5bjg8KwA%3D%3D')]",
+                  "uri": "[concat(variables('baseUrl'),'nested/iothub-wm.json')]",
                   "contentVersion": "1.0.0.0"
               },
               "parameters": {
@@ -780,7 +780,7 @@
           "properties": {
               "mode": "Incremental",
               "templateLink": {
-                  "uri": "[concat(variables('baseUrl'),'nested/sqlserver-wm.json?token=AT7l1Ue79SmS23x0typgrZJn3HEIODGhks5bjg8ZwA%3D%3D')]",
+                  "uri": "[concat(variables('baseUrl'),'nested/sqlserver-wm.json')]",
                   "contentVersion": "1.0.0.0"
               },
               "parameters": {
@@ -806,7 +806,7 @@
           "properties": {
               "mode": "Incremental",
               "templateLink": {
-                  "uri": "[concat(variables('baseUrl'),'nested/webapp-wm.json?token=AT7l1bdWzTx9TaXGhRqoplQ7trQ1v5O2ks5bjg8jwA%3D%3D')]",
+                  "uri": "[concat(variables('baseUrl'),'nested/webapp-wm.json')]",
                   "contentVersion": "1.0.0.0"
               },
               "parameters": {
@@ -833,7 +833,7 @@
           "properties": {
               "mode": "Incremental",
               "templateLink": {
-                  "uri": "[concat(variables('baseUrl'),'nested/sql-with-failover-wm.json?token=AT7l1cMfD4QcT1CvT7YexXQdP8dnypg7ks5bjgjQwA%3D%3D')]",
+                  "uri": "[concat(variables('baseUrl'),'nested/sql-with-failover-wm.json')]",
                   "contentVersion": "1.0.0.0"
               },
               "parameters": {
@@ -857,7 +857,7 @@
           "properties": {
               "mode": "Incremental",
               "templateLink": {
-                  "uri": "[concat(variables('baseUrl'),'nested/datalakestore-wm.json?token=AT7l1fAkN9adMJ4S6HeDgehv9w4ydGojks5bjgjTwA%3D%3D')]",
+                  "uri": "[concat(variables('baseUrl'),'nested/datalakestore-wm.json')]",
                   "contentVersion": "1.0.0.0"
               },
               "parameters": {
@@ -881,7 +881,7 @@
           "properties": {
               "mode": "Incremental",
               "templateLink": {
-                  "uri": "[concat(variables('baseUrl'),'nested/servicebusnamespace-wm.json?token=AT7l1SHLkfjyauTEr28LRYW46QyCAo8Uks5bjgjXwA%3D%3D')]",
+                  "uri": "[concat(variables('baseUrl'),'nested/servicebusnamespace-wm.json')]",
                   "contentVersion": "1.0.0.0"
               },
               "parameters": {
@@ -907,7 +907,7 @@
           "properties": {
               "mode": "Incremental",
               "templateLink": {
-                  "uri": "[concat(variables('baseUrl'),'nested/streamanalytics-wm.json?token=AT7l1SPc0R-kNhnSM-ElMqn2jsW5QgX6ks5bjg8dwA%3D%3D')]",
+                  "uri": "[concat(variables('baseUrl'),'nested/streamanalytics-wm.json')]",
                   "contentVersion": "1.0.0.0"
               },
               "parameters": {
@@ -937,7 +937,7 @@
           "properties": {
               "mode": "Incremental",
               "templateLink": {
-                  "uri": "[concat(variables('baseUrl'),'nested/azurefunction.json?token=AT7l1c1_OIgckpt5jYOwneOfHQ_IgVA1ks5bjg7_wA%3D%3D')]",
+                  "uri": "[concat(variables('baseUrl'),'nested/azurefunction.json')]",
                   "contentVersion": "1.0.0.0"
               },
               "parameters": {
@@ -963,7 +963,7 @@
           "properties": {
               "mode": "Incremental",
               "templateLink": {
-                  "uri": "[concat(variables('baseUrl'),'nested/logicappr1.json?token=AT7l1VkAJGGKsx0wz1hG_K9LvH5BR_vuks5bjg8UwA%3D%3D')]",
+                  "uri": "[concat(variables('baseUrl'),'nested/logicappr1.json')]",
                   "contentVersion": "1.0.0.0"
               },
               "parameters": {
@@ -988,7 +988,7 @@
           "properties": {
               "mode": "Incremental",
               "templateLink": {
-                  "uri": "[concat(variables('baseUrl'),'nested/iothub-ha-wm.json?token=AT7l1ezMWwv-r5dcDWHtdFMp1m5niL-bks5bjg8HwA%3D%3D')]",
+                  "uri": "[concat(variables('baseUrl'),'nested/iothub-ha-wm.json')]",
                   "contentVersion": "1.0.0.0"
               },
               "parameters": {
@@ -1017,7 +1017,7 @@
           "properties": {
               "mode": "Incremental",
               "templateLink": {
-                  "uri": "[concat(variables('baseUrl'),'nested/webappr1.json?token=AT7l1cW-Frtqt8orN5qjTOAIhWc2X_OCks5bjg8mwA%3D%3D')]",
+                  "uri": "[concat(variables('baseUrl'),'nested/webappr1.json')]",
                   "contentVersion": "1.0.0.0"
               },
               "parameters": {
@@ -1044,7 +1044,7 @@
           "properties": {
               "mode": "Incremental",
               "templateLink": {
-                  "uri": "[concat(variables('baseUrl'),'nested/datalakestore-r2.json?token=AT7l1WmGs55zmfnqohndaQxwlJXKllmNks5bjg8BwA%3D%3D')]",
+                  "uri": "[concat(variables('baseUrl'),'nested/datalakestore-r2.json')]",
                   "contentVersion": "1.0.0.0"
               },
               "parameters": {
@@ -1065,7 +1065,7 @@
           "properties": {
               "mode": "Incremental",
               "templateLink": {
-                  "uri": "[concat(variables('baseUrl'),'nested/servicebusnamespace-r2.json?token=AT7l1SZ6Ws0bXUbE2K07QBTtmF6HElewks5bjg8WwA%3D%3D')]",
+                  "uri": "[concat(variables('baseUrl'),'nested/servicebusnamespace-r2.json')]",
                   "contentVersion": "1.0.0.0"
               },
               "parameters": {
@@ -1091,7 +1091,7 @@
           "properties": {
               "mode": "Incremental",
               "templateLink": {
-                  "uri": "[concat(variables('baseUrl'),'nested/streamanalytics-r2.json?token=AT7l1QCTrtAobkGhqazV2-J_6JMBy9FJks5bjg8bwA%3D%3D')]",
+                  "uri": "[concat(variables('baseUrl'),'nested/streamanalytics-r2.json')]",
                   "contentVersion": "1.0.0.0"
               },
               "parameters": {
@@ -1123,7 +1123,7 @@
           "properties": {
               "mode": "Incremental",
               "templateLink": {
-                  "uri": "[concat(variables('baseUrl'),'nested/logicapp-r2.json?token=AT7l1Y-mpKzHPXY1MShRYxfeZCLl9KYCks5bjg8NwA%3D%3D')]",
+                  "uri": "[concat(variables('baseUrl'),'nested/logicapp-r2.json')]",
                   "contentVersion": "1.0.0.0"
               },
               "parameters": {
@@ -1149,7 +1149,7 @@
           "properties": {
               "mode": "Incremental",
               "templateLink": {
-                  "uri": "[concat(variables('baseUrl'),'nested/webapp-r2.json?token=AT7l1bkfsSkpZXzmCxAWg6Ol26_Ej-CAks5bjg8gwA%3D%3D')]",
+                  "uri": "[concat(variables('baseUrl'),'nested/webapp-r2.json')]",
                   "contentVersion": "1.0.0.0"
               },
               "parameters": {
