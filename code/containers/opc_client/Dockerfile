@@ -1,7 +1,7 @@
 FROM microsoft/iot-edge-opc-publisher
 
 ## set default OPC endpoint URL
-ENV OPC_ENDPOINT_URL "opc.tcp://opc-sim-server.eastus2.cloudapp.azure.com:49380"
+ENV OPC_ENDPOINT_URL "opc.tcp://192.168.10.37:49380"
 
 ## install OS-level dependencies
 RUN apk add jq

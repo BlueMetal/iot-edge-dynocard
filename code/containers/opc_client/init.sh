@@ -1,7 +1,7 @@
 #!/bin/ash
 
 ## set default values
-[ -z "$OPC_ENDPOINT_URL" ] && export OPC_ENDPOINT_URL="opc.tcp://opc-sim-server.eastus2.cloudapp.azure.com:49380"
+[ -z "$OPC_ENDPOINT_URL" ] && export OPC_ENDPOINT_URL="opc.tcp://192.168.10.37:49380"
 
 ## set the OPC endpoint url
 jq --arg EndpointUrl "$OPC_ENDPOINT_URL" '.[].EndpointUrl=$EndpointUrl' publishednodes.json | sponge publishednodes.json

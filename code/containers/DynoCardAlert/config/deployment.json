@@ -78,7 +78,7 @@
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "localhost:5000/opc_client:1.0.0-amd64",
+              "image": "localhost:5000/opc_client:1.0.1-amd64",
               "createOptions": ""
             }
           }

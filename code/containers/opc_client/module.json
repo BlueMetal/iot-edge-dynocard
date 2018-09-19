@@ -4,7 +4,7 @@
     "image": {
         "repository": "localhost:5000/opc_client",
         "tag": {
-            "version": "1.0.1",
+            "version": "1.0.0",
             "platforms": {
                 "amd64": "./Dockerfile", 
                 "windows-amd64": "./Dockerfile"
