@@ -1,5 +1,5 @@
 {
-  "moduleContent": {
+  "modulesContent": {
     "$edgeAgent": {
       "properties.desired": {
         "schemaVersion": "1.0",
@@ -7,14 +7,17 @@
           "type": "docker",
           "settings": {
             "minDockerVersion": "v1.25",
-            "loggingOptions": ""
+            "loggingOptions": "",
+            "registryCredentials": ""
           }
         },
         "systemModules": {
           "edgeAgent": {
             "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
             "settings": {
-              "image": "microsoft/azureiotedge-agent:1.0-preview",
+              "image": "mcr.microsoft.com/azureiotedge-agent:1.0",
               "createOptions": ""
             }
           },
@@ -23,8 +26,8 @@
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "microsoft/azureiotedge-hub:1.0-preview",
-              "createOptions": ""
+              "image": "mcr.microsoft.com/azureiotedge-hub:1.0",
+              "createOptions": "{\"HostConfig\":{\"PortBindings\":{\"8883/tcp\":[{\"HostPort\":\"8883\"}],\"443/tcp\":[{\"HostPort\":\"443\"}]}}}"
             }
           }
         },
@@ -35,7 +38,7 @@
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "microsoft/azureiotedge-modbus-tcp:1.0.2-preview",
+              "image": "mcr.microsoft.com/azureiotedge/modbus:1.0",
               "createOptions": ""
             }
           },
@@ -45,7 +48,7 @@
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "localhost:5000/dynocardalertmodule:0.0.1-amd64.debug",
+              "image": "localhost:5000/dynocardalertmodule:1.0.0-amd64",
               "createOptions": ""
             }
           },
@@ -68,6 +71,16 @@
               "image": "bluemetal/iot_dynocard_demo_edgedb:latest",
               "createOptions": "{\"Env\": [\"ACCEPT_EULA=Y\",\"MSSQL_SA_PASSWORD=Strong!Passw0rd\"],\"HostConfig\": {\"Mounts\": [{\"Target\": \"/var/opt/mssql\",\"Source\": \"sqlVolume\",\"Type\": \"volume\"}],\"PortBindings\": {\"1433/tcp\": [{\"HostPort\": \"1401\"}]}}}"
             }
+          },
+          "opc_client": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "localhost:5000/opc_client:1.0.0-amd64",
+              "createOptions": ""
+            }
           }
         }
       }
@@ -78,7 +91,7 @@
         "routes": {
           "modbusWrite": "FROM /messages/modules/dynoCardAlertModule/outputs/modbusWriteOutput INTO BrokeredEndpoint(\"/modules/modbus/inputs/input1\")",
           "modbusToDynoCard": "FROM /messages/modules/modbus/outputs/modbusOutput INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/modbusInput\")",
-          "opcToCustomHandler": "FROM /messages/modules/opc/* INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/opcInput\")",
+          "opcToCustomHandler": "FROM /messages/modules/opc_client/* INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/opcInput\")",
           "sensorToAlert": "FROM /messages/modules/dynoCardAlertModule/outputs/output1 INTO BrokeredEndpoint(\"/modules/mlAlertModule/inputs/amlInput\")",
           "alertTofilterAlert": "FROM /messages/modules/mlAlertModule/outputs/amlOutput INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/alertInput\")",
           "filterToIoTHub": "FROM /messages/modules/dynoCardAlertModule/outputs/alertOutput INTO $upstream"

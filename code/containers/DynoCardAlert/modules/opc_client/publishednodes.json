@@ -1,0 +1,258 @@
+[
+    {
+        "EndpointUrl": "opc.tcp:/104.209.190.252:49380",
+        "UseSecurity": false,
+        "OpcNodes": [
+            {
+                "ExpandedNodeId": "nsu=TOP%20Server;s=IoT_Drilling.WITS.WITSML.Witsml_AccDrillStrks",
+                "OpcPublishingInterval": 150,
+                "OpcPollingInterval": 150
+            },
+            {
+                "ExpandedNodeId": "nsu=TOP%20Server;s=IoT_Drilling.WITS.WITSML.Witsml_AccFillStrks",
+                "OpcPublishingInterval": 150,
+                "OpcPollingInterval": 150
+            },
+            {
+                "ExpandedNodeId": "nsu=TOP%20Server;s=IoT_Drilling.WITS.WITSML.Witsml_AccumTripIn",
+                "OpcPublishingInterval": 150,
+                "OpcPollingInterval": 150
+            },
+            {
+                "ExpandedNodeId": "nsu=TOP%20Server;s=IoT_Drilling.WITS.WITSML.Witsml_AccumTripOut",
+                "OpcPublishingInterval": 150,
+                "OpcPollingInterval": 150
+            },
+            {
+                "ExpandedNodeId": "nsu=TOP%20Server;s=IoT_Drilling.WITS.WITSML.Witsml_AdDrop",
+                "OpcPublishingInterval": 150,
+                "OpcPollingInterval": 150
+            },
+            {
+                "ExpandedNodeId": "nsu=TOP%20Server;s=IoT_Drilling.WITS.WITSML.Witsml_AirPressure",
+                "OpcPublishingInterval": 150,
+                "OpcPollingInterval": 150
+            },
+            {
+                "ExpandedNodeId": "nsu=TOP%20Server;s=IoT_Drilling.WITS.WITSML.Witsml_AltGravityToolface",
+                "OpcPublishingInterval": 150,
+                "OpcPollingInterval": 150
+            },
+            {
+                "ExpandedNodeId": "nsu=TOP%20Server;s=IoT_Drilling.WITS.WITSML.Witsml_AnlTmp",
+                "OpcPublishingInterval": 150,
+                "OpcPollingInterval": 150
+            },
+            {
+                "ExpandedNodeId": "nsu=TOP%20Server;s=IoT_Drilling.WITS.WITSML.Witsml_AnnPressure",
+                "OpcPublishingInterval": 150,
+                "OpcPollingInterval": 150
+            },
+            {
+                "ExpandedNodeId": "nsu=TOP%20Server;s=IoT_Drilling.WITS.WITSML.Witsml_Api",
+                "OpcPublishingInterval": 150,
+                "OpcPollingInterval": 150
+            },
+            {
+                "ExpandedNodeId": "nsu=TOP%20Server;s=IoT_Drilling.WITS.WITSML.Witsml_AvgRopFtHr",
+                "OpcPublishingInterval": 150,
+                "OpcPollingInterval": 150
+            },
+            {
+                "ExpandedNodeId": "nsu=TOP%20Server;s=IoT_Drilling.WITS.WITSML.Witsml_BackPressure",
+                "OpcPublishingInterval": 150,
+                "OpcPollingInterval": 150
+            },
+            {
+                "ExpandedNodeId": "nsu=TOP%20Server;s=IoT_Drilling.WITS.WITSML.Witsml_BhaLength",
+                "OpcPublishingInterval": 150,
+                "OpcPollingInterval": 150
+            },
+            {
+                "ExpandedNodeId": "nsu=TOP%20Server;s=IoT_Drilling.WITS.WITSML.Witsml_BitDepth",
+                "OpcPublishingInterval": 150,
+                "OpcPollingInterval": 150
+            },
+            {
+                "ExpandedNodeId": "nsu=TOP%20Server;s=IoT_Drilling.WITS.WITSML.Witsml_BitOnBtm",
+                "OpcPublishingInterval": 150,
+                "OpcPollingInterval": 150
+            },
+            {
+                "ExpandedNodeId": "nsu=TOP%20Server;s=IoT_Drilling.WITS.WITSML.Witsml_BitSize",
+                "OpcPublishingInterval": 150,
+                "OpcPollingInterval": 150
+            },
+            {
+                "ExpandedNodeId": "nsu=TOP%20Server;s=IoT_Drilling.WITS.WITSML.Witsml_BitTvdWits",
+                "OpcPublishingInterval": 150,
+                "OpcPollingInterval": 150
+            },
+            {
+                "ExpandedNodeId": "nsu=TOP%20Server;s=IoT_Drilling.WITS.WITSML.Witsml_BitWt",
+                "OpcPublishingInterval": 150,
+                "OpcPollingInterval": 150
+            },
+            {
+                "ExpandedNodeId": "nsu=TOP%20Server;s=IoT_Drilling.WITS.WITSML.Witsml_DateUpdatedInserted",
+                "OpcPublishingInterval": 150,
+                "OpcPollingInterval": 150
+            },
+            {
+                "ExpandedNodeId": "nsu=TOP%20Server;s=IoT_Drilling.WITS.WITSML.Witsml_DensIn",
+                "OpcPublishingInterval": 150,
+                "OpcPollingInterval": 150
+            },
+            {
+                "ExpandedNodeId": "nsu=TOP%20Server;s=IoT_Drilling.WITS.WITSML.Witsml_DiffPress",
+                "OpcPublishingInterval": 150,
+                "OpcPollingInterval": 150
+            },
+            {
+                "ExpandedNodeId": "nsu=TOP%20Server;s=IoT_Drilling.WITS.WITSML.Witsml_DogLegSeverity",
+                "OpcPublishingInterval": 150,
+                "OpcPollingInterval": 150
+            },
+            {
+                "ExpandedNodeId": "nsu=TOP%20Server;s=IoT_Drilling.WITS.WITSML.Witsml_DogLegSeverityWits",
+                "OpcPublishingInterval": 150,
+                "OpcPollingInterval": 150
+            },
+            {
+                "ExpandedNodeId": "nsu=TOP%20Server;s=IoT_Drilling.WITS.WITSML.Witsml_FastRopFtHr",
+                "OpcPublishingInterval": 150,
+                "OpcPollingInterval": 150
+            },
+            {
+                "ExpandedNodeId": "nsu=TOP%20Server;s=IoT_Drilling.WITS.WITSML.Witsml_FdSvyAzimuth",
+                "OpcPublishingInterval": 150,
+                "OpcPollingInterval": 150
+            },
+            {
+                "ExpandedNodeId": "nsu=TOP%20Server;s=IoT_Drilling.WITS.WITSML.Witsml_FdSvyDepth",
+                "OpcPublishingInterval": 150,
+                "OpcPollingInterval": 150
+            },
+            {
+                "ExpandedNodeId": "nsu=TOP%20Server;s=IoT_Drilling.WITS.WITSML.Witsml_FdSvyInclination",
+                "OpcPublishingInterval": 150,
+                "OpcPollingInterval": 150
+            },
+            {
+                "ExpandedNodeId": "nsu=TOP%20Server;s=IoT_Drilling.WITS.WITSML.Witsml_FlowIn",
+                "OpcPublishingInterval": 150,
+                "OpcPollingInterval": 150
+            },
+            {
+                "ExpandedNodeId": "nsu=TOP%20Server;s=IoT_Drilling.WITS.WITSML.Witsml_HookloadMax",
+                "OpcPublishingInterval": 150,
+                "OpcPollingInterval": 150
+            },
+            {
+                "ExpandedNodeId": "nsu=TOP%20Server;s=IoT_Drilling.WITS.WITSML.Witsml_ItemsReceived",
+                "OpcPublishingInterval": 150,
+                "OpcPollingInterval": 150
+            },
+            {
+                "ExpandedNodeId": "nsu=TOP%20Server;s=IoT_Drilling.WITS.WITSML.Witsml_NovWellId",
+                "OpcPublishingInterval": 150,
+                "OpcPollingInterval": 150
+            },
+            {
+                "ExpandedNodeId": "nsu=TOP%20Server;s=IoT_Drilling.WITS.WITSML.Witsml_ReceivedMaxTime",
+                "OpcPublishingInterval": 150,
+                "OpcPollingInterval": 150
+            },
+            {
+                "ExpandedNodeId": "nsu=TOP%20Server;s=IoT_Drilling.WITS.WITSML.Witsml_RequestedStartTime",
+                "OpcPublishingInterval": 150,
+                "OpcPollingInterval": 150
+            },
+            {
+                "ExpandedNodeId": "nsu=TOP%20Server;s=IoT_Drilling.WITS.WITSML.Witsml_RequestReceived",
+                "OpcPublishingInterval": 150,
+                "OpcPollingInterval": 150
+            },
+            {
+                "ExpandedNodeId": "nsu=TOP%20Server;s=IoT_Drilling.WITS.WITSML.Witsml_RequestSent",
+                "OpcPublishingInterval": 150,
+                "OpcPollingInterval": 150
+            },
+            {
+                "ExpandedNodeId": "nsu=TOP%20Server;s=IoT_Drilling.WITS.WITSML.Witsml_Rig",
+                "OpcPublishingInterval": 150,
+                "OpcPollingInterval": 150
+            },
+            {
+                "ExpandedNodeId": "nsu=TOP%20Server;s=IoT_Drilling.WITS.WITSML.Witsml_RigTime",
+                "OpcPublishingInterval": 150,
+                "OpcPollingInterval": 150
+            },
+            {
+                "ExpandedNodeId": "nsu=TOP%20Server;s=IoT_Drilling.WITS.WITSML.Witsml_Seq",
+                "OpcPublishingInterval": 150,
+                "OpcPollingInterval": 150
+            },
+            {
+                "ExpandedNodeId": "nsu=TOP%20Server;s=IoT_Drilling.WITS.WITSML.Witsml_SrvAzi",
+                "OpcPublishingInterval": 150,
+                "OpcPollingInterval": 150
+            },
+            {
+                "ExpandedNodeId": "nsu=TOP%20Server;s=IoT_Drilling.WITS.WITSML.Witsml_SrvGraTf",
+                "OpcPublishingInterval": 150,
+                "OpcPollingInterval": 150
+            },
+            {
+                "ExpandedNodeId": "nsu=TOP%20Server;s=IoT_Drilling.WITS.WITSML.Witsml_SrvInc",
+                "OpcPublishingInterval": 150,
+                "OpcPollingInterval": 150
+            },
+            {
+                "ExpandedNodeId": "nsu=TOP%20Server;s=IoT_Drilling.WITS.WITSML.Witsml_SrvMagTf",
+                "OpcPublishingInterval": 150,
+                "OpcPollingInterval": 150
+            },
+             {
+                "ExpandedNodeId": "nsu=TOP%20Server;s=IoT_Drilling.WITS.WITSML.Witsml_SrvMd",
+                "OpcPublishingInterval": 150,
+                "OpcPollingInterval": 150
+            },
+            {
+                "ExpandedNodeId": "nsu=TOP%20Server;s=IoT_Drilling.WITS.WITSML.Witsml_SurveyDecimal",
+                "OpcPublishingInterval": 150,
+                "OpcPollingInterval": 150
+            },
+            {
+                "ExpandedNodeId": "nsu=TOP%20Server;s=IoT_Drilling.WITS.WITSML.Witsml_TdSpeed",
+                "OpcPublishingInterval": 150,
+                "OpcPollingInterval": 150
+            },
+            {
+                "ExpandedNodeId": "nsu=TOP%20Server;s=IoT_Drilling.WITS.WITSML.Witsml_TdTorque",
+                "OpcPublishingInterval": 150,
+                "OpcPollingInterval": 150
+            },
+            {
+                "ExpandedNodeId": "nsu=TOP%20Server;s=IoT_Drilling.WITS.WITSML.Witsml_TotDptMd",
+                "OpcPublishingInterval": 150,
+                "OpcPollingInterval": 150
+            },
+            {
+                "ExpandedNodeId": "nsu=TOP%20Server;s=IoT_Drilling.WITS.WITSML.Witsml_WellboreName",
+                "OpcPublishingInterval": 150,
+                "OpcPollingInterval": 150
+            },
+            {
+                "ExpandedNodeId": "nsu=TOP%20Server;s=IoT_Drilling.WITS.WITSML.Witsml_WellId",
+                "OpcPublishingInterval": 150,
+                "OpcPollingInterval": 150
+            },
+            {
+                "ExpandedNodeId": "nsu=TOP%20Server;s=IoT_Drilling.WITS.WITSML.Witsml_WellName",
+                "OpcPublishingInterval": 150,
+                "OpcPollingInterval": 150
+            }
+        ]
+    }
+]
