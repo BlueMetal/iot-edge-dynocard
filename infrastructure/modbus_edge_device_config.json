@@ -1,5 +1,5 @@
 {
-  "modulesContent": {
+  "moduleContent": {
     "$edgeAgent": {
       "properties.desired": {
         "schemaVersion": "1.0",
@@ -42,13 +42,13 @@
               "createOptions": ""
             }
           },
-          "dynoCardAlertModule": {
+           "dynoCardAlertModule": {
             "version": "1.0",
             "type": "docker",
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "localhost:5000/dynocardalertmodule:1.0.0-amd64",
+              "image": "bluemetal/iot_dynocard_demo_alert:latest",
               "createOptions": ""
             }
           },
@@ -68,18 +68,8 @@
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "bluemetal/iot_dynocard_demo_edgedb:latest",
+              "image": "bluemetal/iot_dynocard_demo_edgedb",
               "createOptions": "{\"Env\": [\"ACCEPT_EULA=Y\",\"MSSQL_SA_PASSWORD=Strong!Passw0rd\"],\"HostConfig\": {\"Mounts\": [{\"Target\": \"/var/opt/mssql\",\"Source\": \"sqlVolume\",\"Type\": \"volume\"}],\"PortBindings\": {\"1433/tcp\": [{\"HostPort\": \"1401\"}]}}}"
-            }
-          },
-          "opc_client": {
-            "version": "1.0",
-            "type": "docker",
-            "status": "running",
-            "restartPolicy": "always",
-            "settings": {
-              "image": "localhost:5000/opc_client:1.0.5-amd64",
-              "createOptions": "{\"Env\": [\"OPC_ENDPOINT_URL=opc.tcp://opc-sim-server.eastus2.cloudapp.azure.com:49380\"]}"
             }
           }
         }
@@ -91,7 +81,6 @@
         "routes": {
           "modbusWrite": "FROM /messages/modules/dynoCardAlertModule/outputs/modbusWriteOutput INTO BrokeredEndpoint(\"/modules/modbus/inputs/input1\")",
           "modbusToDynoCard": "FROM /messages/modules/modbus/outputs/modbusOutput INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/modbusInput\")",
-          "opcToCustomHandler": "FROM /messages/modules/opc_client/* INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/opcInput\")",
           "sensorToAlert": "FROM /messages/modules/dynoCardAlertModule/outputs/output1 INTO BrokeredEndpoint(\"/modules/mlAlertModule/inputs/amlInput\")",
           "alertTofilterAlert": "FROM /messages/modules/mlAlertModule/outputs/amlOutput INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/alertInput\")",
           "filterToIoTHub": "FROM /messages/modules/dynoCardAlertModule/outputs/alertOutput INTO $upstream"
@@ -103,7 +92,7 @@
     },
     "dynoCardAlertModule": {
       "properties.desired": {
-        "surfaceCardConfig": {
+        "surfaceCardConfig" : {
           "timestamp": {
             "register": "32669",
             "length": "2"
@@ -150,7 +139,7 @@
             "register": "34708",
             "length": "1"
           },
-          "grossStroke": {
+         "grossStroke": {
             "register": "34709",
             "length": "1"
           },
@@ -180,7 +169,6 @@
         "SlaveConfigs": {
           "Slave01": {
             "SlaveConnection": "52.186.11.164",
-            "TcpPort": "502",
             "HwId": "Pump1-DynoCard",
             "Operations": {
               "Op01": {

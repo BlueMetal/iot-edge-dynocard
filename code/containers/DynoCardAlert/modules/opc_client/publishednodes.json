@@ -1,6 +1,6 @@
 [
     {
-        "EndpointUrl": "opc.tcp://opc-sim-server.eastus2.cloudapp.azure.com:49380",
+        "EndpointUrl": "opc.tcp://<placeholder>",
         "UseSecurity": false,
         "OpcNodes": [
             {

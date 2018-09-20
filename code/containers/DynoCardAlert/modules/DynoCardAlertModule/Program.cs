@@ -244,30 +244,79 @@ namespace DynoCardAlertModule
                 foreach (Exception exception in ex.InnerExceptions)
                 {
                     Console.WriteLine();
-                    Console.WriteLine("Error in sample: {0}", exception);
+                    Console.WriteLine("Error in modbus input: {0}", exception);
                 }
-                // Indicate that the message treatment is not completed
-                var deviceClient = (DeviceClient)userContext;
-                return MessageResponse.None;
+                
+                return MessageResponse.Completed;
             }
             catch (Exception ex)
             {
                 Console.WriteLine();
-                Console.WriteLine("Error in sample: {0}", ex.Message);
-                // Indicate that the message treatment is not completed
-                //DeviceClient deviceClient = (DeviceClient)userContext;
-                return MessageResponse.None;
+                Console.WriteLine("Error in modbus input: {0}", ex.Message);
+                
+                return MessageResponse.Completed;
             }
         }
 
         private static async Task<MessageResponse> ProcessOPCInput(Message message, object userContext)
         {
-            Console.WriteLine("In the OPC Filter Message handler");
+            Console.WriteLine("Processing OPC input");
 
             var counterValue = Interlocked.Increment(ref counter);
-            await Task.FromResult(true);
 
-            return MessageResponse.Completed;
+            try
+            {
+                ModuleClient deviceClient = (ModuleClient)userContext;
+                var opcMessage = new OpcMessage(message);
+                List<DynoCard> cards = new List<DynoCard>();
+
+                if (opcMessage != null)
+                {
+                    var dynoCard = await opcMessage.ToDynoCard();
+
+                    if (dynoCard.SurfaceCard != null && dynoCard.PumpCard != null)
+                    {
+                        cards.Add(dynoCard);
+                        Console.WriteLine("Parsing OPC dyno card values.");
+                    }
+                }
+
+                foreach (var card in cards)
+                {
+                    string json = JsonConvert.SerializeObject(card);
+                    //System.Console.WriteLine(json);
+
+                    int cardID = await (new DataHelper()).PersistDynoCard(card);
+
+                    if (cardID > 0)
+                    {
+                        card.Id = cardID;
+
+                        var dynoCardMessage = card.ToDeviceMessage();
+                        await deviceClient.SendEventAsync("output1", dynoCardMessage);
+                    }
+                }
+
+                // Indicate that the message treatment is completed
+                return MessageResponse.Completed;
+            }
+            catch (AggregateException ex)
+            {
+                foreach (Exception exception in ex.InnerExceptions)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("Error in OPC input: {0}", exception);
+                }
+
+                return MessageResponse.Completed;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine();
+                Console.WriteLine("Error in OPC input: {0}", ex.Message);
+
+                return MessageResponse.Completed;
+            }
         }
        
         private static async Task<MessageResponse> ProcessAlert(Message message, object userContext)

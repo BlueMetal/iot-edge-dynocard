@@ -2,13 +2,12 @@
 ##
 ## This cloudinit file sets a host up to act as an IoT Edge device
 ##
-package_update: false
-packages:
-  - python2.7
-  - python-pip
-  - docker.io
 runcmd:
   - export HOME=/root
-  - pip install -U azure-iot-edge-runtime-ctl
-  - iotedgectl setup --connection-string "${connstr}" --auto-cert-gen-force-no-passwords 
-  - iotedgectl start
+  - curl https://packages.microsoft.com/config/ubuntu/16.04/prod.list > ./microsoft-prod.list
+  - cp ./microsoft-prod.list /etc/apt/sources.list.d/
+  - curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
+  - cp ./microsoft.gpg /etc/apt/trusted.gpg.d/ 
+  - apt-get update
+  - apt-get install -y moby-engine moby-cli iotedgeruntime
+  - systemctl restart iotedge
