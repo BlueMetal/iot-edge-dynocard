@@ -1,0 +1,121 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "webApp": {
+            "type": "object"
+        },
+        "appInsights": {
+            "type": "object"
+        },
+        "deviceConnectionString":{
+            "type":"string"
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Web/serverfarms",
+            "apiVersion": "2017-08-01",
+            "kind": "app",
+            "name": "[parameters('webApp').appSvcPlanNameDr]",
+            "location": "[parameters('webApp').locationDr]",
+            "sku": {
+                "name": "[parameters('webApp').appSvcPlanSku1]"
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites",
+            "apiVersion": "2016-08-01",
+            "kind": "app",
+            "name": "[parameters('webApp').webSiteNameDr]",
+            "location": "[parameters('webApp').locationDr]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms', parameters('webApp').appSvcPlanNameDr)]"
+            ],
+            "properties": {
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('webApp').appSvcPlanNameDr)]"
+            },
+            "resources": [
+                {
+                    "apiVersion": "2015-08-01",
+                    "name": "web",
+                    "type": "config",
+                    "dependsOn": [
+                        "[concat('Microsoft.Web/sites/', parameters('webApp').webSiteNameDr)]"
+                    ],
+                    "tags": {
+                        "displayName": "webAppConfig"
+                    },
+                    "properties": {
+                        "phpVersion": "5.6",
+                        "netFrameworkVersion": "v4.6",
+                        "use32BitWorkerProcess": true,
+                        "webSocketsEnabled": false,
+                        "alwaysOn": true,
+                        "remoteDebuggingEnabled": false
+                    }
+                },
+                {
+                    "name": "MSDeploy",
+                    "type": "extensions",
+                    "location": "[parameters('webApp').locationDr]",
+                    "apiVersion": "2015-08-01",
+                    "dependsOn": [
+                        "[concat('Microsoft.Web/sites/', parameters('webApp').webSiteNameDr)]",
+                        "[concat('Microsoft.Web/sites/', parameters('webApp').webSiteNameDr, '/config/web')]"
+                    ],
+                    "tags": {
+                        "displayName": "webAppMSDeploy"
+                    },
+                    "properties": {
+                        "packageUri": "[parameters('webApp').dynocardURIwm]"
+                    }
+                },
+                {
+                    "name": "connectionstrings",
+                    "type": "config",
+                    "apiVersion": "2015-08-01",
+                    "dependsOn": [
+                        "[concat('Microsoft.Web/sites/', parameters('webApp').webSiteNameDr)]",
+                        "[concat('Microsoft.Web/sites/', parameters('webApp').webSiteNameDr, '/config/web')]",
+                        "[concat('Microsoft.Web/sites/', parameters('webApp').webSiteNameDr, '/extensions/MSDeploy')]"
+                    ],
+                    "tags": {
+                        "displayName": "WebAppConnectionStrings"
+                    },
+                    "properties": {
+                        "DynoCardDbConnString ": {
+                            "value": "[parameters('webApp').DynoCardDbConnString1]",
+                            "type": "Custom"
+                        }
+                    }
+                },
+                {
+                    "name": "appsettings",
+                    "type": "config",
+                    "apiVersion": "2015-08-01",
+                    "dependsOn": [
+                        "[concat('Microsoft.Web/sites/', parameters('webApp').webSiteNameDr)]",
+                        "[concat('Microsoft.Web/sites/', parameters('webApp').webSiteNameDr, '/config/web')]",
+                        "[concat('Microsoft.Web/sites/', parameters('webApp').webSiteNameDr, '/config/connectionstrings')]",
+                        "[concat('Microsoft.Web/sites/', parameters('webApp').webSiteNameDr, '/extensions/MSDeploy')]"
+                    ],
+                    "tags": {
+                        "displayName": "WebAppSettings"
+                    },
+                    "properties": {
+                        "ApplicationInsights:InstrumentationKey":"[reference(resourceId('Microsoft.Insights/components', parameters('appInsights').appInsightResourceName), '2014-04-01').InstrumentationKey]",
+                         "DeviceConnectionString":"[parameters('deviceConnectionString')]"
+                        
+                    }
+                }
+            ]
+        }
+    ],
+    "outputs": {
+        "webDomainHostName": {
+            "type": "string",
+            "value": "[concat(parameters('webApp').webSiteNameDr,'.azurewebsites.net')]"
+        }
+    }
+}

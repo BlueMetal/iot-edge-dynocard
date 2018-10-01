@@ -1,0 +1,266 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "iotHub": {
+            "type": "object"
+        },
+        "serviceBusProperties": {
+            "type": "object"
+        },
+        "omsSettings": {
+            "type": "object"
+        }
+    },
+    "variables": {
+        "iotHubResourceId": "[parameters('iotHub').iotHubResourceId]",
+        "iotHubKeyResource": "[parameters('iotHub').iotHubKeyResource]"
+    },
+    "resources": [
+        {
+            "name": "[parameters('iotHub').name]",
+            "type": "Microsoft.Devices/IotHubs",
+            "apiVersion": "2017-07-01",
+            "location": "[parameters('iotHub').location]",
+            "properties": {
+                "operationsMonitoringProperties": {
+                    "events": {
+                        "None": "None",
+                        "Connections": "None",
+                        "DeviceTelemetry": "None",
+                        "C2DCommands": "None",
+                        "DeviceIdentityOperations": "None",
+                        "FileUploadOperations": "None",
+                        "Routes": "None"
+                    }
+                },
+                "eventHubEndpoints": {
+                    "events": {
+                        "retentionTimeInDays": 1,
+                        "partitionCount": "[parameters('iotHub').partitionCount]"
+                    },
+                    "operationsMonitoringEvents": {
+                        "retentionTimeInDays": 1,
+                        "partitionCount": "[parameters('iotHub').partitionCount]"
+                    }
+                },
+                "routing": {
+                    "endpoints": {
+                        "serviceBusQueues": [
+                            {
+                                "name": "dynocard-output",
+                                "connectionString": "[concat(listKeys(parameters('serviceBusProperties').serviceBusAuthRuleResourceId, '2017-04-01').primaryConnectionString,';EntityPath=dynocard-output')]",
+                                "resourceGroup": "[resourceGroup().name]",
+                                "subscriptionId": "[subscription().subscriptionId]"
+                            }
+                        ]
+                    },
+                    "routes": [
+                        {
+                            "name": "IoTHubLoopback",
+                            "source": "DeviceMessages",
+                            "condition": "true",
+                            "endpointNames": [
+                                "events"
+                            ],
+                            "isEnabled": true
+                        },
+                        {
+                            "name": "MessageProcessing",
+                            "source": "DeviceMessages",
+                            "condition": "true",
+                            "endpointNames": [
+                                "dynocard-output"
+                            ],
+                            "isEnabled": true
+                        }
+                    ],
+                    "fallbackRoute": {
+                        "name": "$fallback",
+                        "source": "DeviceMessages",
+                        "condition": "true",
+                        "endpointNames": [
+                            "events"
+                        ],
+                        "isEnabled": false
+                    }
+                },
+                "storageEndpoints": {
+                    "$default": {
+                        "sasTtlAsIso8601": "PT1H",
+                        "connectionString": "",
+                        "containerName": ""
+                    }
+                },
+                "enableFileUploadNotifications": false,
+                "cloudToDevice": {
+                    "maxDeliveryCount": 10,
+                    "defaultTtlAsIso8601": "PT1H",
+                    "feedback": {
+                        "lockDurationAsIso8601": "PT1M",
+                        "ttlAsIso8601": "PT1H",
+                        "maxDeliveryCount": 10
+                    }
+                },
+                "features": "none"
+            },
+            "sku": {
+                "name": "[parameters('iotHub').skuName1]",
+                "capacity": "[parameters('iotHub').skuCapacity]"
+            },
+            "resources": [
+                {
+                    "name": "Microsoft.Insights/service",
+                    "type": "providers/diagnosticSettings",
+                    "apiVersion": "[parameters('omsSettings').omsEnableApiVersion]",
+                    "dependsOn": [
+                        "[concat('Microsoft.Devices/IotHubs/', parameters('iotHub').name)]"
+                    ],
+                    "properties": {
+                        "workspaceId": "[resourceId('Microsoft.OperationalInsights/workspaces/', parameters('omsSettings').omsWorkspaceName)]",
+                        "logs": [
+                            {
+                                "category": "Connections",
+                                "enabled": true,
+                                "retentionPolicy": {
+                                    "days": 0,
+                                    "enabled": false
+                                }
+                            },
+                            {
+                                "category": "FileUploadOperations",
+                                "enabled": true,
+                                "retentionPolicy": {
+                                    "days": 0,
+                                    "enabled": false
+                                }
+                            },
+                            {
+                                "category": "Routes",
+                                "enabled": true,
+                                "retentionPolicy": {
+                                    "days": 0,
+                                    "enabled": false
+                                }
+                            },
+                            {
+                                "category": "D2CTwinOperations",
+                                "enabled": true,
+                                "retentionPolicy": {
+                                    "days": 0,
+                                    "enabled": false
+                                }
+                            },
+                            {
+                                "category": "C2DTwinOperations",
+                                "enabled": true,
+                                "retentionPolicy": {
+                                    "days": 0,
+                                    "enabled": false
+                                }
+                            },
+                            {
+                                "category": "TwinQueries",
+                                "enabled": true,
+                                "retentionPolicy": {
+                                    "days": 0,
+                                    "enabled": false
+                                }
+                            },
+                            {
+                                "category": "JobsOperations",
+                                "enabled": true,
+                                "retentionPolicy": {
+                                    "days": 0,
+                                    "enabled": false
+                                }
+                            },
+                            {
+                                "category": "DirectMethods",
+                                "enabled": true,
+                                "retentionPolicy": {
+                                    "days": 0,
+                                    "enabled": false
+                                }
+                            },
+                            {
+                                "category": "E2EDiagnostics",
+                                "enabled": true,
+                                "retentionPolicy": {
+                                    "days": 0,
+                                    "enabled": false
+                                }
+                            },
+                            {
+                                "category": "DeviceTelemetry",
+                                "enabled": true,
+                                "retentionPolicy": {
+                                    "days": 0,
+                                    "enabled": false
+                                }
+                            },
+                            {
+                                "category": "C2DCommands",
+                                "enabled": true,
+                                "retentionPolicy": {
+                                    "days": 0,
+                                    "enabled": false
+                                }
+                            },
+                            {
+                                "category": "DeviceIdentityOperations",
+                                "enabled": true,
+                                "retentionPolicy": {
+                                    "days": 0,
+                                    "enabled": false
+                                }
+                            }
+                        ],
+                        "metrics": [
+                            {
+                                "timeGrain": "AllMetrics",
+                                "category": "AllMetrics",
+                                "enabled": true,
+                                "retentionPolicy": {
+                                    "enabled": false,
+                                    "days": 0
+                                }
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "apiVersion": "2016-02-03",
+            "type": "Microsoft.Devices/iotHubs/eventhubEndpoints/ConsumerGroups",
+            "name": "[concat(parameters('iotHub').name, '/events/IoTHubLoopback')]",
+            "location": "[parameters('iotHub').location]",
+            "dependsOn": [
+                "[concat('Microsoft.Devices/iothubs/', parameters('iotHub').name)]"
+            ]
+        },
+        {
+            "apiVersion": "2016-02-03",
+            "type": "Microsoft.Devices/iotHubs/eventhubEndpoints/ConsumerGroups",
+            "name": "[concat(parameters('iotHub').name, '/events/MessageProcessing')]",
+            "dependsOn": [
+                "[concat('Microsoft.Devices/iothubs/', parameters('iotHub').name)]"
+            ]
+        }
+    ],
+    "outputs": {
+        "iotHubHostName": {
+            "type": "string",
+            "value": "[concat(parameters('iotHub').name,'.azure-devices.net')]"
+        },
+        "iotHubPrimaryKey": {
+            "value": "[listkeys(resourceId('Microsoft.Devices/IotHubs/IotHubKeys',parameters('iotHub').name,'iothubowner'),'2016-02-03').primaryKey]",
+            "type": "string"
+        },
+        "iotHubConnectionString": {
+            "type": "string",
+            "value": "[concat('HostName=', reference(variables('iotHubResourceId')).hostName, ';SharedAccessKeyName=', parameters('iotHub').iotHubKeyName, ';SharedAccessKey=', listkeys(variables('iotHubKeyResource'), '2018-04-01').primaryKey)]"
+        }
+    }
+}

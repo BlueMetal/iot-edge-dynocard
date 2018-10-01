@@ -1,1 +1,0 @@
-Please see the [wiki](https://github.com/BlueMetal/iot-edge-dynocard/wiki/6.-Demo-Provisioning).

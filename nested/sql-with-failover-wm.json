@@ -1,0 +1,348 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "sqlServer": {
+            "type": "object"
+        },
+        "omsSettings": {
+            "type": "object"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "name": "[parameters('sqlServer').serverName]",
+            "type": "Microsoft.Sql/servers",
+            "location": "[parameters('sqlServer').location]",
+            "apiVersion": "2014-04-01",
+            "properties": {
+                "administratorLogin": "[parameters('sqlServer').sqlAdministratorLogin]",
+                "administratorLoginPassword": "[parameters('sqlServer').sqlAdministratorLoginPassword]",
+                "version": "12.0"
+            },
+            "resources": [
+                {
+                    "apiVersion": "2015-05-01-preview",
+                    "type": "failoverGroups",
+                    "name": "[parameters('sqlServer').sqlFailoverGroupName]",
+                    "properties": {
+                        "serverName": "[parameters('sqlServer').serverName]",
+                        "partnerServers": [
+                            {
+                                "id": "[resourceId('Microsoft.Sql/servers/', parameters('sqlServer').recoveryServerName)]"
+                            }
+                        ],
+                        "readWriteEndpoint": {
+                            "failoverPolicy": "Automatic",
+                            "failoverWithDataLossGracePeriodMinutes": 60
+                        },
+                        "readOnlyEndpoint": {
+                            "failoverPolicy": "Disabled"
+                        },
+                        "databases": [
+                            "[resourceId('Microsoft.Sql/servers/databases', parameters('sqlServer').serverName, parameters('sqlServer').databaseName)]"
+                        ]
+                    },
+                    "dependsOn": [
+                        "[parameters('sqlServer').serverName]",
+                        "[resourceId('Microsoft.Sql/servers', parameters('sqlServer').recoveryServerName)]",
+                        "[resourceId('Microsoft.Sql/servers/databases', parameters('sqlServer').serverName, parameters('sqlServer').databaseName)]"
+                    ]
+                },
+                {
+                    "name": "[parameters('sqlServer').databaseName]",
+                    "apiVersion": "2014-04-01",
+                    "type": "databases",
+                    "location": "[parameters('sqlServer').location]",
+                    "dependsOn": [
+                        "[concat('Microsoft.Sql/servers/', parameters('sqlServer').serverName)]"
+                    ],
+                    "properties": {
+                        "edition": "[parameters('sqlServer').databaseEdition1]",
+                        "collation": "[parameters('sqlServer').databaseCollation]",
+                        "maxSizeBytes": "[parameters('sqlServer').databaseMaxSizeBytes1]",
+                        "requestedServiceObjectiveName": "[parameters('sqlServer').databaseRequestedServiceObjectiveName1]"
+                    },
+                    "resources": [
+                        {
+                            "name": "myImport",
+                            "type": "extensions",
+                            "apiVersion": "2014-04-01-preview",
+                            "dependsOn": [
+                                "[parameters('sqlServer').serverName]",
+                                "[parameters('sqlServer').databaseName]"
+                            ],
+                            "tags": {
+                                "displayName": "myImport"
+                            },
+                            "properties": {
+                                "storageKeyType": "[parameters('sqlServer').storageKeyType]",
+                                "storageKey": "[parameters('sqlServer').storageKey]",
+                                "storageUri": "[parameters('sqlServer').storageUri]",
+                                "administratorLogin": "[parameters('sqlServer').sqlAdministratorLogin]",
+                                "administratorLoginPassword": "[parameters('sqlServer').sqlAdministratorLoginPassword]",
+                                "operationMode": "Import"
+                            }
+                        },
+                        {
+                            "name": "Microsoft.Insights/service",
+                            "type": "providers/diagnosticSettings",
+                            "apiVersion": "[parameters('omsSettings').omsEnableApiVersion]",
+                            "dependsOn": [
+                                "[concat('Microsoft.Sql/servers/', parameters('sqlServer').serverName)]",
+                                "[concat('Microsoft.Sql/servers/',parameters('sqlServer').serverName, '/databases/', parameters('sqlServer').databaseName)]"
+                            ],
+                            "properties": {
+                                "workspaceId": "[resourceId('Microsoft.OperationalInsights/workspaces/', parameters('omsSettings').omsWorkspaceName)]",
+                                "logs": [
+                                    {
+                                        "category": "Timeouts",
+                                        "enabled": true,
+                                        "retentionPolicy": {
+                                            "days": 0,
+                                            "enabled": false
+                                        }
+                                    },
+                                    {
+                                        "category": "QueryStoreRuntimeStatistics",
+                                        "enabled": true,
+                                        "retentionPolicy": {
+                                            "days": 0,
+                                            "enabled": false
+                                        }
+                                    },
+                                    {
+                                        "category": "QueryStoreWaitStatistics",
+                                        "enabled": true,
+                                        "retentionPolicy": {
+                                            "days": 0,
+                                            "enabled": false
+                                        }
+                                    },
+                                    {
+                                        "category": "Errors",
+                                        "enabled": true,
+                                        "retentionPolicy": {
+                                            "days": 0,
+                                            "enabled": false
+                                        }
+                                    },
+                                    {
+                                        "category": "DatabaseWaitStatistics",
+                                        "enabled": true,
+                                        "retentionPolicy": {
+                                            "days": 0,
+                                            "enabled": false
+                                        }
+                                    },
+                                    {
+                                        "category": "Blocks",
+                                        "enabled": true,
+                                        "retentionPolicy": {
+                                            "days": 0,
+                                            "enabled": false
+                                        }
+                                    },
+                                    {
+                                        "category": "SQLInsights",
+                                        "enabled": true,
+                                        "retentionPolicy": {
+                                            "days": 0,
+                                            "enabled": false
+                                        }
+                                    },
+                                    {
+                                        "category": "Audit",
+                                        "enabled": true,
+                                        "retentionPolicy": {
+                                            "days": 0,
+                                            "enabled": false
+                                        }
+                                    }
+                                ],
+                                "metrics": [
+                                    {
+                                        "timeGrain": "AllMetrics",
+                                        "category": "AllMetrics",
+                                        "enabled": true,
+                                        "retentionPolicy": {
+                                            "enabled": false,
+                                            "days": 0
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "Microsoft.Sql/servers",
+                    "kind": "v12.0",
+                    "name": "[parameters('sqlServer').recoveryServerName]",
+                    "apiVersion": "2014-04-01-preview",
+                    "location": "[parameters('sqlServer').locationDr]",
+                    "properties": {
+                        "administratorLogin": "[parameters('sqlServer').recoverySqlAuthenticationLogin]",
+                        "administratorLoginPassword": "[parameters('sqlServer').recoverySqlAuthenticationPassword]",
+                        "version": "12.0"
+                    },
+                    "dependsOn": [
+                        "[concat('Microsoft.Sql/servers/', parameters('sqlServer').serverName)]"
+                    ],
+                    "resources": [
+                        {
+                            "name": "[parameters('sqlServer').databaseName]",
+                            "apiVersion": "2014-04-01",
+                            "type": "databases",
+                            "location": "[parameters('sqlServer').locationDr]",
+                            "dependsOn": [
+                                "[concat('Microsoft.Sql/servers/', parameters('sqlServer').recoveryServerName)]",
+                                "[concat('Microsoft.Sql/servers/',parameters('sqlServer').serverName, '/databases/', parameters('sqlServer').databaseName)]"
+
+                            ],
+                            "properties": {
+                                "createMode": "OnlineSecondary",
+                                "status":"Online",
+                                "containmentState":2,
+                                "sourceDatabaseId":  "[resourceId('Microsoft.Sql/servers/databases', parameters('sqlServer').serverName, parameters('sqlServer').databaseName)]",
+                                "edition": "[parameters('sqlServer').databaseEdition1]",
+                                "collation": "[parameters('sqlServer').databaseCollation]",
+                                "maxSizeBytes": "[parameters('sqlServer').databaseMaxSizeBytes1]",
+                                "requestedServiceObjectiveName": "[parameters('sqlServer').databaseRequestedServiceObjectiveName1]"
+                            },
+                            "resources": [
+                                {
+                                    "name": "Microsoft.Insights/service",
+                                    "type": "providers/diagnosticSettings",
+                                    "apiVersion": "[parameters('omsSettings').omsEnableApiVersion]",
+                                    "dependsOn": [
+                                        "[concat('Microsoft.Sql/servers/', parameters('sqlServer').recoveryServerName)]",
+                                        "[concat('Microsoft.Sql/servers/',parameters('sqlServer').recoveryServerName, '/databases/', parameters('sqlServer').databaseName)]"
+                                    ],
+                                    "properties": {
+                                        "workspaceId": "[resourceId('Microsoft.OperationalInsights/workspaces/', parameters('omsSettings').omsWorkspaceName)]",
+                                        "logs": [
+                                            {
+                                                "category": "Timeouts",
+                                                "enabled": true,
+                                                "retentionPolicy": {
+                                                    "days": 0,
+                                                    "enabled": false
+                                                }
+                                            },
+                                            {
+                                                "category": "QueryStoreRuntimeStatistics",
+                                                "enabled": true,
+                                                "retentionPolicy": {
+                                                    "days": 0,
+                                                    "enabled": false
+                                                }
+                                            },
+                                            {
+                                                "category": "QueryStoreWaitStatistics",
+                                                "enabled": true,
+                                                "retentionPolicy": {
+                                                    "days": 0,
+                                                    "enabled": false
+                                                }
+                                            },
+                                            {
+                                                "category": "Errors",
+                                                "enabled": true,
+                                                "retentionPolicy": {
+                                                    "days": 0,
+                                                    "enabled": false
+                                                }
+                                            },
+                                            {
+                                                "category": "DatabaseWaitStatistics",
+                                                "enabled": true,
+                                                "retentionPolicy": {
+                                                    "days": 0,
+                                                    "enabled": false
+                                                }
+                                            },
+                                            {
+                                                "category": "Blocks",
+                                                "enabled": true,
+                                                "retentionPolicy": {
+                                                    "days": 0,
+                                                    "enabled": false
+                                                }
+                                            },
+                                            {
+                                                "category": "SQLInsights",
+                                                "enabled": true,
+                                                "retentionPolicy": {
+                                                    "days": 0,
+                                                    "enabled": false
+                                                }
+                                            },
+                                            {
+                                                "category": "Audit",
+                                                "enabled": true,
+                                                "retentionPolicy": {
+                                                    "days": 0,
+                                                    "enabled": false
+                                                }
+                                            }
+                                        ],
+                                        "metrics": [
+                                            {
+                                                "timeGrain": "AllMetrics",
+                                                "category": "AllMetrics",
+                                                "enabled": true,
+                                                "retentionPolicy": {
+                                                    "enabled": false,
+                                                    "days": 0
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "firewallrules",
+                    "apiVersion": "2014-04-01",
+                    "dependsOn": [
+                        "[parameters('sqlServer').serverName]"
+                    ],
+                    "location": "[parameters('sqlServer').location]",
+                    "name": "AllowAllWindowsAzureIps",
+                    "properties": {
+                        "endIpAddress": "0.0.0.0",
+                        "startIpAddress": "0.0.0.0"
+                    }
+                },
+                {
+                    "type": "Microsoft.Sql/servers/firewallRules",
+                    "location": "[parameters('sqlServer').locationDr]",
+                    "name": "[concat(parameters('sqlServer').recoveryServerName,'/','allowall')]",
+                    "apiVersion": "2014-04-01-preview",
+                    "dependsOn": [
+                        "[concat('Microsoft.Sql/servers/', parameters('sqlServer').serverName)]",
+                        "[concat('Microsoft.Sql/servers/', parameters('sqlServer').recoveryServerName)]"
+                    ],
+                    "properties": {
+                        "endIpAddress": "0.0.0.0",
+                        "startIpAddress": "0.0.0.0"
+                    }
+                }
+            ]
+        }
+    ],
+    "outputs": {
+        "sqlServerFqdn": {
+            "type": "string",
+            "value": "[reference(concat('Microsoft.Sql/servers/', parameters('sqlServer').serverName)).fullyQualifiedDomainName]"
+        },
+        "recoverysqlServerFqdn": {
+            "type": "string",
+            "value": "[reference(concat('Microsoft.Sql/servers/', parameters('sqlServer').recoveryServerName)).fullyQualifiedDomainName]"
+        }
+    }
+}

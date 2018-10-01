@@ -1,0 +1,256 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "dynocardVmSettings": {
+            "type": "object"
+        },
+        "vnetSettings":{
+            "type": "object"
+        }
+    },
+    "variables": {
+        "vnetId": "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetSettings').vnetName)]",
+        "subnetRef": "[concat(variables('vnetId'), '/subnets/', parameters('vnetSettings').subnetName2)]"
+    },
+    "resources": [
+        {
+            "name": "[parameters('dynocardVmSettings').dynoCardVmName]",
+            "type": "Microsoft.Compute/virtualMachines",
+            "apiVersion": "2017-03-30",
+            "location": "[parameters('dynocardVmSettings').location]",
+            "dependsOn": [
+                "[concat('Microsoft.Network/networkInterfaces/', parameters('dynocardVmSettings').networkInterfaceName)]"
+            ],
+            "properties": {
+                "osProfile": {
+                    "computerName": "[parameters('dynocardVmSettings').dynoCardVmName]",
+                    "adminUsername": "[parameters('dynocardVmSettings').dynoUsername]",
+                    "adminPassword": "[parameters('dynocardVmSettings').dynoVmPassword]",
+                    "windowsConfiguration": {
+                        "provisionVmAgent": "true"
+                    }
+                },
+                "hardwareProfile": {
+                    "vmSize": "[parameters('dynocardVmSettings').vmSize]"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "[parameters('dynocardVmSettings').imagePublisher]",
+                        "offer": "[parameters('dynocardVmSettings').imageOffer]",
+                        "sku": "[parameters('dynocardVmSettings').sku]",
+                        "version": "latest"
+                    },
+                    "osDisk": {
+                        "createOption": "fromImage",
+                        "managedDisk": {
+                            "storageAccountType": "Standard_LRS"
+                        }
+                    },
+                    "dataDisks": []
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('dynocardVmSettings').networkInterfaceName)]"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "[parameters('dynocardVmSettings').networkInterfaceName]",
+            "type": "Microsoft.Network/networkInterfaces",
+            "apiVersion": "2017-08-01",
+            "location": "[parameters('dynocardVmSettings').location]",
+            "dependsOn": [
+                "[concat('Microsoft.Network/publicIpAddresses/', parameters('dynocardVmSettings').publicIpAddressName)]",
+                "[concat('Microsoft.Network/networkSecurityGroups/', parameters('dynocardVmSettings').networkSecurityGroupName)]"
+            ],
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "properties": {
+                            "subnet": {
+                                "id": "[variables('subnetRef')]"
+                            },
+                            "privateIPAllocationMethod": "Dynamic",
+                            "publicIpAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIpAddresses', parameters('dynocardVmSettings').publicIpAddressName)]"
+                            }
+                        }
+                    }
+                ],
+                "networkSecurityGroup": {
+                    "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('dynocardVmSettings').networkSecurityGroupName)]"
+                }
+            }
+        },
+        {
+            "name": "[parameters('dynocardVmSettings').publicIpAddressName]",
+            "type": "Microsoft.Network/publicIpAddresses",
+            "apiVersion": "2017-08-01",
+            "location": "[parameters('dynocardVmSettings').location]",
+            "properties": {
+                "publicIpAllocationMethod": "[parameters('dynocardVmSettings').publicIpAddressType]",
+                "dnsSettings": {
+                    "domainNameLabel": "[parameters('dynocardVmSettings').dnsLabelPrefix]"
+                }
+            },
+            "sku": {
+                "name": "[parameters('dynocardVmSettings').publicIpAddressSku]"
+            }
+        },
+        {
+            "name": "[parameters('dynocardVmSettings').networkSecurityGroupName]",
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "apiVersion": "2018-01-01",
+            "location": "[parameters('dynocardVmSettings').location]",
+            "properties": {
+                "securityRules": [
+                    {
+                        "name": "RDP",
+                        "properties": {
+                            "priority": 1000,
+                            "protocol": "TCP",
+                            "access": "Allow",
+                            "direction": "Inbound",
+                            "sourceApplicationSecurityGroups": [],
+                            "destinationApplicationSecurityGroups": [],
+                            "sourceAddressPrefix": "*",
+                            "sourcePortRange": "*",
+                            "destinationAddressPrefix": "*",
+                            "destinationPortRange": "3389"
+                        }
+                    },
+                    {
+                        "name": "HTTPS",
+                        "properties": {
+                            "priority": 1001,
+                            "sourceAddressPrefix": "*",
+                            "protocol": "TCP",
+                            "destinationPortRange": "443",
+                            "access": "Allow",
+                            "direction": "Inbound",
+                            "sourcePortRange": "*",
+                            "destinationAddressPrefix": "*"
+                        }
+                    },
+                    {
+                        "name": "HTTPS1",
+                        "properties": {
+                            "priority": 1002,
+                            "sourceAddressPrefix": "*",
+                            "protocol": "TCP",
+                            "destinationPortRange": "443",
+                            "access": "Allow",
+                            "direction": "Outbound",
+                            "sourcePortRange": "*",
+                            "destinationAddressPrefix": "*"
+                        }
+                    },
+                    {
+                        "name": "Modbus",
+                        "properties": {
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "502",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 1003,
+                            "direction": "Inbound"
+                        }
+                    },
+                    {
+                        "name": "Modbus1",
+                        "properties": {
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "502",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 1004,
+                            "direction": "Outbound"
+                        }
+                    },
+                    {
+                        "name": "winrm",
+                        "properties": {
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "5986",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 1011,
+                            "direction": "Inbound"
+                        }
+                    },
+                    {
+                        "name": "security",
+                        "properties": {
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "5724",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 1012,
+                            "direction": "Inbound"
+                        }
+                    },
+                    {
+                        "name": "security1",
+                        "properties": {
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "5724",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 1013,
+                            "direction": "Outbound"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "name": "[concat(parameters('dynocardVmSettings').dynoCardVmName,'/CustomScriptExtension')]",
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "location": "[parameters('dynocardVmSettings').location]",
+            "apiVersion": "2017-03-30",
+            "dependsOn": [
+                "[concat('Microsoft.Compute/virtualMachines/',parameters('dynocardVmSettings').dynoCardVmName)]"
+            ],
+            "properties": {
+                "publisher": "Microsoft.Compute",
+                "type": "CustomScriptExtension",
+                "typeHandlerVersion": "1.8",
+                "autoUpgradeMinorVersion": true,
+                "settings": {
+                    "fileUris": [
+                        "[parameters('dynocardVmSettings').modbusUrl]"
+                    ]
+                },
+                "protectedSettings": {
+                    "commandToExecute": "[concat ('powershell -ExecutionPolicy Unrestricted -File modbus.ps1',' ',parameters('dynocardVmSettings').plcsimulatorv1,' ',parameters('dynocardVmSettings').vcredist,' ',parameters('dynocardVmSettings').plcsimulatorv2,' ',parameters('dynocardVmSettings').dynoCard)]"
+                }
+            }
+        }
+    ],
+    "outputs": {
+        "hostname": {
+            "type": "string",
+            "value": "[reference(parameters('dynocardVmSettings').publicIpAddressName).dnsSettings.fqdn]"
+          },
+          "modbusPip": {
+            "type":"string",
+            "value" :  "[reference(concat('Microsoft.Network/publicIpAddresses/', parameters('dynocardVmSettings').publicIpAddressName)).ipAddress]"
+          
+        }
+    }
+}

@@ -1,0 +1,104 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "serviceBusProperties": {
+            "type": "object"
+        },
+        "omsSettings":{
+            "type":"object"
+        }
+    },
+    "resources": [
+        {
+            "name": "[parameters('serviceBusProperties').serviceBusNamespaceName]",
+            "type": "Microsoft.ServiceBus/namespaces",
+            "apiVersion": "2017-04-01",
+            "location": "[parameters('serviceBusProperties').location]",
+            "sku": {
+                "name": "[parameters('serviceBusProperties').skuName]"
+            },
+            "properties": {},
+            "resources": [
+                {
+                    "name": "dynocard-output",
+                    "apiVersion": "2017-04-01",
+                    "type": "Queues",
+                    "dependsOn": [
+                        "[concat('Microsoft.ServiceBus/namespaces/', parameters('serviceBusProperties').serviceBusNamespaceName)]"
+                    ],
+                    "properties": {
+                        "lockDuration": "PT5M",
+                        "maxSizeInMegabytes": "1024",
+                        "requiresDuplicateDetection": "false",
+                        "requiresSession": "false",
+                        "defaultMessageTimeToLive": "P10675199DT2H48M5.4775807S",
+                        "deadLetteringOnMessageExpiration": "false",
+                        "duplicateDetectionHistoryTimeWindow": "PT10M",
+                        "maxDeliveryCount": "10",
+                        "autoDeleteOnIdle": "P10675199DT2H48M5.4775807S",
+                        "enablePartitioning": "false",
+                        "enableExpress": "false"
+                    }
+                },
+                {
+                    "name": "Microsoft.Insights/service",
+                    "type": "providers/diagnosticSettings",
+                    "apiVersion": "2015-07-01",
+                    "dependsOn": [
+                        "[concat('Microsoft.ServiceBus/namespaces/', parameters('serviceBusProperties').serviceBusNamespaceName)]"
+                    ],
+                    "properties": {
+                        "workspaceId": "[resourceId('Microsoft.OperationalInsights/workspaces/', parameters('omsSettings').omsWorkspaceName)]",
+                        "logs": [
+                            {
+                                "category": "OperationalLogs",
+                                "enabled": true,
+                                "retentionPolicy": {
+                                    "days": 0,
+                                    "enabled": false
+                                }
+                            }
+                        ],
+                        "metrics": [
+                            {
+                                "timeGrain": "AllMetrics",
+                                "category": "AllMetrics",
+                                "enabled": true,
+                                "retentionPolicy": {
+                                    "enabled": false,
+                                    "days": 0
+                                }
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "[parameters('serviceBusProperties').serviceBusName]", 
+            "type": "Microsoft.Web/connections",
+            "apiVersion": "2016-06-01",
+            "location": "[parameters('serviceBusProperties').location]",
+            "dependsOn": [
+                "[concat('Microsoft.ServiceBus/namespaces/', parameters('serviceBusProperties').serviceBusNamespaceName)]",
+                "[resourceId('Microsoft.ServiceBus/namespaces/Queues', parameters('serviceBusProperties').serviceBusNamespaceName, 'dynocard-output')]"
+            ],
+            "properties": {
+                "api": {
+                    "id": "[concat(subscription().id,'/providers/Microsoft.Web/locations/', parameters('serviceBusProperties').location, '/managedApis/servicebus')]"
+                },
+                "displayName":"[parameters('serviceBusProperties').serviceBusName]",
+                "parameterValues": {
+                    "connectionString": "[listkeys(parameters('serviceBusProperties').serviceBusAuthRuleResourceId, '2017-04-01').primaryConnectionString]"
+                }
+            }
+        }
+    ],
+    "outputs": {
+        "svcConnectionString": {
+            "type": "string",
+            "value": "[listKeys(parameters('serviceBusProperties').serviceBusAuthRuleResourceId, '2017-04-01').primaryConnectionString]"
+        }
+    }
+}

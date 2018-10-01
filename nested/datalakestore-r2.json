@@ -1,0 +1,69 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "dataLake":{
+            "type": "object"
+        },
+        "omsSettings":{
+            "type": "object"
+        }
+    },
+    "resources": [
+        {
+            "name": "[parameters('dataLake').nameDr]",
+            "type": "Microsoft.DataLakeStore/accounts",
+            "apiVersion": "2016-11-01",
+            "location": "[parameters('dataLake').dataLakelocationDr]",
+            "properties": {
+                "newTier": "Consumption",
+                "encryptionState": "Enabled",
+                "encryptionConfig": {
+                    "type": "ServiceManaged"
+                }
+            },
+            "resources": [
+                {
+                    "name": "Microsoft.Insights/service",
+                    "type": "providers/diagnosticSettings",
+                    "apiVersion": "[parameters('omsSettings').omsEnableApiVersion]",
+                    "dependsOn": [
+                        "[concat('Microsoft.DataLakeStore/accounts/', parameters('dataLake').nameDr)]"
+                    ],
+                    "properties": {
+                        "workspaceId": "[resourceId('Microsoft.OperationalInsights/workspaces/', parameters('omsSettings').omsWorkspaceName)]",
+                        "logs": [
+                            {
+                                "category": "Audit",
+                                "enabled": true,
+                                "retentionPolicy": {
+                                    "days": 0,
+                                    "enabled": false
+                                }
+                            },
+                            {
+                                "category": "Requests",
+                                "enabled": true,
+                                "retentionPolicy": {
+                                    "days": 0,
+                                    "enabled": false
+                                }
+                            }
+                        ],
+                        "metrics": [
+                            {
+                                "timeGrain": "AllMetrics",
+                                "category": "AllMetrics",
+                                "enabled": true,
+                                "retentionPolicy": {
+                                    "enabled": false,
+                                    "days": 0
+                                }
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
+    ]
+}
