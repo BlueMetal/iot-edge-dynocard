@@ -13,7 +13,7 @@
 /DynoCardAlert/modules/DynoCardAlertModule/obj/Debug/netcoreapp2.0
 /DynoCardAlert/modules/DynoCardAlertModule/obj/Release/netcoreapp2.0
 /code/webapi/DynoCardWebAPI/DynoCardWebAPI/Properties/PublishProfiles
-/code/containers/mssql_db/db-changes.zip
+/code/dynocard_alert/modules/mssql_db/db-changes.zip
 /code/webapi/DynoCardWebAPI/.vs/DynoCardWebAPI/DesignTimeBuild/.dtbcache
-code/containers/DynoCardAlert/modules/DynoCardAlertModule/obj/
-code/containers/DynoCardAlert/modules/DynoCardAlertModule/bin/
+/code/dynocard_alert/modules/DynoCardAlertModule/obj/
+/code/dynocard_alert/modules/DynoCardAlertModule/bin/

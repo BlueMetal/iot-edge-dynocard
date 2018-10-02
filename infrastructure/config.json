@@ -33,7 +33,7 @@
             "database_admin_username_key" : "dynocardDbAdminUsername",
             "database_admin_password_key" : "dynocardDbAdminPassword",
             "initalization_scripts" : [
-                "../code/containers/mssql_db/create-dynocard-schema.sql"
+                "../code/dynocard_alert/modules/mssql_db/create-dynocard-schema.sql"
             ]
         },
         "sample_data" : {
@@ -49,11 +49,11 @@
             "username" : "dyno_user",
             "password" : "GMZNAQ]Q6R6Ljz9>",
             "scripts" : [
-                "../code/containers/mssql_db/insert-pump-data-set1.sql",
-                "../code/containers/mssql_db/insert-pump-data-set2.sql",
-                "../code/containers/mssql_db/insert-surface-data-set1.sql",
-                "../code/containers/mssql_db/insert-surface-data-set2.sql",
-                "../code/containers/mssql_db/load-dynocard-data.sql"
+                "../code/dynocard_alert/modules/mssql_db/insert-pump-data-set1.sql",
+                "../code/dynocard_alert/modules/mssql_db/insert-pump-data-set2.sql",
+                "../code/dynocard_alert/modules/mssql_db/insert-surface-data-set1.sql",
+                "../code/dynocard_alert/modules/mssql_db/insert-surface-data-set2.sql",
+                "../code/dynocard_alert/modules/mssql_db/load-dynocard-data.sql"
             ]
         },
         "vnet" : {
