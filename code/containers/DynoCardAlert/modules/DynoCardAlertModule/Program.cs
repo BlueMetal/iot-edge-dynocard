@@ -270,32 +270,34 @@ namespace DynoCardAlertModule
                 var opcMessage = new OpcMessage(message);
                 List<DynoCard> cards = new List<DynoCard>();
 
-                if (opcMessage != null)
-                {
-                    var dynoCard = await opcMessage.ToDynoCard();
+                //if (opcMessage != null)
+                //{
+                //    var dynoCard = await OpcMessage.ToDynoCard();
 
-                    if (dynoCard.SurfaceCard != null && dynoCard.PumpCard != null)
-                    {
-                        cards.Add(dynoCard);
-                        Console.WriteLine("Parsing OPC dyno card values.");
-                    }
-                }
+                //    if (dynoCard.SurfaceCard != null && dynoCard.PumpCard != null)
+                //    {
+                //        cards.Add(dynoCard);
+                //        Console.WriteLine("Parsing OPC dyno card values.");
+                //    }
+                //}
 
-                foreach (var card in cards)
-                {
-                    string json = JsonConvert.SerializeObject(card);
-                    //System.Console.WriteLine(json);
+                //foreach (var card in cards)
+                //{
+                //    string json = JsonConvert.SerializeObject(card);
+                //    //System.Console.WriteLine(json);
 
-                    int cardID = await (new DataHelper()).PersistDynoCard(card);
+                //    int cardID = await (new DataHelper()).PersistDynoCard(card);
 
-                    if (cardID > 0)
-                    {
-                        card.Id = cardID;
+                //    if (cardID > 0)
+                //    {
+                //        card.Id = cardID;
 
-                        var dynoCardMessage = card.ToDeviceMessage();
-                        await deviceClient.SendEventAsync("output1", dynoCardMessage);
-                    }
-                }
+                //        var dynoCardMessage = card.ToDeviceMessage();
+                //        await deviceClient.SendEventAsync("output1", dynoCardMessage);
+                //    }
+                //}
+
+                await Task.CompletedTask;
 
                 // Indicate that the message treatment is completed
                 return MessageResponse.Completed;

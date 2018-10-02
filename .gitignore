@@ -15,3 +15,5 @@
 /code/webapi/DynoCardWebAPI/DynoCardWebAPI/Properties/PublishProfiles
 /code/containers/mssql_db/db-changes.zip
 /code/webapi/DynoCardWebAPI/.vs/DynoCardWebAPI/DesignTimeBuild/.dtbcache
+code/containers/DynoCardAlert/modules/DynoCardAlertModule/obj/
+code/containers/DynoCardAlert/modules/DynoCardAlertModule/bin/
