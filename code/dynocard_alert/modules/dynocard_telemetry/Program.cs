@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Telemetry.Model;
 using Microsoft.Azure.Devices.Client;
+using Microsoft.Azure.Devices.Shared;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Configuration;
@@ -86,6 +87,10 @@ namespace dynocard_telemetry
                 pumpFillage = Int32.Parse(ConfigurationManager.AppSettings["PumpCard.PumpFillage"]);
                 pumpFluidLoad = Int32.Parse(ConfigurationManager.AppSettings["PumpCard.FluidLoad"]);
 
+                Console.WriteLine("Setting module twin property handler");
+                // Attach callback for Twin desired properties updates
+                await ioTHubModuleClient.SetDesiredPropertyUpdateCallbackAsync(OnDesiredPropertiesUpdate, null);
+
                 //Start a timer to send data to the IoT Hub every minute
                 _timer = new Timer(GenerateTelemetry, ioTHubModuleClient, TimeSpan.Zero, TimeSpan.FromSeconds(5));
             }
@@ -94,6 +99,37 @@ namespace dynocard_telemetry
                 System.Console.WriteLine($"Error running Init method: {ex.Message}");
                 System.Console.WriteLine(ex.StackTrace);
             }
+        }
+
+        private static Task OnDesiredPropertiesUpdate(TwinCollection desiredProperties, object userContext)
+        {
+            try
+            {
+                string json = JsonConvert.SerializeObject(desiredProperties);
+                Console.WriteLine("Desired property change:");
+
+                ModuleClient moduleClient = (ModuleClient)userContext;
+                int frequencyInSeconds = desiredProperties["telemetryFrequencyInSecs"];
+                Console.WriteLine($"Timer frequency in seconds: {frequencyInSeconds}");
+                
+                System.Console.WriteLine($"Starting a new timer for every {frequencyInSeconds} seconds.");
+                _timer.Change(TimeSpan.Zero, TimeSpan.FromSeconds(frequencyInSeconds));
+            }
+            catch (AggregateException ex)
+            {
+                foreach (Exception exception in ex.InnerExceptions)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("Error when receiving desired property: {0}", exception);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine();
+                Console.WriteLine("Error when receiving desired property: {0}", ex.Message);
+            }
+
+            return Task.CompletedTask;
         }
 
         private static async void GenerateTelemetry(object state)

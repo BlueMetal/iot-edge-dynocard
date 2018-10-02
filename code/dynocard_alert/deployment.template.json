@@ -88,7 +88,7 @@
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "${MODULES.dynocard_telemetry.amd64}.debug",
+              "image": "${MODULES.dynocard_telemetry.amd64}",
               "createOptions": "{}"
             }
           }
@@ -111,6 +111,11 @@
         "storeAndForwardConfiguration": {
           "timeToLiveSecs": 7200
         }
+      }
+    },
+    "dynocard_telemetry": {
+      "properties.desired": {
+        "telemetryFrequencyInSecs": 5
       }
     },
     "dynoCardAlertModule": {

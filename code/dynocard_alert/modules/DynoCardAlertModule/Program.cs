@@ -98,6 +98,10 @@ namespace DynoCardAlertModule
                 Console.WriteLine("Setting opcInput handler");
                 // Register callback to be called when a message is received by the module
                 await ioTHubModuleClient.SetInputMessageHandlerAsync("opcInput", ProcessOPCInput, ioTHubModuleClient);
+                
+                Console.WriteLine("Setting generated telemetry handler");
+                // Register callback to be called when a message is received by the module
+                await ioTHubModuleClient.SetInputMessageHandlerAsync("telemetryInput", GeneratedTelemetryInput, ioTHubModuleClient);
 
                 Console.WriteLine("Setting alertInput handler");
                 // Register callback to be called when an alert is received by the module
@@ -318,7 +322,55 @@ namespace DynoCardAlertModule
                 return MessageResponse.Completed;
             }
         }
-       
+
+        private static async Task<MessageResponse> GeneratedTelemetryInput(Message message, object userContext)
+        {
+            Console.WriteLine("Processing generated telemetry input");
+
+            var counterValue = Interlocked.Increment(ref counter);
+
+            try
+            {
+                ModuleClient deviceClient = (ModuleClient)userContext;
+                var messageBytes = message.GetBytes();
+                var messageString = Encoding.UTF8.GetString(messageBytes);
+
+                if (!string.IsNullOrEmpty(messageString))
+                {
+                    DynoCard card = JsonConvert.DeserializeObject<DynoCard>(messageString);
+                    int cardID = await (new DataHelper()).PersistDynoCard(card);
+
+                    if (cardID > 0)
+                    {
+                        card.Id = cardID;
+
+                        var dynoCardMessage = card.ToDeviceMessage();
+                        await deviceClient.SendEventAsync("output1", dynoCardMessage);
+                    }
+                }
+                
+                // Indicate that the message treatment is completed
+                return MessageResponse.Completed;
+            }
+            catch (AggregateException ex)
+            {
+                foreach (Exception exception in ex.InnerExceptions)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("Error in generated telemetry input: {0}", exception);
+                }
+
+                return MessageResponse.Completed;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine();
+                Console.WriteLine("Error in generated telemetry input: {0}", ex.Message);
+
+                return MessageResponse.Completed;
+            }
+        }
+
         private static async Task<MessageResponse> ProcessAlert(Message message, object userContext)
         {
             Console.WriteLine("Processing an alert");
