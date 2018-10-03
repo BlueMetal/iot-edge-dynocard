@@ -2,9 +2,9 @@
     "$schema-version": "0.0.1",
     "description": "",
     "image": {
-        "repository": "localhost:5000/dynocardalertmodule",
+        "repository": "bluemetal/iot_dynocard_demo_alert",
         "tag": {
-            "version": "1.0.1",
+            "version": "1.1.0",
             "platforms": {
                 "amd64": "./Dockerfile", 
                 "amd64.debug": "./Dockerfile.amd64.debug",
