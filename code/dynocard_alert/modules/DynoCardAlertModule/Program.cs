@@ -77,10 +77,15 @@ namespace DynoCardAlertModule
                 Console.WriteLine("Getting module twin desired props...");
                 var desiredProperties = moduleTwin.Properties.Desired;
 
-                Console.WriteLine("Starting SQL connection string...");
+                Console.WriteLine("Setting SQL connection string...");
                 string sqlConnectionString = desiredProperties["sqlConnectionString"];
                 DataHelper.ConnectionString = sqlConnectionString;
                 Console.WriteLine($"sqlConnectionString: {sqlConnectionString}");
+
+                Console.WriteLine("Setting number of mins for dyno card history...");
+                int historyInMins = desiredProperties["dynoCardHistoryInMins"];
+                DataHelper.NumberOfMinutesForHistory = historyInMins;
+                Console.WriteLine($"dynoCardHistoryInMins: {historyInMins}");
 
                 string json = JsonConvert.SerializeObject(desiredProperties);
                 ModbusLayoutConfig modbusConfig = JsonConvert.DeserializeObject<ModbusLayoutConfig>(json);
@@ -177,6 +182,10 @@ namespace DynoCardAlertModule
                 string sqlConnectionString = desiredProperties["sqlConnectionString"];
                 DataHelper.ConnectionString = sqlConnectionString;
                 Console.WriteLine($"sqlConnectionString: {sqlConnectionString}");
+
+                int numberOfMinsForHistory = desiredProperties["dynoCardHistoryInMins"];
+                DataHelper.NumberOfMinutesForHistory = numberOfMinsForHistory;
+                Console.WriteLine($"dynoCardHistoryInMins: {numberOfMinsForHistory}");
             }
             catch (AggregateException ex)
             {
@@ -347,6 +356,25 @@ namespace DynoCardAlertModule
                         var dynoCardMessage = card.ToDeviceMessage();
                         await deviceClient.SendEventAsync("output1", dynoCardMessage);
                     }
+
+                    // Simulating ML alerts - generate a random number 10 percent of the time
+                    int random = (new Random()).Next(1, 10);
+                    System.Console.WriteLine(   );
+
+                    if (random == 1)
+                    {
+                        var fakeAnomaly = new DynoCardAnomalyResult()
+                        {
+                            Id = cardID.ToString(),
+                            Timestamp = card.Timestamp,
+                            Anomaly = "true"
+                        };
+
+                        var anomalydBytes = JsonConvert.SerializeObject(fakeAnomaly);
+                        var anomalyByteString = Encoding.UTF8.GetBytes(anomalydBytes);
+                        var anomalydMessage = new Message(anomalyByteString);
+                        await deviceClient.SendEventAsync("telemetryOutput", anomalydMessage);
+                    }
                 }
                 
                 // Indicate that the message treatment is completed
@@ -414,6 +442,9 @@ namespace DynoCardAlertModule
                                     DynoCard = card,
                                     PumpId = 1
                                 };
+
+                                System.Console.WriteLine($"Persisting anomaly event: {dynoCardAnomaly.AnomalyId}");
+                                await (new DataHelper()).PersistAnomaly(dynoCardAnomaly);
 
                                 var dynoCardAnomalyString = JsonConvert.SerializeObject(dynoCardAnomaly);
                                 var dynoCardAnomalyBytes = Encoding.UTF8.GetBytes(dynoCardAnomalyString);

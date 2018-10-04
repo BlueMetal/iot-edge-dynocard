@@ -48,7 +48,7 @@
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "localhost:5000/dynocardalertmodule:1.0.1-amd64",
+              "image": "localhost:5000/iot_dynocard_demo_alert:1.1.0-amd64",
               "createOptions": ""
             }
           },
@@ -88,8 +88,18 @@
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "localhost:5000/dynocard_telemetry:0.0.4-amd64",
+              "image": "localhost:5000/iot_dynocard_telemetry:1.0.0-amd64",
               "createOptions": "{}"
+            }
+          },
+          "dynoCardWebApi": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "localhost:5000/iot_dynocard_web_api:0.0.4-amd64",
+              "createOptions": "{\"HostConfig\":{\"PortBindings\":{\"80/tcp\":[{\"HostPort\":\"8201\"}]}}}"
             }
           }
         }
@@ -102,11 +112,11 @@
           "modbusWrite": "FROM /messages/modules/dynoCardAlertModule/outputs/modbusWriteOutput INTO BrokeredEndpoint(\"/modules/modbus/inputs/input1\")",
           "modbusToDynoCard": "FROM /messages/modules/modbus/outputs/modbusOutput INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/modbusInput\")",
           "telemetryToDynoCard": "FROM /messages/modules/dynocard_telemetry/outputs/telemetryOutput INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/telemetryInput\")",
+          "telemetryToAlert": "FROM /messages/modules/dynoCardAlertModule/outputs/telemetryOutput INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/alertInput\")",
           "opcToCustomHandler": "FROM /messages/modules/opc_client/* INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/opcInput\")",
           "sensorToAlert": "FROM /messages/modules/dynoCardAlertModule/outputs/output1 INTO BrokeredEndpoint(\"/modules/mlAlertModule/inputs/amlInput\")",
           "alertTofilterAlert": "FROM /messages/modules/mlAlertModule/outputs/amlOutput INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/alertInput\")",
-          "filterToIoTHub": "FROM /messages/modules/dynoCardAlertModule/outputs/alertOutput INTO $upstream",
-          "dynocard_telemetryToIoTHub": "FROM /messages/modules/dynocard_telemetry/outputs/* INTO $upstream"
+          "filterToIoTHub": "FROM /messages/modules/dynoCardAlertModule/outputs/alertOutput INTO $upstream"
         },
         "storeAndForwardConfiguration": {
           "timeToLiveSecs": 7200
@@ -188,7 +198,8 @@
             "length": "2"
           }
         },
-        "sqlConnectionString": "Data Source=tcp:sql,1433;Initial Catalog=db4cards;User Id=SA;Password=Strong!Passw0rd;TrustServerCertificate=False;Connection Timeout=30;"
+        "sqlConnectionString": "Data Source=tcp:sql,1433;Initial Catalog=db4cards;User Id=SA;Password=Strong!Passw0rd;TrustServerCertificate=False;Connection Timeout=30;",
+        "dynoCardHistoryInMins": 1
       }
     },
     "modbus": {

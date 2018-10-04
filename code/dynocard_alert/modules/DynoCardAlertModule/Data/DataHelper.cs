@@ -13,6 +13,45 @@ namespace DynoCardAlertModule.Data
     public class DataHelper
     {
         public static string ConnectionString { get; set; }
+        public static int NumberOfMinutesForHistory { get; set; }
+
+        public async Task PersistAnomaly(DynoCardAnomalyEvent anomaly)
+        {
+            try
+            {
+                // //Store the data in SQL DB
+                using (Sql.SqlConnection conn = new Sql.SqlConnection(ConnectionString))
+                {
+                    conn.Open();
+
+                    var insertEvent = new StringBuilder("INSERT INTO [ACTIVE].[EVENT] ([PU_ID], [EV_EPOC_DATE], [EV_ANOMALY_ID], [EV_UPDATE_DATE], [EV_UPDATE_BY]) ")
+                    .Append("OUTPUT INSERTED.EV_ID ")
+                    .Append($"VALUES ({anomaly.PumpId}, CONVERT(int, DATEDIFF(ss, '01-01-1970 00:00:00', '{anomaly.Timestamp}')), '{anomaly.AnomalyId}', '{DateTime.Now}', 'edgeModule') ");
+
+                    var insertEventDetail = new StringBuilder("INSERT INTO [ACTIVE].[EVENT_DETAIL] ([EV_ID], [DC_ID], [ED_TRIGGERED_EVENTS], [ED_UPDATE_DATE], [ED_UPDATE_BY]) ")
+                    .Append("VALUES ({0}, ")
+                    .Append($"{anomaly.DynoCard.Id}, '{anomaly.DynoCard.TriggeredEvents}', '{DateTime.Now}', 'edgeModule'); ");
+
+                    using (Sql.SqlCommand anomalyCommand = new Sql.SqlCommand())
+                    {
+                        anomalyCommand.Connection = conn;
+                        string eventSQL = insertEvent.ToString();
+                        System.Console.WriteLine($"Event SQL: {eventSQL}");
+                        anomalyCommand.CommandText = eventSQL;
+                        var eventID = (int)await anomalyCommand.ExecuteScalarAsync();
+
+                        string eventDetailSQL = string.Format(insertEventDetail.ToString(), eventID);
+                        System.Console.WriteLine($"Event detail SQL: {eventDetailSQL}"); 
+                        anomalyCommand.CommandText = eventDetailSQL;                        
+                        await anomalyCommand.ExecuteScalarAsync();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Console.WriteLine($"Exception persisting anomaly: {ex.Message}");
+            }
+        }
 
         public async Task<int> PersistDynoCard(DynoCard card)
         {
@@ -30,6 +69,7 @@ namespace DynoCardAlertModule.Data
                 using (Sql.SqlConnection conn = new Sql.SqlConnection(ConnectionString))
                 {
                     conn.Open();
+
                     var insertDynoCard = new StringBuilder("INSERT INTO [ACTIVE].[DYNO_CARD] ([PU_ID], [DC_UPDATE_DATE], [DC_UPDATE_BY]) ")
                     .Append("OUTPUT INSERTED.DC_ID ")
                     .Append($"VALUES (1, '{DateTime.Now}', 'edgeModule') ");
@@ -110,7 +150,7 @@ namespace DynoCardAlertModule.Data
 
         public async Task<List<DynoCard>> GetPreviousCards(DynoCardAnomalyResult anomalyCard)
         {
-            DateTime start = anomalyCard.Timestamp.Subtract(TimeSpan.FromMinutes(30));
+            DateTime start = anomalyCard.Timestamp.Subtract(TimeSpan.FromMinutes(NumberOfMinutesForHistory));
             DateTime end = anomalyCard.Timestamp;
             int startEpoch = (int)(start.ToUniversalTime().Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
             int endEpoch = (int)(end.ToUniversalTime().Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
