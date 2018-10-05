@@ -101,6 +101,16 @@
               "image": "localhost:5000/iot_dynocard_web_api:0.0.4-amd64",
               "createOptions": "{\"HostConfig\":{\"PortBindings\":{\"80/tcp\":[{\"HostPort\":\"8201\"}]}}}"
             }
+          },
+          "dynocard_web": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "localhost:5000/dynocard_web:0.0.1-amd64",
+              "createOptions": "{\"HostConfig\":{\"PortBindings\":{\"80/tcp\":[{\"HostPort\":\"8200\"}]}}}"
+            }
           }
         }
       }

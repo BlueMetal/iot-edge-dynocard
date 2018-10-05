@@ -1,0 +1,9 @@
+<h3>Graph: Dyno Card</h3>
+<h4 *ngIf="errorMessage">
+  <div>Error: {{ errorMessage.message }}</div>
+  <div>Requested Url: {{ errorMessage.requestedUrl }}</div>
+</h4>
+<div *ngIf="!errorMessage">
+  <div #controls></div>
+  <svg width="960" height="800"></svg>
+</div>

@@ -101,6 +101,16 @@
               "image": "${MODULES.DynoCardWebAPI.amd64}",
               "createOptions": "{\"HostConfig\":{\"PortBindings\":{\"80/tcp\":[{\"HostPort\":\"8201\"}]}}}"
             }
+          },
+          "dynocard_web": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "${MODULES.dynocard_web.amd64}",
+              "createOptions": "{\"HostConfig\":{\"PortBindings\":{\"80/tcp\":[{\"HostPort\":\"8200\"}]}}}"
+            }
           }
         }
       }

@@ -1,0 +1,96 @@
+/*.axis--x path {*/
+/*display : none;*/
+/*}*/
+
+/*.line {*/
+/*fill         : none;*/
+/*stroke       : steelblue;*/
+/*stroke-width : 1.5px;*/
+/*}*/
+
+/**/
+
+
+@import "~bootstrap/dist/css/bootstrap.css";
+@import "~eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css";
+
+#controlDiv {
+  width: 1200px;
+}
+
+svg {
+  display : block;
+  margin: 20px 0;
+}
+
+p {
+  font-size   : 20px;
+  font-weight : bold;
+  color       : steelblue;
+}
+
+#datePicker1 {
+  float : none;
+}
+
+#controlDiv {
+  padding          : 5px;
+  margin           : 5px;
+  background-color : #F7F7F7;
+}
+
+.x-axis path,
+.x-axis line {
+  fill            : none;
+  stroke          : brown;
+  shape-rendering : crispEdges;
+  stroke-width    : 2px;
+}
+
+.x-axis text {
+  font-family : sans-serif;
+  font-style  : italic;
+  font-size   : 14px;
+  font-weight : bold;
+  fill        : brown;
+
+}
+
+.y-axis path .y-axis line {
+  stroke-width : 2px;
+  fill         : blueviolet;
+}
+
+.y-axis path,
+.y-axis line {
+  fill            : none;
+  stroke          : steelblue;
+  shape-rendering : crispEdges;
+  stroke-width    : 3px;
+}
+
+.y-axis text {
+  font-family : sans-serif;
+  font-style  : italic;
+  font-size   : 14px;
+  fill        : steelblue;
+
+}
+
+.y-axis-pump path,
+.y-axis-pump line {
+  fill            : none;
+  stroke          : brown;
+  shape-rendering : crispEdges;
+  stroke-width    : 3px;
+}
+
+.y-axis-pump text {
+  font-family : sans-serif;
+  font-style  : italic;
+  font-size   : 14px;
+  fill        : brown;
+
+}
+
+
