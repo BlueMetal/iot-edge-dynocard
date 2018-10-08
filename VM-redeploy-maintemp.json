@@ -36,6 +36,27 @@
             "metadata": {
                 "description":"Please provide IoTHub primarykey value"
             }
+        },
+        "plcsimulatorv1": {
+            "type": "string",
+            "defaultValue": "https://projectiot.blob.core.windows.net/oilgas-iot/ModbusSimulator/SimSetup.msi",
+            "metadata": {
+                "description": "Please Provide the Storage Url of plc simulator,This will be used in dynocard vm extension"
+            }
+        },
+        "vcredist": {
+            "type": "string",
+            "defaultValue": "https://projectiot.blob.core.windows.net/oilgas-iot/ModbusSimulator/vcredist_x86.exe",
+            "metadata": {
+                "description": "Please Provide the Storage Url of vcredist,This will be used in dynocard vm extension"
+            }
+        },
+        "plcsimulatorv2": {
+            "type": "string",
+            "defaultValue": "https://projectiot.blob.core.windows.net/oilgas-iot/ModbusSimulator/ModRSsim2.exe",
+            "metadata": {
+                "description": "Please Provide the Storage Url of plc simulator 2,This will be used in dynocard vm extension"
+            }
         }
 
     },
@@ -65,10 +86,10 @@
             "publicIpAddressType": "Static",
             "vmSize": "standard_A1",
             "modbusUrl": "[concat(variables('baseUrl'),'scripts/modbus.ps1')]",
-            "plcsimulatorv1": "https://projectiot.blob.core.windows.net/oilgas-iot/ModbusSimulator/SimSetup.msi",
-            "vcredist": "https://projectiot.blob.core.windows.net/oilgas-iot/ModbusSimulator/vcredist_x86.exe",
-            "plcsimulatorv2": "https://projectiot.blob.core.windows.net/oilgas-iot/ModbusSimulator/ModRSsim2.exe",
-            "dynocard": "https://projectiot.blob.core.windows.net/oilgas-iot/ModbusSimulator/DynoCard.vbs"
+            "plcsimulatorv1": "[parameters('plcsimulatorv1')]",
+            "vcredist": "[parameters('vcredist')]",
+            "plcsimulatorv2": "[parameters('plcsimulatorv2')]",
+            "dynocard": "[concat(variables('baseUrl'),'builds/DynoCard.vbs')]"
         },
         "edgeVmSettings": {
             "location": "[variables('location')]",
@@ -91,7 +112,7 @@
             "iothubPrimaryKey":"[parameters('iothubPrimaryKey')]"
         },
         "location": "[resourceGroup().location]",
-        "baseUrl": "https://raw.githubusercontent.com/sysgain/iot-edge-dynocard/master/",
+        "baseUrl": "https://raw.githubusercontent.com/nvtuluva/iot-edge-dynocard/master/",
         "suffix": "[substring(uniqueString(resourceGroup().id), 0, 5)]",
         "apiVersion": "2016-02-01"
     },
