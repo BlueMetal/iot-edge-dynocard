@@ -2,22 +2,22 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "Solution Type":{
-            "value":"Basic"
+        "Solution Type": {
+            "value": "Basic"
         },
-        "Edge VM + Simulator VM":{
-            "value":"No"
+        "Edge VM + Simulator VM": {
+            "value": "No"
         },
-        "MLVM":{
-            "value":"No"
+        "MLVM": {
+            "value": "No"
         },
         "dataLakelocation": {
             "value": "eastus2"
         },
-        "machineLearningLocation":{
+        "machineLearningLocation": {
             "value": "eastus2"
         },
-        "geo-paired-primary-region":{
+        "geo-paired-primary-region": {
             "value": "EastUS2"
         },
         "oms-region": {
@@ -25,7 +25,7 @@
         },
         "appInsightsLocation": {
             "value": "westus2"
-        },           
+        },
         "sqlAdministratorLogin": {
             "value": "sqluser"
         },
@@ -38,12 +38,26 @@
         "tenantId": {
             "value": "xxxxxxxx-xxxx-xxxx-xxxx-c5e6exxxcd38"
         },
-        "vmsUsername":{
-            "value":"adminuser"
+        "vmsUsername": {
+            "value": "adminuser"
         },
-        "vmsPassword":{
-            "value":"Password@1234"
+        "vmsPassword": {
+            "value": "Password@1234"
+        },
+        "webAppBuildfileUrl": {
+            "defaultValue": "https://github.com/nvtuluva/iot-edge-dynocard/raw/master/builds/DynoCardAPI_with_appinsights.zip"
+        },
+        "storageUri": {
+            "defaultValue": "https://projectiot.blob.core.windows.net/oilgas-iot/db4cards.bacpac"
+        },
+        "plcsimulatorv1": {
+            "defaultValue": "https://projectiot.blob.core.windows.net/oilgas-iot/ModbusSimulator/SimSetup.msi"
+        },
+        "vcredist": {
+            "defaultValue": "https://projectiot.blob.core.windows.net/oilgas-iot/ModbusSimulator/vcredist_x86.exe"
+        },
+        "plcsimulatorv2": {
+            "defaultValue": "https://projectiot.blob.core.windows.net/oilgas-iot/ModbusSimulator/ModRSsim2.exe"
         }
-
     }
 }
