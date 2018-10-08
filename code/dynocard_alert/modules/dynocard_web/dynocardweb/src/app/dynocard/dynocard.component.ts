@@ -128,7 +128,7 @@ export class DynoCardComponent implements OnInit {
   }
 
   async loadChartData() {
-    await this.dataService.get(this.urlManagingService.getDynoCardData).toPromise()
+    await this.dataService.get(await this.urlManagingService.getDynoCardData()).toPromise()
 
       .then((response) => {
         this.chartData = response;
@@ -485,7 +485,7 @@ export class DynoCardComponent implements OnInit {
     }
     this.eventSelVal = 'all';
     const updatedDataSet = this.updateGraphData();
-    const tmpEventDDList = _.uniq(_.map(updatedDataSet, 'eventId'));
+    const tmpEventDDList = _.uniq(_.map(updatedDataSet, 'eventId')).sort(function(a,b){return a-b});
 
     const allOp = document.createElement('option');
     if (tmpEventDDList.length > 0) {
@@ -526,7 +526,7 @@ export class DynoCardComponent implements OnInit {
       this.cardTypeDDList = dropDownData;
     } else if (argDropDownType === DataColumns.eventId) {
       labelDiv.appendChild(document.createTextNode('Event:  '));
-      dropDownData = _.uniq(_.map(this.dataSet.dataPoints, 'eventId'));
+      dropDownData = _.uniq(_.map(this.dataSet.dataPoints, 'eventId')).sort(function(a,b){return a-b});
       this.eventIdDDList = dropDownData;
     }
 

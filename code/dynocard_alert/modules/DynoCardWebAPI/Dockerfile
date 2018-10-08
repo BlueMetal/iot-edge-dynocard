@@ -30,20 +30,3 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
 ENTRYPOINT ["dotnet", "DynoCardWebAPI.dll"]
-
-
-# FROM microsoft/dotnet:2.1-sdk AS build-env
-# WORKDIR /app
-
-# COPY *.csproj ./
-# RUN dotnet restore
-
-# COPY . ./
-# RUN dotnet publish -c Release -o out
-
-# FROM microsoft/dotnet:2.1-aspnetcore-runtime
-# WORKDIR /app
-# COPY --from=build-env /app/out ./
-# EXPOSE 80
-
-# ENTRYPOINT ["dotnet", "DynoCardWebAPI.dll"]
