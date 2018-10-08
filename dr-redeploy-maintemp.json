@@ -2,7 +2,7 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "geo-paired-region":{
+        "geo-paired-region": {
             "type": "string",
             "defaultValue": "",
             "allowedValues": [
@@ -24,7 +24,6 @@
                 "KoreaSouth",
                 "UKSouth",
                 "UKWest"
-                
             ],
             "metadata": {
                 "description": "Choose location for geo-paired-region, for more information about the geo-paired-region navigate to section 6 in the Readme.md(https://github.com/sysgain/iot-edge-dynocard/wiki/Deployment-Guide)"
@@ -57,6 +56,13 @@
             "metadata": {
                 "description": "Tenant Id for the subscription. This will be helpful to authenticate data lake store account."
             }
+        },
+        "webAppBuildfileUrl": {
+            "type": "string",
+            "defaultValue": "https://github.com/nvtuluva/iot-edge-dynocard/raw/master/builds/DynoCardAPI_with_appinsights.zip",
+            "metadata": {
+                "description": "Please provide WebAppPublished zip file url, This will be used to upload into the web application"
+            }
         }
     },
     "variables": {
@@ -76,7 +82,7 @@
             "nameDr": "[concat('logicappdr',variables('suffix'))]",
             "locationDr": "[variables('locationDR')]",
             "DynoCardDbConnString1": "[concat('Server=tcp:',variables('sqlFailoverGroupName'),'.database.windows.net;Database=','db4cards','; User ID=',parameters('sqlAdministratorLogin'),'; Password=',parameters('sqlAdministratorLoginPassword'),'; Trusted_Connection=False; Encrypt=True;')]",
-            "dynocardURIwm": "https://projectiot.blob.core.windows.net/oilgas-iot/DynoCardAPI_with_appinsights.zip"
+            "dynocardURIwm": "[parameters('webAppBuildfileUrl')]"
         },
         "dataLake": {
             "nameDr": "[concat('datalakestoredr',variables('suffix'))]",
@@ -108,7 +114,7 @@
             "appInsightsApiVersion": "2014-04-01",
             "appInsightResourceName": "[concat('AppInsights', variables('suffix'))]"
         },
-        "baseUrl": "https://raw.githubusercontent.com/sysgain/iot-edge-dynocard/master/",
+        "baseUrl": "https://raw.githubusercontent.com/nvtuluva/iot-edge-dynocard/master/",
         "suffix": "[substring(uniqueString(resourceGroup().id), 0, 5)]",
         "serviceBusNamespaceNameDr": "[concat('snamespacedr',variables('suffix'))]",
         "serviceBusDefaultSASKeyName": "RootManageSharedAccessKey",
@@ -118,7 +124,6 @@
         "sqlFailoverGroupName": "[concat('azuresqlfailover', variables('suffix'))]",
         "apiVersion": "2016-02-01",
         "webSiteName": "WebApi",
-
         "EastUS2": "CentralUS",
         "CentralUS": "EastUS2",
         "WestUS2": "West Central US",
@@ -137,7 +142,7 @@
         "KoreaSouth": "KoreaCentral",
         "UKSouth": "UKWest",
         "UKWest": "UKSouth",
-        "locationDR":"[variables(parameters('geo-paired-region'))]"
+        "locationDR": "[variables(parameters('geo-paired-region'))]"
     },
     "resources": [
         {
@@ -237,8 +242,7 @@
             "name": "WebApp",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "[variables('apiVersion')]",
-            "dependsOn": [
-            ],
+            "dependsOn": [],
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
