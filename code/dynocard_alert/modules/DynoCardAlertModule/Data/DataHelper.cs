@@ -36,12 +36,12 @@ namespace DynoCardAlertModule.Data
                     {
                         anomalyCommand.Connection = conn;
                         string eventSQL = insertEvent.ToString();
-                        System.Console.WriteLine($"Event SQL: {eventSQL}");
+                        //System.Console.WriteLine($"Event SQL: {eventSQL}");
                         anomalyCommand.CommandText = eventSQL;
                         var eventID = (int)await anomalyCommand.ExecuteScalarAsync();
 
                         string eventDetailSQL = string.Format(insertEventDetail.ToString(), eventID);
-                        System.Console.WriteLine($"Event detail SQL: {eventDetailSQL}"); 
+                        //System.Console.WriteLine($"Event detail SQL: {eventDetailSQL}"); 
                         anomalyCommand.CommandText = eventDetailSQL;                        
                         await anomalyCommand.ExecuteScalarAsync();
                     }

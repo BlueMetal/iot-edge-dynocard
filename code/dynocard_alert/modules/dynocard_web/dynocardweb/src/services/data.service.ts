@@ -23,7 +23,7 @@ interface RequestOptions {
 
 @Injectable()
 export class DataService {
-  private mockData = {};
+  private mockData;
   private requestOptions: RequestOptions = {};
 
   constructor(private http: HttpClient) {
@@ -32,31 +32,31 @@ export class DataService {
 
   // async mockDataInit() {
   //
-  //   // For Web
-  //   if (!isNativeScript()) {
-  //     // resolve mockdata with webpack at compile time so its available for web, because web has no filesystem access like native
-  //     require('file-loader!../../../apps/web-dynocard/src/assets/dataset1.csv')
-  //       .then((response) => {
-  //         //change `mockDataFile` to a reference to the filename being loaded, so it can be used in [GET] options.mockDataFile
-  //         this.mockData.mockDataFile = response;
-  //       })
-  //       .catch((err) => {
-  //         return err;
-  //       });
+  // For Web
+  // if (!isNativeScript()) {
+  //   // resolve mockdata with webpack at compile time so its available for web, because web has no filesystem access like native
+  //   require('file-loader!../assets/Results.json')
+  //     .then((response) => {
+  //       //change `mockDataFile` to a reference to the filename being loaded, so it can be used in [GET] options.mockDataFile
+  //       this.mockData.mockDataFile = response;
+  //     })
+  //     .catch((err) => {
+  //       return err;
+  //     });
   //
-  //     // For NativeScript
-  //   }
-  //   else {
-  //     // Nativescript will use `file-system` to access the file locally, at a different path than webpack
-  //     this.fileReader.readJSON('../../assets/mock-data/course-plan')
-  //       .then((response) => {
-  //         //change `mockDataFile` to a reference to the filename being loaded
-  //         this.mockData.mockDataFile = response;
-  //       })
-  //       .catch((err) => {
-  //         err;
-  //       });
-  //   }
+  //   // For NativeScript
+  // }
+  // else {
+  //   // Nativescript will use `file-system` to access the file locally, at a different path than webpack
+  //   this.fileReader.readJSON('../../assets/mock-data/course-plan')
+  //     .then((response) => {
+  //       //change `mockDataFile` to a reference to the filename being loaded
+  //       this.mockData.mockDataFile = response;
+  //     })
+  //     .catch((err) => {
+  //       err;
+  //     });
+  // }
   // }
 
   get(url: string, requestOptionsArgs?, options?: { mockData: boolean, mockDataFile?: string }): Observable<any> {
@@ -129,7 +129,6 @@ export class DataService {
   handleError(operation = 'operation', result?) {
 
     return (error: any): Observable<any> => {
-
 
 
       let errorMessage = error || 'Server error';
