@@ -32,33 +32,13 @@
           }
         },
         "modules": {
-          "modbus": {
+         "dynoCardAlertModule": {
             "version": "1.0",
             "type": "docker",
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "mcr.microsoft.com/azureiotedge/modbus:1.0",
-              "createOptions": ""
-            }
-          },
-          "dynoCardAlertModule": {
-            "version": "1.0",
-            "type": "docker",
-            "status": "running",
-            "restartPolicy": "always",
-            "settings": {
-              "image": "bluemetal/iot_dynocard_demo_alert:1.2.0-amd64",
-              "createOptions": ""
-            }
-          },
-          "mlAlertModule": {
-            "version": "1.0",
-            "type": "docker",
-            "status": "running",
-            "restartPolicy": "always",
-            "settings": {
-              "image": "bluemetal/iot_dynocard_demo_edgeml:latest",
+              "image": "bluemetal/iot_dynocard_demo_alert:1.2.0-arm32v7",
               "createOptions": ""
             }
           },
@@ -72,23 +52,13 @@
               "createOptions": "{\"Env\": [\"ACCEPT_EULA=Y\",\"MSSQL_SA_PASSWORD=Strong!Passw0rd\"],\"HostConfig\": {\"Mounts\": [{\"Target\": \"/var/opt/mssql\",\"Source\": \"sqlVolume\",\"Type\": \"volume\"}],\"PortBindings\": {\"1433/tcp\": [{\"HostPort\": \"1401\"}]}}}"
             }
           },
-          "opc_client": {
-            "version": "1.0",
-            "type": "docker",
-            "status": "running",
-            "restartPolicy": "always",
-            "settings": {
-              "image": "localhost:5000/opc_client:1.0.5-amd64",
-              "createOptions": "{\"Env\": [\"OPC_ENDPOINT_URL=opc.tcp://opc-sim-server.eastus2.cloudapp.azure.com:49380\"]}"
-            }
-          },
           "dynocard_telemetry": {
             "version": "1.0",
             "type": "docker",
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "bluemetal/iot_dynocard_demo_telemetry:1.0.0-amd64",
+              "image": "bluemetal/iot_dynocard_demo_telemetry:1.0.0-arm32v7",
               "createOptions": "{}"
             }
           },
@@ -98,7 +68,7 @@
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "bluemetal/iot_dynocard_demo_web_api:1.0.0-amd64",
+              "image": "bluemetal/iot_dynocard_demo_web_api:1.0.0-arm32v7",
               "createOptions": "{\"HostConfig\":{\"PortBindings\":{\"80/tcp\":[{\"HostPort\":\"8201\"}]}}}"
             }
           },
@@ -108,7 +78,7 @@
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "bluemetal/iot_dynocard_demo_web:1.0.0-amd64",
+              "image": "bluemetal/iot_dynocard_demo_web:1.0.0-arm32v7",
               "createOptions": "{\"Env\": [\"DATA_API_URL=127.0.0.1:8201\"],\"HostConfig\":{\"PortBindings\":{\"80/tcp\":[{\"HostPort\":\"8200\"}]}}}"
             }
           }
