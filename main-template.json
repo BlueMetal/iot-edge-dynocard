@@ -286,7 +286,7 @@
             "omsAutomationAccountName": "[concat('autoupdateoilgas', variables('suffix'))]",
             "dataRetention": 7,
             "omsLogAnalyticsSku": "Standalone",
-            "omsEnableApiVersion": "2015-07-01"
+            "omsEnableApiVersion": "2016-09-01"
         },
         "appInsights": {
             "appInsightsLocation": "[parameters('appInsightsLocation')]",
