@@ -148,6 +148,30 @@ namespace DynoCardAlertModule.Data
             return await Task.FromResult(cardID);
         }
 
+        public async Task<DynoCardHeader> GetMaxCardID()
+        {
+            DynoCardHeader header = new DynoCardHeader();
+
+            string sql = "SELECT DISTINCT CH_ID, CH_CARD_TYPE FROM [dbo].[DynocardDetail]  WHERE CH_ID = (SELECT MAX(CH_ID) FROM[dbo].[DynocardDetail]) ";
+            using (Sql.SqlConnection conn = new Sql.SqlConnection(ConnectionString))
+            {
+                conn.Open();
+
+                using (Sql.SqlCommand cardHistorySelect = new Sql.SqlCommand(sql.ToString(), conn))
+                {
+                    var results = await cardHistorySelect.ExecuteReaderAsync();
+
+                    if (results.HasRows)
+                    {
+                        header.CardType = (string)results["CH_CARD_TYPE"];
+                        header.ID = (int)results["CH_ID"];
+                    }
+                }
+            }
+
+            return header;
+        }
+
         public async Task<List<DynoCard>> GetPreviousCards(DynoCardAnomalyResult anomalyCard)
         {
             DateTime start = anomalyCard.Timestamp.Subtract(TimeSpan.FromMinutes(NumberOfMinutesForHistory));

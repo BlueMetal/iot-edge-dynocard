@@ -12,5 +12,10 @@ namespace DynoCardAlertModule.Model
         public int ScaledMinLoad { get; set; }
         public CardType CardType { get; set; }
         public List<CardCoordinate> CardCoordinates { get; set; }
+
+        public CardBase()
+        {
+            CardCoordinates = new List<CardCoordinate>();
+        }
     }
 }

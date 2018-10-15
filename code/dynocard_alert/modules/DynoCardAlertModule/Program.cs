@@ -179,6 +179,11 @@ namespace DynoCardAlertModule
                 ModbusMessage.SurfaceLayoutConfig = modbusConfig.SurfaceCardConfiguration;
                 ModbusMessage.PumpLayoutConfig = modbusConfig.PumpCardConfiguration;
 
+                OpcMessageConfig opcCardConfig = JsonConvert.DeserializeObject<OpcMessageConfig>(json);
+                OpcMessage.PumpCardConfig = opcCardConfig.PumpCard;
+                OpcMessage.SurfaceCardConfig = opcCardConfig.SurfaceCard;
+                OpcMessage.CardHeaderConfig = opcCardConfig.Header;
+
                 string sqlConnectionString = desiredProperties["sqlConnectionString"];
                 DataHelper.ConnectionString = sqlConnectionString;
                 Console.WriteLine($"sqlConnectionString: {sqlConnectionString}");
@@ -281,32 +286,26 @@ namespace DynoCardAlertModule
             {
                 ModuleClient deviceClient = (ModuleClient)userContext;
                 var opcMessage = new OpcMessage(message);
-                List<DynoCard> cards = new List<DynoCard>();
-
+                
                 if (opcMessage != null)
                 {
-                    // var dynoCard = await opcMessage.ToDynoCard();
+                    var dynoCard = opcMessage.CurrentCard;
 
-                    // if (dynoCard.SurfaceCard != null && dynoCard.PumpCard != null)
-                    // {
-                    //     cards.Add(dynoCard);
-                    //     Console.WriteLine("Parsing OPC dyno card values.");
-                    // }
-                }
-
-                foreach (var card in cards)
-                {
-                    string json = JsonConvert.SerializeObject(card);
+                    //string json = JsonConvert.SerializeObject(card);
                     //System.Console.WriteLine(json);
 
-                    int cardID = await (new DataHelper()).PersistDynoCard(card);
+                    int cardID = await (new DataHelper()).PersistDynoCard(dynoCard);
 
                     if (cardID > 0)
                     {
-                        card.Id = cardID;
+                        dynoCard.Id = cardID;
 
-                        var dynoCardMessage = card.ToDeviceMessage();
-                        await deviceClient.SendEventAsync("output1", dynoCardMessage);
+                        if (dynoCard?.SurfaceCard?.CardCoordinates?.Count == 200 && dynoCard?.PumpCard?.CardCoordinates?.Count == 100)
+                        {
+                            var dynoCardMessage = dynoCard.ToDeviceMessage();
+                            await deviceClient.SendEventAsync("output1", dynoCardMessage);
+                            opcMessage.CurrentCard = null;
+                        }
                     }
                 }
 

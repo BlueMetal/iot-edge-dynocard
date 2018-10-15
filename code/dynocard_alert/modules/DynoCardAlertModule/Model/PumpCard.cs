@@ -10,7 +10,7 @@ namespace DynoCardAlertModule.Model
         public int PumpFillage { get; set; }
         public int FluidLoad { get; set; }
 
-        public PumpCard()
+        public PumpCard() : base()
         {
             CardType = CardType.Pump;
         }

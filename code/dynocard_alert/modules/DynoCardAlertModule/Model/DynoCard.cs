@@ -6,6 +6,12 @@ namespace DynoCardAlertModule.Model
 {
     public class DynoCard
     {
+        public DynoCard()
+        {
+            SurfaceCard = new SurfaceCard();
+            PumpCard = new PumpCard();
+        }
+
         [JsonProperty("Id")]
         public int Id { get; set; }
 

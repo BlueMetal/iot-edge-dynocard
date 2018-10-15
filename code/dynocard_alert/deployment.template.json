@@ -140,6 +140,33 @@
     },
     "dynoCardAlertModule": {
       "properties.desired": {
+        "OpcMessageConfig": {
+          "opcCardHeaderConfig": {
+            "cardType": "ns=2;s=IoT_Drilling.WITS.WITSML.Witsml_Seq"
+          },
+          "opcPumpCardConfig": {
+            "timestamp": "ns=2;s=IoT_Drilling.WITS.WITSML.Witsml_Seq",
+            "numberOfPoints": "ns=2;s=IoT_Drilling.WITS.WITSML.Witsml_BitDepth",
+            "scaledMaxCardLoad": "ns=2;s=IoT_Drilling.WITS.WITSML.Witsml_Rig",
+            "scaledMinCardLoad": "ns=2;s=IoT_Drilling.WITS.WITSML.Witsml_Api",
+            "grossStroke": "ns=2;s=IoT_Drilling.WITS.WITSML.Witsml_WellboreName",
+            "netStroke": "ns=2;s=IoT_Drilling.WITS.WITSML.Witsml_RigTime",
+            "pumpFillage": "ns=2;s=IoT_Drilling.WITS.WITSML.Witsml_AnnPressure",
+            "fluidLoad": "ns=2;s=IoT_Drilling.WITS.WITSML.Witsml_AvgRopFtHr",
+            "load": "ns=2;s=IoT_Drilling.WITS.WITSML.Witsml_DogLegSeverity",
+            "position": "ns=2;s=IoT_Drilling.WITS.WITSML.Witsml_DogLegSeverity"
+          },
+          "opcSurfaceCardConfig": {
+            "timestamp": "ns=2;s=IoT_Drilling.WITS.WITSML.Witsml_BitWt",
+            "numberOfPoints": "ns=2;s=IoT_Drilling.WITS.WITSML.Witsml_BitDepth",
+            "scaledMaxCardLoad": "ns=2;s=IoT_Drilling.WITS.WITSML.Witsml_BitOnBtm",
+            "scaledMinCardLoad": "ns=2;s=IoT_Drilling.WITS.WITSML.Witsml_TdSpeed",
+            "strokeLength": "ns=2;s=IoT_Drilling.WITS.WITSML.Witsml_FlowIn",
+            "strokePeriod": "ns=2;s=IoT_Drilling.WITS.WITSML.Witsml_DogLegSeverity",
+            "load": "ns=2;s=IoT_Drilling.WITS.WITSML.Witsml_DogLegSeverity",
+            "position": "ns=2;s=IoT_Drilling.WITS.WITSML.Witsml_DogLegSeverity"
+          }
+        },
         "surfaceCardConfig": {
           "timestamp": {
             "register": "32669",
