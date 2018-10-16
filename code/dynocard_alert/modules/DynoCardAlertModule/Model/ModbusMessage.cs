@@ -23,18 +23,21 @@ namespace DynoCardAlertModule.Model
         {
             var messageBytes = message.GetBytes();
             var messageString = Encoding.UTF8.GetString(messageBytes);
+            //System.Console.WriteLine($"Modbus input: {messageString}");
             
             if (!string.IsNullOrEmpty(messageString))
             {
-                var registers = JsonConvert.DeserializeObject<List<ModbusRegisterValue>>(messageString);
+                var jsonMessage = JsonConvert.DeserializeObject<ModbusJsonMessage>(messageString);
 
-                if (registers != null && registers.Count > 0)
+                if (jsonMessage != null && jsonMessage.Content?.Count > 0)
                 {
+                    List<ModbusRegisterValue> registerValues = jsonMessage.Content.SelectMany(c => c.Data.SelectMany(d => d.Values)).ToList();
+
                     //Sort the list so we know what the first Op name is
-                    registers = registers.OrderBy(r => r.Address).ToList();
+                    registerValues = registerValues.OrderBy(r => r.Address).ToList();
                
-                    SurfaceCardRegisterValues = FilterSurfaceCardRegisters(registers);
-                    PumpCardRegisterValues = FilterPumpCardRegisters(registers);
+                    SurfaceCardRegisterValues = FilterSurfaceCardRegisters(registerValues);
+                    PumpCardRegisterValues = FilterPumpCardRegisters(registerValues);
                     
                     Console.WriteLine("Completed creating modbus message");
                 }

@@ -188,9 +188,17 @@ namespace DynoCardAlertModule
                 DataHelper.ConnectionString = sqlConnectionString;
                 Console.WriteLine($"sqlConnectionString: {sqlConnectionString}");
 
-                int numberOfMinsForHistory = desiredProperties["dynoCardHistoryInMins"];
-                DataHelper.NumberOfMinutesForHistory = numberOfMinsForHistory;
-                Console.WriteLine($"dynoCardHistoryInMins: {numberOfMinsForHistory}");
+                try
+                {
+                    int numberOfMinsForHistory = desiredProperties["dynoCardHistoryInMins"];
+                    DataHelper.NumberOfMinutesForHistory = numberOfMinsForHistory;
+                    Console.WriteLine($"dynoCardHistoryInMins: {numberOfMinsForHistory}");
+                }
+                catch (Exception ex)
+                {
+                    System.Console.WriteLine("Error reading dynoCardHistoryInMins property, setting to default value - 1. " + ex.Message);
+                    DataHelper.NumberOfMinutesForHistory = 1;
+                }
             }
             catch (AggregateException ex)
             {

@@ -48,7 +48,7 @@
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "${MODULES.DynoCardAlertModule.arm32v7}",
+              "image": "${MODULES.DynoCardAlertModule.amd64}",
               "createOptions": ""
             }
           },
@@ -88,7 +88,7 @@
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "${MODULES.dynocard_telemetry.arm32v7}",
+              "image": "${MODULES.dynocard_telemetry.amd64}",
               "createOptions": "{}"
             }
           },
@@ -98,7 +98,7 @@
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "${MODULES.DynoCardWebAPI.arm32v7}",
+              "image": "${MODULES.DynoCardWebAPI.amd64}",
               "createOptions": "{\"HostConfig\":{\"PortBindings\":{\"80/tcp\":[{\"HostPort\":\"8201\"}]}}}"
             }
           },
@@ -108,7 +108,7 @@
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "${MODULES.dynocard_web.arm32v7}",
+              "image": "${MODULES.dynocard_web.amd64}",
               "createOptions": "{\"Env\": [\"DATA_API_URL=127.0.0.1:8201\"],\"HostConfig\":{\"PortBindings\":{\"80/tcp\":[{\"HostPort\":\"8200\"}]}}}"
             }
           }
@@ -244,7 +244,7 @@
         "PublishInterval": "10000",
         "SlaveConfigs": {
           "Slave01": {
-            "SlaveConnection": "52.186.11.164",
+            "SlaveConnection": "104.46.123.70",
             "TcpPort": "502",
             "HwId": "Pump1-DynoCard",
             "Operations": {
