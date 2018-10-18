@@ -90,7 +90,7 @@ namespace DynoCardAlertModule.Model
         private async void PopulateReadingValues(List<OpcNodeReading> readingValues)
         {
             // Dyno card header
-            string cardID = readingValues.Where(r => r.DisplayName == SurfaceCardConfig.Timestamp).Select(r => r.Value.Value).FirstOrDefault();
+            string cardID = readingValues.Where(r => r.DisplayName == CardHeaderConfig.CardID).Select(r => r.Value.Value).FirstOrDefault();
             
             //The card ID value is not in the list of values. So, assume only the load and position values have changed
             if (string.IsNullOrEmpty(cardID))
@@ -167,17 +167,6 @@ namespace DynoCardAlertModule.Model
 
             if (cardType == CardType.Surface)
             {
-                string tempSurfaceTimestamp = readingValues.Where(r => r.DisplayName == SurfaceCardConfig.Timestamp).Select(r => r.Value.Value).FirstOrDefault();
-                if (!string.IsNullOrEmpty(tempSurfaceTimestamp))
-                {
-                    CurrentCard.SurfaceCard.Timestamp  = DateTime.Parse(tempSurfaceTimestamp);
-                    CachedDynoCard.SurfaceCard.Timestamp = DateTime.Parse(tempSurfaceTimestamp);
-                }
-                else
-                {
-                    CurrentCard.SurfaceCard.Timestamp = CachedDynoCard.SurfaceCard.Timestamp;
-                }
-
                 string tempSurfaceNumPoints = readingValues.Where(r => r.DisplayName == SurfaceCardConfig.NumberOfPoints).Select(r => r.Value.Value).FirstOrDefault();
                 if (!string.IsNullOrEmpty(tempSurfaceNumPoints))
                 {
@@ -257,17 +246,6 @@ namespace DynoCardAlertModule.Model
             // Pump Card
             else if (cardType == CardType.Pump)
             {
-                string tempPumpTimestamp = readingValues.Where(r => r.DisplayName == PumpCardConfig.Timestamp).Select(r => r.Value.Value).FirstOrDefault();
-                if (!string.IsNullOrEmpty(tempPumpTimestamp))
-                {
-                    CurrentCard.PumpCard.Timestamp = DateTime.Parse(tempPumpTimestamp);
-                    CachedDynoCard.PumpCard.Timestamp = DateTime.Parse(tempPumpTimestamp);
-                }
-                else
-                {
-                    CurrentCard.PumpCard.Timestamp = CachedDynoCard.PumpCard.Timestamp;
-                }
-
                 string tempPumpNumPoints = readingValues.Where(r => r.DisplayName == PumpCardConfig.NumberOfPoints).Select(r => r.Value.Value).FirstOrDefault();
                 if (!string.IsNullOrEmpty(tempPumpNumPoints))
                 {

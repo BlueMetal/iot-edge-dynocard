@@ -36,7 +36,7 @@ ELSE
 
 		ALTER DATABASE [db4cards] SET CONTAINMENT = PARTIAL
 	END
-
+GO
 
 --DECLARE @CreateStatement VARCHAR(250);
 

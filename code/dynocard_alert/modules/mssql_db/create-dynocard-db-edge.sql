@@ -21,10 +21,13 @@ GO
 
 PRINT N'Creating Edge Database'
 CREATE DATABASE [db4cards]
+GO
 
 -- Configure
 PRINT N'Configure Contained Database'
 EXEC sp_configure 'contained database authentication', 1
 RECONFIGURE
+GO
 
 ALTER DATABASE [db4cards] SET CONTAINMENT = PARTIAL
+GO

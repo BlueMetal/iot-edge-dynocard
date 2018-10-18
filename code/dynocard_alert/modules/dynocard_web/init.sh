@@ -10,4 +10,5 @@
 echo "Dynocard visualization web app starting..."
 echo "DATA_API_URL=$DATA_API_URL"
 
-nginx -g 'daemon off;' &
+echo "Starting nginx..."
+nginx -g 'daemon off;' 

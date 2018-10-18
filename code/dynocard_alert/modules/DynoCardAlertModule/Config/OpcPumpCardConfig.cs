@@ -4,10 +4,7 @@ using Newtonsoft.Json;
 
 public class OpcPumpCardConfig
 {
-    [JsonProperty("timestamp")]
-    public string Timestamp { get; set; }
-
-    [JsonProperty("scaledMaxCardLoad")]
+   [JsonProperty("scaledMaxCardLoad")]
     public string MaxLoad { get; set; }
 
     [JsonProperty("scaledMinCardLoad")]

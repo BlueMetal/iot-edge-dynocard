@@ -21,3 +21,4 @@ GO
 
 PRINT N'Creating Azure SQL Database'
 CREATE DATABASE [db4cards]	( MAXSIZE = 500 MB, EDITION = 'basic',	SERVICE_OBJECTIVE = 'basic')
+GO

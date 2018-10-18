@@ -6,4 +6,7 @@ public class OpcCardHeaderConfig
 {
     [JsonProperty("cardType")]
     public string CardType { get; set; }
+
+    [JsonProperty("cardID")]
+    public string CardID { get; set; }
 }

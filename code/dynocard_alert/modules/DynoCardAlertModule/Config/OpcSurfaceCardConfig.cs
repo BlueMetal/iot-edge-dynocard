@@ -4,9 +4,6 @@ using Newtonsoft.Json;
 
 public class OpcSurfaceCardConfig
 { 
-    [JsonProperty("timestamp")]
-    public string Timestamp { get; set; }
-
     [JsonProperty("numberOfPoints")]
     public string NumberOfPoints { get; set; }
 

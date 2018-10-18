@@ -68,7 +68,7 @@
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "bluemetal/iot_dynocard_demo_edgedb:latest",
+              "image": "${MODULES.mssql_db.amd64}",
               "createOptions": "{\"Env\": [\"ACCEPT_EULA=Y\",\"MSSQL_SA_PASSWORD=Strong!Passw0rd\"],\"HostConfig\": {\"Mounts\": [{\"Target\": \"/var/opt/mssql\",\"Source\": \"sqlVolume\",\"Type\": \"volume\"}],\"PortBindings\": {\"1433/tcp\": [{\"HostPort\": \"1401\"}]}}}"
             }
           },
@@ -122,6 +122,7 @@
           "modbusWrite": "FROM /messages/modules/dynoCardAlertModule/outputs/modbusWriteOutput INTO BrokeredEndpoint(\"/modules/modbus/inputs/input1\")",
           "modbusToDynoCard": "FROM /messages/modules/modbus/outputs/modbusOutput INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/modbusInput\")",
           "telemetryToDynoCard": "FROM /messages/modules/dynocard_telemetry/outputs/telemetryOutput INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/telemetryInput\")",
+          "opcToDynoCard": "FROM /messages/modules/opc_client/* INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/opcInput\")",
           "telemetryToAlert": "FROM /messages/modules/dynoCardAlertModule/outputs/telemetryOutput INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/alertInput\")",
           "opcToCustomHandler": "FROM /messages/modules/opc_client/* INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/opcInput\")",
           "sensorToAlert": "FROM /messages/modules/dynoCardAlertModule/outputs/output1 INTO BrokeredEndpoint(\"/modules/mlAlertModule/inputs/amlInput\")",
@@ -142,29 +143,28 @@
       "properties.desired": {
         "OpcMessageConfig": {
           "opcCardHeaderConfig": {
-            "cardType": "ns=2;s=IoT_Drilling.WITS.WITSML.Witsml_Seq"
+            "cardType": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_CH_CARD_TYPE",
+            "cardID": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_CH_ID"
           },
           "opcPumpCardConfig": {
-            "timestamp": "ns=2;s=IoT_Drilling.WITS.WITSML.Witsml_Seq",
-            "numberOfPoints": "ns=2;s=IoT_Drilling.WITS.WITSML.Witsml_BitDepth",
-            "scaledMaxCardLoad": "ns=2;s=IoT_Drilling.WITS.WITSML.Witsml_Rig",
-            "scaledMinCardLoad": "ns=2;s=IoT_Drilling.WITS.WITSML.Witsml_Api",
-            "grossStroke": "ns=2;s=IoT_Drilling.WITS.WITSML.Witsml_WellboreName",
-            "netStroke": "ns=2;s=IoT_Drilling.WITS.WITSML.Witsml_RigTime",
-            "pumpFillage": "ns=2;s=IoT_Drilling.WITS.WITSML.Witsml_AnnPressure",
-            "fluidLoad": "ns=2;s=IoT_Drilling.WITS.WITSML.Witsml_AvgRopFtHr",
-            "load": "ns=2;s=IoT_Drilling.WITS.WITSML.Witsml_DogLegSeverity",
-            "position": "ns=2;s=IoT_Drilling.WITS.WITSML.Witsml_DogLegSeverity"
+            "numberOfPoints": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_CH_NUMBER_OF_POINTS",
+            "scaledMaxCardLoad": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_CH_SCALED_MAX_LOAD",
+            "scaledMinCardLoad": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_CH_SCALED_MIN_LOAD",
+            "grossStroke": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_CH_GROSS_STROKE",
+            "netStroke": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_CH_NET_STROKE",
+            "pumpFillage": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_CH_PUMP_FILLAGE",
+            "fluidLoad": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_CH_FLUID_LOAD",
+            "load": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_CD_LOAD",
+            "position": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_CD_POSITION"
           },
           "opcSurfaceCardConfig": {
-            "timestamp": "ns=2;s=IoT_Drilling.WITS.WITSML.Witsml_BitWt",
-            "numberOfPoints": "ns=2;s=IoT_Drilling.WITS.WITSML.Witsml_BitDepth",
-            "scaledMaxCardLoad": "ns=2;s=IoT_Drilling.WITS.WITSML.Witsml_BitOnBtm",
-            "scaledMinCardLoad": "ns=2;s=IoT_Drilling.WITS.WITSML.Witsml_TdSpeed",
-            "strokeLength": "ns=2;s=IoT_Drilling.WITS.WITSML.Witsml_FlowIn",
-            "strokePeriod": "ns=2;s=IoT_Drilling.WITS.WITSML.Witsml_DogLegSeverity",
-            "load": "ns=2;s=IoT_Drilling.WITS.WITSML.Witsml_DogLegSeverity",
-            "position": "ns=2;s=IoT_Drilling.WITS.WITSML.Witsml_DogLegSeverity"
+            "numberOfPoints": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_CH_NUMBER_OF_POINTS",
+            "scaledMaxCardLoad": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_CH_SCALED_MAX_LOAD",
+            "scaledMinCardLoad": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_CH_SCALED_MIN_LOAD",
+            "strokeLength": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_CH_STROKE_LENGTH",
+            "strokePeriod": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_CH_STROKE_PERIOD",
+            "load": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_CD_LOAD",
+            "position": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_CD_POSITION"
           }
         },
         "surfaceCardConfig": {
@@ -244,7 +244,7 @@
         "PublishInterval": "10000",
         "SlaveConfigs": {
           "Slave01": {
-            "SlaveConnection": "104.46.123.70",
+            "SlaveConnection": "127.0.0.1",
             "TcpPort": "502",
             "HwId": "Pump1-DynoCard",
             "Operations": {

@@ -248,6 +248,7 @@ namespace DynoCardAlertModule
 
                 foreach (var card in cards)
                 {
+                    System.Console.WriteLine();
                     string json = JsonConvert.SerializeObject(card);
                     //System.Console.WriteLine(json);
 
@@ -270,7 +271,7 @@ namespace DynoCardAlertModule
                 foreach (Exception exception in ex.InnerExceptions)
                 {
                     Console.WriteLine();
-                    Console.WriteLine("Error in modbus input: {0}", exception);
+                    Console.WriteLine("Aggregate Error in modbus input: {0}", exception);
                 }
                 
                 return MessageResponse.Completed;
