@@ -13,16 +13,24 @@
 -- Ensure that [db4cards] database is being used
 
 -- Service Accounts
-CREATE USER [dyno_user] WITH PASSWORD = 'GMZNAQ]Q6R6Ljz9>';
-CREATE USER [dyno_pbi_user] WITH PASSWORD = 'GMZNAQdQ6R6Ljz97';
+IF USER_ID('dyno_user') IS NULL
+  CREATE USER [dyno_user] WITH PASSWORD = 'GMZNAQ]Q6R6Ljz9>';
+GO
+
+IF USER_ID('[dyno_pbi_user') IS NULL
+  CREATE USER [dyno_pbi_user] WITH PASSWORD = 'GMZNAQdQ6R6Ljz97';
+GO
 
 -- Give rights
 EXEC sp_addrolemember 'db_owner', 'dyno_user'  
+GO
+
 EXEC sp_addrolemember 'db_datareader', 'dyno_pbi_user'
+GO
+
 --
 -- Create ACTIVE schema
 --
-GO
 
 -- Delete existing schema.
 DROP SCHEMA IF EXISTS [ACTIVE]

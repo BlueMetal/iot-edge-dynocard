@@ -88,7 +88,7 @@
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "bluemetal/iot_dynocard_demo_telemetry:1.0.0-amd64",
+              "image": "bluemetal/iot_dynocard_demo_telemetry:dyno-demo-1.0",
               "createOptions": "{}"
             }
           },
