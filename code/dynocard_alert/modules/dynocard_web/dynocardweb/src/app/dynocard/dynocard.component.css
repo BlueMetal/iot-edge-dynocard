@@ -1,26 +1,22 @@
 /*.axis--x path {*/
 /*display : none;*/
 /*}*/
-
 /*.line {*/
 /*fill         : none;*/
 /*stroke       : steelblue;*/
 /*stroke-width : 1.5px;*/
 /*}*/
-
 /**/
-
-
 @import "~bootstrap/dist/css/bootstrap.css";
 @import "~eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css";
 
 #controlDiv {
-  width: 1200px;
+  width : 1200px;
 }
 
 svg {
   display : block;
-  margin: 20px 0;
+  margin  : 20px 0;
 }
 
 p {
@@ -37,6 +33,10 @@ p {
   padding          : 5px;
   margin           : 5px;
   background-color : #F7F7F7;
+}
+
+path {
+  shape-rendering : geometricPrecision;
 }
 
 .x-axis path,

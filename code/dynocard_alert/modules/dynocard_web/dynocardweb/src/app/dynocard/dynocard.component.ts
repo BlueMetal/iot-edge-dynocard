@@ -136,7 +136,7 @@ export class DynoCardComponent implements OnInit {
         const animateButton = this.createAnimationButton();
         document.getElementById('buttonDiv').appendChild(animateButton);
 
-        this.renderChart();
+        this.createChart();
       })
 
       .catch(error => {
@@ -146,7 +146,7 @@ export class DynoCardComponent implements OnInit {
       });
   }
 
-  private async renderChart() {
+  private async createChart() {
 
     this.dynoCardSvg = d3.select('svg');
 
@@ -228,11 +228,12 @@ export class DynoCardComponent implements OnInit {
         return this.yAxis_Load(dp.load);
       });
 
-    // For some reason, the first time the animateGraph() method is called, the surfacePumpCard does not render properly, and cuts off the right end of the lines. If animateGraph() is called a second time, then it renders fine, so this accomplishes that. Not ideal but it works.
-    this.animateGraph(this.updateGraphData());
-    setTimeout(function () {
-      this.animateGraph(this.updateGraphData());
-    }.bind(this), 2000);
+    // disable auto render chart
+    // // For some reason, the first time the animateGraph() method is called, the surfacePumpCard does not render properly, and cuts off the right end of the lines. If animateGraph() is called a second time, then it renders fine, so this accomplishes that. Not ideal but it works.
+    // this.animateGraph(this.updateGraphData());
+    // setTimeout(function () {
+    //   this.animateGraph(this.updateGraphData());
+    // }.bind(this), 2000);
 
   }
 
@@ -443,13 +444,17 @@ export class DynoCardComponent implements OnInit {
     spanIcon.setAttribute('class', 'glyphicon glyphicon-calendar');
     spanOuter.appendChild(spanIcon);
 
+    const currentDate = new Date();
+    const startDate = new Date();
+    startDate.setHours(startDate.getHours() - 1); // set startDate 1 hour back from current time
+
     if (argDateType === DataColumns.startDate) {
       dateInput.setAttribute('placeholder', 'Start Date');
-      dateInput.setAttribute('value', '04/08/1996 12:00 AM');
+      dateInput.setAttribute('value', startDate.toLocaleString().replace(/:\d{2}\s/,' ').replace(/,/,'')); // create local time in `MM/dd/yyyy HH:mm` format
     }
     else {
       dateInput.setAttribute('placeholder', 'End Date');
-      dateInput.setAttribute('value', '04/08/2019 12:00 AM');
+      dateInput.setAttribute('value', currentDate.toLocaleString().replace(/:\d{2}\s/,' ').replace(/,/,''));
 
     }
 
@@ -485,7 +490,9 @@ export class DynoCardComponent implements OnInit {
     }
     this.eventSelVal = 'all';
     const updatedDataSet = this.updateGraphData();
-    const tmpEventDDList = _.uniq(_.map(updatedDataSet, 'eventId')).sort(function(a,b){return a-b});
+    const tmpEventDDList = _.uniq(_.map(updatedDataSet, 'eventId')).sort(function (a, b) {
+      return a - b;
+    });
 
     const allOp = document.createElement('option');
     if (tmpEventDDList.length > 0) {
@@ -526,7 +533,9 @@ export class DynoCardComponent implements OnInit {
       this.cardTypeDDList = dropDownData;
     } else if (argDropDownType === DataColumns.eventId) {
       labelDiv.appendChild(document.createTextNode('Event:  '));
-      dropDownData = _.uniq(_.map(this.dataSet.dataPoints, 'eventId')).sort(function(a,b){return a-b});
+      dropDownData = _.uniq(_.map(this.dataSet.dataPoints, 'eventId')).sort(function (a, b) {
+        return a - b;
+      });
       this.eventIdDDList = dropDownData;
     }
 

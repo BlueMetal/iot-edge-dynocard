@@ -157,10 +157,12 @@ export class DataService {
           `Body was: ${error.error}`);
       }
 
+      const targetUrl = error.error.target ? error.error.target.__zone_symbol__xhrURL : 'Unknown';
+
       // return an observable with a user-facing error message
       const errorObj = {
         message: error.message,
-        requestedUrl: error.error.target.__zone_symbol__xhrURL,
+        requestedUrl: targetUrl,
         displayMessage: errorMessage
       };
 
