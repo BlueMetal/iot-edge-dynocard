@@ -4,7 +4,9 @@ using Newtonsoft.Json;
 
 public class OpcMessageConfig
 {
-    public OpcCardHeaderConfig Header { get; set; }
+    [JsonProperty("opcPumpCardConfig")]
     public OpcSurfaceCardConfig SurfaceCard { get; set; }
+
+    [JsonProperty("opcSurfaceCardConfig")]
     public OpcPumpCardConfig PumpCard { get; set; }
 }

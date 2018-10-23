@@ -48,7 +48,7 @@
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "${MODULES.DynoCardAlertModule.amd64.debug}",
+              "image": "${MODULES.DynoCardAlertModule.amd64}",
               "createOptions": ""
             }
           },
@@ -120,8 +120,9 @@
         "schemaVersion": "1.0",
         "routes": {
           "modbusWrite": "FROM /messages/modules/dynoCardAlertModule/outputs/modbusWriteOutput INTO BrokeredEndpoint(\"/modules/modbus/inputs/input1\")",
-          "opcToDynoCard": "FROM /messages/modules/opc_client/* INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/opcInput\")",
+          "modbusToDynoCard": "FROM /messages/modules/modbus/outputs/modbusOutput INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/modbusInput\")",
           "telemetryToDynoCard": "FROM /messages/modules/dynocard_telemetry/outputs/telemetryOutput INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/telemetryInput\")",
+          "opcToDynoCard": "FROM /messages/modules/opc_client/* INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/opcInput\")",
           "telemetryToAlert": "FROM /messages/modules/dynoCardAlertModule/outputs/telemetryOutput INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/alertInput\")",
           "opcToCustomHandler": "FROM /messages/modules/opc_client/* INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/opcInput\")",
           "sensorToAlert": "FROM /messages/modules/dynoCardAlertModule/outputs/output1 INTO BrokeredEndpoint(\"/modules/mlAlertModule/inputs/amlInput\")",
@@ -140,29 +141,29 @@
     },
     "dynoCardAlertModule": {
       "properties.desired": {
+        "opcCardHeaderConfig": {
+          "cardType": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_CH_CARD_TYPE",
+          "cardID": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_CH_ID"
+        },
         "opcPumpCardConfig": {
-          "fluidLoad": "ns=2;s=Dynocard.sim-device.dynocard.DynocardDetail_P_CH_FLUID_LOAD",
-          "grossStroke": "ns=2;s=Dynocard.sim-device.dynocard.DynocardDetail_P_CH_GROSS_STROKE",
-          "id": "ns=2;s=Dynocard.sim-device.dynocard.DynocardDetail_P_CH_ID",
-          "netStroke": "ns=2;s=Dynocard.sim-device.dynocard.DynocardDetail_P_CH_NET_STROKE",
-          "numberOfPoints": "ns=2;s=Dynocard.sim-device.dynocard.DynocardDetail_P_CH_NUMBER_OF_POINTS",
-          "pumpFillage": "ns=2;s=Dynocard.sim-device.dynocard.DynocardDetail_P_CH_PUMP_FILLAGE",
-          "scaledMaxCardLoad": "ns=2;s=Dynocard.sim-device.dynocard.DynocardDetail_P_CH_SCALED_MAX_LOAD",
-          "scaledMinCardLoad": "ns=2;s=Dynocard.sim-device.dynocard.DynocardDetail_P_CH_SCALED_MIN_LOAD",
-          "dc_id": "ns=2;s=Dynocard.sim-device.dynocard.DynocardDetail_P_DC_ID",
-          "load": "ns=2;s=Dynocard.sim-device.dynocard.DynocardDetail_P_LOAD",
-          "position": "ns=2;s=Dynocard.sim-device.dynocard.DynocardDetail_P_POSITION"
+          "numberOfPoints": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_CH_NUMBER_OF_POINTS",
+          "scaledMaxCardLoad": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_CH_SCALED_MAX_LOAD",
+          "scaledMinCardLoad": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_CH_SCALED_MIN_LOAD",
+          "grossStroke": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_CH_GROSS_STROKE",
+          "netStroke": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_CH_NET_STROKE",
+          "pumpFillage": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_CH_PUMP_FILLAGE",
+          "fluidLoad": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_CH_FLUID_LOAD",
+          "load": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_CD_LOAD",
+          "position": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_CD_POSITION"
         },
         "opcSurfaceCardConfig": {
-          "id": "ns=2;s=Dynocard.sim-device.dynocard.DynocardDetail_S_CH_ID",
-          "numberOfPoints": "ns=2;s=Dynocard.sim-device.dynocard.DynocardDetail_S_CH_NUMBER_OF_POINTS",
-          "scaledMaxCardLoad": "ns=2;s=Dynocard.sim-device.dynocard.DynocardDetail_S_CH_SCALED_MAX_LOAD",
-          "scaledMinCardLoad": "ns=2;s=Dynocard.sim-device.dynocard.DynocardDetail_S_CH_SCALED_MIN_LOAD",
-          "strokeLength": "ns=2;s=Dynocard.sim-device.dynocard.DynocardDetail_S_CH_STROKE_LENGTH",
-          "strokePeriod": "ns=2;s=Dynocard.sim-device.dynocard.DynocardDetail_S_CH_STROKE_PERIOD",
-          "dc_id": "ns=2;s=Dynocard.sim-device.dynocard.DynocardDetail_S_DC_ID",
-          "load": "ns=2;s=Dynocard.sim-device.dynocard.DynocardDetail_S_LOAD",
-          "position": "ns=2;s=Dynocard.sim-device.dynocard.DynocardDetail_S_POSITION"
+          "numberOfPoints": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_CH_NUMBER_OF_POINTS",
+          "scaledMaxCardLoad": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_CH_SCALED_MAX_LOAD",
+          "scaledMinCardLoad": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_CH_SCALED_MIN_LOAD",
+          "strokeLength": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_CH_STROKE_LENGTH",
+          "strokePeriod": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_CH_STROKE_PERIOD",
+          "load": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_CD_LOAD",
+          "position": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_CD_POSITION"
         },
         "surfaceCardConfig": {
           "timestamp": {

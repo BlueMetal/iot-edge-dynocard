@@ -4,69 +4,94 @@
         "UseSecurity": false,
         "OpcNodes": [
             {
-                "ExpandedNodeId": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_CD_LOAD",
-                "OpcPublishingInterval": 250,
-                "OpcPollingInterval": 250
+                "ExpandedNodeId": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_P_LOAD",
+                "OpcPublishingInterval": 5000,
+                "OpcPollingInterval": 5000
             },
             {
-                "ExpandedNodeId": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_CD_POSITION",
-                "OpcPublishingInterval": 250,
-                "OpcPollingInterval": 250
+                "ExpandedNodeId": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_P_POSITION",
+                "OpcPublishingInterval": 5000,
+                "OpcPollingInterval": 5000
             },
             {
-                "ExpandedNodeId": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_CH_CARD_TYPE",
-                "OpcPublishingInterval": 250,
-                "OpcPollingInterval": 250
+                "ExpandedNodeId": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_S_LOAD",
+                "OpcPublishingInterval": 5000,
+                "OpcPollingInterval": 5000
             },
             {
-                "ExpandedNodeId": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_CH_FLUID_LOAD",
-                "OpcPublishingInterval": 250,
-                "OpcPollingInterval": 250
+                "ExpandedNodeId": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_S_POSITION",
+                "OpcPublishingInterval": 5000,
+                "OpcPollingInterval": 5000
             },
             {
-                "ExpandedNodeId": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_CH_GROSS_STROKE",
-                "OpcPublishingInterval": 250,
-                "OpcPollingInterval": 250
+                "ExpandedNodeId": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_P_CH_FLUID_LOAD",
+                "OpcPublishingInterval": 5000,
+                "OpcPollingInterval": 5000
             },
             {
-                "ExpandedNodeId": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_CH_ID",
-                "OpcPublishingInterval": 250,
-                "OpcPollingInterval": 250
+                "ExpandedNodeId": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_P_CH_GROSS_STROKE",
+                "OpcPublishingInterval": 5000,
+                "OpcPollingInterval": 5000
             },
             {
-                "ExpandedNodeId": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_CH_NET_STROKE",
-                "OpcPublishingInterval": 250,
-                "OpcPollingInterval": 250
+                "ExpandedNodeId": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_P_CH_ID",
+                "OpcPublishingInterval": 5000,
+                "OpcPollingInterval": 5000
             },
             {
-                "ExpandedNodeId": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_CH_NUMBER_OF_POINTS",
-                "OpcPublishingInterval": 250,
-                "OpcPollingInterval": 250
+                "ExpandedNodeId": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_S_CH_ID",
+                "OpcPublishingInterval": 5000,
+                "OpcPollingInterval": 5000
             },
             {
-                "ExpandedNodeId": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_CH_PUMP_FILLAGE",
-                "OpcPublishingInterval": 250,
-                "OpcPollingInterval": 250
+                "ExpandedNodeId": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_P_CH_NET_STROKE",
+                "OpcPublishingInterval": 5000,
+                "OpcPollingInterval": 5000
             },
             {
-                "ExpandedNodeId": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_CH_SCALED_MAX_LOAD",
-                "OpcPublishingInterval": 250,
-                "OpcPollingInterval": 250
+                "ExpandedNodeId": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_P_CH_NUMBER_OF_POINTS",
+                "OpcPublishingInterval": 5000,
+                "OpcPollingInterval": 5000
             },
             {
-                "ExpandedNodeId": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_CH_SCALED_MIN_LOAD",
-                "OpcPublishingInterval": 250,
-                "OpcPollingInterval": 250
+                "ExpandedNodeId": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_S_CH_NUMBER_OF_POINTS",
+                "OpcPublishingInterval": 5000,
+                "OpcPollingInterval": 5000
             },
             {
-                "ExpandedNodeId": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_CH_STROKE_LENGTH",
-                "OpcPublishingInterval": 250,
-                "OpcPollingInterval": 250
+                "ExpandedNodeId": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_P_CH_PUMP_FILLAGE",
+                "OpcPublishingInterval": 5000,
+                "OpcPollingInterval": 5000
             },
             {
-                "ExpandedNodeId": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_CH_STROKE_PERIOD",
-                "OpcPublishingInterval": 250,
-                "OpcPollingInterval": 250
+                "ExpandedNodeId": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_P_CH_SCALED_MAX_LOAD",
+                "OpcPublishingInterval": 5000,
+                "OpcPollingInterval": 5000
+            },
+            {
+                "ExpandedNodeId": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_P_CH_SCALED_MIN_LOAD",
+                "OpcPublishingInterval": 5000,
+                "OpcPollingInterval": 5000
+            },
+            {
+                "ExpandedNodeId": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_S_CH_SCALED_MAX_LOAD",
+                "OpcPublishingInterval": 5000,
+                "OpcPollingInterval": 5000
+            },
+            {
+                "ExpandedNodeId": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_S_CH_SCALED_MIN_LOAD",
+                "OpcPublishingInterval": 5000,
+                "OpcPollingInterval": 5000
+            },
+            {
+                "ExpandedNodeId": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_S_CH_STROKE_LENGTH",
+                "OpcPublishingInterval": 5000,
+                "OpcPollingInterval": 5000
+            },
+            {
+                "ExpandedNodeId": "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_S_CH_STROKE_PERIOD",
+                "OpcPublishingInterval": 5000,
+                "OpcPollingInterval": 5000
             }
         ]
     }

@@ -27,6 +27,26 @@ namespace DynoCardAlertModule
         {
             try
             {
+
+                // List<OpcNodeReading> values = new List<OpcNodeReading>();
+                // values.Add(new OpcNodeReading()
+                // {
+                //     NodeId = "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_CD_LOAD",
+                //     ApplicationUri = string.Empty,
+                //     DisplayName = "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_CD_LOAD",
+                //     Value = new OpcNodeReadingValue()
+                //     {
+                //         Value = "12345",
+                //         SourceTimestamp = DateTime.Now.ToString()
+                //     }
+                // });
+
+                // var dynoCardBytes = JsonConvert.SerializeObject(values);
+                // var dynoCardByteString = Encoding.UTF8.GetBytes(dynoCardBytes);
+                // var dynoCardMessage = new Message(dynoCardByteString);
+
+                // var tmep = new OpcMessage(dynoCardMessage);
+                
                 Init().Wait();
 
                 // Wait until the app unloads or is cancelled
@@ -91,7 +111,11 @@ namespace DynoCardAlertModule
                 ModbusLayoutConfig modbusConfig = JsonConvert.DeserializeObject<ModbusLayoutConfig>(json);
                 ModbusMessage.SurfaceLayoutConfig = modbusConfig.SurfaceCardConfiguration;
                 ModbusMessage.PumpLayoutConfig = modbusConfig.PumpCardConfiguration;
-            
+
+                OpcMessageConfig opcCardConfig = JsonConvert.DeserializeObject<OpcMessageConfig>(json);
+                OpcMessage.PumpCardConfig = opcCardConfig.PumpCard;
+                OpcMessage.SurfaceCardConfig = opcCardConfig.SurfaceCard;
+                
                 Console.WriteLine("Setting module twin property handler");
                 // Attach callback for Twin desired properties updates
                 await ioTHubModuleClient.SetDesiredPropertyUpdateCallbackAsync(OnDesiredPropertiesUpdate, null);
@@ -182,8 +206,7 @@ namespace DynoCardAlertModule
                 OpcMessageConfig opcCardConfig = JsonConvert.DeserializeObject<OpcMessageConfig>(json);
                 OpcMessage.PumpCardConfig = opcCardConfig.PumpCard;
                 OpcMessage.SurfaceCardConfig = opcCardConfig.SurfaceCard;
-                OpcMessage.CardHeaderConfig = opcCardConfig.Header;
-
+                
                 string sqlConnectionString = desiredProperties["sqlConnectionString"];
                 DataHelper.ConnectionString = sqlConnectionString;
                 Console.WriteLine($"sqlConnectionString: {sqlConnectionString}");
@@ -298,9 +321,10 @@ namespace DynoCardAlertModule
                 
                 if (opcMessage != null)
                 {
-                    var dynoCard = opcMessage.CurrentCard;
-
-                    //string json = JsonConvert.SerializeObject(card);
+                    System.Console.WriteLine("Persisting dyno card.");
+                    DynoCard dynoCard = opcMessage.CurrentCard;
+                    
+                    //string json = JsonConvert.SerializeObject(dynoCard);
                     //System.Console.WriteLine(json);
 
                     int cardID = await (new DataHelper()).PersistDynoCard(dynoCard);
@@ -309,11 +333,10 @@ namespace DynoCardAlertModule
                     {
                         dynoCard.Id = cardID;
 
-                        if (dynoCard?.SurfaceCard?.CardCoordinates?.Count == 200 && dynoCard?.PumpCard?.CardCoordinates?.Count == 100)
+                        if (dynoCard?.SurfaceCard != null && dynoCard?.PumpCard != null)
                         {
                             var dynoCardMessage = dynoCard.ToDeviceMessage();
                             await deviceClient.SendEventAsync("output1", dynoCardMessage);
-                            opcMessage.CurrentCard = null;
                         }
                     }
                 }
