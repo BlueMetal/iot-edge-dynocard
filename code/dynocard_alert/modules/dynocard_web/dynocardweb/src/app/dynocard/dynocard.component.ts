@@ -220,7 +220,7 @@ export class DynoCardComponent implements OnInit {
     });
 
     //-- Define Path Draw function
-    this.drawLineFunc = d3.svg.line<DataPoint>().interpolate('basis')
+    this.drawLineFunc = d3.svg.line<DataPoint>().interpolate('cardinal-closed')
       .x((dp: DataPoint) => {
         return this.xAxis_Position(dp.position);
       })
