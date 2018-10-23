@@ -120,8 +120,9 @@
         "schemaVersion": "1.0",
         "routes": {
           "modbusWrite": "FROM /messages/modules/dynoCardAlertModule/outputs/modbusWriteOutput INTO BrokeredEndpoint(\"/modules/modbus/inputs/input1\")",
-          "opcToDynoCard": "FROM /messages/modules/opc_client/* INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/opcInput\")",
+          "modbusToDynoCard": "FROM /messages/modules/modbus/outputs/modbusOutput INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/modbusInput\")",
           "telemetryToDynoCard": "FROM /messages/modules/dynocard_telemetry/outputs/telemetryOutput INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/telemetryInput\")",
+          "opcToDynoCard": "FROM /messages/modules/opc_client/* INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/opcInput\")",
           "telemetryToAlert": "FROM /messages/modules/dynoCardAlertModule/outputs/telemetryOutput INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/alertInput\")",
           "opcToCustomHandler": "FROM /messages/modules/opc_client/* INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/opcInput\")",
           "sensorToAlert": "FROM /messages/modules/dynoCardAlertModule/outputs/output1 INTO BrokeredEndpoint(\"/modules/mlAlertModule/inputs/amlInput\")",
