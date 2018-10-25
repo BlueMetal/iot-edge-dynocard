@@ -41,18 +41,18 @@ print('Predicted value:', clf.predict(X_old))
 print('Accuracy', clf.score(X,Y))
 
 # create the outputs folder
-os.makedirs('./outputs', exist_ok=True)
+# os.makedirs('./outputs', exist_ok=True)
 
 # export model
-print('Export the model to model4dc.pkl')
-f = open('./outputs/model4dc.pkl', 'wb')
+print('Export the model to model.pkl')
+f = open('./model.pkl', 'wb')
 pickle.dump(clf, f)
 f.close()
 
 # import model
 print('')
-print('Import the model from model4dc.pkl')
-f2 = open('./outputs/model4dc.pkl', 'rb')
+print('Import the model from model.pkl')
+f2 = open('./model.pkl', 'rb')
 clf2 = pickle.load(f2)
 
 # predict new value

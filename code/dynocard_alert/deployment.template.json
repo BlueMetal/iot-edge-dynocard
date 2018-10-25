@@ -8,7 +8,13 @@
           "settings": {
             "minDockerVersion": "v1.25",
             "loggingOptions": "",
-            "registryCredentials": ""
+            "registryCredentials": {
+              "MachineLearningRegistry": {
+                "username": "iotedgedynocar3728307779",
+                "password": "8sfSxCPwxiQRIfuc+w2I7r3qwIqE53fP",
+                "address": "iotedgedynocar3728307779.azurecr.io"
+              }
+            }
           }
         },
         "systemModules": {
@@ -58,28 +64,8 @@
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "bluemetal/iot_dynocard_demo_edgeml:latest",
-              "createOptions": ""
-            }
-          },
-          "sql": {
-            "version": "1.0",
-            "type": "docker",
-            "status": "running",
-            "restartPolicy": "always",
-            "settings": {
-              "image": "${MODULES.mssql_db.amd64}",
-              "createOptions": "{\"Env\": [\"ACCEPT_EULA=Y\",\"MSSQL_SA_PASSWORD=Strong!Passw0rd\"],\"HostConfig\": {\"Mounts\": [{\"Target\": \"/var/opt/mssql\",\"Source\": \"sqlVolume\",\"Type\": \"volume\"}],\"PortBindings\": {\"1433/tcp\": [{\"HostPort\": \"1401\"}]}}}"
-            }
-          },
-          "opc_client": {
-            "version": "1.0",
-            "type": "docker",
-            "status": "running",
-            "restartPolicy": "always",
-            "settings": {
-              "image": "${MODULES.opc_client.amd64}",
-              "createOptions": "{\"Env\": [\"OPC_ENDPOINT_URL=opc.tcp://opc-sim-server.eastus2.cloudapp.azure.com:49380\"]}"
+              "image": "iotedgedynocar3728307779.azurecr.io/edgeanomaly:1",
+              "createOptions": "{\"Env\": [\"AML_MODEL_DC_DEBUG=true\",\"AML_MODEL_DC_STORAGE_ENABLED=true\" ]}"
             }
           },
           "dynocard_telemetry": {
@@ -92,24 +78,14 @@
               "createOptions": "{}"
             }
           },
-          "dynoCardWebApi": {
+          "sql": {
             "version": "1.0",
             "type": "docker",
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "${MODULES.DynoCardWebAPI.amd64}",
-              "createOptions": "{\"HostConfig\":{\"PortBindings\":{\"80/tcp\":[{\"HostPort\":\"8201\"}]}}}"
-            }
-          },
-          "dynocard_web": {
-            "version": "1.0",
-            "type": "docker",
-            "status": "running",
-            "restartPolicy": "always",
-            "settings": {
-              "image": "${MODULES.dynocard_web.amd64}",
-              "createOptions": "{\"Env\": [\"DATA_API_URL=127.0.0.1:8201\"],\"HostConfig\":{\"PortBindings\":{\"80/tcp\":[{\"HostPort\":\"8200\"}]}}}"
+              "image": "${MODULES.mssql_db.amd64}",
+              "createOptions": "{\"Env\": [\"ACCEPT_EULA=Y\",\"MSSQL_SA_PASSWORD=Strong!Passw0rd\"],\"HostConfig\": {\"Mounts\": [{\"Target\": \"/var/opt/mssql\",\"Source\": \"sqlVolume\",\"Type\": \"volume\"}],\"PortBindings\": {\"1433/tcp\": [{\"HostPort\": \"1401\"}]}}}"
             }
           }
         }
@@ -120,11 +96,8 @@
         "schemaVersion": "1.0",
         "routes": {
           "modbusWrite": "FROM /messages/modules/dynoCardAlertModule/outputs/modbusWriteOutput INTO BrokeredEndpoint(\"/modules/modbus/inputs/input1\")",
-          "modbusToDynoCard": "FROM /messages/modules/modbus/outputs/modbusOutput INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/modbusInput\")",
           "telemetryToDynoCard": "FROM /messages/modules/dynocard_telemetry/outputs/telemetryOutput INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/telemetryInput\")",
-          "opcToDynoCard": "FROM /messages/modules/opc_client/* INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/opcInput\")",
-          "telemetryToAlert": "FROM /messages/modules/dynoCardAlertModule/outputs/telemetryOutput INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/alertInput\")",
-          "opcToCustomHandler": "FROM /messages/modules/opc_client/* INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/opcInput\")",
+          "modbusToDynoCard": "FROM /messages/modules/modbus/outputs/modbusOutput INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/modbusInput\")",
           "sensorToAlert": "FROM /messages/modules/dynoCardAlertModule/outputs/output1 INTO BrokeredEndpoint(\"/modules/mlAlertModule/inputs/amlInput\")",
           "alertTofilterAlert": "FROM /messages/modules/mlAlertModule/outputs/amlOutput INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/alertInput\")",
           "filterToIoTHub": "FROM /messages/modules/dynoCardAlertModule/outputs/alertOutput INTO $upstream"
@@ -242,7 +215,7 @@
         "PublishInterval": "10000",
         "SlaveConfigs": {
           "Slave01": {
-            "SlaveConnection": "127.0.0.1",
+            "SlaveConnection": "104.209.174.94",
             "TcpPort": "502",
             "HwId": "Pump1-DynoCard",
             "Operations": {
