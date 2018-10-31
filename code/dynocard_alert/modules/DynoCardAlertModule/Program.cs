@@ -26,27 +26,7 @@ namespace DynoCardAlertModule
         static void Main(string[] args)
         {
             try
-            {
-
-                // List<OpcNodeReading> values = new List<OpcNodeReading>();
-                // values.Add(new OpcNodeReading()
-                // {
-                //     NodeId = "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_CD_LOAD",
-                //     ApplicationUri = string.Empty,
-                //     DisplayName = "nsu=TOP%20Server;s=Dynocard.sim-device.dynocard.DynocardDetail_CD_LOAD",
-                //     Value = new OpcNodeReadingValue()
-                //     {
-                //         Value = "12345",
-                //         SourceTimestamp = DateTime.Now.ToString()
-                //     }
-                // });
-
-                // var dynoCardBytes = JsonConvert.SerializeObject(values);
-                // var dynoCardByteString = Encoding.UTF8.GetBytes(dynoCardBytes);
-                // var dynoCardMessage = new Message(dynoCardByteString);
-
-                // var tmep = new OpcMessage(dynoCardMessage);
-                
+            {               
                 Init().Wait();
 
                 // Wait until the app unloads or is cancelled
