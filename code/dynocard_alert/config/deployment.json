@@ -68,6 +68,16 @@
               "createOptions": "{\"Env\": [\"AML_MODEL_DC_DEBUG=true\",\"AML_MODEL_DC_STORAGE_ENABLED=true\" ]}"
             }
           },
+          "dynocard_telemetry": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "bluemetal/iot_dynocard_demo_telemetry:1.1.0-amd64",
+              "createOptions": "{}"
+            }
+          },
           "sql": {
             "version": "1.0",
             "type": "docker",
@@ -86,6 +96,7 @@
         "schemaVersion": "1.0",
         "routes": {
           "modbusWrite": "FROM /messages/modules/dynoCardAlertModule/outputs/modbusWriteOutput INTO BrokeredEndpoint(\"/modules/modbus/inputs/input1\")",
+          "telemetryToDynoCard": "FROM /messages/modules/dynocard_telemetry/outputs/telemetryOutput INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/telemetryInput\")",
           "modbusToDynoCard": "FROM /messages/modules/modbus/outputs/modbusOutput INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/modbusInput\")",
           "sensorToAlert": "FROM /messages/modules/dynoCardAlertModule/outputs/output1 INTO BrokeredEndpoint(\"/modules/mlAlertModule/inputs/amlInput\")",
           "alertTofilterAlert": "FROM /messages/modules/mlAlertModule/outputs/amlOutput INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/alertInput\")",
