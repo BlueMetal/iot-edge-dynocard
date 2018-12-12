@@ -74,7 +74,7 @@
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "bluemetal/iot_dynocard_demo_telemetry:1.1.0-amd64",
+              "image": "localhost:5000/iot_dynocard_demo_telemetry:1.1.0-amd64",
               "createOptions": "{}"
             }
           },
@@ -86,6 +86,26 @@
             "settings": {
               "image": "bluemetal/iot_dynocard_demo_edgedb:1.2.0-amd64",
               "createOptions": "{\"Env\": [\"ACCEPT_EULA=Y\",\"MSSQL_SA_PASSWORD=Strong!Passw0rd\"],\"HostConfig\": {\"Mounts\": [{\"Target\": \"/var/opt/mssql\",\"Source\": \"sqlVolume\",\"Type\": \"volume\"}],\"PortBindings\": {\"1433/tcp\": [{\"HostPort\": \"1401\"}]}}}"
+            }
+          },
+          "dynoCardWebApi": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "localhost:5000/iot_dynocard_demo_web_api:1.1.0-amd64",
+              "createOptions": "{\"HostConfig\":{\"PortBindings\":{\"80/tcp\":[{\"HostPort\":\"8201\"}]}}}"
+            }
+          },
+          "dynocard_web": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "localhost:5000/iot_dynocard_demo_web:1.2.0-amd64",
+              "createOptions": "{\"Env\": [\"DATA_API_URL=127.0.0.1:8201\"],\"HostConfig\":{\"PortBindings\":{\"80/tcp\":[{\"HostPort\":\"8200\"}]}}}"
             }
           }
         }
@@ -99,12 +119,18 @@
           "telemetryToDynoCard": "FROM /messages/modules/dynocard_telemetry/outputs/telemetryOutput INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/telemetryInput\")",
           "modbusToDynoCard": "FROM /messages/modules/modbus/outputs/modbusOutput INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/modbusInput\")",
           "sensorToAlert": "FROM /messages/modules/dynoCardAlertModule/outputs/output1 INTO BrokeredEndpoint(\"/modules/mlAlertModule/inputs/amlInput\")",
+          "telemetryToAlert": "FROM /messages/modules/dynoCardAlertModule/outputs/telemetryOutput INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/alertInput\")",
           "alertTofilterAlert": "FROM /messages/modules/mlAlertModule/outputs/amlOutput INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/alertInput\")",
           "filterToIoTHub": "FROM /messages/modules/dynoCardAlertModule/outputs/alertOutput INTO $upstream"
         },
         "storeAndForwardConfiguration": {
           "timeToLiveSecs": 7200
         }
+      }
+    },
+    "dynocard_telemetry": {
+      "properties.desired": {
+        "telemetryFrequencyInSecs": 5
       }
     },
     "dynoCardAlertModule": {

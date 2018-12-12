@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2046
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{34036844-64E7-43A5-9151-4AD90E180989}") = "iot_dynocard_alert", "iot-dynocard-alert\iot_dynocard_alert.iotedgeproj", "{0DA689B4-1CBB-4AF1-AD8D-7B7FDE0A262C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DynoCardAlertModule", "modules\DynoCardAlertModule\DynoCardAlertModule.csproj", "{2E5E15CE-40F6-422A-BAB6-B147A63E1074}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "dynocard_telemetry", "modules\dynocard_telemetry\dynocard_telemetry.csproj", "{312B9A62-4075-4BE2-8D09-0923C214A73C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DynoCardWebAPI", "modules\DynoCardWebAPI\DynoCardWebAPI.csproj", "{71AB5CB1-C406-475D-BD57-B944B9EF7EA2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0DA689B4-1CBB-4AF1-AD8D-7B7FDE0A262C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0DA689B4-1CBB-4AF1-AD8D-7B7FDE0A262C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0DA689B4-1CBB-4AF1-AD8D-7B7FDE0A262C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0DA689B4-1CBB-4AF1-AD8D-7B7FDE0A262C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E5E15CE-40F6-422A-BAB6-B147A63E1074}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E5E15CE-40F6-422A-BAB6-B147A63E1074}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E5E15CE-40F6-422A-BAB6-B147A63E1074}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E5E15CE-40F6-422A-BAB6-B147A63E1074}.Release|Any CPU.Build.0 = Release|Any CPU
+		{312B9A62-4075-4BE2-8D09-0923C214A73C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{312B9A62-4075-4BE2-8D09-0923C214A73C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{312B9A62-4075-4BE2-8D09-0923C214A73C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{312B9A62-4075-4BE2-8D09-0923C214A73C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71AB5CB1-C406-475D-BD57-B944B9EF7EA2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71AB5CB1-C406-475D-BD57-B944B9EF7EA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71AB5CB1-C406-475D-BD57-B944B9EF7EA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71AB5CB1-C406-475D-BD57-B944B9EF7EA2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {49596B70-9740-456B-B1C3-9DE72B2B6A61}
+	EndGlobalSection
+EndGlobal

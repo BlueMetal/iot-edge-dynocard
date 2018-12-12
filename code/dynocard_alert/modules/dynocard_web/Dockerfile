@@ -14,7 +14,7 @@ RUN node_modules/@angular/cli/bin/ng build  --prod
 ## define image for final container
 FROM nginx:1.15.1-alpine AS final
 
-ENV DATA_API_URL "http://localhost:8201"
+ENV DATA_API_URL "localhost:8201"
 
 ## deploy nginx config
 COPY nginx_defaults.conf /etc/nginx/conf.d/default.conf
