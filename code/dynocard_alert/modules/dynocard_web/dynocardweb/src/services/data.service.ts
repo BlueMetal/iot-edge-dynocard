@@ -59,29 +59,29 @@ export class DataService {
   // }
   // }
 
-  get(url: string, requestOptionsArgs?, options?: { mockData: boolean, mockDataFile?: string }): Observable<any> {
+  get(url: string, requestOptionsArgs?): Observable<any> {
     const self = this;
 
     // clear and reset the state of headers before each request, to prevent issues with mixing states between requests
     delete this.requestOptions;
 
-    if (options) {
-      if (!options.mockData) {
-      } else if (options.mockData === true) {
+    // if (options) {
+    //   if (!options.mockData) {
+    //   } else if (options.mockData === true) {
 
-        // Until nodejs server is setup, just return json directly here passed in value should be relative too `src` root
-        // i.e. if its located at ./src/path-to-asset/here.txt, then just enter path-to-asset/here.txt
-        // options.mockDataFile is a reference to a property which is populated in mockDataInit()
-        const mockData = this.mockData[options.mockDataFile];
-        return of(mockData);
-      }
-      // If options.mockData is false or not set
-      // If the statement gets to here, it needs to be \`true\`, else throw error
-      else if (!options.mockData === true) {
-        throw new Error('mockData not set to boolean type. Must be true or false.');
-      }
+    //     // Until nodejs server is setup, just return json directly here passed in value should be relative too `src` root
+    //     // i.e. if its located at ./src/path-to-asset/here.txt, then just enter path-to-asset/here.txt
+    //     // options.mockDataFile is a reference to a property which is populated in mockDataInit()
+    //     const mockData = this.mockData[options.mockDataFile];
+    //     return of(mockData);
+    //   }
+    //   // If options.mockData is false or not set
+    //   // If the statement gets to here, it needs to be \`true\`, else throw error
+    //   else if (!options.mockData === true) {
+    //     throw new Error('mockData not set to boolean type. Must be true or false.');
+    //   }
 
-    }
+    // }
 
     // The Angular HttpClient Way
     const requestOptions = {
@@ -90,7 +90,6 @@ export class DataService {
         'Accept': 'application/json'
       })
     };
-
 
     return this.http
       .get(url, requestOptionsArgs

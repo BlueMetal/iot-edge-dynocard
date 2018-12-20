@@ -99,15 +99,14 @@ export class DynoCardComponent implements OnInit {
   private drawLineFunc: d3.svg.Line<DataPoint>;
   private svgCanvasWidth: number;
   private svgCanvasHeight: number;
-  private svgCanvasPadding: number;
 
   // axis
   private xAxisGroup: d3.Selection<SVGAElement>;
   private yAxisGroup: d3.Selection<SVGAElement>;
   // private yAxisGroupSurface: d3.Selection<SVGAElement>;
   // private yAxisGroupPump: d3.Selection<SVGAElement>;
-  private xAxis_Position;
-  private yAxis_Load;
+  private xAxisRange;
+  private yAxisRange;
 
   private dataSet: ViewModel;
   private eventSelVal: any = 'all';
@@ -117,14 +116,13 @@ export class DynoCardComponent implements OnInit {
   private plotteSurfacedPath: any;
   private plottePumpPath: any;
   private isDropDownRender: boolean = false;
-  private margin = { top: 150, right: 100, bottom: -100, left: 0 };
+  private margin = { top: 100, right: 0, bottom: -100, left: 100 };
   private totalAnimationTime: number = 2000;
   public errorMessage: any;
 
   constructor(private dataService: DataService, private urlManagingService: UrlManagingService) {
     this.svgCanvasWidth = 1200;
     this.svgCanvasHeight = 560;
-    this.svgCanvasPadding = 100;
   }
 
   ngOnInit() {
@@ -138,7 +136,10 @@ export class DynoCardComponent implements OnInit {
         this.chartData = response;
         this.controls.nativeElement.appendChild(this.createInitialHeader());
         const animateButton = this.createAnimationButton();
-        document.getElementById('buttonDiv').appendChild(animateButton);
+        document.getElementById('animateButtonDiv').appendChild(animateButton);
+
+        const anomalyButton = this.createAnomalyStateButton();
+        document.getElementById('anomalyButtonDiv').appendChild(anomalyButton);
 
         this.createChart();
       })
@@ -170,7 +171,7 @@ export class DynoCardComponent implements OnInit {
 
     this.dynoCardSvg.attr({
       width: this.svgCanvasWidth,
-      height: this.svgCanvasHeight = this.svgCanvasHeight
+      height: this.svgCanvasHeight
     });
 
     const childNodes = document.getElementById('controlDiv');
@@ -204,33 +205,33 @@ export class DynoCardComponent implements OnInit {
     });
 
     //--- Define X & Y  Axis Scale and Line
-    const xMax = d3.max(this.dataSet.dataPoints, d => d.position);
+    const xMax = d3.max(this.dataSet.dataPoints, d => d.position) + 100; //Add a little buffer to the X axis max so the line doesn't get chopped
     let yMinMax = d3.extent(this.dataSet.dataPoints, d => d.load);
-    yMinMax = [yMinMax[0] - 500, yMinMax[1]]; // make the yMin a little wider than lowest number, so line doesn't touch the bottom X line.
+    yMinMax = [yMinMax[0] - 500, yMinMax[1] + 100]; // make the yMin a little wider and the yMax a little higher, so line doesn't touch the bottom X line.
 
-    this.xAxis_Position = d3.scale.linear()
-      .domain([-1, xMax])
-      .range([this.svgCanvasPadding, this.svgCanvasWidth - this.svgCanvasPadding]);
+    this.xAxisRange = d3.scale.linear()
+      .domain([-100, xMax])
+      .range([this.margin.left, this.svgCanvasWidth - this.margin.right]);
 
-    this.yAxis_Load = d3.scale.linear()
+    this.yAxisRange = d3.scale.linear()
       .domain(yMinMax)
-      .range([this.svgCanvasHeight - this.svgCanvasPadding, 0]);
+      .range([this.svgCanvasHeight - this.margin.top, 0]);
 
     // Draw X axis line
     const xAxisLine = d3.svg.axis()
-      .scale(this.xAxis_Position)
+      .scale(this.xAxisRange)
       .orient('bottom').tickSize(10)
       .tickFormat(d => d);
 
     this.xAxisGroup.call(xAxisLine)
     // .attr("class", "xaxis axis")  // two classes, one for css formatting, one for selection below
       .attr({
-        transform: `translate(0, ${(this.svgCanvasHeight - this.svgCanvasPadding)})`
+        transform: `translate(0, ${(this.svgCanvasHeight - this.margin.top)})`
       });
 
     // Draw Y axis line
     const yAxisLine = d3.svg.axis()
-      .scale(this.yAxis_Load)
+      .scale(this.yAxisRange)
       .orient('left')
       .tickSize(10)
       .tickFormat(d => (Number(d) / 1000)
@@ -239,7 +240,7 @@ export class DynoCardComponent implements OnInit {
     this.yAxisGroup.call(yAxisLine)
     // .attr("class", "axis")
       .attr({
-        transform: `translate(${this.margin.right}, 0)`
+        transform: `translate(${this.margin.left}, 0)`
       });
 
     // now rotate text on x axis
@@ -260,23 +261,23 @@ export class DynoCardComponent implements OnInit {
     this.dynoCardSvg.append('text')
       .attr('class', 'axis-label')
       .attr('text-anchor', 'middle')  // this makes it easy to centre the text as the transform is applied to the anchor
-      .attr('transform', `translate(${(this.svgCanvasPadding / 2)}, ${(this.svgCanvasHeight / 2)}) rotate(-90)`)  // text is drawn off the screen top left, move down and out and rotate
+      .attr('transform', `translate(${(this.margin.left / 2)}, ${(this.svgCanvasHeight / 2)}) rotate(-90)`)  // text is drawn off the screen top left, move down and out and rotate
       .text('Load (klbs)');
 
     // add titles to the X axes
     this.dynoCardSvg.append('text')
       .attr('class', 'axis-label')
       .attr('text-anchor', 'middle')  // this makes it easy to centre the text as the transform is applied to the anchor
-      .attr('transform', `translate(${(this.svgCanvasWidth / 2)}, ${(this.svgCanvasHeight - (this.svgCanvasPadding / 4))})`)  // centre below axis
+      .attr('transform', `translate(${(this.svgCanvasWidth / 2)}, ${(this.svgCanvasHeight - (this.margin.left / 4))})`)  // centre below axis
       .text('Displacement (in)');
 
     //-- Define Path Draw function
     this.drawLineFunc = d3.svg.line<DataPoint>().interpolate('cardinal-closed')
       .x((dp: DataPoint) => {
-        return this.xAxis_Position(dp.position);
+        return this.xAxisRange(dp.position);
       })
       .y((dp: DataPoint) => {
-        return this.yAxis_Load(dp.load);
+        return this.yAxisRange(dp.load);
       });
 
     // disable auto render chart
@@ -287,42 +288,43 @@ export class DynoCardComponent implements OnInit {
     // }.bind(this), 2000);
 
 
-    // Create a Legend
-    const ordinal = d3.scale.ordinal()
-      .domain(['Surface Chart', 'Pump Chart'])
-      .range(['#4682b4', '#a52a2a']);
+    // // Create a Legend
+    // const ordinal = d3.scale.ordinal()
+    //   .domain(['Surface Chart', 'Pump Chart'])
+    //   .range(['#4682b4', '#a52a2a']);
+    //
+    // const legendLeftOffset = 140;
+    // this.dynoCardSvg.append('g')
+    //   .attr('class', 'legend')
+    //   .attr('transform', `translate(${this.svgCanvasWidth - this.margin.left - 32},22)`);
+    //
+    // // Reposition and resize the box
+    // // legendPadding = this.dynoCardSvg.attr('data-style-padding') || 5,
+    // // legendItems = this.dynoCardSvg.selectAll('.legendCells').data([true]);
+    //
+    // const legend = this.dynoCardSvg.selectAll('.legend');
+    // legend.append('rect').classed('legend-box', true);
+    //
+    // // .legend-box moves relative to the .legend
+    // this.dynoCardSvg.selectAll('.legend-box')
+    //   .attr('transform', `translate(-20,-20)`)
+    //   .attr('height', 75)
+    //   .attr('width', 150);
+    //
+    // const legendOrdinal = (d3 as any).legend.color()// no type definition for d3 legend
+    // //d3 symbol creates a path-string, for example
+    // //"M0,-8.059274488676564L9.306048591020996,
+    // //8.059274488676564 -9.306048591020996,8.059274488676564Z"
+    //   .shape('path', d3.svg.symbol().type('circle').size(150)(null))
+    //   .shapePadding(20)
+    //   .scale(ordinal);
+    //
+    // this.dynoCardSvg.select('.legend')
+    //   .call(legendOrdinal);
+    // //   const legend = this.dynoCardSvg.append("g")
+    // //     .attr("class","legend")
+    // //     .call(d3legend)
 
-    const legendLeftOffset = 140;
-    this.dynoCardSvg.append('g')
-      .attr('class', 'legend')
-      .attr('transform', `translate(${this.svgCanvasWidth - this.svgCanvasPadding - 32},22)`);
-
-    // Reposition and resize the box
-    // legendPadding = this.dynoCardSvg.attr('data-style-padding') || 5,
-    // legendItems = this.dynoCardSvg.selectAll('.legendCells').data([true]);
-
-    const legend = this.dynoCardSvg.selectAll('.legend');
-    legend.append('rect').classed('legend-box', true);
-
-    // .legend-box moves relative to the .legend
-    this.dynoCardSvg.selectAll('.legend-box')
-      .attr('transform', `translate(-20,-20)`)
-      .attr('height', 75)
-      .attr('width', 150);
-
-    const legendOrdinal = (d3 as any).legend.color()// no type definition for d3 legend
-    //d3 symbol creates a path-string, for example
-    //"M0,-8.059274488676564L9.306048591020996,
-    //8.059274488676564 -9.306048591020996,8.059274488676564Z"
-      .shape('path', d3.svg.symbol().type('circle').size(150)(null))
-      .shapePadding(20)
-      .scale(ordinal);
-
-    this.dynoCardSvg.select('.legend')
-      .call(legendOrdinal);
-    //   const legend = this.dynoCardSvg.append("g")
-    //     .attr("class","legend")
-    //     .call(d3legend)
   }
 
   private animateGraph(argGraphDataSet: DataPoint[]
@@ -383,7 +385,7 @@ export class DynoCardComponent implements OnInit {
         retDataView.dataPoints.push({
           pumpId: <number>+dataView[i][DataColumns.pumpId],
           eventId: <number>+dataView[i][DataColumns.eventId],
-          cardHeaderId: <number> +dataView[i][DataColumns.cardHeaderId],
+          cardHeaderId: <number>+dataView[i][DataColumns.cardHeaderId],
           epocDate: <number>+dataView[i][DataColumns.epocDate],
           cardType: <string>dataView[i][DataColumns.cardType],
           cardId: <number>dataView[i][DataColumns.cardId],
@@ -471,15 +473,14 @@ export class DynoCardComponent implements OnInit {
       .attr('stroke-dashoffset', 0);
 
 
-    // this.surCrdSvgGrp.attr({
-    //   transform: 'translate(10,0)'
-    // });
-    this.surCrdSvgGrp.attr({
-      transform: 'translate(' + this.margin.right + ',0)'
-    });
-    this.pumpCrdSvgGrp.attr({
-      transform: 'translate(' + this.margin.right + ',0)'
-    });
+    // Use this for manually shifting the entire chart rendering within the x and y axis - Be careful, this will throw off scales if not done for a purpose
+    //   this.surCrdSvgGrp.attr({
+    //     transform: 'translate(10,0)'
+    //   });
+    //   this.pumpCrdSvgGrp.attr({
+    //     transform: 'translate(0,10)'
+    //   });
+
   }
 
 
@@ -509,6 +510,17 @@ export class DynoCardComponent implements OnInit {
     const buttonDiv: HTMLElement = document.createElement('div');
     buttonDiv.setAttribute('id', 'buttonDiv');
     buttonDiv.setAttribute('class', 'row');
+
+    const animateButtonDiv: HTMLElement = document.createElement('div');
+    animateButtonDiv.setAttribute('id', 'animateButtonDiv');
+    animateButtonDiv.setAttribute('class', 'col-sm-6');
+    buttonDiv.appendChild(animateButtonDiv);
+
+    const anomalyButtonDiv: HTMLElement = document.createElement('div');
+    anomalyButtonDiv.setAttribute('id', 'anomalyButtonDiv');
+    anomalyButtonDiv.setAttribute('class', 'col-sm-6');
+    buttonDiv.appendChild(anomalyButtonDiv);
+
     baseDiv.appendChild(buttonDiv);
 
     return baseDiv;
@@ -544,8 +556,7 @@ export class DynoCardComponent implements OnInit {
     if (argDateType === DataColumns.startDate) {
       dateInput.setAttribute('placeholder', 'Start Date');
       dateInput.setAttribute('value', startDate.toLocaleString().replace(/:\d{2}\s/, ' ').replace(/,/, '')); // create local time in `MM/dd/yyyy HH:mm` format
-    }
-    else {
+    } else {
       dateInput.setAttribute('placeholder', 'End Date');
       dateInput.setAttribute('value', currentDate.toLocaleString().replace(/:\d{2}\s/, ' ').replace(/,/, ''));
 
@@ -574,6 +585,31 @@ export class DynoCardComponent implements OnInit {
       this.animateGraph(this.updateGraphData());
     }.bind(this);
     return animationButton;
+  }
+
+  private createAnomalyStateButton() {
+    const anomalyButton = document.createElement('button');
+    anomalyButton.setAttribute('id', 'anomalyButton');
+    anomalyButton.setAttribute('type', 'button');
+    anomalyButton.setAttribute('class', 'btn btn-success center-block');
+    anomalyButton.textContent = 'Create Anomaly';
+    anomalyButton.onclick = async () => {
+      var anomalyButon = document.getElementById("anomalyButton");
+      if (anomalyButon.textContent == 'Create Anomaly') {
+        await this.dataService.get('http://localhost:8201/api/dynocard/anomaly/GasInterference').toPromise()  //this.dataService.get('http://localhost:8201/api/dynocard/anomaly/GasInterference');
+        .then(result => {
+          anomalyButton.textContent = 'Stop Anomaly';
+          anomalyButon.className = 'btn btn-danger center-block';
+        });
+      } else {
+        await this.dataService.get('http://localhost:8201/api/dynocard/anomaly/None').toPromise() 
+        .then(result => {
+          anomalyButton.textContent = 'Create Anomaly';
+          anomalyButon.className = 'btn btn-success center-block';
+        });
+      }
+    };
+    return anomalyButton;
   }
 
   public rerenderEventDropDown() {
@@ -653,8 +689,7 @@ export class DynoCardComponent implements OnInit {
       if (argDropDownType === DataColumns.pumpId) {
         this.pumpSelVal = selVal;
         this.resetOtherControls();
-      }
-      else if (argDropDownType === DataColumns.eventId) this.eventSelVal = selVal;
+      } else if (argDropDownType === DataColumns.eventId) this.eventSelVal = selVal;
 
 
       this.animateGraph(this.updateGraphData());

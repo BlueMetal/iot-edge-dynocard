@@ -182,7 +182,7 @@ namespace dynocard_telemetry
                 var dynocardTelemetryBytes = Encoding.UTF8.GetBytes(dynocardTelemetryMessage);
                 var telemetryMessage = new Message(dynocardTelemetryBytes);
 
-                System.Console.WriteLine($"Sending telemetry: {dynocardTelemetryMessage}");
+                System.Console.WriteLine($"Sending telemetry"); // {dynocardTelemetryMessage}");
                 await moduleClient.SendEventAsync("telemetryOutput", telemetryMessage);
 
                 var anomalyChangeMessageBytes = Encoding.UTF8.GetBytes("GasInterference");

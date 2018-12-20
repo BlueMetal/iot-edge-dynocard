@@ -121,7 +121,7 @@
           "sensorToAlert": "FROM /messages/modules/dynoCardAlertModule/outputs/output1 INTO BrokeredEndpoint(\"/modules/mlAlertModule/inputs/amlInput\")",
           "telemetryToAlert": "FROM /messages/modules/dynoCardAlertModule/outputs/telemetryOutput INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/alertInput\")",
           "alertTofilterAlert": "FROM /messages/modules/mlAlertModule/outputs/amlOutput INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/alertInput\")",
-          "anomalyChange": "FROM /messages/modules/dynocard_telemetry/outputs/anomalyChangeTemp INTO BrokeredEndpoint(\"/modules/dynocard_telemetry/inputs/anomalyChange\")",
+          "anomalyChange": "FROM /messages/modules/dynoCardWebApi/outputs/anomalyOutput INTO BrokeredEndpoint(\"/modules/dynocard_telemetry/inputs/anomalyChange\")",
           "filterToIoTHub": "FROM /messages/modules/dynoCardAlertModule/outputs/alertOutput INTO $upstream"
         },
         "storeAndForwardConfiguration": {

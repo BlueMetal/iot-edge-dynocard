@@ -35,4 +35,9 @@ export class UrlManagingService {
     return this.baseApiRoute + '/DynoCard';
     // return '/assets/Results.json'; // for loading test data locally
   }
+
+  async setAnomalyState(state) {
+    await this.getProdUrl();
+    return this.baseApiRoute + '/DynoCard/anomaly/' + state;
+  }
 }

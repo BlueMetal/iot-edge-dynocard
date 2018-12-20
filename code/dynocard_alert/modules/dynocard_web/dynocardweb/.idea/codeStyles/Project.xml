@@ -3,7 +3,7 @@
     <CssCodeStyleSettings>
       <option name="VALUE_ALIGNMENT" value="1" />
     </CssCodeStyleSettings>
-    <JSCodeStyleSettings>
+    <JSCodeStyleSettings version="0">
       <option name="FORCE_SEMICOLON_STYLE" value="true" />
       <option name="USE_DOUBLE_QUOTES" value="false" />
       <option name="ENFORCE_TRAILING_COMMA" value="Remove" />
@@ -13,7 +13,7 @@
       <option name="SPACES_WITHIN_IMPORTS" value="true" />
       <option name="IMPORT_SORT_MODULE_NAME" value="true" />
     </JSCodeStyleSettings>
-    <TypeScriptCodeStyleSettings>
+    <TypeScriptCodeStyleSettings version="0">
       <option name="FORCE_SEMICOLON_STYLE" value="true" />
       <option name="USE_DOUBLE_QUOTES" value="false" />
       <option name="FORCE_QUOTE_STYlE" value="true" />

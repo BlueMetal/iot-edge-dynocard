@@ -4,16 +4,17 @@ from azureml.core  import Workspace
 
 #Load existing workspace from the config file info.
 ws  = Workspace.from_config()
+model_name = "dynocard-model"
 
 model = Model.register(model_path="model4dc.pkl",    # this path points to the local file
-                       model_name="dynocard-model",  # the model gets registered as this name
-                       tags={'classification': "myclassification"},
+                       model_name=model_name,  # the model gets registered as this name
+                       tags={"data": "dynocard", "model": "classicfication"},
                        description="Dynocard anomaly detection model",
                        workspace = ws)
 
 
-model_name = "dynocard-model"
-model = Model(ws, model_name)
+
+#model = Model(ws, model_name)
 
 
 #Image configuration
