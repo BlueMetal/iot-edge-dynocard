@@ -26,7 +26,7 @@ namespace DynoCardAlertModule
         static void Main(string[] args)
         {
             try
-            {
+            {               
                 Init().Wait();
 
                 // Wait until the app unloads or is cancelled
@@ -91,7 +91,11 @@ namespace DynoCardAlertModule
                 ModbusLayoutConfig modbusConfig = JsonConvert.DeserializeObject<ModbusLayoutConfig>(json);
                 ModbusMessage.SurfaceLayoutConfig = modbusConfig.SurfaceCardConfiguration;
                 ModbusMessage.PumpLayoutConfig = modbusConfig.PumpCardConfiguration;
-            
+
+                OpcMessageConfig opcCardConfig = JsonConvert.DeserializeObject<OpcMessageConfig>(json);
+                OpcMessage.PumpCardConfig = opcCardConfig.PumpCard;
+                OpcMessage.SurfaceCardConfig = opcCardConfig.SurfaceCard;
+                
                 Console.WriteLine("Setting module twin property handler");
                 // Attach callback for Twin desired properties updates
                 await ioTHubModuleClient.SetDesiredPropertyUpdateCallbackAsync(OnDesiredPropertiesUpdate, null);
@@ -179,13 +183,25 @@ namespace DynoCardAlertModule
                 ModbusMessage.SurfaceLayoutConfig = modbusConfig.SurfaceCardConfiguration;
                 ModbusMessage.PumpLayoutConfig = modbusConfig.PumpCardConfiguration;
 
+                OpcMessageConfig opcCardConfig = JsonConvert.DeserializeObject<OpcMessageConfig>(json);
+                OpcMessage.PumpCardConfig = opcCardConfig.PumpCard;
+                OpcMessage.SurfaceCardConfig = opcCardConfig.SurfaceCard;
+                
                 string sqlConnectionString = desiredProperties["sqlConnectionString"];
                 DataHelper.ConnectionString = sqlConnectionString;
                 Console.WriteLine($"sqlConnectionString: {sqlConnectionString}");
 
-                int numberOfMinsForHistory = desiredProperties["dynoCardHistoryInMins"];
-                DataHelper.NumberOfMinutesForHistory = numberOfMinsForHistory;
-                Console.WriteLine($"dynoCardHistoryInMins: {numberOfMinsForHistory}");
+                try
+                {
+                    int numberOfMinsForHistory = desiredProperties["dynoCardHistoryInMins"];
+                    DataHelper.NumberOfMinutesForHistory = numberOfMinsForHistory;
+                    Console.WriteLine($"dynoCardHistoryInMins: {numberOfMinsForHistory}");
+                }
+                catch (Exception ex)
+                {
+                    System.Console.WriteLine("Error reading dynoCardHistoryInMins property, setting to default value - 1. " + ex.Message);
+                    DataHelper.NumberOfMinutesForHistory = 1;
+                }
             }
             catch (AggregateException ex)
             {
@@ -235,6 +251,7 @@ namespace DynoCardAlertModule
 
                 foreach (var card in cards)
                 {
+                    System.Console.WriteLine();
                     string json = JsonConvert.SerializeObject(card);
                     //System.Console.WriteLine(json);
 
@@ -257,7 +274,7 @@ namespace DynoCardAlertModule
                 foreach (Exception exception in ex.InnerExceptions)
                 {
                     Console.WriteLine();
-                    Console.WriteLine("Error in modbus input: {0}", exception);
+                    Console.WriteLine("Aggregate Error in modbus input: {0}", exception);
                 }
                 
                 return MessageResponse.Completed;
@@ -281,32 +298,26 @@ namespace DynoCardAlertModule
             {
                 ModuleClient deviceClient = (ModuleClient)userContext;
                 var opcMessage = new OpcMessage(message);
-                List<DynoCard> cards = new List<DynoCard>();
-
+                
                 if (opcMessage != null)
                 {
-                    // var dynoCard = await opcMessage.ToDynoCard();
-
-                    // if (dynoCard.SurfaceCard != null && dynoCard.PumpCard != null)
-                    // {
-                    //     cards.Add(dynoCard);
-                    //     Console.WriteLine("Parsing OPC dyno card values.");
-                    // }
-                }
-
-                foreach (var card in cards)
-                {
-                    string json = JsonConvert.SerializeObject(card);
+                    System.Console.WriteLine("Persisting dyno card.");
+                    DynoCard dynoCard = opcMessage.CurrentCard;
+                    
+                    //string json = JsonConvert.SerializeObject(dynoCard);
                     //System.Console.WriteLine(json);
 
-                    int cardID = await (new DataHelper()).PersistDynoCard(card);
+                    int cardID = await (new DataHelper()).PersistDynoCard(dynoCard);
 
                     if (cardID > 0)
                     {
-                        card.Id = cardID;
+                        dynoCard.Id = cardID;
 
-                        var dynoCardMessage = card.ToDeviceMessage();
-                        await deviceClient.SendEventAsync("output1", dynoCardMessage);
+                        if (dynoCard?.SurfaceCard != null && dynoCard?.PumpCard != null)
+                        {
+                            var dynoCardMessage = dynoCard.ToDeviceMessage();
+                            await deviceClient.SendEventAsync("output1", dynoCardMessage);
+                        }
                     }
                 }
 

@@ -1,32 +1,28 @@
 /*.axis--x path {*/
 /*display : none;*/
 /*}*/
-
 /*.line {*/
 /*fill         : none;*/
-/*stroke       : steelblue;*/
+/*stroke       : #4682b4;*/
 /*stroke-width : 1.5px;*/
 /*}*/
-
 /**/
-
-
 @import "~bootstrap/dist/css/bootstrap.css";
 @import "~eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css";
 
 #controlDiv {
-  width: 1200px;
+  width : 1200px;
 }
 
 svg {
   display : block;
-  margin: 20px 0;
+  margin  : 20px 0;
 }
 
 p {
   font-size   : 20px;
   font-weight : bold;
-  color       : steelblue;
+  color       : #4682b4;
 }
 
 #datePicker1 {
@@ -39,10 +35,14 @@ p {
   background-color : #F7F7F7;
 }
 
+path {
+  shape-rendering : geometricPrecision;
+}
+
 .x-axis path,
 .x-axis line {
   fill            : none;
-  stroke          : brown;
+  stroke          : #a52a2a;
   shape-rendering : crispEdges;
   stroke-width    : 2px;
 }
@@ -52,45 +52,164 @@ p {
   font-style  : italic;
   font-size   : 14px;
   font-weight : bold;
-  fill        : brown;
+  fill        : #a52a2a;
 
-}
-
-.y-axis path .y-axis line {
-  stroke-width : 2px;
-  fill         : blueviolet;
 }
 
 .y-axis path,
 .y-axis line {
   fill            : none;
-  stroke          : steelblue;
+  stroke          : #4682b4;
   shape-rendering : crispEdges;
-  stroke-width    : 3px;
+  stroke-width    : 2px;
 }
 
 .y-axis text {
   font-family : sans-serif;
   font-style  : italic;
   font-size   : 14px;
-  fill        : steelblue;
+  fill        : #4682b4;
 
 }
 
 .y-axis-pump path,
 .y-axis-pump line {
   fill            : none;
-  stroke          : brown;
+  stroke          : #a52a2a;
   shape-rendering : crispEdges;
-  stroke-width    : 3px;
+  stroke-width    : 2px;
 }
 
 .y-axis-pump text {
   font-family : sans-serif;
   font-style  : italic;
   font-size   : 14px;
-  fill        : brown;
+  fill        : #a52a2a;
 
 }
 
+.legend {
+  font-size   : 17px;
+  font-weight : 700;
+  border      : 1px solid #000000;
+  margin      : auto;
+  width       : 340px;
+  text-align  : center;
+}
 
+.legend-item {
+  margin : 0 7px;
+}
+
+
+.legend .circle {
+  height         : 25px;
+  width          : 25px;
+  border-radius  : 50%;
+  vertical-align : middle;
+  display        : inline-block;
+  margin         : 8px 10px 8px 0;
+}
+
+
+.legend rect {
+  fill    : #fff;
+  stroke  : #000;
+  opacity : 0.8;
+}
+
+.axis path,
+.axis line {
+  fill            : none;
+  stroke          : black;
+  shape-rendering : crispEdges;
+}
+
+.axis text {
+  font-family : sans-serif;
+  font-size   : 15px;
+  font-weight : 700;
+}
+
+.axis-label {
+  font-family : sans-serif;
+  font-size   : 18px;
+  font-weight : 700;
+}
+
+
+.chart-container {
+  width : 1200px;
+}
+
+
+.circle.surface {
+  background-color : #4682b4;
+}
+
+.circle.pump {
+  background-color : #a52a2a;
+}
+
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}

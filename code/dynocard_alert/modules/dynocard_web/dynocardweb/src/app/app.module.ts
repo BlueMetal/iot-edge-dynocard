@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
-
 // Components
 import { DynoCardComponent } from './dynocard/dynocard.component';
 

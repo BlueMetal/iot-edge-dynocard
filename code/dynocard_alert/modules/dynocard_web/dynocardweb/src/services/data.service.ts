@@ -23,7 +23,7 @@ interface RequestOptions {
 
 @Injectable()
 export class DataService {
-  private mockData = {};
+  private mockData;
   private requestOptions: RequestOptions = {};
 
   constructor(private http: HttpClient) {
@@ -32,56 +32,56 @@ export class DataService {
 
   // async mockDataInit() {
   //
-  //   // For Web
-  //   if (!isNativeScript()) {
-  //     // resolve mockdata with webpack at compile time so its available for web, because web has no filesystem access like native
-  //     require('file-loader!../../../apps/web-dynocard/src/assets/dataset1.csv')
-  //       .then((response) => {
-  //         //change `mockDataFile` to a reference to the filename being loaded, so it can be used in [GET] options.mockDataFile
-  //         this.mockData.mockDataFile = response;
-  //       })
-  //       .catch((err) => {
-  //         return err;
-  //       });
+  // For Web
+  // if (!isNativeScript()) {
+  //   // resolve mockdata with webpack at compile time so its available for web, because web has no filesystem access like native
+  //   require('file-loader!../assets/Results.json')
+  //     .then((response) => {
+  //       //change `mockDataFile` to a reference to the filename being loaded, so it can be used in [GET] options.mockDataFile
+  //       this.mockData.mockDataFile = response;
+  //     })
+  //     .catch((err) => {
+  //       return err;
+  //     });
   //
-  //     // For NativeScript
-  //   }
-  //   else {
-  //     // Nativescript will use `file-system` to access the file locally, at a different path than webpack
-  //     this.fileReader.readJSON('../../assets/mock-data/course-plan')
-  //       .then((response) => {
-  //         //change `mockDataFile` to a reference to the filename being loaded
-  //         this.mockData.mockDataFile = response;
-  //       })
-  //       .catch((err) => {
-  //         err;
-  //       });
-  //   }
+  //   // For NativeScript
+  // }
+  // else {
+  //   // Nativescript will use `file-system` to access the file locally, at a different path than webpack
+  //   this.fileReader.readJSON('../../assets/mock-data/course-plan')
+  //     .then((response) => {
+  //       //change `mockDataFile` to a reference to the filename being loaded
+  //       this.mockData.mockDataFile = response;
+  //     })
+  //     .catch((err) => {
+  //       err;
+  //     });
+  // }
   // }
 
-  get(url: string, requestOptionsArgs?, options?: { mockData: boolean, mockDataFile?: string }): Observable<any> {
+  get(url: string, requestOptionsArgs?): Observable<any> {
     const self = this;
 
     // clear and reset the state of headers before each request, to prevent issues with mixing states between requests
     delete this.requestOptions;
 
-    if (options) {
-      if (!options.mockData) {
-      } else if (options.mockData === true) {
+    // if (options) {
+    //   if (!options.mockData) {
+    //   } else if (options.mockData === true) {
 
-        // Until nodejs server is setup, just return json directly here passed in value should be relative too `src` root
-        // i.e. if its located at ./src/path-to-asset/here.txt, then just enter path-to-asset/here.txt
-        // options.mockDataFile is a reference to a property which is populated in mockDataInit()
-        const mockData = this.mockData[options.mockDataFile];
-        return of(mockData);
-      }
-      // If options.mockData is false or not set
-      // If the statement gets to here, it needs to be \`true\`, else throw error
-      else if (!options.mockData === true) {
-        throw new Error('mockData not set to boolean type. Must be true or false.');
-      }
+    //     // Until nodejs server is setup, just return json directly here passed in value should be relative too `src` root
+    //     // i.e. if its located at ./src/path-to-asset/here.txt, then just enter path-to-asset/here.txt
+    //     // options.mockDataFile is a reference to a property which is populated in mockDataInit()
+    //     const mockData = this.mockData[options.mockDataFile];
+    //     return of(mockData);
+    //   }
+    //   // If options.mockData is false or not set
+    //   // If the statement gets to here, it needs to be \`true\`, else throw error
+    //   else if (!options.mockData === true) {
+    //     throw new Error('mockData not set to boolean type. Must be true or false.');
+    //   }
 
-    }
+    // }
 
     // The Angular HttpClient Way
     const requestOptions = {
@@ -90,7 +90,6 @@ export class DataService {
         'Accept': 'application/json'
       })
     };
-
 
     return this.http
       .get(url, requestOptionsArgs
@@ -131,7 +130,6 @@ export class DataService {
     return (error: any): Observable<any> => {
 
 
-
       let errorMessage = error || 'Server error';
 
       if (error.error) {
@@ -158,10 +156,12 @@ export class DataService {
           `Body was: ${error.error}`);
       }
 
+      const targetUrl = error.error.target ? error.error.target.__zone_symbol__xhrURL : 'Unknown';
+
       // return an observable with a user-facing error message
       const errorObj = {
         message: error.message,
-        requestedUrl: error.error.target.__zone_symbol__xhrURL,
+        requestedUrl: targetUrl,
         displayMessage: errorMessage
       };
 

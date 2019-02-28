@@ -8,7 +8,13 @@
           "settings": {
             "minDockerVersion": "v1.25",
             "loggingOptions": "",
-            "registryCredentials": ""
+            "registryCredentials": {
+              "MachineLearningRegistry": {
+                "username": "iotedgedynocar3728307779",
+                "password": "8sfSxCPwxiQRIfuc+w2I7r3qwIqE53fP",
+                "address": "iotedgedynocar3728307779.azurecr.io"
+              }
+            }
           }
         },
         "systemModules": {
@@ -48,7 +54,7 @@
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "localhost:5000/iot_dynocard_demo_alert:1.1.0-amd64",
+              "image": "bluemetal/iot_dynocard_demo_alert:1.4.0-amd64",
               "createOptions": ""
             }
           },
@@ -58,28 +64,8 @@
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "bluemetal/iot_dynocard_demo_edgeml:latest",
-              "createOptions": ""
-            }
-          },
-          "sql": {
-            "version": "1.0",
-            "type": "docker",
-            "status": "running",
-            "restartPolicy": "always",
-            "settings": {
-              "image": "bluemetal/iot_dynocard_demo_edgedb:latest",
-              "createOptions": "{\"Env\": [\"ACCEPT_EULA=Y\",\"MSSQL_SA_PASSWORD=Strong!Passw0rd\"],\"HostConfig\": {\"Mounts\": [{\"Target\": \"/var/opt/mssql\",\"Source\": \"sqlVolume\",\"Type\": \"volume\"}],\"PortBindings\": {\"1433/tcp\": [{\"HostPort\": \"1401\"}]}}}"
-            }
-          },
-          "opc_client": {
-            "version": "1.0",
-            "type": "docker",
-            "status": "running",
-            "restartPolicy": "always",
-            "settings": {
-              "image": "localhost:5000/opc_client:1.0.5-amd64",
-              "createOptions": "{\"Env\": [\"OPC_ENDPOINT_URL=opc.tcp://opc-sim-server.eastus2.cloudapp.azure.com:49380\"]}"
+              "image": "bluemetal/iot_dynocard_demo_edgeml:1.0.0-amd64",
+              "createOptions": "{\"Env\": [\"AML_MODEL_DC_DEBUG=true\",\"AML_MODEL_DC_STORAGE_ENABLED=true\" ]}"
             }
           },
           "dynocard_telemetry": {
@@ -88,8 +74,18 @@
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "localhost:5000/iot_dynocard_telemetry:1.0.0-amd64",
+              "image": "localhost:5000/iot_dynocard_demo_telemetry:1.1.0-amd64.debug",
               "createOptions": "{}"
+            }
+          },
+          "sql": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "bluemetal/iot_dynocard_demo_edgedb:1.2.0-amd64",
+              "createOptions": "{\"Env\": [\"ACCEPT_EULA=Y\",\"MSSQL_SA_PASSWORD=Strong!Passw0rd\"],\"HostConfig\": {\"Mounts\": [{\"Target\": \"/var/opt/mssql\",\"Source\": \"sqlVolume\",\"Type\": \"volume\"}],\"PortBindings\": {\"1433/tcp\": [{\"HostPort\": \"1401\"}]}}}"
             }
           },
           "dynoCardWebApi": {
@@ -98,7 +94,7 @@
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "localhost:5000/iot_dynocard_web_api:0.0.4-amd64",
+              "image": "localhost:5000/iot_dynocard_demo_web_api:1.1.0-amd64",
               "createOptions": "{\"HostConfig\":{\"PortBindings\":{\"80/tcp\":[{\"HostPort\":\"8201\"}]}}}"
             }
           },
@@ -108,8 +104,8 @@
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "localhost:5000/dynocard_web:0.0.1-amd64",
-              "createOptions": "{\"HostConfig\":{\"PortBindings\":{\"80/tcp\":[{\"HostPort\":\"8200\"}]}}}"
+              "image": "localhost:5000/iot_dynocard_demo_web:1.2.0-amd64",
+              "createOptions": "{\"Env\": [\"DATA_API_URL=127.0.0.1:8201\"],\"HostConfig\":{\"PortBindings\":{\"80/tcp\":[{\"HostPort\":\"8200\"}]}}}"
             }
           }
         }
@@ -120,12 +116,12 @@
         "schemaVersion": "1.0",
         "routes": {
           "modbusWrite": "FROM /messages/modules/dynoCardAlertModule/outputs/modbusWriteOutput INTO BrokeredEndpoint(\"/modules/modbus/inputs/input1\")",
-          "modbusToDynoCard": "FROM /messages/modules/modbus/outputs/modbusOutput INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/modbusInput\")",
           "telemetryToDynoCard": "FROM /messages/modules/dynocard_telemetry/outputs/telemetryOutput INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/telemetryInput\")",
-          "telemetryToAlert": "FROM /messages/modules/dynoCardAlertModule/outputs/telemetryOutput INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/alertInput\")",
-          "opcToCustomHandler": "FROM /messages/modules/opc_client/* INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/opcInput\")",
+          "modbusToDynoCard": "FROM /messages/modules/modbus/outputs/modbusOutput INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/modbusInput\")",
           "sensorToAlert": "FROM /messages/modules/dynoCardAlertModule/outputs/output1 INTO BrokeredEndpoint(\"/modules/mlAlertModule/inputs/amlInput\")",
+          "telemetryToAlert": "FROM /messages/modules/dynoCardAlertModule/outputs/telemetryOutput INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/alertInput\")",
           "alertTofilterAlert": "FROM /messages/modules/mlAlertModule/outputs/amlOutput INTO BrokeredEndpoint(\"/modules/dynoCardAlertModule/inputs/alertInput\")",
+          "anomalyChange": "FROM /messages/modules/dynoCardWebApi/outputs/anomalyOutput INTO BrokeredEndpoint(\"/modules/dynocard_telemetry/inputs/anomalyChange\")",
           "filterToIoTHub": "FROM /messages/modules/dynoCardAlertModule/outputs/alertOutput INTO $upstream"
         },
         "storeAndForwardConfiguration": {
@@ -140,6 +136,30 @@
     },
     "dynoCardAlertModule": {
       "properties.desired": {
+        "opcPumpCardConfig": {
+          "fluidLoad": "ns=2;s=Dynocard.sim-device.dynocard.DynocardDetail_P_CH_FLUID_LOAD",
+          "grossStroke": "ns=2;s=Dynocard.sim-device.dynocard.DynocardDetail_P_CH_GROSS_STROKE",
+          "id": "ns=2;s=Dynocard.sim-device.dynocard.DynocardDetail_P_CH_ID",
+          "netStroke": "ns=2;s=Dynocard.sim-device.dynocard.DynocardDetail_P_CH_NET_STROKE",
+          "numberOfPoints": "ns=2;s=Dynocard.sim-device.dynocard.DynocardDetail_P_CH_NUMBER_OF_POINTS",
+          "pumpFillage": "ns=2;s=Dynocard.sim-device.dynocard.DynocardDetail_P_CH_PUMP_FILLAGE",
+          "scaledMaxCardLoad": "ns=2;s=Dynocard.sim-device.dynocard.DynocardDetail_P_CH_SCALED_MAX_LOAD",
+          "scaledMinCardLoad": "ns=2;s=Dynocard.sim-device.dynocard.DynocardDetail_P_CH_SCALED_MIN_LOAD",
+          "dc_id": "ns=2;s=Dynocard.sim-device.dynocard.DynocardDetail_P_DC_ID",
+          "load": "ns=2;s=Dynocard.sim-device.dynocard.DynocardDetail_P_LOAD",
+          "position": "ns=2;s=Dynocard.sim-device.dynocard.DynocardDetail_P_POSITION"
+        },
+        "opcSurfaceCardConfig": {
+          "id": "ns=2;s=Dynocard.sim-device.dynocard.DynocardDetail_S_CH_ID",
+          "numberOfPoints": "ns=2;s=Dynocard.sim-device.dynocard.DynocardDetail_S_CH_NUMBER_OF_POINTS",
+          "scaledMaxCardLoad": "ns=2;s=Dynocard.sim-device.dynocard.DynocardDetail_S_CH_SCALED_MAX_LOAD",
+          "scaledMinCardLoad": "ns=2;s=Dynocard.sim-device.dynocard.DynocardDetail_S_CH_SCALED_MIN_LOAD",
+          "strokeLength": "ns=2;s=Dynocard.sim-device.dynocard.DynocardDetail_S_CH_STROKE_LENGTH",
+          "strokePeriod": "ns=2;s=Dynocard.sim-device.dynocard.DynocardDetail_S_CH_STROKE_PERIOD",
+          "dc_id": "ns=2;s=Dynocard.sim-device.dynocard.DynocardDetail_S_DC_ID",
+          "load": "ns=2;s=Dynocard.sim-device.dynocard.DynocardDetail_S_LOAD",
+          "position": "ns=2;s=Dynocard.sim-device.dynocard.DynocardDetail_S_POSITION"
+        },
         "surfaceCardConfig": {
           "timestamp": {
             "register": "32669",
@@ -217,7 +237,7 @@
         "PublishInterval": "10000",
         "SlaveConfigs": {
           "Slave01": {
-            "SlaveConnection": "52.186.11.164",
+            "SlaveConnection": "104.209.174.94",
             "TcpPort": "502",
             "HwId": "Pump1-DynoCard",
             "Operations": {

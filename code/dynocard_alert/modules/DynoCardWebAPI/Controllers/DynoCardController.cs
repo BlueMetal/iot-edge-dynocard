@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using DynoCardWebAPI.Helpers;
+using DynoCardWebAPI.Messaging;
 using DynoCardWebAPI.Models;
 using DynoCardWebAPI.Repos;
 using Microsoft.AspNetCore.Mvc;
@@ -12,10 +14,12 @@ namespace DynoCardWebAPI.Controllers
     public class DynoCardController : Controller
     {
         private IDynoCardAnomalyEventRepo dynoCardAnomalyEventRepo;
+        private IOptions<Settings> settings;
 
         public DynoCardController(IOptions<Settings> settings, IDynoCardAnomalyEventRepo dynoCardAnomalyEventRepo)
         {
             this.dynoCardAnomalyEventRepo = dynoCardAnomalyEventRepo;
+            this.settings = settings;
         }
 
         // POST api/values
@@ -32,6 +36,13 @@ namespace DynoCardWebAPI.Controllers
         public List<AnomalyEvent> Get()
         {
             return dynoCardAnomalyEventRepo.Get();
+        }
+
+        [HttpGet]
+        [Route("anomaly/{state}")]
+        public async Task Get(string state)
+        {
+            await BrokeredMessenger.Send(state, settings.Value.ConnectionStrings.DeviceConnectionString);
         }
     }
 }

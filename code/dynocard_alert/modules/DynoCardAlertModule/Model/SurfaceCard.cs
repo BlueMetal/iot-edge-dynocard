@@ -8,7 +8,7 @@ namespace DynoCardAlertModule.Model
         public int StrokeLength { get; set; }
         public int StrokePeriod { get; set; }
 
-        public SurfaceCard()
+        public SurfaceCard() : base()
         {
             CardType = CardType.Surface;
         }

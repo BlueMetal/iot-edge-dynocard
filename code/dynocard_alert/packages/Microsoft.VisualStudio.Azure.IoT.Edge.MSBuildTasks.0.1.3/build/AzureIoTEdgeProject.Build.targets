@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <BuildTasksAssembly>Microsoft.VisualStudio.Azure.IoT.Edge.BuildTasks.dll</BuildTasksAssembly>
+  </PropertyGroup>
+
+  <UsingTask TaskName="GenerateDeploymentManifestTask" AssemblyFile="$(BuildTasksAssembly)"/>
+  <UsingTask TaskName="PrepareEdgeCliTask" AssemblyFile="$(BuildTasksAssembly)" />
+
+  <ItemGroup>
+    <PropertyPageSchema Include="$(MSBuildThisFileDirectory)Rules\general.xaml;">
+      <Context>Project</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(MSBuildThisFileDirectory)Rules\debugger_general.xaml;">
+      <Context>Project</Context>
+    </PropertyPageSchema>
+    <PropertyPageSchema Include="$(MSBuildThisFileDirectory)Rules\general_file.xaml">
+      <Context>File</Context>
+    </PropertyPageSchema>
+    <PropertyPageSchema Include="$(MSBuildThisFileDirectory)Rules\scc.xaml">
+      <Context>Invisible</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(MSBuildThisFileDirectory)Rules\general.browseobject.xaml">
+      <Context>BrowseObject</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(MSBuildThisFileDirectory)Rules\script.xaml;">
+      <Context>File</Context>
+    </PropertyPageSchema>
+    <PropertyPageSchema Include="$(MSBuildThisFileDirectory)Rules\script.browseobject.xaml;">
+      <Context>BrowseObject</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="
+                        $(MSBuildThisFileDirectory)Rules\folder.xaml;
+                        $(MSBuildThisFileDirectory)Rules\none.xaml;
+                        ">
+      <Context>File;BrowseObject</Context>
+    </PropertyPageSchema>
+
+    <PropertyPageSchema Include="$(MSBuildThisFileDirectory)Rules\ResolvedProjectReference.xaml;">
+      <Context>BrowseObject</Context>
+    </PropertyPageSchema>
+
+  </ItemGroup>
+  
+  <Target Name="Run">
+    <Message Text="$(RunCommandArguments)" />
+    <Exec Command='$(RunCommand) "$(MSBuildProjectDirectory)\$(StartItem)" $(RunCommandArguments)' WorkingDirectory="$(RunWorkingDirectory)" />
+  </Target>
+
+  <Target Name="GenerateManifest" >
+    <GenerateDeploymentManifestTask 
+      IoTEdgeProjectPath="$(MSBuildProjectFullPath)"
+      ProjectReferences="$(ProjectReference)"
+      SolutionPath="$(SolutionPath)"
+      Configuration="$(Configuration)"
+      />
+  </Target>
+
+  <Target Name="Build" DependsOnTargets="GenerateManifest">
+    <PrepareEdgeCliTask
+      IoTEdgeProjectPath="$(MSBuildProjectFullPath)"
+      SolutionPath="$(SolutionPath)"
+      Configuration="$(Configuration)"
+      />
+  </Target>
+
+  <Target Name="Rebuild">
+  </Target>
+</Project>

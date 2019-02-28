@@ -9,4 +9,4 @@ jq --arg EndpointUrl "$OPC_ENDPOINT_URL" '.[].EndpointUrl=$EndpointUrl' publishe
 ## start the app
 echo "OPC Publishing service starting..."
 echo "OPC_ENDPOINT_URL=$OPC_ENDPOINT_URL"
-exec dotnet /app/opcpublisher.dll publisher  --di=120 --to --aa --si=1 --oi=1000 --op=1000
+exec dotnet /app/opcpublisher.dll publisher  --di=120 --to --aa --si=1 --oi=1000 --op=1000 -ol=2147483647

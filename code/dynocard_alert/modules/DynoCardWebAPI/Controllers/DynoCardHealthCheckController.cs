@@ -29,7 +29,7 @@ namespace DynoCardWebAPI.Controllers
             }
             catch(Exception ex)
             {
-                return string.Format("Unhealthy on {0}", DateTime.Now.ToString("s"));
+                return string.Format("Unhealthy on {0} {1}", ex.Message, DateTime.Now.ToString("s"));
             }
         }
 

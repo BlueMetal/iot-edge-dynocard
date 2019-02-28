@@ -13,12 +13,21 @@
 -- Ensure that [db4cards] database is being used
 
 -- Service Accounts
-CREATE USER [dyno_user] WITH PASSWORD = 'GMZNAQ]Q6R6Ljz9>';
---CREATE USER [dyno_user] WITH PASSWORD = 'GMZNAQdQ6R6Ljz97';
+IF USER_ID('dyno_user') IS NULL
+  CREATE USER [dyno_user] WITH PASSWORD = 'GMZNAQ]Q6R6Ljz9>';
+GO
+
+IF USER_ID('[dyno_pbi_user') IS NULL
+  CREATE USER [dyno_pbi_user] WITH PASSWORD = 'GMZNAQdQ6R6Ljz97';
+GO
 
 -- Give rights
 EXEC sp_addrolemember 'db_owner', 'dyno_user'  
+GO
+
 EXEC sp_addrolemember 'db_datareader', 'dyno_pbi_user'
+GO
+
 --
 -- Create ACTIVE schema
 --
@@ -240,6 +249,7 @@ CREATE TABLE [STAGE].[SURFACE_DATA]
   SD_LOAD REAL NOT NULL,
   CONSTRAINT [PK_SURFACE_DATA_ID] PRIMARY KEY CLUSTERED (SD_ID ASC)
 );
+GO
 
 --
 -- Create PUMP DATA table
@@ -259,12 +269,12 @@ CREATE TABLE [STAGE].[PUMP_DATA]
   PD_LOAD REAL NOT NULL,
   CONSTRAINT [PK_PUMP_DATA_ID] PRIMARY KEY CLUSTERED (PD_ID ASC)
 );
+GO
 
 DROP VIEW IF EXISTS [ACTIVE].[DYNO_CARD_ANOMALY_VIEW]
 GO
 
 CREATE VIEW [ACTIVE].[DYNO_CARD_ANOMALY_VIEW] AS
-
 	SELECT
 		   DC.PU_ID as Pump_ID, 
 		   ED.ED_ID as Event_ID,
@@ -282,5 +292,4 @@ CREATE VIEW [ACTIVE].[DYNO_CARD_ANOMALY_VIEW] AS
 			 ON DC.DC_ID=CH.DC_ID
 		  INNER JOIN ACTIVE.EVENT_DETAIL ED
 			 ON DC.DC_ID = ED.DC_ID
-
 GO

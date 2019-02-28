@@ -184,14 +184,6 @@
                                 }
                             },
                             {
-                                "category": "E2EDiagnostics",
-                                "enabled": true,
-                                "retentionPolicy": {
-                                    "days": 0,
-                                    "enabled": false
-                                }
-                            },
-                            {
                                 "category": "DeviceTelemetry",
                                 "enabled": true,
                                 "retentionPolicy": {

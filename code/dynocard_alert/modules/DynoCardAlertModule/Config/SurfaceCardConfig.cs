@@ -6,7 +6,7 @@ using System.Text;
 namespace DynoCardAlertModule.Config
 {
     public class SurfaceCardConfig
-        {
+    {
         [JsonProperty("timestamp")]
         public ModbusLayoutProperty Timestamp { get; set; }
 

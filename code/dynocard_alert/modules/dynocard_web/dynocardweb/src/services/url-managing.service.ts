@@ -4,15 +4,40 @@
  * This class manages URL building for API calls in components.
  */
 import { Injectable } from '@angular/core';
-
-const prodUrl = 'http://192.168.1.239:8201';
-const hostName: string = prodUrl
+import { DataService } from './data.service';
 
 @Injectable()
 export class UrlManagingService {
+  private getProdUrlFromConfigPath = '/config.json';
+  private getProdUrlFromProperty = 'data_web_url';
+  private prodUrl = '';
+  private baseApiRoute: string;
 
-  // These are all site root relative
-  baseApiRoute: string = hostName + '/api';
-  getDynoCardData: string = this.baseApiRoute + '/DynoCard';
+  constructor(private dataService: DataService) {
+  }
 
+  getProdUrl() {
+    return this.dataService.get(this.getProdUrlFromConfigPath).toPromise()
+
+      .then((response) => {
+        this.prodUrl = response[this.getProdUrlFromProperty];
+        this.baseApiRoute = this.prodUrl + '/api';
+      })
+
+      .catch(error => {
+        console.log('UrlManagingService.getProdUrl() Error');
+        console.error(error);
+      });
+  }
+
+  async getDynoCardData() {
+    await this.getProdUrl();
+    return this.baseApiRoute + '/DynoCard';
+    // return '/assets/Results.json'; // for loading test data locally
+  }
+
+  async setAnomalyState(state) {
+    await this.getProdUrl();
+    return this.baseApiRoute + '/DynoCard/anomaly/' + state;
+  }
 }

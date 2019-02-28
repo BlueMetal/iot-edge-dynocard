@@ -6,54 +6,72 @@ DeviceConfig=$4
 DeviceName=$5
 primarykey=$6
 dnsname=$7
+azureLogin=$8
+azurePassword=$9
+tenantId=$10
+subscriptionID=$11
 semcol=';'
 comma=','
-connectionString='HostName='$IoThubName.azure-devices.net$semcol'SharedAccessKeyName=iothubowner'$semcol'SharedAccessKey='$primarykey
-modbusPip=`nslookup $dnsname| awk '/^Address: / { print $2 }'`
-#Install Python and Docker
-echo $connectionString
-sudo apt-get update
-sudo apt install -y python-pip
-sudo apt-get update
-sudo apt install -y docker.io
-sudo apt-get update
-sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-sudo apt-key fingerprint 0EBFCD88
-sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-sudo apt-get update
-sudo apt-get install -y docker-ce
-
-sudo apt-get update
-#Install Azure-CLI
+HubConnStr='HostName='$IoThubName.azure-devices.net$semcol'SharedAccessKeyName=iothubowner'$semcol'SharedAccessKey='$primarykey
+#modbusPip=`nslookup $dnsname| awk '/^Address: / { print $r2 }'`
+modbusPip=`getent hosts $dnsname | awk '{ print $1 }'`
+#Create IoT hub Edge Device
+wget $DeviceUrl
+sleep 20s
+#Install azure CLI
 AZ_REPO=$(lsb_release -cs)
 echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $AZ_REPO main" | sudo tee /etc/apt/sources.list.d/azure-cli.list
 curl -L https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
 sudo apt-get update
+sleep 30s
 sudo apt-get install apt-transport-https -y
 sudo apt-get update && sudo apt-get install azure-cli -y
-az extension add --name azure-cli-iot-ext
-cd /home/$UserName/
-wget https://packages.microsoft.com/repos/azure-cli/pool/main/a/azure-cli/azure-cli_2.0.32-1~wheezy_all.deb
 sleep 1m
-sudo dpkg -i azure-cli_2.0.32-1~wheezy_all.deb
-sleep 2m
-chmod 777 azure-cli_2.0.32-1~wheezy_all.deb
-# Create IoT hub Edge Device
-wget $DeviceUrl
-wget $DeviceConfig
-mv edge_device_config.json* edge_device_config.json
-TAB='\t    '
-sed -i -e "s/.*SlaveConnection.*/${TAB}\"SlaveConnection\": \"$modbusPip\"$comma/" edge_device_config.json
-az iot hub apply-configuration --hub-name $IoThubName --device-id $DeviceName -l $connectionString -k edge_device_config.json
-sleep 20s
-connstr=`az iot hub device-identity show-connection-string --hub-name $IoThubName --device-id $DeviceName -l $connectionString | grep '"cs":'| cut -d ":" -f2 | tr -d "\"," |tr -d " "`
-sleep 20s
-sudo pip install idna\<2.6
-sleep 10s
-export HOME=/root
+az extension add --name azure-cli-iot-ext
+EdgeConnStr=`az iot hub device-identity show-connection-string --hub-name $IoThubName --device-id $DeviceName -l $HubConnStr | grep '"cs":'| cut -d ":" -f2 | tr -d "\"," |tr -d " "`
+echo $EdgeConnStr > /tmp/EdgeConnstr.txt
+#install IoT Edge runtime with GA bits
+curl https://packages.microsoft.com/config/ubuntu/16.04/prod.list > ./microsoft-prod.list
+sudo cp ./microsoft-prod.list /etc/apt/sources.list.d/
+curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
+sudo cp ./microsoft.gpg /etc/apt/trusted.gpg.d/
 sudo apt-get update
-sudo pip install -U azure-iot-edge-runtime-ctl
+sleep 30s
+sudo apt-get install moby-engine -y
+sudo apt-get install moby-cli
+sudo apt-get update
+sleep 30s
+sudo apt-get install iotedge -y
+sleep 1m
+sudo chmod 777 /etc/iotedge/config.yaml
+sudo sed -i "s|<ADD DEVICE CONNECTION STRING HERE>|${EdgeConnStr}|g" /etc/iotedge/config.yaml
+sudo chmod 400 /etc/iotedge/config.yaml
+sudo systemctl restart iotedge
+sleep 1m
+sudo systemctl status iotedge > /tmp/iotedgestatus.txt
+#Update deployment.json file with modbus vm IP address
+cd /home/$UserName/
+wget $DeviceConfig
 sleep 10s
-iotedgectl setup --connection-string "${connstr}" --auto-cert-gen-force-no-passwords
-iotedgectl start
+mv deployment.json* deployment.json
+TAB='\t    '
+sed -i -e "s/.*SlaveConnection.*/${TAB}\"SlaveConnection\": \"$modbusPip\"$comma/" deployment.json
+#Deploy IOT Edge Modules using Azure CLI
+az login -t $tenantId -u $azureLogin -p $azurePassword
+sleep 1m
+az account set -s $subscriptionID
+az account show>>log.txt
+echo "------------------------------------------">>log.txt
+az iot edge set-modules -d $DeviceName -n $IoThubName -k deployment.json>>log.txt
+sleep 1m
+#Disable Process Identification
+docker0IP=`ifconfig docker0 | awk '{ print $2}' | grep -E -o "([0-9]{1,3}[\.]){3}[0-9]{1,3}"`
+managementUri="http://$docker0IP:15580"
+workloadUri="http://$docker0IP:15581"
+export IOTEDGE_HOST="http://$docker0IP:15580"
+sudo sed -i "s|unix:///var/run/iotedge/mgmt.sock|${managementUri}|g" /etc/iotedge/config.yaml
+sudo sed -i "s|unix:///var/run/iotedge/workload.sock|${workloadUri}|g" /etc/iotedge/config.yaml
+sudo sed -i "s|fd://iotedge.mgmt.socket|${managementUri}|g" /etc/iotedge/config.yaml
+sudo sed -i "s|fd://iotedge.socket|${workloadUri}|g" /etc/iotedge/config.yaml
+sudo systemctl restart iotedge
+sleep 1m

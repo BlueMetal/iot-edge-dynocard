@@ -124,7 +124,7 @@
                     "fileUris": [
                         "[parameters('edgeVmSettings').fileUri]"
                     ],
-                    "commandToExecute": "[concat('sh iot-edge.sh', ' ', parameters('edgeVmSettings').edgeUsername, ' ',parameters('iotHub').name, ' ',concat('https://',parameters('azureFunction').functionAppName,'.azurewebsites.net/api/edgedevice/deviceconfig/98779689897988'), ' ',parameters('edgeVmSettings').DeviceConfig, ' ',parameters('azureFunction').deviceId, ' ',listkeys(resourceId('Microsoft.Devices/IotHubs/IotHubKeys',parameters('iotHub').name,'iothubowner'),'2016-02-03').primaryKey, ' ',parameters('dynocardip'))]"
+                    "commandToExecute": "[concat('sh iot-edge.sh', ' ', parameters('edgeVmSettings').edgeUsername, ' ',parameters('iotHub').name, ' ',concat('https://',parameters('azureFunction').functionAppName,'.azurewebsites.net/api/edgedevice/deviceconfig/98779689897988'), ' ',parameters('edgeVmSettings').DeviceConfig, ' ',parameters('azureFunction').deviceId, ' ',listkeys(resourceId('Microsoft.Devices/IotHubs/IotHubKeys',parameters('iotHub').name,'iothubowner'),'2016-02-03').primaryKey, ' ',parameters('dynocardip'), ' ', parameters('edgeVmSettings').azureLogin, ' ', parameters('edgeVmSettings').azurePassword, ' ', parameters('edgeVmSettings').tenantId, ' ', parameters('edgeVmSettings').subscriptionID)]"
                 }
             }
         }
@@ -137,4 +137,3 @@
         }
     }
 }
-

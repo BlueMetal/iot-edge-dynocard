@@ -17,3 +17,8 @@
 /code/webapi/DynoCardWebAPI/.vs/DynoCardWebAPI/DesignTimeBuild/.dtbcache
 /code/dynocard_alert/modules/DynoCardAlertModule/obj/
 /code/dynocard_alert/modules/DynoCardAlertModule/bin/
+code/dynocard_alert/.vs/iot-dynocard-alert/v15/Server/sqlite3/db.lock
+code/dynocard_alert/.vs/iot-dynocard-alert/v15/.suo
+code/dynocard_alert/.vs/iot-dynocard-alert/v15/Server/sqlite3/storage.ide
+code/dynocard_alert/.vs/iot-dynocard-alert/v15/Server/sqlite3/storage.ide-shm
+code/dynocard_alert/.vs/iot-dynocard-alert/v15/Server/sqlite3/storage.ide-wal

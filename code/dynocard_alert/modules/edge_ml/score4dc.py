@@ -163,8 +163,8 @@ def write_msg(id, stamp):
 def main():
 
     # Turn on data collection debug mode to view output in stdout
-    os.environ["AML_MODEL_DC_DEBUG"] = 'false';
-    os.environ["AML_MODEL_DC_STORAGE_ENABLED"] = 'false';
+    os.environ["AML_MODEL_DC_DEBUG"] = 'true';
+    os.environ["AML_MODEL_DC_STORAGE_ENABLED"] = 'true';
 
     # create the outputs folder
     os.makedirs('./outputs', exist_ok=True);

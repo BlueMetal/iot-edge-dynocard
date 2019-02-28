@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  moleUrl: 'http://10.101.64.30:4201/api',
+  moleUrl: 'http://localhost:8201/api',
   // equipmentUrl: '',
   // pumpCheckerUrl: '',
   // winglueUrl: '',
