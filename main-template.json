@@ -741,7 +741,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[concat(variables('baseUrl'),'nested/streamanalytics-lt.json')]",
+                    "uri": "[concat(variables('baseUrl'),'nested/streamanalytics-wm.json')]",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
@@ -952,7 +952,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[concat(variables('baseUrl'),'nested/streamanalytics-lt.json')]",
+                    "uri": "[concat(variables('baseUrl'),'nested/streamanalytics-wm.json')]",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
@@ -1136,7 +1136,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[concat(variables('baseUrl'),'nested/streamanalytics-lt-r2.json')]",
+                    "uri": "[concat(variables('baseUrl'),'nested/streamanalytics-r2.json')]",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
