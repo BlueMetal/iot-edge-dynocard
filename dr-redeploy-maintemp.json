@@ -109,7 +109,7 @@
         },
         "omsSettings": {
             "omsWorkspaceName": "[concat('omswsoilgas', variables('suffix'))]",
-            "omsEnableApiVersion": "2015-07-01"
+            "omsEnableApiVersion": "2016-09-01"
         },
         "appInsights": {
             "appInsightsApiVersion": "2014-04-01",
