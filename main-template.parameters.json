@@ -46,6 +46,21 @@
         },
         "vmsPassword":{
             "value":"Password@1234"
+        },
+        "webAppBuildfileUrl": {
+            "defaultValue": ""
+        },
+        "storageUri": {
+            "defaultValue": ""
+        },
+        "plcsimulatorv1": {
+            "defaultValue": ""
+        },
+        "vcredist": {
+            "defaultValue": ""
+        },
+        "plcsimulatorv2": {
+            "defaultValue": ""
         }
     }
 }
