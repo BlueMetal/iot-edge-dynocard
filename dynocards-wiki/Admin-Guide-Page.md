@@ -875,7 +875,7 @@ Standard Solution requires redeployment of azure resources in secondary region w
 When user chooses Standard Solution type below azure resources will be deployed in primary region and SQL in both Regions. 
 
 * 3-Virtual machines (2 windows & 1 Linux)
-        Windows VMS: Dyno card VM which install pre-installed software's          for dyno card VM. 
+        Windows VMS: Dyno card VM which install pre-installed software's for dyno card VM. 
         ML VM which install pre-installed Docker.
         Linux VM: Edge VM is used to create IoT Edge device and installs modules in IoT Edge device
 * 1-Web App
