@@ -1178,6 +1178,7 @@ A pop up will be displayed which shows progress of failover. Once failover is co
 
 ## Note: 
 Before **Starting** the Stream analytic job, first you need to **Renew the authorization** of the output DataLake.
+
 3. Click on **Data lake** in the output section it will navigate the output details page.
 ![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/348.png)  
 
