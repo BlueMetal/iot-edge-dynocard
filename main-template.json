@@ -205,6 +205,13 @@
             "metadata": {
                 "description": "Please Provide the Storage Url of plc simulator 2,This will be used in dynocard vm extension"
             }
+        },
+        "deviceName":{
+            "type":"string",
+            "defaultValues": "",
+            "metadata":{
+                "description": "Please provide the IoTHub Edge device name that you want create"
+            }
         }
         
     },
@@ -307,7 +314,7 @@
             "storageAccountName": "[concat('storageaccount',variables('suffix'))]",
             "location": "[parameters('geo-paired-primary-region')]",
             "storageAccountType": "Standard_LRS",
-            "deviceId": "[variables('deviceName')]",
+            "deviceId": "[parameters('deviceName')]",
             "functionPackageURI": "https://github.com/nvtuluva/iot-edge-dynocard/raw/master/builds/HttpTriggerNode.zip"
         },
         "edgeVmSettings": {
@@ -395,7 +402,6 @@
         "serviceBusNamespaceName": "[concat('snamespace',variables('suffix'))]",
         "serviceBusNamespaceNameDr": "[concat('snamespacedr',variables('suffix'))]",
         "serviceBusDefaultSASKeyName": "RootManageSharedAccessKey",
-        "deviceName": "iot-dynocard-demo-device_1",
         "iotHubName": "[concat('iothub',variables('suffix'))]",
         "iotHubKeyName": "iothubowner",
         "apiVersion": "2016-02-01",
