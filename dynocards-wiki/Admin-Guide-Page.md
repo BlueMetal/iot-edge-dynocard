@@ -487,20 +487,20 @@ https://github.com/BlueMetal/iot-edge-dynocard/tree/master/dynoCardVisuals/dist
 
 2. On **Overview** page, Summary details are displayed as shown in the following figure.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/raw/costing-models/images/213.png)
-![alt text](https://github.com/sysgain/iot-edge-dynocard/raw/costing-models/images/214.png)    
+![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/213.png)
+![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/214.png)    
 
 3. Here you can see the **Live Requests** of the Web App as shown in the following figure.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/raw/costing-models/images/215.png)
+![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/215.png)
 
 4. Go back to **Application Insights**, in the Overview page **click Analytics icon** in the Health section as shown in the following figure.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/raw/costing-models/images/216.png)
+![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/216.png)
 
 5. The Application Insights page is displayed and **click Home Page** tab.  
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/raw/costing-models/images/217.png)
+![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/217.png)
 
 You can **run** the following common queries **to see** the **specific logs** of application as below.
 
@@ -508,139 +508,139 @@ For example, **Run** the Users query to see the logs.
 
 6. Click **RUN** in Users block as highlighted in the following figure.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/raw/costing-models/images/218.png)
+![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/218.png)
 
 7. You can see the below **graph** of application users. If you modify the query please click RUN from top left menu to see the updated graph.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/raw/costing-models/images/219.png)
+![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/219.png)
 
 8. Similarly, you can run the other common Pre-defined queries by navigating back to the **Home Page**.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/raw/costing-models/images/220.png)
+![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/220.png)
 
 9. Go back to the **Application Insights** overview page in Azure Portal to view **metrics** of the application.
 
 10. Click **Metrics Explorer** on the left side of the page as shown below.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/raw/costing-models/images/221.png)
+![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/221.png)
 
 11. **Click Edit** as shown in the following figure.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/raw/costing-models/images/222.png)
+![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/222.png)
 
 12. You can select any of the **listed Metrics** to view application logs.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/raw/costing-models/images/223.png)
+![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/223.png)
 
 13. If you want to add new chart **click Add new chart** as shown in the following figure and **click Edit** to add the specific metrics.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/raw/costing-models/images/224.png)
+![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/224.png)
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/raw/costing-models/images/225.png)
+![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/225.png)
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/raw/costing-models/images/226.png)
+![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/226.png)
 
 ## 12.2 OMS Log Analytics
 
 1. Open **Azure portal** -> **Resource group** -> Click the **OMS Workspace** in Resource Group to view OMS Overview Section.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/raw/costing-models/images/227.png)
+![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/227.png)
 
 2. Click **Azure Resources** on left side menu to view available Azure Resources.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/raw/costing-models/images/228.png)
+![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/228.png)
 
 3. Select your **Resource Group** name from the dropdown list.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/raw/costing-models/images/229.png)
+![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/229.png)
 
 4. Access **OMS portal** from OMS Workspace from the left side menu. Click on **OMS Workspace** -> **OMS Portal**.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/raw/costing-models/images/230.png)
+![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/230.png)
 
 5. Once you click OMS Workspace, OMS Home Page is displayed, where you can see the **Logs of Azure SQL and Azure Web Apps** by clicking on each tab.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/raw/costing-models/images/231.png)
+![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/231.png)
 
 6. Click **Azure SQL Analytics** to view the SQL Server logs.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/raw/costing-models/images/232.png)
+![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/232.png)
 
 7. Click **sqldb** under DATABASE column, as shown in the following figure to view the detailed information.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/raw/costing-models/images/233.png)
+![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/233.png)
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/raw/costing-models/images/234.png)
+![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/234.png)
 
 8. Click **Home icon** on the left side of the page for **Web Apps Analytics**.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/raw/costing-models/images/235.png)
+![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/235.png)
 
 9. Click **Logic App Management (Preview)** to view each web application logs as highlighted in the following figure.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/raw/costing-models/images/236.png)
+![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/236.png)
 
 10. Click **Succeeded** in the Logic App Management (Preview).
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/raw/costing-models/images/237.png)
+![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/237.png)
 
 11. The **Succeeded logs** are displayed as shown in the following figure.              
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/raw/costing-models/images/238.png)
+![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/238.png)
 
 12. **Click Failed** in the Logic App Management (Preview) page as highlighted in the following figure.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/raw/costing-models/images/239.png)
+![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/239.png)
 
 13. The **Failed logs are displayed** as shown in the following figure.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/raw/costing-models/images/240.png)
+![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/240.png)
 
 14. **Click Running** in the Logic App Management (Preview) page as highlighted in the following figure.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/raw/costing-models/images/241.png)
+![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/241.png)
 
 15. **The Running logs are displayed** as shown in the following figure.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/raw/costing-models/images/242.png)
+![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/242.png)
 
 16. **Click All Status** in the Logic App Management (Preview) page as highlighted in the following figure.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/raw/costing-models/images/243.png)
+![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/243.png)
 
 17. The **All Status logs** are displayed as shown in the following figure.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/raw/costing-models/images/244.png)
+![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/244.png)
 
 18. **Click Search tab** to search the IoT hub, Azure Data Lake Store, Service Bus Namespace, SQL database logs.
 
 19. **Click Show legacy** language converter.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/raw/costing-models/images/245.png)
+![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/245.png)
 
 20. **Copy IoT Hub resource name**, paste it in the Converter box and **click RUN**.
 
 The IoT Hub information is displayed below the page as shown in the following figure.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/raw/costing-models/images/246.png)
+![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/246.png)
 
 21. **Copy Data Lake Store** resource name, paste it in the Converter box and click RUN.
 
 The **data lake store** information is displayed as shown in the following figure.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/raw/costing-models/images/247.png)
+![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/247.png)
 
 22. **Copy Service Bus Namespace** resource name, paste it in the Converter box and click RUN.
 
 The Service bus namespace information is displayed in the below page as shown in the following figure.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/raw/costing-models/images/248.png)
+![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/248.png)
 
 23. **Copy SQL database** resource name, **paste it in the Converter box** and click RUN.
 
 The **SQL database information is displayed** below the page as shown in the following figure.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/raw/costing-models/images/249.png)
+![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/249.png)
 
 ## 13 Hardening Components
 
