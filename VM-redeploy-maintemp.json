@@ -78,6 +78,13 @@
             "metadata": {
                 "description": "Please Provide the Storage Url of plc simulator 2,This will be used in dynocard vm extension"
             }
+        },
+        "deviceName":{
+            "type": "string",
+            "defaultValue": "",
+            "metadata":{
+                "description": "Please provide the IoTHub Edge device name that you want to create"
+            }
         }
 
     },
@@ -133,7 +140,7 @@
             "ubuntuOSVersion": "16.04.0-LTS",
             "iothubName":"[parameters('iothubName')]",
             "functionAppUrl":"[parameters('functionAppUrl')]",
-            "deviceId":"iot-dynocard-demo-device_1",
+            "deviceId":"[parameters('deviceName')]",
             "iothubPrimaryKey":"[parameters('iothubPrimaryKey')]"
         },
         "location": "[resourceGroup().location]",
