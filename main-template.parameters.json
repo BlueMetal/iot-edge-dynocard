@@ -48,19 +48,22 @@
             "value":"Password@1234"
         },
         "webAppBuildfileUrl": {
-            "defaultValue": ""
+            "value": ""
         },
         "storageUri": {
-            "defaultValue": ""
+            "value": ""
         },
         "plcsimulatorv1": {
-            "defaultValue": ""
+            "value": ""
         },
         "vcredist": {
-            "defaultValue": ""
+            "value": ""
         },
         "plcsimulatorv2": {
-            "defaultValue": ""
+            "value": ""
+        },
+        "deviceName":{
+            "value": ""
         }
     }
 }
