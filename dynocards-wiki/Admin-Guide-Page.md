@@ -1147,25 +1147,31 @@ This process will take around 15 mins. To initial failover again, user needs wai
 
 ### 15.2.3. SQL Database Manual Failover
 1. Go to **Resource Group** and choose Primary SQL Server from list.
+
 ![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/340.png)  
 
 2. Click on **Failover groups** on left hand menu.
+
 ![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/341.png)  
 
 
 3. Click on **Failover Group**. 
+
 ![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/342.png)  
 
 4. A page will be displayed as below. Click on **Failover** and click on **Yes** for Confirmation.
+
 ![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/343.png)  
 
 A pop up will be displayed which shows progress of failover. Once failover is completed Primary Role and secondary role will interchange.
 
 ### 15.2.4. Stop Stream Analytics Job in Primary Region
 1. Go to **Resource Group** and click on primary **Stream Analytics job**.
+
 ![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/344.png)  
 
 2. Stop the Stream analytics job by click on **Stop** and click on **Yes** for confirmation.
+
 ![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/345.png)  
 
 ### 15.2.5. Start Stream analytics Job
@@ -1174,12 +1180,14 @@ A pop up will be displayed which shows progress of failover. Once failover is co
 ![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/346.png)  
 
 2. After click on stream analytics job, you will have directed to screen like below.
+
 ![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/347.png)  
 
 ## Note: 
 Before **Starting** the Stream analytic job, first you need to **Renew the authorization** of the output DataLake.
 
 3. Click on **Data lake** in the output section it will navigate the output details page.
+
 ![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/348.png)  
 
 4. Click on **Renew authorization** button and click **save**.
@@ -1188,6 +1196,7 @@ Before **Starting** the Stream analytic job, first you need to **Renew the autho
 ![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/350.png)  
  
 5. Start the Stream analytics job by click on **Start** and click on **Start** for confirmation.
+
 ![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/351.png)  
 
 ### 15.2.6. Update Service Bus Endpoint in Logic App in Secondary Region
