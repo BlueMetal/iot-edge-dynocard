@@ -483,7 +483,7 @@ https://github.com/BlueMetal/iot-edge-dynocard/tree/master/dynoCardVisuals/dist
 
 1. Go to **Azure portal**, select your **Resource Group** and select **Application Insights** as shown below.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/raw/costing-models/images/212.png)
+![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/212.png)
 
 2. On **Overview** page, Summary details are displayed as shown in the following figure.
 
