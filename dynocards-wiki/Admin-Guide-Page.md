@@ -1182,6 +1182,7 @@ Before **Starting** the Stream analytic job, first you need to **Renew the autho
 ![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/348.png)  
 
 4. Click on **Renew authorization** button and click **save**.
+
 ![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/349.png)  
 ![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/350.png)  
  
