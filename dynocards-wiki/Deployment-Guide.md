@@ -1,3 +1,35 @@
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/tree/master/images/oil%26gas-deployment.png)
+**Table of Contents** 
+
+- [1 Deployment Guide](#1-deployment-guide)
+- [2 What are Paired Regions?](#2-what-are-paired-regions?)
+- [3 ARM Template Input Parameters](#3-arm-template-input-parameters)
+- [4 Getting Started](#4-getting-started)
+    - [4.1 ARM Template Deployment Using Azure Portal](#41-arm-template-deployment-using-azure-portal)
+        - [4.1.1 Inputs](#411-inputs)
+        - [4.1.2 Outputs](#412-Outputs)
+    - [4.2 ARM Template Deployment Using Azure CLI](#42-arm-template-deployment-using-azure-cli)
+- [5 Post Deployment Steps](#5-post-deployment-steps)
+    - [5.1 Verify Containers in Edge VM and Azure Portal](#51-verify-containers-in-edge-vm-and-azure-portal)
+    - [5.2 Update IoT Hub Device Primary Key in Web API Application Settings](#52-update-iot-hub-device-primary-key-in-Web-api-application-settings)
+    - [5.3 Perform Device Twin Operation on Edge VM [Optional]](#51-perform-device-twin-operation-on-edge-vm-[optional])
+- [6 Machine Learning Configuration](#5-machine-learning-configuration)
+    - [6.1 Add Current user to Docker-users group](#61-add-current-user-to-docker-users-group)
+    - [6.2 Install ML Workbench](#61-install-ml-workbench)
+    - [6.3 Login to the Azure portal](#63-login-to-the-azure-portal)
+    - [6.4 List Environment Components](#64-list-environment-components)
+    - [6.5 Create ML Project](#65-create-ml-project)
+    - [6.6 Download Git Repository](#66-download-git-repository)
+    - [6.7 Submit experiment train4dc.py as local target](#67-submit-experiment-train4dc.py-as-local-target)
+    - [6.8 Install azureml.datacollector](#68-install-azureml.datacollector)
+    - [6.9 Submit experiment score4dc.py with local target](#69-submit-experiment-score4dc.py-with-local-target)
+    - [6.10 Set Model Management account](#610-set-model-management-account)
+    - [6.11 Deployment Configuration](#611-deployment-configuration)
+    - [6.12 Registering providers](#612-registering-providers)
+    - [6.13 Run experiment as Docker target](#613-run-experiment-as-docker-target)
+    - [6.14 Web Service Deployment](#614-web-service-deployment)
+    - [6.15 Testing Web Service](#615-testing-web-service)
+
 ## 1. Deployment Guide
 This Document explains about how to deploy Oil & Gas solution using ARM Template. In this Document explained about two ways of deploying solution.
 ##### -Using Azure portal
@@ -164,7 +196,6 @@ Linux VM
 * 2-SQL database
 * 1-Storage account
 * 1-Stream Analytics job
-* 1-Traffic Manager
 
 17. Once the solution is deployed successfully navigate to the resource group, select the created **resource group** to view the list of resources that are created in the Resource Group as shown in the following figure.
 
@@ -193,21 +224,30 @@ Customize main-template.parameters.json file
 1. Log in to **Azure portal.** 
 2. Open the prompt. 
 3. Select **Bash (Linux)** environment as shown in the following figure. 
+
+![alt text](https://github.com/sysgain/Oil-Gas/raw/master/images/cloudshell.png)
+
 4. Select your preferred **Subscription** from the dropdown list.  
 5. Click **Create Storage** button as shown in the following figure. 
-6. Copy **main-template.json** and **main-template.parameters.json** to your Cloud Shell before updating the parameters. 
+
+![alt text](https://github.com/sysgain/Oil-Gas/raw/master/images/CreateStorage.png)
+
+6. Copy **main-template.json** and **main-template.parameters.json** to your Cloud Shell from github before updating the parameters in main-template.parameters.json file. 
 7. Create **main-template.json** using the following command. 
 
 **vim main-template.json**
  
 ![alt text](https://github.com/sysgain/iot-edge-dynocard/raw/master/images/23.png)
 
-8. Paste your **main-template.json** in editor as shown below and save the file. 
+8. Paste your **main-template.json** content in the editor as shown below and save the file. 
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/raw/master/images/24.png) 
+![alt text](https://github.com/sysgain/Oil-Gas/raw/master/images/maintemplate.png) 
 
-9. Paste your **main-template.parameters.json** in editor. 
-10. Update the following parameters in main-template.json file 
+9. Create main-template.parameters.json file using the following command and Paste your **main-template.parameters.json** in editor. 
+
+![alt text](https://github.com/sysgain/Oil-Gas/raw/master/images/mainparametercret.png) 
+
+10. Update the following parameters in **main-template.parameters.json** file 
 * Solution Type 
 *   Edge VM + Simulator VM
 *   MLVM
@@ -223,7 +263,7 @@ Customize main-template.parameters.json file
 *   vmsUsername
 *   vmsPassword
  
-![alt text](https://github.com/sysgain/iot-edge-dynocard/raw/master/images/25.png)
+![alt text](https://github.com/sysgain/Oil-Gas/raw/master/images/parameterfile.png)
 
 11. Create Resource Group for oilandgas Solution 
 12. Use the **az group create** command to create a **Resource Group** in your region.
@@ -265,17 +305,17 @@ Use the **az group deployment create** command to deploy the ARM template
 
 1. Go to **Resource Group** ->click on **iotEdge** VM.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/30.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/30.png)
 
 2. Copy the Public IP Address of the iotEdge VM.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/31.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/31.png)
 
 3. Login to the VM through putty.
 
 4. Paste the public ip at Host Name (or IP address) and click on open.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/32.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/32.png)
 
 5. Enter credentials:
 
@@ -285,53 +325,59 @@ Enter the Password as: **Password@1234**
 
 6. Once login successful the below welcome message is displayed.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/33.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/33.png)
 
-7. Here you can check the device and device modules in IoT Edge VM.
+7. Check the Azure CLI version by executing the below command.
 
-**docker ps** 
+**az -v** 
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/34.png)
+![alt text](https://github.com/sysgain/Oil-Gas/raw/master/images/azversion.PNG)
 
-8. Go to resource group -> click on **iothub26hs3**
+8. Here you can check the device modules in IoT Edge VM.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/35.png)
+**sudo iotedge list** 
 
-9. Navigate to **IoT Edge** blade under **Automatic Device Management** section.
+![alt text](https://github.com/sysgain/Oil-Gas/raw/master/images/moduleslist.PNG)
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/36.png)
+9. Go to resource group -> click on **iothub26hs3**
 
-10. Here we created and configured device from the IoT Edge VM. Click on **iot-dynocard-demo-device_1** device you can see the modules.
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/35.png)
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/37.png)
+10. Navigate to **IoT Edge** blade under **Automatic Device Management** section.
 
-11. We can see the created modules in device details 
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/36.png)
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/38.png)
+11. Here we created and configured device from the IoT Edge VM. Click on **iot-dynocard-demo-device_1** device you can see the modules.
+
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/37.png)
+
+12. We can see the created modules in device details 
+
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/38.png)
 
 ### 5.2. Update IoT Hub Device Primary key in Web API Application Settings
 
 1. Go to **Resource Group** -> Click on **iothub26hs3**
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/46.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/46.png)
 
 2. Navigate to **IoT Edge** blade under **Automatic Device Management** section.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/47.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/47.png)
 
 3. Click on iot-dynocard-demo-device_1 device as shown below and copy the connection string-primary key.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/48.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/48.png)
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/49.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/49.png)
 
 4. Go to **resource group** -> open the primary web app **webapi26hs3** in the app service.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/50.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/50.png)
 
 5. Navigate to **Application settings** blade.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/51.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/51.png)
 
 6. Click **+ Add new setting** in the Application settings, enter name and value in the new setting.
 
@@ -339,11 +385,11 @@ Name: **DeviceConnectionString**
 
 Value: **[Device connection string-primary key]**
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/52.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/52.png)
 
 7. Then click **Save**.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/53.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/53.png)
 
 ### 5.3. Perform Device Twin operation on Edge VM [Optional]
 
@@ -359,17 +405,17 @@ Needs to update slave connection IP address in Modbus module configuration in Io
 
 1. Go to **Resource Group** ->click on **iotEdge VM**.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/54.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/54.png)
 
 2. **Copy** the **Public IP Address** of the **IoTEdge** VM.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/55.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/55.png)
 
 3. Login to the VM through putty.
 
 4. Paste the public IP at Host Name (or IP address) and click on open.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/56.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/56.png)
 
 5. Enter credentials:
 
@@ -379,53 +425,53 @@ Enter the Password as: **Password@1234**
 
 6. Once login successful the below welcome message is displayed.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/57.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/57.png)
 
 7. Here you can check the device and device modules in IoT Edge VM.
 
-**docker ps**
+**sudo iotedge list** 
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/58.png)
+![alt text](https://github.com/sysgain/Oil-Gas/raw/master/images/moduleslist.PNG)
 
 8. Check the logs of Modbus container by executing below command.
 
 **docker logs modbus**
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/59.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/59.png)
 
 As per above diagram slave connection is 52.186.11.164 and it’s trying to connect with 52.186.11.164 which is not available. We need to update slave connection IP address with correct IP Address using twin operation.
 
 10. Go to the **resource group** and choose **IoT Hub**.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/60.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/60.png)
 
 11. Click on **IoT Hub** and navigate to **IoT Edge** blade under **Automatic device management** section.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/61.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/61.png)
 
 12. Click on IoT Device **iot-dynocard-demo-device_1** device to check modules.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/62.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/62.png)
 
 13. We can see the created **modules** in **device details**.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/63.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/63.png)
 
 14. Click on **modbus** module.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/64.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/64.png)
 
 15. Click on **Module twin**.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/65.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/65.png)
 
 16. Change IP Address of slave Connection and click on **Save**.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/66.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/66.png)
 
 17. In this scenario IP address changed to 104.42.153.165
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/67.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/67.png)
 
 18. Now go back to Edge VM to verify slave connection IP Address.
 
@@ -433,19 +479,19 @@ As per above diagram slave connection is 52.186.11.164 and it’s trying to conn
 
 **docker stop modbus**
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/68.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/68.png)
 
 20. Start the Modbus container by passing below command.
 
 **docker start modbus**
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/69.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/69.png)
 
 21. Now verify slave connection string by checking logs of Modbus.
 
 **docker logs modbus**
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/70.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/70.png)
 
 Now slave connection IP address is updated with New IP Address.
 
