@@ -196,7 +196,8 @@ Steps involved in data work flow between the components:
 8. Power BI applied on SQL Database. 
 
 
-### 2.5 Azure Components Functionality 
+### 
+Azure Components Functionality 
 
 Microsoft Azure is a cloud computing service created by Microsoft for building, testing, deploying, and managing applications and services through a global network of Microsoft-managed data centers. It provides software as a service (SaaS), platform as a service (PaaS) and infrastructure as a service (IaaS) and supports many different programming languages, tools and frameworks, including both Microsoft-specific and third-party software and systems. 
 
@@ -254,13 +255,13 @@ IoT Edge is an Optional Component, which lets user to choose whether user wants 
 
 Here is a description of the 9 modules
 
-modbus - the modbus protocol adapter
-dynoCardAlertModule - the custom logic in C# to handle parsing all the messages and sending the alerts to the IoT Hub
-mlAlertModule - the machine learning module that detects the anomalies
-dynocard_telemetry - custom C# code that generates the device telemetry without the need for an actual device
-sql - the SQL Server DB
-dynoCardWebAPI - a web app running on the edge that accesses the data for the local web UI
-dynocard_web - the locally running web application that displays the dynocard graph
+modbus                - the modbus protocol adapter
+dynoCardAlertModule   - the custom logic in C# to handle parsing all the messages and sending the alerts to the IoT Hub
+mlAlertModule         - the machine learning module that detects the anomalies
+dynocard_telemetry    - custom C# code that generates the device telemetry without the need for an actual device
+sql                   - the SQL Server DB
+dynoCardWebAPI        - a web app running on the edge that accesses the data for the local web UI
+dynocard_web          - the locally running web application that displays the dynocard graph
 
 the other two, edgeAgent and edgeHub, are the system provided modules that manage the edge runtime.
 
