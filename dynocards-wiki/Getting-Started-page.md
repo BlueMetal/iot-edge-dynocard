@@ -38,7 +38,7 @@ Existing solution process flow is explained in following steps:
 
 Below Diagram explains the Core architecture for oil & Gas companies.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/raw/master/images/core.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/core.png)
 
 Core Architecture components: 
 
@@ -80,7 +80,7 @@ Basic solution will have all core components, in addition this solution also con
  
 The below diagram depicts the data flow between azure components:
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/raw/master/images/Basic.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/Basic.png)
 
 Basic Architecture comprises of following components: 
 
@@ -112,7 +112,7 @@ The main use of this solution is whenever disaster recovery occurs the redeploym
 
 The below diagram depicts the dataflow between azure components in standard solution: 
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/raw/master/images/Standard.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/Standard.png)
 
 Standard Architecture comprises of following components: 
 
@@ -154,7 +154,7 @@ In primary region the configuration and set up of VM’s was default but in seco
 
 The below diagram depicts the dataflow between azure components in premium solution: 
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/raw/master/images/Premium.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/Premium.png)
 
 Premium Architecture comprises of following components: 
 
@@ -183,7 +183,7 @@ The data flow is similar across all the solutions we have explained in section 2
 
 The below diagram explains about the data flow between azure components with in the solution. 
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/raw/master/images/4.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/4.png)
 
 Steps involved in data work flow between the components: 
 1. Simulator device sends data to IoT Hub via IoT edge using Edge modules. 
