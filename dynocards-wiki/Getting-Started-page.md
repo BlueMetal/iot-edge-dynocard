@@ -246,6 +246,9 @@ IoT Edge device gathers data from Simulator and processes the data to IoTHub. Be
 * Mlalertmodule 
 * edgeAgent 
 * edgeHub 
+* dynoCardWebApi 
+* dynocard_telemetry
+* dynocard_web
 
 IoT Edge is an Optional Component, which lets user to choose whether user wants to deploy IoTEdge device in Cloud Based environment or user wants to deploy on premises network. When user wants to deploy IoTEdge in Virtual Machine, ARM Template will configure all required parameters. If user wants to deploy IoT Edge as on premises System, then user might require running some manual Configuration. 
 
@@ -269,6 +272,9 @@ IoT Hub is the core component of IoT Hub Solution. IoT Edge VM will send the dat
 * Mlalertmodule 
 * edgeAgent 
 * edgeHub 
+* dynoCardWebApi 
+* dynocard_telemetry
+* dynocard_web 
 
 #### 2.5.4 Stream Analytics Job 
 
