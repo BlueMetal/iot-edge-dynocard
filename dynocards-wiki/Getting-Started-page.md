@@ -11,7 +11,7 @@
     - [1.2 IoT Solution Summary](#12-iot-solution-summary)
         - [1.2.1 Highlights](#121-highlights)
         - [1.2.2 About the Solution](#122-about-the-solution)
-- [2 IoT Solutions](#2-IoT Solutions)
+- [2 IoT Solutions](#2-iot-solutions)
     - [2.1 Existing Solution](#21-existing-solution)
         - [2.1.1 Core Architecture (Current)](#211-core-architecture-(current))
     - [2.2 Automated Solution](#22-automated-solution)
