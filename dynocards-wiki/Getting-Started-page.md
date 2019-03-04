@@ -2,7 +2,7 @@
 
 # Oil & Gas
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/tree/master/images/oil&gas-gettingstarted.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/oil%26gas-gettingstarted.png)
 
 **Table of Contents** 
 
