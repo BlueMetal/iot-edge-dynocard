@@ -1,4 +1,4 @@
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/tree/master/images/oil%26gas-deployment.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/oil%26gas-deployment.png)
 **Table of Contents** 
 
 - [1 Deployment Guide](#1-deployment-guide)
