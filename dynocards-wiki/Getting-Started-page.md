@@ -1,3 +1,57 @@
+# Microsoft
+
+# Oil & Gas
+
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/tree/master/images/oil&gas-gettingstarted.png)
+
+**Table of Contents** 
+
+- [1 Introduction](#1-introduction)
+    - [1.1 Overview](#11-overview)
+    - [1.2 IoT Solution Summary](#12-iot-solution-summary)
+        - [1.2.1 Highlights](#121-highlights)
+        - [1.2.2 About the Solution](#122-about-the-solution)
+- [2 IoT Solutions Automation and Hardening](#2-iot-solutions-automation-and-hardening)
+    - [2.1 Existing Solution](#21-existing-solution)
+        - [2.1.1 Core Architecture (Current)](#211-core-architecture-(current))
+    - [2.2 Automated Solution](#22-automated-solution)
+    - [2.3 Architectural Updates](#23-architectural-updates)
+        - [2.3.1 Basic Architecture](#231-basic-architecture)
+        - [2.3.2 Standard Architecture](#232-standard-architecture)
+        - [2.3.3 Premium Architecture](#233-premium-architecture)
+    - [2.4 Conventional Data WorkFlow](#24-conventional-data-workflow)
+    - [2.5 Azure Components and their Functionality](#25-azure-components-and-their-functionality)
+        - [2.5.1 Simulator](#251-simulator)
+        - [2.5.2 IoT Edge](#252-iot-edge)
+        - [2.5.3 IoT Hub](#253-iot-hub)
+        - [2.5.4 Stream Analytics Job](#254-stream-analytics-job)
+        - [2.5.5 Azure Data Lake Store](#255-azure-data-lake-store)
+        - [2.5.6 Service Bus Name Space Queue](#256-service-bus-name-space-queue)
+        - [2.5.7 Logic App](#257-logic-app)
+        - [2.5.8 Web App](#258-web-app)
+        - [2.5.9 Azure SQL Database](#257-azure-sql-database)
+        - [2.5.10 Power BI](#2510-power-bi)
+        - [2.5.11 Azure Container Registry](#2511-azure-container-registry)
+        - [2.5.12 Machine Learning Studio](#2512-machine-learning-studio)
+        - [2.5.13 Application Insights](#2512-application-insights)
+        - [2.5.14 OMS Log Analytics](#2514-oms-log-analytics)
+        - [2.5.15 Function App](#2515-function-app)
+- [3 Solution Types & Deployment Costs](#3-solution-types-&-deployment-costs)
+    - [3.1 Solutions and Associated Costs](#31-solutions-and-associated-costs)
+        - [3.1.1 Basic](#311-basic)
+        - [3.1.2 Standard](#312-standard)
+        - [3.1.3 Premium](#313-premium)
+    - [3.2 Solution Features and Cost Comparison](#32-solution-features-and-cost-comparison)
+        - [3.2.1 In terms of features](#321-in-terms-of-features)
+        - [3.2.2 Solution Cost Impact](#322-solution-cost-impact)
+        - [3.2.3 Estimated Monthly Cost for each Solution](#323-estimated-monthly-cost-for-each-solution)
+- [4 Further References](#4-further-references)
+    - [4.1 Deployment Guide](#41-deployment-guide)
+    - [4.2 Admin Guide](#42-admin-guide)
+    - [4.3 User Guide](#43-user-guide)
+
+
+
 ## 1 Introduction
 ### 1.1 Overview of Oil & Gas Industry
 
@@ -196,12 +250,11 @@ Steps involved in data work flow between the components:
 8. Power BI applied on SQL Database. 
 
 
-### 
-Azure Components Functionality 
+### 2.5 Azure Components and their functionality 
 
-Microsoft Azure is a cloud computing service created by Microsoft for building, testing, deploying, and managing applications and services through a global network of Microsoft-managed data centers. It provides software as a service (SaaS), platform as a service (PaaS) and infrastructure as a service (IaaS) and supports many different programming languages, tools and frameworks, including both Microsoft-specific and third-party software and systems. 
 
-Microsoft lists over 600 Azure services, of which some are as below: 
+The sections below describes each of the solution components in more details.
+
 
 * Compute 
 * Storage services 
@@ -662,16 +715,16 @@ The below Table explains the $ impact for the solutions by resources.
 
 To Deploy the Oil & Gas solution please refer Deployment guide in the Provided Documents.
 
-https://github.com/sysgain/iot-edge-dynocard/wiki/Deployment-Guide
+https://github.com/nvtuluva/iot-edge-dynocard/blob/master/dynocards-wiki/Deployment-Guide.md
 
 ### 4.2. Admin Guide
 
 Refer Admin Guide to perform Administrator tasks of the Solution in Azure Portal.
 
-https://github.com/sysgain/iot-edge-dynocard/wiki/Admin-Guide-Page
+https://github.com/nvtuluva/iot-edge-dynocard/blob/master/dynocards-wiki/Admin-Guide-Page.md
 
 ### 4.3. User Guide
 
 Refer User Guide to find how to use Oil & Gas solution once deployed successfully in Azure portal. 
 
-https://github.com/sysgain/iot-edge-dynocard/wiki/User-Guide	
+https://github.com/nvtuluva/iot-edge-dynocard/blob/master/dynocards-wiki/User-Guide.md	
