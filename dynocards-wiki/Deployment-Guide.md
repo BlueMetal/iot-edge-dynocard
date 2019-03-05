@@ -83,12 +83,19 @@ In the parameters section of the template, specify which values you can input wh
 | **appInsightsLocation**   | specify the region for application insights, for more information about the appInsightsLocation navigate to https://github.com/sysgain/iot-edge-dynocard/wiki/Deployment-Guide in wiki    | eastus, northeurope,  southcentralus, southeastasia, westeurope, westus2 | westus2 |
 | **sqlAdministratorLogin**     | Provide the user name for the SQL server, please make a note of Username this will be used further. | sqluser | sqluser |
 | **sqlAdministratorLoginPassword**   | Provide the password for the SQL server, make a note of the Password this will be used further.| Password@1234  | Password@1234 |
-| **azureLogin** |  Provide the AZURE portal login username. This will be helpful to authenticate data lake store account in stream analytics outputs section. | user@domain.com | user@domain.com |
+| **Azure Login** |  Provide the AZURE portal login username. This will be helpful to authenticate data lake store account in stream analytics outputs section. | user@domain.com | user@domain.com |
+| **Azure Password** |  Provide the AZURE portal login password. This will be helpful to set the modules on iotedge device through iot-edge.sh script. | Password | Password |
 | **tenantId** | Tenant Id for the subscription. This will be helpful to authenticate data lake store account in stream analytics outputs section     | xxxxxxxx-xxxx-xxxx-xxxx-c5e6exxxcd38          | xxxxxxxx-xxxx-xxxx-xxxx-c5e6exxxcd38 |
 | **vmsUsername** | Username to Login into Modbus VM and Edge VM. please make a note of Username this will be used further | adminuser  | Adminuser      |
 | **vmsPassword** | Please provide VM login password, please make a note of Password this will be used further | Password@1234    | Password@1234  |
+| **Web App Buildfile Url** | Please use web app build file url which is in public storage | https://github.com/nvtuluva/iot-edge-dynocard/raw/master/builds/DynoCardAPI_with_appinsights.zip    | https://github.com/nvtuluva/iot-edge-dynocard/raw/master/builds/DynoCardAPI_with_appinsights.zip     |
+| **Storage Uri** |  Please use the sql bacpac file which is in any public storage | https://projectiot.blob.core.windows.net/oilgas-iot/db4cards.bacpac | https://projectiot.blob.core.windows.net/oilgas-iot/db4cards.bacpac |
+| **Plcsimulatorv1** | Please provide Plcsimulatorv1 exe file which is stored in public storage     | https://projectiot.blob.core.windows.net/oilgas-iot/ModbusSimulator/SimSetup.msi          | https://projectiot.blob.core.windows.net/oilgas-iot/ModbusSimulator/SimSetup.msi |
+| **vcredist** | Please provide vcredist exe file which is stored in public storage | https://projectiot.blob.core.windows.net/oilgas-iot/ModbusSimulator/vcredist_x86.exe  | https://projectiot.blob.core.windows.net/oilgas-iot/ModbusSimulator/vcredist_x86.exe      |
+| **Plcsimulatorv2** | Please provide Plcsimulatorv2 exe file which is stored in public storage | https://projectiot.blob.core.windows.net/oilgas-iot/ModbusSimulator/ModRSsim2.exe    | https://projectiot.blob.core.windows.net/oilgas-iot/ModbusSimulator/ModRSsim2.exe  |
+| **Device Name** | Please provide the IoT Edge device name | your device name    | your device name  |
 
-### Note: 
+### Note:   
 Allowed Values are updated based on the availability of azure resources based on Region w.e.f DT 18th Aug 2018. Microsoft may introduce availability of azure resources in future. More information can be found in https://azure.microsoft.com/en-in/status/ 
 
 ## 4 Deployment Guide
