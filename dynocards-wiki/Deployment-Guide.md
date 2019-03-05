@@ -306,17 +306,17 @@ Use the **az group deployment create** command to deploy the ARM template
 
 1. Go to **Resource Group** ->click on **iotEdge** VM.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/30.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/30.png)
 
 2. Copy the Public IP Address of the iotEdge VM.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/31.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/31.png)
 
 3. Login to the VM through putty.
 
 4. Paste the public ip at Host Name (or IP address) and click on open.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/32.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/32.png)
 
 5. Enter credentials:
 
@@ -326,53 +326,53 @@ Enter the Password as: **Password@1234**
 
 6. Once login successful the below welcome message is displayed.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/33.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/33.png)
 
 7. Here you can check the device and device modules in IoT Edge VM.
 
 **docker ps** 
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/34.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/34.png)
 
 8. Go to resource group -> click on **iothub26hs3**
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/35.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/35.png)
 
 9. Navigate to **IoT Edge** blade under **Automatic Device Management** section.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/36.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/36.png)
 
 10. Here we created and configured device from the IoT Edge VM. Click on **iot-dynocard-demo-device_1** device you can see the modules.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/37.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/37.png)
 
 11. We can see the created modules in device details 
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/38.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/38.png)
 
 ### 5.2. Update IoT Hub Device Primary key in Web API Application Settings
 
 1. Go to **Resource Group** -> Click on **iothub26hs3**
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/46.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/46.png)
 
 2. Navigate to **IoT Edge** blade under **Automatic Device Management** section.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/47.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/47.png)
 
 3. Click on iot-dynocard-demo-device_1 device as shown below and copy the connection string-primary key.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/48.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/48.png)
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/49.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/49.png)
 
 4. Go to **resource group** -> open the primary web app **webapi26hs3** in the app service.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/50.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/50.png)
 
 5. Navigate to **Application settings** blade.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/51.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/51.png)
 
 6. Click **+ Add new setting** in the Application settings, enter name and value in the new setting.
 
@@ -380,11 +380,11 @@ Name: **DeviceConnectionString**
 
 Value: **[Device connection string-primary key]**
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/52.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/52.png)
 
 7. Then click **Save**.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/53.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/53.png)
 
 ### 5.3. Perform Device Twin operation on Edge VM [Optional]
 
@@ -400,17 +400,17 @@ Needs to update slave connection IP address in Modbus module configuration in Io
 
 1. Go to **Resource Group** ->click on **iotEdge VM**.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/54.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/54.png)
 
 2. **Copy** the **Public IP Address** of the **IoTEdge** VM.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/55.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/55.png)
 
 3. Login to the VM through putty.
 
 4. Paste the public IP at Host Name (or IP address) and click on open.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/56.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/56.png)
 
 5. Enter credentials:
 
@@ -420,53 +420,53 @@ Enter the Password as: **Password@1234**
 
 6. Once login successful the below welcome message is displayed.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/57.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/57.png)
 
 7. Here you can check the device and device modules in IoT Edge VM.
 
 **docker ps**
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/58.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/58.png)
 
 8. Check the logs of Modbus container by executing below command.
 
 **docker logs modbus**
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/59.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/59.png)
 
 As per above diagram slave connection is 52.186.11.164 and it’s trying to connect with 52.186.11.164 which is not available. We need to update slave connection IP address with correct IP Address using twin operation.
 
 10. Go to the **resource group** and choose **IoT Hub**.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/60.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/60.png)
 
 11. Click on **IoT Hub** and navigate to **IoT Edge** blade under **Automatic device management** section.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/61.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/61.png)
 
 12. Click on IoT Device **iot-dynocard-demo-device_1** device to check modules.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/62.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/62.png)
 
 13. We can see the created **modules** in **device details**.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/63.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/63.png)
 
 14. Click on **modbus** module.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/64.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/64.png)
 
 15. Click on **Module twin**.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/65.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/65.png)
 
 16. Change IP Address of slave Connection and click on **Save**.
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/66.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/66.png)
 
 17. In this scenario IP address changed to 104.42.153.165
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/67.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/67.png)
 
 18. Now go back to Edge VM to verify slave connection IP Address.
 
@@ -474,19 +474,19 @@ As per above diagram slave connection is 52.186.11.164 and it’s trying to conn
 
 **docker stop modbus**
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/68.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/68.png)
 
 20. Start the Modbus container by passing below command.
 
 **docker start modbus**
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/69.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/69.png)
 
 21. Now verify slave connection string by checking logs of Modbus.
 
 **docker logs modbus**
 
-![alt text](https://github.com/sysgain/iot-edge-dynocard/blob/master/images/70.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/70.png)
 
 Now slave connection IP address is updated with New IP Address.
 
