@@ -827,7 +827,7 @@ When the process is running open new command prompt from ML GUI > File > Open Co
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/209.png)
 
-30. Check the logs by running the below command
+30. Check the logs by running the below command 
 
 **Syntax:  az ml service logs realtime –i websvc4dc**
 
