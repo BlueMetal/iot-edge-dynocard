@@ -183,8 +183,6 @@ This Document explains how to use the Dyno Card solution, specifically it explai
 
 1. Go to **Resource group** -> Click on **db4cards** SQL database and copy the server name.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/oil-a1.png)
-
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/103.png)
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/104.png)
@@ -366,8 +364,6 @@ https://github.com/BlueMetal/iot-edge-dynocard/tree/master/dynoCardVisuals/dist
 2. Fill in the **database server** information and click 'OK'. 
 
 To get the database information, go to **Resource group**. 
-
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/oil-a3.png)
 
 Click on **db4cards** database
 
