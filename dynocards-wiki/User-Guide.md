@@ -161,21 +161,21 @@ This Document explains how to use the Dyno Card solution, specifically it explai
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/99.png)
 
-9. 9.	To verify whether all modules on the edge device are running or not, go to **Resource group** -> Click on **iothub26hs3**
+9. To verify whether all modules on the edge device are running or not, go to **Resource group** -> Click on **iothub26hs3**
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/01.png)
 
 10. Navigate to **IoT Edge** blade under the **Automatic Device Management** section.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/02.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/iotedge.png)
 
 11. Here we created and configured device from the **IoT Edge** VM. Click on **iot-dynocard-demo-device_1** device to see the modules.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/03.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/iotedge.png)
 
 12. We can see the created **modules** in **device details**
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/04.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/modules-running.png)
 
 ## 3.  Verify Data in Azure SQL Database
 
