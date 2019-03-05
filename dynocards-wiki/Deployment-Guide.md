@@ -73,14 +73,14 @@ In the parameters section of the template, specify which values you can input wh
 
 | **Parameter Name**  | **Description**     | **Allowed Values**    | **Default Values**   |                                                                                                            
 | -------------       | -------------       | -----------------     | ------------         |
-| **Solution Type**   | Choose the solution deployment type from the drop down, for more information about the solution deployment type navigate to https://github.com/sysgain/iot-edge-dynocard/wiki/Deployment-Guide in wiki      | Basic, Standard, Premium | Basic|
-| **Edge VM + Simulator VM**   | Choose Yes/No to add Modbus VM as part of Solution deployment, for more information about the Modbus VM navigate to https://github.com/sysgain/iot-edge-dynocard/wiki/Deployment-Guide in wiki   | Yes, No    | No |
-| **mlVM**   | Choose Yes/No to add ML VM as part of Solution deployment, for more information about the ML VM navigate to https://github.com/sysgain/iot-edge-dynocard/wiki/Deployment-Guide in wiki    | Yes, No   | No |
-| **Data Lake Location**   | Choose location for Data Lake Store, for more information about the Data Lake Store navigate to https://github.com/sysgain/iot-edge-dynocard/wiki/Deployment-Guide in wiki   | Eastus2,Centralus, Northeurope, westeurope  | Eastus2 |
-| **Machine learning Location**  | Choose location for machine learning account, for more information about the machine learning location navigate to https://github.com/sysgain/iot-edge-dynocard/wiki/Deployment-Guide in wiki   | Eastus2, Australieneast, Southeastasia, Westcentralus, Westeurope | eastus2 |
-| **Geo Paired Primary Region**  | Choose geo-paired region,if you have selected standard (or) premium option in the solution type inputparameter, for more information about the geo-paired-region navigate to https://github.com/sysgain/iot-edge-dynocard/wiki/Deployment-Guide in wiki  | EastUS2,CentralUS,WestUS2,WestCentralUS,CanadaCentral,CanadaEast,         AustraliaEast,AustraliaSouthEast,CentralIndia,SouthIndia,EastAsia,               SouthEastAsia,JapanWest,JapanEast,KoreaCentral,KoreaSouth,UKSouth,               UKWest  | eastus2|
-| **oms-region**    | Choose location for OMS Log Analytics, for more information about the oms-region navigate to https://github.com/sysgain/iot-edge-dynocard/wiki/Deployment-Guide in wiki   | australiasoutheast, canadacentral, centralindia, eastus, japaneast, southeastasia, uksouth, westeurope    | EastUs |
-| **appInsightsLocation**   | specify the region for application insights, for more information about the appInsightsLocation navigate to https://github.com/sysgain/iot-edge-dynocard/wiki/Deployment-Guide in wiki    | eastus, northeurope,  southcentralus, southeastasia, westeurope, westus2 | westus2 |
+| **Solution Type**   | Choose the solution deployment type from the drop down, for more information about the solution deployment type navigate to https://github.com/nvtuluva/iot-edge-dynocard/blob/master/dynocards-wiki/Deployment-Guide.md in wiki      | Basic, Standard, Premium | Basic|
+| **Edge VM + Simulator VM**   | Choose Yes/No to add Modbus VM as part of Solution deployment, for more information about the Modbus VM navigate to https://github.com/nvtuluva/iot-edge-dynocard/blob/master/dynocards-wiki/Deployment-Guide.md in wiki   | Yes, No    | No |
+| **mlVM**   | Choose Yes/No to add ML VM as part of Solution deployment, for more information about the ML VM navigate to https://github.com/nvtuluva/iot-edge-dynocard/blob/master/dynocards-wiki/Deployment-Guide.md in wiki    | Yes, No   | No |
+| **Data Lake Location**   | Choose location for Data Lake Store, for more information about the Data Lake Store navigate to https://github.com/nvtuluva/iot-edge-dynocard/blob/master/dynocards-wiki/Deployment-Guide.md in wiki   | Eastus2,Centralus, Northeurope, westeurope  | Eastus2 |
+| **Machine learning Location**  | Choose location for machine learning account, for more information about the machine learning location navigate to https://github.com/nvtuluva/iot-edge-dynocard/blob/master/dynocards-wiki/Deployment-Guide.md in wiki   | Eastus2, Australieneast, Southeastasia, Westcentralus, Westeurope | eastus2 |
+| **Geo Paired Primary Region**  | Choose geo-paired region,if you have selected standard (or) premium option in the solution type inputparameter, for more information about the geo-paired-region navigate to https://github.com/nvtuluva/iot-edge-dynocard/blob/master/dynocards-wiki/Deployment-Guide.md in wiki  | EastUS2,CentralUS,WestUS2,WestCentralUS,CanadaCentral,CanadaEast,         AustraliaEast,AustraliaSouthEast,CentralIndia,SouthIndia,EastAsia,               SouthEastAsia,JapanWest,JapanEast,KoreaCentral,KoreaSouth,UKSouth,               UKWest  | eastus2|
+| **oms-region**    | Choose location for OMS Log Analytics, for more information about the oms-region navigate to https://github.com/nvtuluva/iot-edge-dynocard/blob/master/dynocards-wiki/Deployment-Guide.md in wiki   | australiasoutheast, canadacentral, centralindia, eastus, japaneast, southeastasia, uksouth, westeurope    | EastUs |
+| **appInsightsLocation**   | specify the region for application insights, for more information about the appInsightsLocation navigate to https://github.com/nvtuluva/iot-edge-dynocard/blob/master/dynocards-wiki/Deployment-Guide.md in wiki    | eastus, northeurope,  southcentralus, southeastasia, westeurope, westus2 | westus2 |
 | **sqlAdministratorLogin**     | Provide the user name for the SQL server, please make a note of Username this will be used further. | sqluser | sqluser |
 | **sqlAdministratorLoginPassword**   | Provide the password for the SQL server, make a note of the Password this will be used further.| Password@1234  | Password@1234 |
 | **Azure Login** |  Provide the AZURE portal login username. This will be helpful to authenticate data lake store account in stream analytics outputs section. | user@domain.com | user@domain.com |
@@ -114,7 +114,7 @@ Resource Manager provides a consistent management layer to perform tasks through
 
 1.  Click the below **Git hub** repo URL.
 
-**https://github.com/sysgain/iot-edge-dynocard/tree/master**
+**https://github.com/nvtuluva/iot-edge-dynocard/tree/master**
 
 2. Select **main-template.json** from **master** branch as shown in the following figure.
  
@@ -393,7 +393,7 @@ Value: **[Device connection string-primary key]**
 Need to perform device twin operation on Modbus IoT Edge Module when solution deployed with an option Modbus VM as **No**. when Modbus VM deployment option is chosen as **no** then there is no Simulator VM is deployed.
 
 Install IoTedge Modules by executing **iot-edge-Manual.sh** Under scripts from GitHub repo script by providing Required input parameters.
-https://github.com/sysgain/iot-edge-dynocard/blob/master/scripts/iot-edge-Manual.sh
+https://github.com/nvtuluva/iot-edge-dynocard/blob/master/scripts/iot-edge-Manual.sh
 
 Needs to update slave connection IP address in Modbus module configuration in IoT Edge Modules with actual Simulator IP address.
 
@@ -827,7 +827,7 @@ When the process is running open new command prompt from ML GUI > File > Open Co
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/209.png)
 
-30. Check the logs by running the below command 
+30. Check the logs by running the below command
 
 **Syntax:  az ml service logs realtime –i websvc4dc**
 
