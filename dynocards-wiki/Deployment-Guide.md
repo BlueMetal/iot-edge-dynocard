@@ -335,7 +335,7 @@ Enter the Password as: **Password@1234**
 
 **docker ps** 
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/34.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/moduleslist.png)
 
 8. Go to resource group -> click on **iothub26hs3**
 
@@ -343,15 +343,15 @@ Enter the Password as: **Password@1234**
 
 9. Navigate to **IoT Edge** blade under **Automatic Device Management** section.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/36.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/iotedge.png)
 
 10. Here we created and configured device from the IoT Edge VM. Click on **iot-dynocard-demo-device_1** device you can see the modules.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/37.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/iotedge.png)
 
 11. We can see the created modules in device details 
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/38.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/modules-running.png)
 
 ### 5.2. Update IoT Hub Device Primary key in Web API Application Settings
 
@@ -361,7 +361,7 @@ Enter the Password as: **Password@1234**
 
 2. Navigate to **IoT Edge** blade under **Automatic Device Management** section.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/47.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/iotedge.png)
 
 3. Click on iot-dynocard-demo-device_1 device as shown below and copy the connection string-primary key.
 
@@ -429,7 +429,7 @@ Enter the Password as: **Password@1234**
 
 **docker ps**
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/58.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/moduleslist.png)
 
 8. Check the logs of Modbus container by executing below command.
 
@@ -449,11 +449,11 @@ As per above diagram slave connection is 52.186.11.164 and it’s trying to conn
 
 12. Click on IoT Device **iot-dynocard-demo-device_1** device to check modules.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/62.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/iotedge.png)
 
 13. We can see the created **modules** in **device details**.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/63.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/modules-running.png)
 
 14. Click on **modbus** module.
 
