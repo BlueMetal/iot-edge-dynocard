@@ -169,19 +169,22 @@ These parameter values enable you to customize the deployment by providing value
 
 11. Deploy the template by providing the parameters in custom deployment settings as shown in the following figure.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/14.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/parameters-basic11.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/parameters12.png)
 
 **Parameters for Standard Solution**
 
 12. If you want to deploy the core with monitoring you must enter the below parameters
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/15.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/parameters-standard11.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/parameters12.png)
 
 **Parameters for Premium Solution**
 
 13. If you want to deploy the core with Hardening and Monitoring you must enter the below parameters.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/16.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/parameters-premium11.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/parameters12.png)
 
 14. Once all the parameters are entered, select the **terms and conditions** check box and click **Purchase**.
 
