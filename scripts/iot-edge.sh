@@ -28,7 +28,7 @@ sudo apt-get install apt-transport-https -y
 sudo apt-get update && sudo apt-get install azure-cli -y
 sleep 1m
 az extension add --name azure-cli-iot-ext
-EdgeConnStr=`az iot hub device-identity show-connection-string --hub-name $IoThubName --device-id $DeviceName -l $HubConnStr | grep '"cs":'| cut -d ":" -f2 | tr -d "\"," |tr -d " "`
+EdgeConnStr=`az iot hub device-identity show-connection-string --hub-name $IoThubName --device-id $DeviceName -l $HubConnStr | grep '"connectionString":'| cut -d ":" -f2 | tr -d "\"," |tr -d " "`
 echo $EdgeConnStr > /tmp/EdgeConnstr.txt
 #install IoT Edge runtime with GA bits
 curl https://packages.microsoft.com/config/ubuntu/16.04/prod.list > ./microsoft-prod.list
