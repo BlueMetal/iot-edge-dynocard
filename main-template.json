@@ -208,7 +208,7 @@
         },
         "deviceName":{
             "type":"string",
-            "defaultValues": "",
+            "defaultValue": "",
             "metadata":{
                 "description": "Please provide the IoTHub Edge device name that you want create"
             }
