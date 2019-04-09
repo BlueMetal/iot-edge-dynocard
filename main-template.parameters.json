@@ -35,6 +35,9 @@
         "azureLogin": {
             "value": "user@domain.com"
         },
+        "azurePassword": {
+            "value": "userpassword"
+        },    
         "tenantId": {
             "value": "xxxxxxxx-xxxx-xxxx-xxxx-c5e6exxxcd38"
         },
@@ -43,7 +46,24 @@
         },
         "vmsPassword":{
             "value":"Password@1234"
+        },
+        "webAppBuildfileUrl": {
+            "value": ""
+        },
+        "storageUri": {
+            "value": ""
+        },
+        "plcsimulatorv1": {
+            "value": ""
+        },
+        "vcredist": {
+            "value": ""
+        },
+        "plcsimulatorv2": {
+            "value": ""
+        },
+        "deviceName":{
+            "value": ""
         }
-
     }
 }
