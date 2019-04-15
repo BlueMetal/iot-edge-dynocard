@@ -4,7 +4,7 @@
     "image": {
         "repository": "bluemetal/iot_dynocard_demo_alert",
         "tag": {
-            "version": "1.4.0",
+            "version": "1.5.0",
             "platforms": {
                 "amd64": "./Dockerfile", 
                 "amd64.debug": "./Dockerfile.amd64.debug",

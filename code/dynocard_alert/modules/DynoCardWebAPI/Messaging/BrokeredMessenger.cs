@@ -46,7 +46,7 @@ namespace DynoCardWebAPI.Messaging
             var messageByteString = Encoding.UTF8.GetBytes(message);
             var deviceMessage = new Message(messageByteString);
             await _moduleClient.SendEventAsync("anomalyOutput", deviceMessage);
-            System.Console.WriteLine($"Sent anomaly change event: {deviceMessage}");
+            System.Console.WriteLine($"Sent anomaly change event: {messageByteString}");
         }
     }
 }

@@ -19,7 +19,7 @@ namespace dynocard_telemetry
     {
         private static int counter;
         private static Timer timer;
-        private static AnomalyType CurrentAnomalyType = AnomalyType.GasInterference;
+        private static AnomalyType CurrentAnomalyType = AnomalyType.None;
 
         private const int NUMBER_OF_SURFACE_POINTS = 200;
         private const int NUMBER_OF_PUMP_POINTS = 100;
