@@ -74,7 +74,7 @@
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "localhost:5000/iot_dynocard_demo_telemetry:1.1.0-amd64.debug",
+              "image": "bluemetal/iot_dynocard_demo_telemetry:1.1.0-amd64",
               "createOptions": "{}"
             }
           },
@@ -94,7 +94,7 @@
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "localhost:5000/iot_dynocard_demo_web_api:1.1.0-amd64",
+              "image": "bluemetal/iot_dynocard_demo_web_api:1.1.0-amd64",
               "createOptions": "{\"HostConfig\":{\"PortBindings\":{\"80/tcp\":[{\"HostPort\":\"8201\"}]}}}"
             }
           },
@@ -104,7 +104,7 @@
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "localhost:5000/iot_dynocard_demo_web:1.2.0-amd64",
+              "image": "bluemetal/iot_dynocard_demo_web:1.2.0-amd64",
               "createOptions": "{\"Env\": [\"DATA_API_URL=127.0.0.1:8201\"],\"HostConfig\":{\"PortBindings\":{\"80/tcp\":[{\"HostPort\":\"8200\"}]}}}"
             }
           }
