@@ -1,4 +1,4 @@
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/oil%26gas-deployment.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/oil%26gas-deployment.png)
 **Table of Contents** 
 
 - [1 Deployment Guide](#1-deployment-guide)
@@ -73,14 +73,14 @@ In the parameters section of the template, specify which values you can input wh
 
 | **Parameter Name**  | **Description**     | **Allowed Values**    | **Default Values**   |                                                                                                            
 | -------------       | -------------       | -----------------     | ------------         |
-| **Solution Type**   | Choose the solution deployment type from the drop down, for more information about the solution deployment type navigate to https://github.com/nvtuluva/iot-edge-dynocard/blob/master/dynocards-wiki/Deployment-Guide.md in wiki      | Basic, Standard, Premium | Basic|
-| **Edge VM + Simulator VM**   | Choose Yes/No to add Modbus VM as part of Solution deployment, for more information about the Modbus VM navigate to https://github.com/nvtuluva/iot-edge-dynocard/blob/master/dynocards-wiki/Deployment-Guide.md in wiki   | Yes, No    | No |
-| **mlVM**   | Choose Yes/No to add ML VM as part of Solution deployment, for more information about the ML VM navigate to https://github.com/nvtuluva/iot-edge-dynocard/blob/master/dynocards-wiki/Deployment-Guide.md in wiki    | Yes, No   | No |
-| **Data Lake Location**   | Choose location for Data Lake Store, for more information about the Data Lake Store navigate to https://github.com/nvtuluva/iot-edge-dynocard/blob/master/dynocards-wiki/Deployment-Guide.md in wiki   | Eastus2,Centralus, Northeurope, westeurope  | Eastus2 |
-| **Machine learning Location**  | Choose location for machine learning account, for more information about the machine learning location navigate to https://github.com/nvtuluva/iot-edge-dynocard/blob/master/dynocards-wiki/Deployment-Guide.md in wiki   | Eastus2, Australieneast, Southeastasia, Westcentralus, Westeurope | eastus2 |
-| **Geo Paired Primary Region**  | Choose geo-paired region,if you have selected standard (or) premium option in the solution type inputparameter, for more information about the geo-paired-region navigate to https://github.com/nvtuluva/iot-edge-dynocard/blob/master/dynocards-wiki/Deployment-Guide.md in wiki  | EastUS2,CentralUS,WestUS2,WestCentralUS,CanadaCentral,CanadaEast,         AustraliaEast,AustraliaSouthEast,CentralIndia,SouthIndia,EastAsia,               SouthEastAsia,JapanWest,JapanEast,KoreaCentral,KoreaSouth,UKSouth,               UKWest  | eastus2|
-| **oms-region**    | Choose location for OMS Log Analytics, for more information about the oms-region navigate to https://github.com/nvtuluva/iot-edge-dynocard/blob/master/dynocards-wiki/Deployment-Guide.md in wiki   | australiasoutheast, canadacentral, centralindia, eastus, japaneast, southeastasia, uksouth, westeurope    | EastUs |
-| **appInsightsLocation**   | specify the region for application insights, for more information about the appInsightsLocation navigate to https://github.com/nvtuluva/iot-edge-dynocard/blob/master/dynocards-wiki/Deployment-Guide.md in wiki    | eastus, northeurope,  southcentralus, southeastasia, westeurope, westus2 | westus2 |
+| **Solution Type**   | Choose the solution deployment type from the drop down, for more information about the solution deployment type navigate to https://github.com/BlueMetal/iot-edge-dynocard/blob/master/dynocards-wiki/Deployment-Guide.md in wiki      | Basic, Standard, Premium | Basic|
+| **Edge VM + Simulator VM**   | Choose Yes/No to add Modbus VM as part of Solution deployment, for more information about the Modbus VM navigate to https://github.com/BlueMetal/iot-edge-dynocard/blob/master/dynocards-wiki/Deployment-Guide.md in wiki   | Yes, No    | No |
+| **mlVM**   | Choose Yes/No to add ML VM as part of Solution deployment, for more information about the ML VM navigate to https://github.com/BlueMetal/iot-edge-dynocard/blob/master/dynocards-wiki/Deployment-Guide.md in wiki    | Yes, No   | No |
+| **Data Lake Location**   | Choose location for Data Lake Store, for more information about the Data Lake Store navigate to https://github.com/BlueMetal/iot-edge-dynocard/blob/master/dynocards-wiki/Deployment-Guide.md in wiki   | Eastus2,Centralus, Northeurope, westeurope  | Eastus2 |
+| **Machine learning Location**  | Choose location for machine learning account, for more information about the machine learning location navigate to https://github.com/BlueMetal/iot-edge-dynocard/blob/master/dynocards-wiki/Deployment-Guide.md in wiki   | Eastus2, Australieneast, Southeastasia, Westcentralus, Westeurope | eastus2 |
+| **Geo Paired Primary Region**  | Choose geo-paired region,if you have selected standard (or) premium option in the solution type inputparameter, for more information about the geo-paired-region navigate to https://github.com/BlueMetal/iot-edge-dynocard/blob/master/dynocards-wiki/Deployment-Guide.md in wiki  | EastUS2,CentralUS,WestUS2,WestCentralUS,CanadaCentral,CanadaEast,         AustraliaEast,AustraliaSouthEast,CentralIndia,SouthIndia,EastAsia,               SouthEastAsia,JapanWest,JapanEast,KoreaCentral,KoreaSouth,UKSouth,               UKWest  | eastus2|
+| **oms-region**    | Choose location for OMS Log Analytics, for more information about the oms-region navigate to https://github.com/BlueMetal/iot-edge-dynocard/blob/master/dynocards-wiki/Deployment-Guide.md in wiki   | australiasoutheast, canadacentral, centralindia, eastus, japaneast, southeastasia, uksouth, westeurope    | EastUs |
+| **appInsightsLocation**   | specify the region for application insights, for more information about the appInsightsLocation navigate to https://github.com/BlueMetal/iot-edge-dynocard/blob/master/dynocards-wiki/Deployment-Guide.md in wiki    | eastus, northeurope,  southcentralus, southeastasia, westeurope, westus2 | westus2 |
 | **sqlAdministratorLogin**     | Provide the user name for the SQL server, please make a note of Username this will be used further. | sqluser | sqluser |
 | **sqlAdministratorLoginPassword**   | Provide the password for the SQL server, make a note of the Password this will be used further.| Password@1234  | Password@1234 |
 | **Azure Login** |  Provide the AZURE portal login username. This will be helpful to authenticate data lake store account in stream analytics outputs section. | user@domain.com | user@domain.com |
@@ -88,7 +88,7 @@ In the parameters section of the template, specify which values you can input wh
 | **tenantId** | Tenant Id for the subscription. This will be helpful to authenticate data lake store account in stream analytics outputs section     | xxxxxxxx-xxxx-xxxx-xxxx-c5e6exxxcd38          | xxxxxxxx-xxxx-xxxx-xxxx-c5e6exxxcd38 |
 | **vmsUsername** | Username to Login into Modbus VM and Edge VM. please make a note of Username this will be used further | adminuser  | Adminuser      |
 | **vmsPassword** | Please provide VM login password, please make a note of Password this will be used further | Password@1234    | Password@1234  |
-| **Web App Buildfile Url** | Please use web app build file which is under /builds folder  by storing it in a public storage | https://github.com/nvtuluva/iot-edge-dynocard/raw/master/builds/DynoCardAPI_with_appinsights.zip    | https://github.com/nvtuluva/iot-edge-dynocard/raw/master/builds/DynoCardAPI_with_appinsights.zip     |
+| **Web App Buildfile Url** | Please use web app build file which is under /builds folder  by storing it in a public storage | https://github.com/BlueMetal/iot-edge-dynocard/raw/master/builds/DynoCardAPI_with_appinsights.zip    | https://github.com/BlueMetal/iot-edge-dynocard/raw/master/builds/DynoCardAPI_with_appinsights.zip     |
 | **Storage Uri** |  Please use the sql bacpac file which is under /builds folder  by storing it in a public storage | https://projectiot.blob.core.windows.net/oilgas-iot/db4cards.bacpac | https://projectiot.blob.core.windows.net/oilgas-iot/db4cards.bacpac |
 | **Plcsimulatorv1** | Please provide Plcsimulatorv1 exe file which is under /builds folder  by storing it in a public storage     | https://projectiot.blob.core.windows.net/oilgas-iot/ModbusSimulator/SimSetup.msi          | https://projectiot.blob.core.windows.net/oilgas-iot/ModbusSimulator/SimSetup.msi |
 | **vcredist** | Please provide vcredist exe file which is under /builds folder  by storing it in a public storage | https://projectiot.blob.core.windows.net/oilgas-iot/ModbusSimulator/vcredist_x86.exe  | https://projectiot.blob.core.windows.net/oilgas-iot/ModbusSimulator/vcredist_x86.exe      |
@@ -114,19 +114,19 @@ Resource Manager provides a consistent management layer to perform tasks through
 
 1.  Click the below **Git hub** repo URL.
 
-**https://github.com/nvtuluva/iot-edge-dynocard/tree/master**
+**https://github.com/BlueMetal/iot-edge-dynocard/tree/master**
 
 2. Select **main-template.json** from **master** branch as shown in the following figure.
  
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/5.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/5.png)
 
 3. Select **Raw** from the top right corner.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/6.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/6.png)
 
 4. **Copy** the raw template and **paste** in your azure portal for template deployment.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/7.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/7.png)
 
 To deploy a template for Azure Resource Manager, follow the below steps.
 
@@ -136,19 +136,19 @@ To deploy a template for Azure Resource Manager, follow the below steps.
 
 3.  Click Create button and click **Build your own Template in the editor** as shown in the following figure.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/8.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/8.png)
 
 4.  The **Edit template** page is displayed as shown in the following figure. 
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/9.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/9.png)
 
 5.  **Replace / paste** the template and click **Save** button.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/10.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/10.png)
 
 6.  The **Custom deployment** page is displayed as shown in the following.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/11.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/11.png)
 
 ### 4.1.1. Inputs
 These parameter values enable you to customize the deployment by providing values. There parameters allow to choose the solution type, region and credentials to authenticate SQL Database and Virtual Machines.
@@ -157,34 +157,34 @@ These parameter values enable you to customize the deployment by providing value
 
 8.  If you choose **No** then the **Edge VM + Simulator VM** vm  will be **not deployed** with in the solution, If you choose No, then the Edge VM and Simulator VM will be not deployed with in the solution, we have to manually deploy IoT Edge modules in Edge VM for more information refer the section 5.3 Perform Device Twin Operation on Edge VM.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/12.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/12.png)
 
 9.  If you choose **yes** for **ML VM** then Pre-installed **docker** will be **deployed** with in the solution.
 
 10. If you choose **No** for **ML VM** then Pre-installed **docker** will **not be deployed** with in the solution.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/13.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/13.png)
 
 **Parameters for Basic Solution**
 
 11. Deploy the template by providing the parameters in custom deployment settings as shown in the following figure.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/parameters-basic11.png)
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/parameters12.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/parameters-basic11.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/parameters12.png)
 
 **Parameters for Standard Solution**
 
 12. If you want to deploy the core with monitoring you must enter the below parameters
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/parameters-standard11.png)
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/parameters12.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/parameters-standard11.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/parameters12.png)
 
 **Parameters for Premium Solution**
 
 13. If you want to deploy the core with Hardening and Monitoring you must enter the below parameters.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/parameters-premium11.png)
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/parameters12.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/parameters-premium11.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/parameters12.png)
 
 14. Once all the parameters are entered, select the **terms and conditions** check box and click **Purchase**.
 
@@ -212,20 +212,20 @@ Linux VM
 
 17. Once the solution is deployed successfully navigate to the resource group, select the created **resource group** to view the list of resources that are created in the Resource Group as shown in the following figure.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/17.png)
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/18.png)
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/19.png)
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/20.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/17.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/18.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/19.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/20.png)
 
 ### 4.1.2 Outputs
 The Outputs section consists of the values that are returned from deployment. The output values can be used for further steps in Solution Configuration
 1. Go to **Resource group** -> click **deployments** -> select **Microsoft Template**.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/21.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/21.png)
 
 2. Click **outputs**.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/22.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/22.png)
 
 ### 4.2. ARM Template Deployment Using Azure CLI
 
@@ -244,11 +244,11 @@ Customize main-template.parameters.json file
 
 **vim main-template.json**
  
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/23.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/23.png)
 
 8. Paste your **main-template.json** in editor as shown below and save the file. 
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/24.png) 
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/24.png) 
 
 9. Paste your **main-template.parameters.json** in editor. 
 10. Update the following parameters in main-template.json file 
@@ -267,7 +267,7 @@ Customize main-template.parameters.json file
 *   vmsUsername
 *   vmsPassword
  
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/25.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/25.png)
 
 11. Create Resource Group for oilandgas Solution 
 12. Use the **az group create** command to create a **Resource Group** in your region.
@@ -279,9 +279,9 @@ It uses the name parameter to specify the name for resource group (-n) and locat
 
 **Ex: az group create -n <****> -l <***>**
  
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/26.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/26.png)
  
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/27.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/27.png)
 
 Execute the Template Deployment 
 Use the **az group deployment create** command to deploy the ARM template 
@@ -296,12 +296,12 @@ Use the **az group deployment create** command to deploy the ARM template
 
 **Ex: az group deployment create --template-file './main-template.json' --parameters '@./main-template.parameters.json' -g oilandgas-iot -n deploy >> outputs.txt**
  
- ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/28.png)
+ ![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/28.png)
 
 15. Deployment may take between 15-20 minutes depending on deployment size. 
 16. After successful deployment you can see the deployment outputs as follows.
  
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/29.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/29.png)
 
 ## 5. Post Deployment steps
 
@@ -309,17 +309,17 @@ Use the **az group deployment create** command to deploy the ARM template
 
 1. Go to **Resource Group** ->click on **iotEdge** VM.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/30.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/30.png)
 
 2. Copy the Public IP Address of the iotEdge VM.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/31.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/31.png)
 
 3. Login to the VM through putty.
 
 4. Paste the public ip at Host Name (or IP address) and click on open.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/32.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/32.png)
 
 5. Enter credentials:
 
@@ -329,53 +329,53 @@ Enter the Password as: **Password@1234**
 
 6. Once login successful the below welcome message is displayed.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/33.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/33.png)
 
 7. Here you can check the device and device modules in IoT Edge VM.
 
 **docker ps** 
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/moduleslist.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/moduleslist.png)
 
 8. Go to resource group -> click on **iothub26hs3**
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/35.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/35.png)
 
 9. Navigate to **IoT Edge** blade under **Automatic Device Management** section.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/iotedge.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/iotedge.png)
 
 10. Here we created and configured device from the IoT Edge VM. Click on **iot-dynocard-demo-device_1** device you can see the modules.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/iotedge.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/iotedge.png)
 
 11. We can see the created modules in device details 
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/modules-running.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/modules-running.png)
 
 ### 5.2. Update IoT Hub Device Primary key in Web API Application Settings
 
 1. Go to **Resource Group** -> Click on **iothub26hs3**
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/46.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/46.png)
 
 2. Navigate to **IoT Edge** blade under **Automatic Device Management** section.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/iotedge.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/iotedge.png)
 
 3. Click on iot-dynocard-demo-device_1 device as shown below and copy the connection string-primary key.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/48.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/48.png)
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/49.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/49.png)
 
 4. Go to **resource group** -> open the primary web app **webapi26hs3** in the app service.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/50.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/50.png)
 
 5. Navigate to **Application settings** blade.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/51.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/51.png)
 
 6. Click **+ Add new setting** in the Application settings, enter name and value in the new setting.
 
@@ -383,11 +383,11 @@ Name: **DeviceConnectionString**
 
 Value: **[Device connection string-primary key]**
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/52.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/52.png)
 
 7. Then click **Save**.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/53.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/53.png)
 
 ### 5.3. Perform Device Twin operation on Edge VM [Optional]
 
@@ -396,24 +396,24 @@ Value: **[Device connection string-primary key]**
 Need to perform device twin operation on Modbus IoT Edge Module when solution deployed with an option Modbus VM as **No**. when Modbus VM deployment option is chosen as **no** then there is no Simulator VM is deployed.
 
 Install IoTedge Modules by executing **iot-edge-Manual.sh** Under scripts from GitHub repo script by providing Required input parameters.
-https://github.com/nvtuluva/iot-edge-dynocard/blob/master/scripts/iot-edge-Manual.sh
+https://github.com/BlueMetal/iot-edge-dynocard/blob/master/scripts/iot-edge-Manual.sh
 
 Needs to update slave connection IP address in Modbus module configuration in IoT Edge Modules with actual Simulator IP address.
 
 
 1. Go to **Resource Group** ->click on **iotEdge VM**.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/54.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/54.png)
 
 2. **Copy** the **Public IP Address** of the **IoTEdge** VM.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/55.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/55.png)
 
 3. Login to the VM through putty.
 
 4. Paste the public IP at Host Name (or IP address) and click on open.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/56.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/56.png)
 
 5. Enter credentials:
 
@@ -423,53 +423,53 @@ Enter the Password as: **Password@1234**
 
 6. Once login successful the below welcome message is displayed.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/57.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/57.png)
 
 7. Here you can check the device and device modules in IoT Edge VM.
 
 **docker ps**
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/moduleslist.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/moduleslist.png)
 
 8. Check the logs of Modbus container by executing below command.
 
 **docker logs modbus**
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/59.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/59.png)
 
 As per above diagram slave connection is 52.186.11.164 and it’s trying to connect with 52.186.11.164 which is not available. We need to update slave connection IP address with correct IP Address using twin operation.
 
 10. Go to the **resource group** and choose **IoT Hub**.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/60.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/60.png)
 
 11. Click on **IoT Hub** and navigate to **IoT Edge** blade under **Automatic device management** section.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/61.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/61.png)
 
 12. Click on IoT Device **iot-dynocard-demo-device_1** device to check modules.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/iotedge.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/iotedge.png)
 
 13. We can see the created **modules** in **device details**.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/modules-running.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/modules-running.png)
 
 14. Click on **modbus** module.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/64.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/64.png)
 
 15. Click on **Module twin**.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/65.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/65.png)
 
 16. Change IP Address of slave Connection and click on **Save**.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/66.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/66.png)
 
 17. In this scenario IP address changed to 104.42.153.165
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/67.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/67.png)
 
 18. Now go back to Edge VM to verify slave connection IP Address.
 
@@ -477,19 +477,19 @@ As per above diagram slave connection is 52.186.11.164 and it’s trying to conn
 
 **docker stop modbus**
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/68.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/68.png)
 
 20. Start the Modbus container by passing below command.
 
 **docker start modbus**
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/69.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/69.png)
 
 21. Now verify slave connection string by checking logs of Modbus.
 
 **docker logs modbus**
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/70.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/70.png)
 
 Now slave connection IP address is updated with New IP Address.
 
@@ -513,64 +513,64 @@ Workbench is a relatively open toolkit. First, you can use almost any Python-bas
 
 1. Go to **AzuremlVM** from the **Resource Group** and copy **Public IP Address** of the VM.
  
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/154.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/154.png)
 
 2. Open **Remote desktop connection** and place IP Address and click on **Connect.**
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/155.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/155.png)
 
 3. Provide user name and password and click on OK.
 User Name   : adminuser
 Password    : Password@1234
 **Note:** Credentials might vary depends on deployment.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/156.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/156.png)
 
 4. Open **PowerShell as Administrator** and execute below command to add current user to docker-users group.
 **Add-LocalGroupMember -Member $env:username -Name docker-users**
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/157.png) 
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/157.png) 
 
 5. Sign out from windows and sign in again.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/158.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/158.png)
 
 6. Search for docker for windows in search menu and click on **“Docker for Windows.”**
  
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/159.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/159.png)
 
 7. When it prompted to enable **Hyper-V and Containers feature**, click **ok**.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/160.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/160.png)
 
 8. This will restart Windows System. Login again to VM using the same credentials as above.
 
 9. When Docker is running, a pop will be opened in task bar which states docker is running.
  
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/161.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/161.png)
 
 **6.2. Install ML Workbench**
 1. Install ML work bench using the setup file from below path.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/162.png) 
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/162.png) 
 
 2. Double click on **amlWorkbenchSetup.msi** file.
 3. Click on **Continue**.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/163.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/163.png)
 
 4. Click on **Install**.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/164.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/164.png)
 
 5. It will take around 30mins to 45mins to install ML Workbench.
 6. Once installation completed successfully, click on Launch **Azure Machine Learning Workbench**.
 7. Click on **Sign in with Microsoft.** 
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/165.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/165.png)
 
 8. Provide azure portal login credentials. Once login is completed successfully. The below page will be displayed. 
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/166.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/166.png)
 
 9. Click on File > Open Command Prompt.
 
@@ -579,30 +579,30 @@ Password    : Password@1234
 10. Login to the portal using below command.
 **az login -t <tenant ID>**
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/167.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/167.png)
 
 11. Open edge browser and go to the page **https://microsoft.com/devicelogin** and provide code and click on Continue.
  
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/168.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/168.png)
 
 12. Provide azure portal login credentials, once authentication is successful, go back to command prompt.
 13. List available azure subscriptions using below command.
 
 **az account list -o table**
  
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/169.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/169.png)
 
 14. Set current subscription as default using below command.
 
 **az account set -s <enter your sub id here>**
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/170.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/170.png)
 
 15. Verify default subscription using below command
 
 **az account show**
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/171.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/171.png)
 
 ## 6.4. List Environment Components
 
@@ -610,25 +610,25 @@ Password    : Password@1234
 
 **conda env list**
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/172.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/172.png)
  
 17. List python packages
 
 **pip freeze**
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/173.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/173.png)
 
 18. Versions of cli components
 
 **az -v**
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/174.png) 
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/174.png) 
 
 19. All cli cmd for machine learning
 
 **az ml -h**
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/175.png) 
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/175.png) 
 
 ## 6.5. Create ML Project
 
@@ -636,11 +636,11 @@ Password    : Password@1234
 
 **az ml project create --name mlproject --workspace mlworkspacerk23l --account oilgasexpaccrk23l --resource-group oilandgas-coresolution-267 --path c:\mlproject**
  
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/176.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/176.png)
 
 2. Once project is created, refresh home page in GUI, where we can see project name under workspace. 
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/177.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/177.png)
 
 ## 6.6. Download Git Repository
 
@@ -650,17 +650,17 @@ Password    : Password@1234
 
 2. Click on **“Download Zip”**
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/178.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/178.png)
 
 3. Extract the zip downloaded project file into ml project sub directory. 
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/179.png) 
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/179.png) 
 
 4. Change directory
 
 **cd C:\mlproject\iot-edge-dynocard-master\code\containers\edge_ml** 
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/180.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/180.png)
 
 ## 6.7. Submit experiment train4dc.py as local target
 
@@ -668,27 +668,27 @@ Password    : Password@1234
 
 **az ml experiment submit -c local train4dc.py**
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/181.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/181.png)
 
 6. Now go back to GUI. Click on **run history** on left hand pane and it will page as below.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/182.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/182.png)
 
 7. Click on **Run** and a page will be opened as below. 
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/183.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/183.png)
 
 8. Select **model4dc.pkl** and click on **Download.** 
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/184.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/184.png)
 
 9. Choose path to save the file. [This path will be working directory of ML Workspace, Ex: C:\iot-edge-dynocard-master\code\containers\edge_ml]. click on **save**.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/185.png) 
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/185.png) 
 
 10. Click on **Yes** when it’s prompted for Confirm Save As warning.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/186.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/186.png)
 
 ## 6.8. Install azureml.datacollector
 
@@ -696,7 +696,7 @@ Password    : Password@1234
 
 **pip install azureml.datacollector**
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/187.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/187.png)
 
 ## 6.9. Submit experiment score4dc.py with local target
 
@@ -704,19 +704,19 @@ Password    : Password@1234
 
 **az ml experiment submit -c local score4dc.py**
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/188.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/188.png)
  
 13. Go to GUI and check **Run History** page.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/189.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/189.png)
 
 14. Click on **recently completed run job**. A page will be opened as below.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/190.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/190.png)
 
 15. Select **Service_schema.json** file and click on **Download**.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/191.png) 
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/191.png) 
 
 16. Download the file to current working directory as earlier step.
 
@@ -728,7 +728,7 @@ Azure machine learning uses two accounts. The first account keeps track of the e
 
 **Ex: az ml account modelmanagement set -n mmact4pumps -g rg4pumps**
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/192.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/192.png)
  
 ## 6.11.   Deployment Configuration
 
@@ -738,37 +738,37 @@ Azure machine learning uses two accounts. The first account keeps track of the e
 
 **az ml env setup -l eastus2 -n mldevcofigex -g mldevconfigrg --debug --verbose**
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/193.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/193.png)
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/194.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/194.png)
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/195.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/195.png)
  
  
 18. We can verify the deployment progress using below command. Wait until provisioning state shows as succeeded.
 
 **az ml env show -g mldevconfigrg -n mldevcofigex**
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/196.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/196.png)
 
 19. Set as default using below command.
 
 **az ml env set -g mldevconfigrg -n mldevcofigex**
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/197.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/197.png)
  
 20. Show default environment using below command.
 
 **az ml env show**
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/198.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/198.png)
 
 21. The above deployment deploys below resources in azure. We can verify deployed resources in azure portal.
 * 1- Azure Container Registry
 * 2 – Storage Accounts
 * 1- Application Insights
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/199.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/199.png)
 
 ## 6.12.Registering providers
 
@@ -776,15 +776,15 @@ Azure machine learning uses two accounts. The first account keeps track of the e
 
 **az provider register -n Microsoft.MachineLearningCompute**
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/200.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/200.png)
 
 **az provider register -n Microsoft.ContainerRegistry**
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/201.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/201.png)
 
 **az provider register -n Microsoft.ContainerService**
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/202.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/202.png)
 
 ## 6.13.   Run experiment as Docker target
 
@@ -792,21 +792,21 @@ Azure machine learning uses two accounts. The first account keeps track of the e
 
 **az ml experiment submit -c docker train4dc.py**
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/203.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/203.png)
 
 When the process is running open new command prompt from ML GUI > File > Open Command Prompt. This process will take around 15mins of time.
 
 24. **Run docker ps –a** to verify running docker containers.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/204.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/204.png)
 
 25. Once process completed, the output will be as below.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/205.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/205.png)
 
 26. Go to GUI run history and check recently create Run Number.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/206.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/206.png)
 
 ## 6.14. Web Service Deployment
 
@@ -814,13 +814,13 @@ When the process is running open new command prompt from ML GUI > File > Open Co
 
 **az ml service create realtime -m model4dc.pkl -f score4dc.py -r python –n websvc4dc**
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/207.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/207.png)
 
 28. Verify docker container using below command.
 
 **docker ps -a**
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/208.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/208.png)
 
 ## 6.15.   Testing Web Service
 
@@ -828,12 +828,12 @@ When the process is running open new command prompt from ML GUI > File > Open Co
 
 **az ml service run realtime -i websvc4dc -d "{ \"Id\": 0, \"Timestamp\": \"2018-04-04T22:42:59+00:00\", \"NumberOfPoints\": 400, \"MaxLoad\": 19500, \"MinLoad\": 7500, \"StrokeLength\": 1200, \"StrokePeriod\": 150, \"CardType\": 0,\"CardPoints\": [{\"Load\": 11744,\"Position\": 145 }] }"**
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/209.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/209.png)
 
 30. Check the logs by running the below command
 
 **Syntax:  az ml service logs realtime –i websvc4dc**
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/210.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/210.png)
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/211.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/211.png)
