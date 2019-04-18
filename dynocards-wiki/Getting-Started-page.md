@@ -2,7 +2,7 @@
 
 # Oil & Gas
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/oil%26gas-gettingstarted.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/oil%26gas-gettingstarted.png)
 
 **Table of Contents** 
 
@@ -102,7 +102,7 @@ Existing solution process flow is explained in following steps:
 
 The diagram below explains the Core Architecture for Oil & Gas Companies. 
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/core.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/core.png)
 
 Core Architecture components: 
 
@@ -171,7 +171,7 @@ The Basic solution will have all the core components, in addition, this solution
 
 The below is the Basic Architecture Diagram:
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/Basic.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/Basic.png)
 
 Basic Architecture comprises of following components: 
 
@@ -219,7 +219,7 @@ The main use of this solution is for disaster recovery scenarios. When a region 
 
 The diagram below depicts the dataflow between Azure Components in Standard Solution architecture:
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/Standard.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/Standard.png)
 
 Standard Architecture comprises of following components: 
 
@@ -285,7 +285,7 @@ In Primary Region the configuration and set up of the VM’s was done automatica
 
 The below is the Architecture diagram of the Premium solution:
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/Premium.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/Premium.png)
 
 Premium Architecture comprises of following components: 
 
@@ -329,7 +329,7 @@ The data flow is similar across all of the solutions offered.
 
 The below diagram explains the data flow between Azure components within the solution.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/4.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/4.png)
 
 ### 2.5 Azure Components and their Functionality 
 
@@ -804,19 +804,19 @@ The below Table explains the $ impact for the solutions by resources.
 
 To Deploy the Oil & Gas solution please refer Deployment guide in the Provided Documents.
 
-https://github.com/nvtuluva/iot-edge-dynocard/blob/master/dynocards-wiki/Deployment-Guide.md
+https://github.com/BlueMetal/iot-edge-dynocard/blob/master/dynocards-wiki/Deployment-Guide.md
 
 ### 4.2. Admin Guide
 
 Refer Admin Guide to perform Administrator tasks of the Solution in Azure Portal.
 
-https://github.com/nvtuluva/iot-edge-dynocard/blob/master/dynocards-wiki/Admin-Guide-Page.md
+https://github.com/BlueMetal/iot-edge-dynocard/blob/master/dynocards-wiki/Admin-Guide-Page.md
 
 ### 4.3. User Guide
 
 Refer User Guide to find how to use Oil & Gas solution once deployed successfully in Azure portal. 
 
-https://github.com/nvtuluva/iot-edge-dynocard/blob/master/dynocards-wiki/User-Guide.md
+https://github.com/BlueMetal/iot-edge-dynocard/blob/master/dynocards-wiki/User-Guide.md
 
 
 
