@@ -1091,6 +1091,12 @@ A pop up will be displayed which shows progress of failover. Once failover is co
 
 ![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/314.png)  
 
+**Note**
+
+Login to the EdgeVm and restart the IoTEdge Service.below is the command to restart the edge service.
+
+**sudo systemctl restart iotedge**
+
 ### 15.1.9. Start Simulator in dynocardVM
 1. Go to **Resource Group** -> Click **dynocardVM**.
 
@@ -1289,6 +1295,12 @@ Before **Starting** the Stream analytic job, first you need to **Renew the autho
 7. Once creation is completed. Click on **Save.**
  
 ![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/358.png)  
+
+**Note**
+
+Login to the EdgeVm and restart the IoTEdge Service.below is the command to restart the edge service.
+
+**sudo systemctl restart iotedge**
 
 ### 15.2.7. Start Simulator in dynocardVM.
 1. Go to **Resource Group** -> Click **dynocardVM.**
