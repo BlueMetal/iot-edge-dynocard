@@ -10,9 +10,9 @@
             "loggingOptions": "",
             "registryCredentials": {
               "MachineLearningRegistry": {
-                "username": "iotedgedynocar3728307779",
-                "password": "8sfSxCPwxiQRIfuc+w2I7r3qwIqE53fP",
-                "address": "iotedgedynocar3728307779.azurecr.io"
+                "username": "DevelopmentCR",
+                "password": "xaZqHJ34gIw0fTyY6ezQy+bIaqTDpZP7",
+                "address": "developmentcr.azurecr.io"
               }
             }
           }
@@ -64,7 +64,7 @@
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "bluemetal/iot_dynocard_demo_edgeml:1.0.0-amd64",
+              "image": "developmentcr.azurecr.io/iot_dynocard_demo_edgeml:1.0.0-amd64",
               "createOptions": "{\"Env\": [\"AML_MODEL_DC_DEBUG=true\",\"AML_MODEL_DC_STORAGE_ENABLED=true\" ]}"
             }
           },
