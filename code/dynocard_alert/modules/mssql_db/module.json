@@ -2,7 +2,7 @@
     "$schema-version": "0.0.1",
     "description": "",
     "image": {
-        "repository": "developmentcr.azurecr.io/iot_dynocard_demo_edgedb",
+        "repository": "bluemetal/iot_dynocard_demo_edgedb",
         "tag": {
             "version": "1.2.0",
             "platforms": {

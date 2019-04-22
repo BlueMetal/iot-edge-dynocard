@@ -64,7 +64,7 @@
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "developmentcr.azurecr.io/iot_dynocard_demo_edgeml:1.0.0-amd64",
+              "image": "bluemetal/iot_dynocard_demo_edgeml:1.0.0-amd64",
               "createOptions": "{\"Env\": [\"AML_MODEL_DC_DEBUG=true\",\"AML_MODEL_DC_STORAGE_ENABLED=true\" ]}"
             }
           },
