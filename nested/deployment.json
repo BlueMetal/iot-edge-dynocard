@@ -64,7 +64,7 @@
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "bluemetal/iot_dynocard_demo_edgeml:1.0.0-amd64",
+              "image": "vivek1806wsda2241ed.azurecr.io/anomaly-svc:2",
               "createOptions": "{\"Env\": [\"AML_MODEL_DC_DEBUG=true\",\"AML_MODEL_DC_STORAGE_ENABLED=true\" ]}"
             }
           },
