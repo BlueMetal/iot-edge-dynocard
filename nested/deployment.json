@@ -10,9 +10,9 @@
             "loggingOptions": "",
             "registryCredentials": {
               "MachineLearningRegistry": {
-                "username": "vivek1806wsda2241ed",
-                "password": "g6OAmevoSqIDWe1iTSk1ri=ybdKTU887",
-                "address": "vivek1806wsda2241ed.azurecr.io"
+                "username": "iotedgedynocar3728307779",
+                "password": "8sfSxCPwxiQRIfuc+w2I7r3qwIqE53fP",
+                "address": "iotedgedynocar3728307779.azurecr.io"
               }
             }
           }
@@ -64,7 +64,7 @@
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "vivek1806wsda2241ed.azurecr.io/anomaly-svc:2",
+              "image": "bluemetal/iot_dynocard_demo_edgeml:1.0.0-amd64",
               "createOptions": "{\"Env\": [\"AML_MODEL_DC_DEBUG=true\",\"AML_MODEL_DC_STORAGE_ENABLED=true\" ]}"
             }
           },
