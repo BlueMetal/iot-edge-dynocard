@@ -10,9 +10,9 @@
             "loggingOptions": "",
             "registryCredentials": {
               "MachineLearningRegistry": {
-                "username": "iotedgedynocar3728307779",
-                "password": "8sfSxCPwxiQRIfuc+w2I7r3qwIqE53fP",
-                "address": "iotedgedynocar3728307779.azurecr.io"
+                "username": "vivek1806wsda2241ed",
+                "password": "g6OAmevoSqIDWe1iTSk1ri=ybdKTU887",
+                "address": "vivek1806wsda2241ed.azurecr.io"
               }
             }
           }
