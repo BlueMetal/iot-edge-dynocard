@@ -418,7 +418,7 @@
             "appInsightsId": "[resourceId('Microsoft.Insights/components', variables('appInsightsName'))]",
             "keyVaultTenant": "[subscription().tenantId]"
         },
-        "baseUrl": "https://raw.githubusercontent.com/nvtuluva/iot-edge-dynocard/ml/",
+        "baseUrl": "https://raw.githubusercontent.com/nvtuluva/iot-edge-dynocard/master/",
         "suffix": "[substring(uniqueString(resourceGroup().id), 0, 5)]",
         "keyVaultName": "[concat('mlkeyvault', variables('suffix'))]",
         "newStorageAccountName": "[concat('mlstorage', variables('suffix'))]",
