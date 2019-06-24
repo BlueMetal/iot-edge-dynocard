@@ -32,18 +32,17 @@
     - [6.10 Update myenv.yaml file](#610-update-myenv.yaml-file)
     - [6.11 Create deployment Notebook](#611-create-deployment-notebook)
     - [6.12 Run Deployment Notebook](#612-run-deployment-notebook)
-    	- [6.12.1 Check the image](#6121-check-the-image)
-    	- [6.12.2 Check the Deployment](#6122-check-the-deployment)
+        - [6.12.1 Run to test webservice](#6121-run-to-test-webservice)
+    	- [6.12.2 Check the image](#6122-check-the-image)
+    	- [6.12.3 Check the Deployment](#6123-check-the-deployment)
 	
-	
-
 ## 1.0 Deployment Guide
 
 This Document explains about how to deploy Oil & Gas solution using ARM Template. In this Document explained about two ways of deploying solution.
 
-##### - Using Azure portal
+**- Using Azure portal**
 
-##### - Using Azure CLI
+**- Using Azure CLI**
 
 This document explains about input parameters, output parameters and points to be noted while deploying ARM Template.
 
@@ -105,20 +104,24 @@ In the parameters section of the template, specify which values you can input wh
 | **Plcsimulatorv2** | Please provide Plcsimulatorv2 exe file which is under /builds folder  by storing it in a public storage | https://projectiot.blob.core.windows.net/oilgas-iot/ModbusSimulator/ModRSsim2.exe    | https://projectiot.blob.core.windows.net/oilgas-iot/ModbusSimulator/ModRSsim2.exe  |
 | **Device Name** | Please provide the IoT Edge device name | your device name    | your device name  |
 
-### Note:  
-
-Allowed Values are updated based on the availability of azure resources based on Region w.e.f DT 18th Aug 2018. Microsoft may introduce availability of azure resources in future. More information can be found in https://azure.microsoft.com/en-in/status/ 
+**Note:** Allowed Values are updated based on the availability of azure resources based on Region w.e.f DT 18th Aug 2018. Microsoft may introduce availability of azure resources in future. More information can be found in https://azure.microsoft.com/en-in/status/ 
 
 ## 4.0 Deployment Guide
 
 Azure Resource Manager allows you to provision your applications using a declarative template. In a single template, you can deploy multiple services along with their dependencies. The template consists of JSON and expressions that you can use to construct values for your deployment. You use the same template to repeatedly deploy your application during every stage of the application lifecycle.
+
 Resource Manager provides a consistent management layer to perform tasks through Azure PowerShell, Azure CLI, Azure portal, REST API, and client SDKs.
 
 *   Deploy, manage, and monitor all the resources for your solution as a group, rather than handling these resources individually.
+
 *   Repeatedly deploy your solution throughout the development lifecycle and have confidence your resources are deployed in a consistent state.
+
 *   Manage your infrastructure through declarative templates rather than scripts.
+
 *   Define the dependencies between resources so they're deployed in the correct order.
+
 *   Apply access control to all services in your resource group because Role-Based Access Control (RBAC) is natively integrated into the management platform.
+
 *   Apply tags to resources to logically organize all the resources in your subscription.
 
 ### 4.1 ARM Template Deployment using Azure Portal
@@ -162,6 +165,7 @@ To deploy a template for Azure Resource Manager, follow the below steps.
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/dg01.PNG)
 
 ### 4.1.1 Inputs
+
 These parameter values enable you to customize the deployment by providing values. There parameters allow to choose the solution type, region and credentials to authenticate SQL Database and Virtual Machines.
 
 7.  If you choose **yes** for **Edge VM + Simulator VM** then **then Edge VM and Simulator VMs** will be **deployed** with in the solution.
@@ -304,7 +308,7 @@ Customize main-template.parameters.json file
 
 *   Data Science VM
 
-*   Data Science VM Size
+*   Data Science VMSize
 
 *   dataLakelocation
 
@@ -402,7 +406,7 @@ Enter the Password as: **Password@1234**
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/moduleslist.png)
 
-8. Go to resource group -> click on **iothub26hs3**
+8. Go to **resource group** -> click on **iothub26hs3**
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/35.png)
 
@@ -428,7 +432,7 @@ Enter the Password as: **Password@1234**
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/iotedge.png)
 
-3. Click on iot-dynocard-demo-device_1 device as shown below and copy the connection string-primary key.
+3. Click on **iot-dynocard-demo-device_1** device as shown below and copy the connection string-primary key.
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/48.png)
 
@@ -466,7 +470,6 @@ https://github.com/nvtuluva/iot-edge-dynocard/blob/master/scripts/iot-edge-Manua
 
 Needs to update slave connection IP address in Modbus module configuration in IoT Edge Modules with actual Simulator IP address.
 
-
 1. Go to **Resource Group** ->click on **iotEdge VM**.
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/54.png)
@@ -491,19 +494,19 @@ Enter the Password as: **Password@1234**
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/57.png)
 
-7. Here you can check the device and device modules in IoT Edge VM.
+7. Here you can check the device and device modules in **IoT Edge VM**.
 
 **docker ps**
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/moduleslist.png)
 
-8. Check the logs of Modbus container by executing below command.
+8. Check the logs of **Modbus container** by executing below command.
 
 **docker logs modbus**
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/59.png)
 
-As per above diagram slave connection is 52.186.11.164 and it’s trying to connect with 52.186.11.164 which is not available. We need to update slave connection IP address with correct IP Address using twin operation.
+As per above diagram slave connection is **52.186.11.164** and it’s trying to connect with **52.186.11.164** which is not available. We need to update slave connection IP address with correct IP Address using twin operation.
 
 10. Go to the **resource group** and choose **IoT Hub**.
 
@@ -533,45 +536,45 @@ As per above diagram slave connection is 52.186.11.164 and it’s trying to conn
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/66.png)
 
-17. In this scenario IP address changed to 104.42.153.165
+17. In this scenario IP address changed to **104.42.153.165**
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/67.png)
 
-18. Now go back to Edge VM to verify slave connection IP Address.
+18. Now go back to **Edge VM** to verify **slave connection IP** Address.
 
-19. Stop the Modbus container by passing below command.
+19. Stop the **Modbus container** by passing below command.
 
 **docker stop modbus**
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/68.png)
 
-20. Start the Modbus container by passing below command.
+20. Start the **Modbus container** by passing below command.
 
 **docker start modbus**
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/69.png)
 
-21. Now verify slave connection string by checking logs of Modbus.
+21. Now verify **slave connection string** by checking **logs** of **Modbus**.
 
 **docker logs modbus**
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/70.png)
 
-Now slave connection IP address is updated with New IP Address.
+Now slave connection IP address is updated with **New IP Address**.
 
 ## 6.0 Machine Learning Configuration
 
 ### 6.1 Login to Data Science Virtual Machine
 
-Go to the resource group and click on Data Science Virtual Machine. 
+Go to the **resource group** and click on **Data Science Virtual Machine**. 
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d01.png)
  
-Copy the public IP address.
+Copy the **public IP** address.
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d02.png)
  
-Open Remote Desktop Connection and paste the public IP address
+Open **Remote Desktop Connection** and paste the public IP address
 
 Click **on Connect**
 
@@ -585,7 +588,7 @@ Provide user name and password and click on OK. User Name : **adminuser** Passwo
 
 Click on **OK**.
 
-You will be log in to Data Science Virtual Machine.
+You will be log in to **Data Science Virtual Machine**.
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d05.png)
  
@@ -603,19 +606,17 @@ navigate to the directory that you created
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d06.png)
  
-Clone the iot-edge-dynocard git code using the below command
+Clone the **iot-edge-dynocard** git code using the below command
 
 **git clone https://github.com/nvtuluva/iot-edge-dynocard.git**
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d07.png)
  
-Open File Explorer and Navigate to C:\OilNGas directory to see the downloaded git code.
+Open File Explorer and Navigate to **C:\OilNGas directory** to see the downloaded git code.
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d08.png) 
  
-Navigate to the 
-
-C:\OilNGas\iot-edge-dynocard\code\dynocard_alert\modules\edge_ml
+Navigate to the  **C:\OilNGas\iot-edge-dynocard\code\dynocard_alert\modules\edge_ml**
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d09.png)
 
@@ -633,11 +634,11 @@ To get the name of the ML Service Work space, Go to Resource group and click on 
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d011.png)
  
-Copy the name of ML Service workspace name, Resource group name and subscription ID.
+Copy the name of **ML Service workspace** name, Resource group name and subscription ID.
  
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d012.png)
 
-Go back to Data science VM and update the config.json file.
+Go back to **Data science VM** and update the config.json file.
 
 {
     **"subscription_id": "xxxxxxxxxxxxxxxxxxxxx",**
@@ -650,9 +651,9 @@ Go back to Data science VM and update the config.json file.
 
 Save the config.json file
 
-Open command prompt and change the directory to edge_ml
+Open command prompt and change the directory to **edge_ml**
 
-Cd C:\OilNGas\iot-edge-dynocard\code\dynocard_alert\modules\edge_ml
+**cd C:\OilNGas\iot-edge-dynocard\code\dynocard_alert\modules\edge_ml**
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d013.png)
  
@@ -664,7 +665,7 @@ Activate the conda
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d014.png)
  
-Install Azure ML SDK.
+Install **Azure ML SDK**.
 
 **pip install azureml-sdk**
 
@@ -672,7 +673,7 @@ Install Azure ML SDK.
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d016.png)
 
-Update azureml-sdk
+Update **azureml-sdk**
 
 **pip install --upgrade azureml-sdk**
 
@@ -680,13 +681,13 @@ Update azureml-sdk
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d018.png)
  
-Install azureml.datacollector module
+Install **azureml.datacollector module**
 
 **pip install azureml.datacollector**
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d019.png)
  
-Install azureml-webservice-schema
+Install **azureml-webservice-schema**
 
 **pip install azureml-webservice-schema**
 
@@ -694,7 +695,7 @@ Install azureml-webservice-schema
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d021.png)
  
-Install inference_schema
+**Install inference_schema**
 
 **pip install inference_schema**
 
@@ -710,11 +711,11 @@ jupyter notebook
  
 Once you execute the above command, a prompt will be opened for selecting browser.
 
-Select a browser and click on OK.
+Select a browser and click on **OK**.
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d024.png)
  
-All the files in the current directory will be opened in Jupyter server like below.
+All the files in the current directory will be opened in **Jupyter server** like below.
  
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d025.png)
 
@@ -945,23 +946,23 @@ Go to **Home** tab
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d055.png)
  
-Here you can find the generated model.pkl file.
+Here you can find the generated **model.pkl** file.
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d056.png)
 
 ##### 6.7.2 Check train4dc experiment in ML service workspace
 
-To see the created experiment go to Resource group and click on ML service Workspace
+To see the created experiment go to **Resource group** and click on **ML service Workspace**
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d057.png)
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d058.png)
  
-Navigate to the Experiments blade to see the created experiment.
+Navigate to the **Experiments** blade to see the created experiment.
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d059.png)
  
-Click on train4dc experiment to see the all runs
+Click on **train4dc** experiment to see the all runs
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d060.png)
  
@@ -977,7 +978,7 @@ Navigate to the Models blade to see the registered model.
 
 ### 6.8 Create Score4dc notebook
 
-Go back to the Jupyter sever in Data Science VM 
+Go back to the Jupyter sever in **Data Science VM** 
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d063.png)
  
@@ -987,7 +988,7 @@ click on **New**
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d064.png)
  
-Select the python3
+Select the **python3**
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d065.png)
 
@@ -1003,7 +1004,7 @@ Let's import the azureml.core package. This contains core packages, modules and 
 
 **from azureml.core import Workspace, Experiment, Run**
 
-**# check core SDK version number
+**#check core SDK version number
 print("Azure ML SDK Version: ", azureml.core.VERSION)**
 
 Paste the below code in the next cell to configure the workspace
@@ -1298,13 +1299,13 @@ Run the first 4 cells one after another to import azureml-sdk, connect to worksp
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d073.png)
  
-Select the next cell and run the score4dc.py script code.
+Select the next cell and run the **score4dc.py** script code.
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d074.png)
  
 Once you run the cell you will get the following output “**overwriting score4dc.py**”
 
-The first line in the cell **“%%writefile score4dc.py”** writes whole content of the cell into a file named score4dc.py.
+The first line in the cell **“%%writefile score4dc.py”** writes whole content of the cell into a file named **score4dc.py**.
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d075.png)
  
@@ -1335,7 +1336,7 @@ Click on **Outputs** folder
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d079.png)
  
-Here you can see the generated service_schema.json file.
+Here you can see the generated **service_schema.json** file.
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d080.png)
  
@@ -1349,7 +1350,7 @@ The file contains below content.
 
 #### 6.9.2 Check score4dc experiment in ML service workspace
 
-To see the created experiment go to ML service Workspace
+To see the created experiment go to **ML service Workspace**
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d082.png)
  
@@ -1357,17 +1358,17 @@ Navigate to the Experiments blade to see the created experiment.
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d083.png)
  
-Click on score4dc experiment to see the graph.
+Click on **score4dc** experiment to see the graph.
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d084.png)
  
 ### 6.10 Update myenv.yaml file
 
-Go back to Data science VM and click on Home tab of Jupyter server
+Go back to **Data science VM** and click on Home tab of Jupyter server
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d085.png)
  
-Click on myenv.yaml and replace the below content in the file.
+Click on **myenv.yaml** and replace the below content in the file.
 
  #Conda environment specification. The dependencies defined in this file will
 
@@ -1678,6 +1679,8 @@ AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"
 127.0.0.1 - - [19/Jun/2019:07:44:01 +0000] "GET /random404page/ HTTP/1.0" 404 232 "-" "Mozilla/5.0 (compatible; Nmap Scripting Engine; https://nmap.org/book/nse.html)"
 
 127.0.0.1 - - [19/Jun/2019:07:44:02 +0000] "GET /rails/info/properties HTTP/1.0" 404 232 "-" "Mozilla/5.0 (compatible; Nmap Scripting Engine; https://nmap.org/book/nse.html)"
+
+#### 6.12.1 Run to test webservice
 
 Run the next cell to test the web service.
 
@@ -2044,7 +2047,7 @@ Scoring Timer is set to 3600.0 seconds
 
 127.0.0.1 - - [19/Jun/2019:08:29:06 +0000] "POST /score HTTP/1.0" 200 95 "-" "python-requests/2.21.0"
 
-#### 6.12.1 Check the image
+#### 6.12.2 Check the image
 
 To check the image, go to Workspace and Navigate to Image blade.
 
@@ -2054,13 +2057,13 @@ Click on the image to see the details.
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d0109.png)
  
-#### 6.12.2 Check the Deployment
+#### 6.12.3 Check the Deployment
 
 To check the deployment, go to Workspace and Navigate to deployment blade. 
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d0110.png)
  
-Click on the deployment to see the details.
+Click on the **deployment** to see the details.
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d0111.png)
  
