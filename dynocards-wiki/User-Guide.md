@@ -7,23 +7,89 @@
 **Table of Contents** 
 
 - [1 User Guide](#1-user-guide)
-- [2 Running Modbus Simulator](#2-running-modbus-simulator)
-    - [2.1 Check Modbus Logs](#21-check-modbus-logs)
-- [3 Verify Data in Azure SQL Database](#3-verify-data-in-azure-sql-database)
-    - [3.1 Login to the SQL server to check the data](#31-login-to-the-sql-server-to-check-the-data)
-    - [3.2 Login to Edge SQL Container Server to check the data](#32-Login-to-edge-sql-container-server-to-check-the-data)
-- [4 Configuring Power BI](#4-configuring-power-bi)
-    - [4.1 Download Power Bi Desktop app](#41-download-power-bi-desktop-app)
-    - [4.2 Download dynoCardVisuals.pbiviz](#42-download-dynocardvisuals.pbiviz)
-    - [4.3 Import DynoCard custom from visuals](#43-import-dynoCard-custom-from-visuals)
-    - [4.4 Generating and publishing Power BI reports](#44-generating-and-publishing-power-bi-reports)
-    - [4.5 Power BI report](#45-power-bi-report)
+- [2 Update the MLAlert Container Image in Deployment.json](#2-update-the-mlalert-container-image-in-deployment.json)
+    - [2.1 Login to the IoT Edge Virtual Machine](#21-login-to-the-iot-edge-virtual-machine)
+- [3 Running Modbus Simulator](#3-running-modbus-simulator)
+    - [3.1 Check Modbus Logs](#31-check-modbus-logs)
+- [4 Verify Data in Azure SQL Database](#4-verify-data-in-azure-sql-database)
+    - [4.1 Login to the SQL server to check the data](#41-login-to-the-sql-server-to-check-the-data)
+    - [4.2 Login to Edge SQL Container Server to check the data](#42-Login-to-edge-sql-container-server-to-check-the-data)
+- [5 Configuring Power BI](#5-configuring-power-bi)
+    - [5.1 Download Power Bi Desktop app](#51-download-power-bi-desktop-app)
+    - [5.2 Download dynoCardVisuals.pbiviz](#52-download-dynocardvisuals.pbiviz)
+    - [5.3 Import DynoCard custom from visuals](#53-import-dynoCard-custom-from-visuals)
+    - [5.4 Generating and publishing Power BI reports](#54-generating-and-publishing-power-bi-reports)
+    - [5.5 Power BI report](#55-power-bi-report)
 
 ## 1. User Guide
 
 This Document explains how to use the Dyno Card solution, specifically it explains  generate data from the Simulator and how to verify the output of the project/solution.
 
-## 2.Running Modbus Simulator
+## 2. Update the MLAlert Container Image in Deployment.json
+
+1. Go to the deployed resource group, click on **Container registry**, In container registry overview click on Access Keys. 
+
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/ml1.png)
+
+2. Copy and note the login server name, username, password in notepad will use those values later.
+
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/ml2.png)
+
+3. Now click on Machine learning service workspace resource, then click on **images** options in over view.In images click on anomaly-svc image name.
+
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/ml3.png)
+
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/ml4.png)
+
+4. Copy and note the location value in notepad.
+
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/ml5.png)
+
+## 2.1 Login to IoT edge Virtual Machine
+
+1. Go to the **resource group** and click on **IoT Edge Virtual Machine**.
+
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/ml6.png)
+
+2. Copy the **public IP** address.
+
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/ml7.png)
+
+3. Open **putty** and paste the public IP address, Click on **Open**
+
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/ml8.png)
+
+4. Click yes on security alert popup and Provide user name and password. User Name : **adminuser** Password : **Password@1234**
+
+**Note**:Credentials might vary depends on deployment.
+
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/ml9.png)
+
+5. After login edit the deployment.json file by below command.
+
+**vim deployment.json**
+
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/ml10.png)
+
+6. In **modulesContent** update the container registry values username ,password and address with acr login server name which you copied in notepad before. 
+
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/ml11.png)
+
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/ml12.png)
+
+7. In line number 67, **mlAlertModule** update the image value with copied location value from machine learning workspace before.
+
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/ml13.png)
+
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/ml14.png)
+
+8. After that Save the file and run the below command to restart the iotedge service.
+
+**sudo systemctl restart iotedge**
+
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/ml15.png)
+
+## 3.Running Modbus Simulator
 
 1. Go to **Resource Group** -> Click on **dynocardVM**.
 
@@ -117,7 +183,7 @@ This Document explains how to use the Dyno Card solution, specifically it explai
 
 ![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/91.png)
 
-## 2.1. Check modbus logs
+## 3.1. Check modbus logs
 
 **Login to iotEdge VM**:
 
@@ -177,9 +243,9 @@ This Document explains how to use the Dyno Card solution, specifically it explai
 
 ![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/modules-running.png)
 
-## 3.  Verify Data in Azure SQL Database
+## 4.  Verify Data in Azure SQL Database
 
-## 3.1.   Login to the SQL server to check the data.
+## 4.1.   Login to the SQL server to check the data.
 
 1. Go to **Resource group** -> Click on **db4cards** SQL database and copy the server name.
 
@@ -263,7 +329,7 @@ Right click on **[ACTIVE].[DYNO_CARD_ANOMALY_VIEW] -->** script view as -->selec
 
 ![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/118.png)
 
-## 3.2. Login to Edge sql container server to check the data
+## 4.2. Login to Edge sql container server to check the data
 
 1. Login to **edge sql Container** using **SQL Server Management Studio.**
 
@@ -317,25 +383,25 @@ Right click on **[ACTIVE].[DYNO_CARD_ANOMALY_VIEW]** --> script view as -->selec
 
 ![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/127.png)
 
-## 4.Configuring Power BI
+## 5.Configuring Power BI
 
 Before configuring Power BI, you need to download and install the power BI Desktop application.
 
 You can perform the below steps in Power BI Desktop:
 
-### 4.1. Download Power Bi Desktop App 
+### 5.1. Download Power Bi Desktop App 
 
 Download Power Bi desktop from below link.
 
 https://www.microsoft.com/en-us/download/details.aspx?id=45331
 
-### 4.2. Download dynoCardVisuals.pbiviz
+### 5.2. Download dynoCardVisuals.pbiviz
 
 Download dynoCardVisuals.pbiviz file from the below link
 
 https://github.com/BlueMetal/iot-edge-dynocard/tree/master/dynoCardVisuals/dist 
 
-### 4.3. Import DynoCard custom from visuals 
+### 5.3. Import DynoCard custom from visuals 
 
 1. Open Power BI Desktop and select the ellipses from the bottom of the Visualizations pane.
 
@@ -355,7 +421,7 @@ https://github.com/BlueMetal/iot-edge-dynocard/tree/master/dynoCardVisuals/dist
 
 ![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/146.png)
 
-### 4.4. Generating and publishing Power BI reports
+### 5.4. Generating and publishing Power BI reports
 
 1. In the top left-hand side of **Power BI Desktop**, select **'Get Data'** -> **'SQL Server database'** and click on **Connect.**
 
@@ -400,7 +466,7 @@ Copy the **server** name and **database** name
 
 ![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/152.png)
 
-## 4.5.  Power BI report 
+## 5.5.  Power BI report 
 
 Now reports can be observed like below.
 
