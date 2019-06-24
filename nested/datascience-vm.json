@@ -1,0 +1,216 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "dataScienceVmSettings": {
+            "type": "object"
+        },
+        "vnetSettings": {
+            "type": "object"
+        }
+    },
+    "variables": {
+        "nsgId": "[resourceId(resourceGroup().name, 'Microsoft.Network/networkSecurityGroups', parameters('dataScienceVmSettings').dataScienceVmNsgName)]",
+        "vnetId": "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetSettings').vnetName)]",
+        "subnetRef": "[concat(variables('vnetId'), '/subnets/', parameters('vnetSettings').subnetName3)]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Network/networkInterfaces",
+            "apiVersion": "2018-10-01",
+            "name": "[parameters('dataScienceVmSettings').dataScienceVmNicName]",
+            "location": "[parameters('dataScienceVmSettings').location]",
+            "dependsOn": [
+                "[concat('Microsoft.Network/networkSecurityGroups/', parameters('dataScienceVmSettings').dataScienceVmNsgName)]",
+                "[concat('Microsoft.Network/publicIpAddresses/', parameters('dataScienceVmSettings').publicIpName)]"
+            ],
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "properties": {
+                            "subnet": {
+                                "id": "[variables('subnetRef')]"
+                            },
+                            "privateIPAllocationMethod": "Dynamic",
+                            "publicIpAddress": {
+                                "id": "[resourceId(resourceGroup().name, 'Microsoft.Network/publicIpAddresses', parameters('dataScienceVmSettings').publicIpName)]"
+                            }
+                        }
+                    }
+                ],
+                "networkSecurityGroup": {
+                    "id": "[variables('nsgId')]"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "apiVersion": "2019-02-01",
+            "name": "[parameters('dataScienceVmSettings').dataScienceVmNsgName]",
+            "location": "[parameters('dataScienceVmSettings').location]",
+            "properties": {
+                "securityRules": [
+                    {
+                        "name": "RDP",
+                        "properties": {
+                            "priority": 1000,
+                            "protocol": "TCP",
+                            "access": "Allow",
+                            "direction": "Inbound",
+                            "sourceApplicationSecurityGroups": [],
+                            "destinationApplicationSecurityGroups": [],
+                            "sourceAddressPrefix": "*",
+                            "sourcePortRange": "*",
+                            "destinationAddressPrefix": "*",
+                            "destinationPortRange": "3389"
+                        }
+                    },
+                    {
+                        "name": "HTTPS",
+                        "properties": {
+                            "priority": 1001,
+                            "sourceAddressPrefix": "*",
+                            "protocol": "TCP",
+                            "destinationPortRange": "443",
+                            "access": "Allow",
+                            "direction": "Inbound",
+                            "sourcePortRange": "*",
+                            "destinationAddressPrefix": "*"
+                        }
+                    },
+                    {
+                        "name": "HTTPS1",
+                        "properties": {
+                            "priority": 1002,
+                            "sourceAddressPrefix": "*",
+                            "protocol": "TCP",
+                            "destinationPortRange": "443",
+                            "access": "Allow",
+                            "direction": "Outbound",
+                            "sourcePortRange": "*",
+                            "destinationAddressPrefix": "*"
+                        }
+                    },
+                    {
+                        "name": "Jupyter",
+                        "properties": {
+                            "priority": 1010,
+                            "protocol": "TCP",
+                            "access": "Allow",
+                            "direction": "Inbound",
+                            "sourceApplicationSecurityGroups": [],
+                            "destinationApplicationSecurityGroups": [],
+                            "sourceAddressPrefix": "*",
+                            "sourcePortRange": "*",
+                            "destinationAddressPrefix": "*",
+                            "destinationPortRange": "9999"
+                        }
+                    },
+                    {
+                        "name": "MSSQL",
+                        "properties": {
+                            "priority": 1020,
+                            "protocol": "TCP",
+                            "access": "Allow",
+                            "direction": "Inbound",
+                            "sourceApplicationSecurityGroups": [],
+                            "destinationApplicationSecurityGroups": [],
+                            "sourceAddressPrefix": "*",
+                            "sourcePortRange": "*",
+                            "destinationAddressPrefix": "*",
+                            "destinationPortRange": "1433"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.Network/publicIpAddresses",
+            "apiVersion": "2019-02-01",
+            "name": "[parameters('dataScienceVmSettings').publicIpName]",
+            "location": "[parameters('dataScienceVmSettings').location]",
+            "sku": {
+                "name": "[parameters('dataScienceVmSettings').publicIpAddressSku]"
+            },
+            "properties": {
+                "publicIpAllocationMethod": "[parameters('dataScienceVmSettings').publicIpAddressType]",
+                 "dnsSettings": {
+                    "domainNameLabel": "[parameters('dataScienceVmSettings').dnsLabelPrefix]"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Compute/virtualMachines",
+            "apiVersion": "2018-10-01",
+            "name": "[parameters('dataScienceVmSettings').dataScienceVmName]",
+            "location": "[parameters('dataScienceVmSettings').location]",
+            "dependsOn": [
+                "[concat('Microsoft.Network/networkInterfaces/',parameters('dataScienceVmSettings').dataScienceVmNicName)]",
+                "[concat('Microsoft.Storage/storageAccounts/',parameters('dataScienceVmSettings').diagStgAccName)]"
+            ],
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "[parameters('dataScienceVmSettings').datascienceVmsize]"
+                },
+                "storageProfile": {
+                    "osDisk": {
+                        "createOption": "fromImage",
+                        "managedDisk": {
+                            "storageAccountType": "[parameters('dataScienceVmSettings').osDiskType]"
+                        }
+                    },
+                    "imageReference": {
+                        "publisher": "[parameters('dataScienceVmSettings').publisher]",
+                        "offer": "[parameters('dataScienceVmSettings').offer]",
+                        "sku": "[parameters('dataScienceVmSettings').sku]",
+                        "version": "[parameters('dataScienceVmSettings').version]"
+                    }
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('dataScienceVmSettings').dataScienceVmNicName)]"
+                        }
+                    ]
+                },
+                "osProfile": {
+                    "computerName": "[parameters('dataScienceVmSettings').dataScienceVmName]",
+                    "adminUsername": "[parameters('dataScienceVmSettings').dataScienceVmUsername]",
+                    "adminPassword": "[parameters('dataScienceVmSettings').dataScienceVmPassword]",
+                    "windowsConfiguration": {
+                        "enableAutomaticUpdates": true,
+                        "provisionVmAgent": true
+                    }
+                },
+                "diagnosticsProfile": {
+                    "bootDiagnostics": {
+                        "enabled": true,
+                        "storageUri": "[concat('https://', parameters('dataScienceVmSettings').diagStgAccName, '.blob.core.windows.net/')]"
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2018-07-01",
+            "name": "[parameters('dataScienceVmSettings').diagStgAccName]",
+            "location": "[parameters('dataScienceVmSettings').location]",
+            "sku": {
+                "name": "[parameters('dataScienceVmSettings').diagStgAccType]"
+            },
+            "kind": "[parameters('dataScienceVmSettings').diagStgAccKind]",
+            "properties": {}
+        }
+    ],
+    "outputs": {
+        "adminUsername": {
+            "type": "String",
+            "value": "[parameters('dataScienceVmSettings').dataScienceVmUsername]"
+        },
+        "hostname": {
+            "type": "string",
+            "value": "[reference(parameters('dataScienceVmSettings').publicIpName).dnsSettings.fqdn]"
+         }
+    }
+}
