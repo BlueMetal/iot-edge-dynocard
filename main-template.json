@@ -22,10 +22,10 @@
                 "No"
             ],
             "metadata": {
-                "description": "Choose Yes/No to add Modbus VM as part of Solution deployment, for more information about the Modbus VM navigate to https://github.com/nvtuluva/iot-edge-dynocard/wiki/Deployment-Guide in wiki"
+                "description": "Choose Yes/No to add Modbus VM as part of Solution deployment,for more information about the Modbus VM navigate to https://github.com/nvtuluva/iot-edge-dynocard/wiki/Deployment-Guide in wiki"
             }
         },
-        "MLVM": {
+        "dataScienceVM": {
             "type": "string",
             "defaultValue": "",
             "allowedValues": [
@@ -33,7 +33,31 @@
                 "No"
             ],
             "metadata": {
-                "description": "Choose Yes/No to add ML VM as part of Solution deployment, for more information about the ML VM navigate to https://github.com/nvtuluva/iot-edge-dynocard/wiki/Deployment-Guide in wiki"
+                "description": "Choose Yes/No to add dataScienceVM as part of Solution deployment if you required to train the model select the option yes or if model is already trained select the option no, for more information about the ML VM navigate to https://github.com/nvtuluva/iot-edge-dynocard/wiki/Deployment-Guide in wiki"
+            }
+        },
+        "dataScienceVmSize": {
+            "type": "string",
+            "defaultValue": "Standard_B2s",
+            "allowedValues": [
+                "Standard_B2s",
+                "Standard_B2ms",
+                "Standard_B4ms",
+                "Standard_B8ms",
+                "Standard_DS1",
+                "Standard_DS2",
+                "Standard_DS3",
+                "Standard_DS4",
+                "Standard_DS11",
+                "Standard_DS12",
+                "Standard_DS13",
+                "Standard_DS14",
+                "Standard_DS1_v2",
+                "Standard_DS2_v2",
+                "Standard_DS3_v2"
+            ],
+            "metadata": {
+                "description": "select Data Science Virtual Machine size if you select dataScienceVm as yes"
             }
         },
         "dataLakelocation": {
@@ -47,20 +71,6 @@
             ],
             "metadata": {
                 "description": "Choose location for Data Lake Store, for more information about the Data Lake Store navigate to https://github.com/nvtuluva/iot-edge-dynocard/wiki/Deployment-Guide in wiki"
-            }
-        },
-        "machineLearningLocation": {
-            "type": "string",
-            "defaultValue": "eastus2",
-            "allowedValues": [
-                "eastus2",
-                "australiaeast",
-                "southeastasia",
-                "westcentralus",
-                "westeurope"
-            ],
-            "metadata": {
-                "description": "Choose location for machine learning account, for more information about the machine learning location navigate to https://github.com/nvtuluva/iot-edge-dynocard/wiki/Deployment-Guide in wiki"
             }
         },
         "geo-paired-primary-region": {
@@ -168,7 +178,7 @@
             "type": "securestring",
             "defaultValue": "",
             "metadata": {
-                "description": "Please provide VM's login password, This Username will be used for Edge VM,Simulator VM and MachineLearning VM in further"
+                "description": "Please provide VM's login password, This Username will be used for Edge VM,Simulator VM and DataScience VM in further"
             }
         },
         "webAppBuildfileUrl": {
@@ -179,10 +189,10 @@
             }
         },
         "storageUri": {
-            "type":"string",
-            "defaultValue":"https://projectiot.blob.core.windows.net/oilgas-iot/db4cards.bacpac",
-            "metadata":{
-                "description":"Please provide Storage Blob url, This will be used to import it into the sql db"
+            "type": "string",
+            "defaultValue": "https://projectiot.blob.core.windows.net/oilgas-iot/db4cards.bacpac",
+            "metadata": {
+                "description": "Please provide Storage Blob url, This will be used to import it into the sql db"
             }
         },
         "plcsimulatorv1": {
@@ -206,14 +216,13 @@
                 "description": "Please Provide the Storage Url of plc simulator 2,This will be used in dynocard vm extension"
             }
         },
-        "deviceName":{
-            "type":"string",
+        "deviceName": {
+            "type": "string",
             "defaultValue": "",
-            "metadata":{
+            "metadata": {
                 "description": "Please provide the IoTHub Edge device name that you want create"
             }
         }
-        
     },
     "variables": {
         "sqlServer": {
@@ -369,36 +378,51 @@
             "plcsimulatorv2": "[parameters('plcsimulatorv2')]",
             "dynocard": "[concat(variables('baseUrl'),'builds/DynoCard.vbs')]"
         },
-        "azuremlSettings": {
-            "mlVmName": "AzuremlVM",
+        "dataScienceVmSettings": {
+            "dataScienceVmNicName": "datasciencenic",
+            "dataScienceVmNsgName": "datasciencensg",
             "location": "[parameters('geo-paired-primary-region')]",
-            "networkInterfaceName": "ml-nic",
-            "mlUsername": "[parameters('vmsUsername')]",
-            "mlPassword": "[parameters('vmsPassword')]",
-            "imagePublisher": "MicrosoftWindowsDesktop",
-            "imageOffer": "Windows-10",
-            "sku": "RS3-Pro",
-            "dnsLabelPrefix": "[concat('mldns',variables('suffix'))]",
-            "publicIpAddressName": "[concat('mlpip',variables('suffix'))]",
+            "dataScienceVmName": "[concat('datavm',variables('suffix'))]",
+            "osDiskType": "Premium_LRS",
+            "publisher": "microsoft-dsvm",
+            "offer": "dsvm-windows",
+            "sku": "server-2016",
+            "version": "latest",
+            "datascienceVmsize": "[parameters('dataScienceVmSize')]",
             "publicIpAddressSku": "Basic",
-            "networkSecurityGroupName": "ml-nsg",
             "publicIpAddressType": "Static",
-            "mlUrl": "[concat(variables('baseUrl'),'scripts/customscript.ps1')]",
-            "installdocker": "[concat(variables('baseUrl'),'scripts/installdocker.ps1')]"
+            "publicIpName": "[concat('datascienceip',variables('suffix'))]",
+            "diagStgAccType": "Standard_LRS",
+            "diagStgAccName": "[concat('datasciencestg',variables('suffix'))]",
+            "diagStgAccKind": "Storage",
+            "dnsLabelPrefix": "[concat('mldsvm',variables('suffix'))]",
+            "dataScienceVmUsername": "[parameters('vmsUsername')]",
+            "dataScienceVmPassword": "[parameters('vmsPassword')]"
         },
         "machineLearning": {
-            "storageAccountName": "[concat('oilgasstorage',variables('suffix'))]",
-            "expaccname": "[concat('oilgasexpacc',variables('suffix'))]",
-            "workspacename": "[concat('mlworkspace',variables('suffix'))]",
-            "location": "[parameters('machineLearningLocation')]",
-            "seatCount": 2,
-            "modelManagementAccountName": "[concat('oilgasmodelmanage',variables('suffix'))]",
-            "modelManagementAccountSkuName": "DEVTEST",
-            "modelManagementAccountSkuTier": "DEVTEST",
-            "rgname": "[resourceGroup().name]"
+            "location": "[resourceGroup().location]",
+            "machineLearningApiVersion": "2018-11-19",
+            "mlworkspaceName": "[concat('mlworkspace', variables('suffix'))]",
+            "keyVaultName": "[concat('mlkeyvault', variables('suffix'))]",
+            "keyVaultApiVersion": "2015-06-01",
+            "storageApiVersion": "2016-12-01",
+            "newStorageAccountType": "Standard_LRS",
+            "newStorageAccountName": "[concat('mlstorage', variables('suffix'))]",
+            "appInsightsType": "web",
+            "appInsightsKind": "web",
+            "appInsightsName": "[concat('mlappinsight', variables('suffix'))]",
+            "appInsightsLocation": "[parameters('appInsightsLocation')]",
+            "appInsightsApiVersion": "2015-05-01",
+            "keyVaultId": "[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultName'))]",
+            "storageAccountId": "[resourceId('Microsoft.Storage/storageAccounts', variables('newStorageAccountName'))]",
+            "appInsightsId": "[resourceId('Microsoft.Insights/components', variables('appInsightsName'))]",
+            "keyVaultTenant": "[subscription().tenantId]"
         },
-        "baseUrl": "https://raw.githubusercontent.com/nvtuluva/iot-edge-dynocard/master/",
+        "baseUrl": "https://raw.githubusercontent.com/nvtuluva/iot-edge-dynocard/ml/",
         "suffix": "[substring(uniqueString(resourceGroup().id), 0, 5)]",
+        "keyVaultName": "[concat('mlkeyvault', variables('suffix'))]",
+        "newStorageAccountName": "[concat('mlstorage', variables('suffix'))]",
+        "appInsightsName": "[concat('mlappinsight', variables('suffix'))]",
         "serviceBusNamespaceName": "[concat('snamespace',variables('suffix'))]",
         "serviceBusNamespaceNameDr": "[concat('snamespacedr',variables('suffix'))]",
         "serviceBusDefaultSASKeyName": "RootManageSharedAccessKey",
@@ -430,7 +454,7 @@
         {
             "name": "Vnet",
             "type": "Microsoft.Resources/deployments",
-            "condition": "[or(equals(parameters('Edge VM + Simulator VM'), 'Yes'),equals(parameters('MLVM'),'Yes'))]",
+            "condition": "[or(equals(parameters('Edge VM + Simulator VM'), 'Yes'),equals(parameters('dataScienceVM'),'Yes'))]",
             "apiVersion": "[variables('apiVersion')]",
             "properties": {
                 "mode": "Incremental",
@@ -587,25 +611,25 @@
             }
         },
         {
-            "name": "AzuremlVm",
+            "name": "DataScienceVm",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "[variables('apiVersion')]",
-            "condition": "[equals(parameters('MLVM'), 'Yes')]",
+            "condition": "[equals(parameters('dataScienceVM'), 'Yes')]",
             "dependsOn": [
                 "Vnet"
             ],
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[concat(variables('baseUrl'),'nested/azuremlvm.json')]",
+                    "uri": "[concat(variables('baseUrl'),'nested/datascience-vm.json')]",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
                     "vnetSettings": {
                         "value": "[variables('vnetSettings')]"
                     },
-                    "azuremlSettings": {
-                        "value": "[variables('azuremlSettings')]"
+                    "dataScienceVmSettings": {
+                        "value": "[variables('dataScienceVmSettings')]"
                     }
                 }
             }
