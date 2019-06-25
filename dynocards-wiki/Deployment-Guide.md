@@ -785,24 +785,33 @@ Insert a new cell and paste the below code to create the experiment
  
 Create a new cell and paste the below code.
 
+
 run = experiment.start_logging()
 
+
 #import libaries
+
 from sklearn.svm import SVC
+
 import pickle
 
 #features - height, width, and shoe size
+
 X = [[181, 80, 44], [177, 70, 43], [160, 60, 38], [154, 54, 37], [166, 65, 40], [190, 90, 47], [175, 64, 39],
      [177, 70, 40], [159, 55, 37], [171, 75, 42], [181, 85, 43]]
 
+
 #category - male | female
+
 Y = ['male', 'male', 'female', 'female', 'male', 'male', 'female', 'female', 'female', 'male', 'male']
+
 
 #classify the data
 
 clf = SVC()
 
 clf = clf.fit(X, Y)
+
 
 #predict a value & show accuracy
 
@@ -814,9 +823,11 @@ print('Predicted value:', clf.predict(X_old))
 
 print('Accuracy', clf.score(X,Y))
 
+
 #create the outputs folder
 
 #os.makedirs('./outputs', exist_ok=True)
+
 
 #export model
 
@@ -828,6 +839,7 @@ pickle.dump(clf, f)
 
 f.close()
 
+
 #import model
 
 print('')
@@ -838,6 +850,7 @@ f2 = open('./model.pkl', 'rb')
 
 clf2 = pickle.load(f2)
 
+
 #predict new value
 
 X_new = [[154, 54, 35]]
@@ -845,6 +858,7 @@ X_new = [[154, 54, 35]]
 print('New Sample:', X_new)
 
 print('Predicted class:', clf2.predict(X_new))
+
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d038.png) 
 
@@ -1046,33 +1060,46 @@ from azureml.webservice_schema.sample_definition import SampleDefinition
 
 #from azureml.api.realtime.services import generate_schema
 
+
 from inference_schema.schema_decorators import input_schema, output_schema
 
 from inference_schema.parameter_types.numpy_parameter_type import NumpyParameterType
 
+#
+
 #Init routine - Web service
 
+#
+
 def init():  
+
 
    #Load module
    
    from sklearn.externals import joblib
+   
 
    #Variables
    
    global model
+   
     
    #Load model
    
    model = joblib.load('model.pkl')
 
+
+*#*
 #Run routine - Web service
+*#*
+
 
 def run(input_str):
 
    #Load module
    
    import json
+   
 
    #What type of input
    
@@ -1084,6 +1111,7 @@ def run(input_str):
    
    #print(input_str)
 
+
    #Convert to dictionary
    
    if type(input_str) is str:
@@ -1093,22 +1121,28 @@ def run(input_str):
   else:
     
    input = input_str
+   
 
    #Fake a prediction
    
    prediction = write_msg(input['Id'], input['Timestamp']);
+   
 
    #Return json
    
    return prediction
 
+
+*#*
 #Read Input Message Rountine - Read in mod bus sample message
+*#*
 
 def read_msg():
 
    #Load module
    
    import json
+   
 
    #Create some json input
    
@@ -1139,12 +1173,17 @@ def read_msg():
    in1 += '  "Position": 145 }]'
    
    in1 += '} '
+   
 
    #Return sample message
    
    return json.loads(in1)
-
+   
+   
+*#*
 #Number 2 Class Rountine - Classify the anomaly.
+*#*
+
 
 def number_to_class(argument):
    
@@ -1179,15 +1218,20 @@ def number_to_class(argument):
    return switcher.get(argument, "Undefined");
 
 
+*#*
 #Write Output Message Rountine - Randomly classify the data.
+*#*
+
 
 def write_msg(id, stamp):
+
 
    #Load module
    
    import json
    
    import random;
+
 
    #Five percent left tail
    
@@ -1196,6 +1240,7 @@ def write_msg(id, stamp):
    #Grab a number 1.0 to 100.0
    
    pct1 = random.uniform(1, 100);
+   
 
    #Create some json output
    
@@ -1204,6 +1249,7 @@ def write_msg(id, stamp):
    out1 += '{ "Id": "' + str(id) + '", '
    
    out1 += '"Timestamp": "'+ stamp + '", '
+   
 
    #Report a anomaly?
    
@@ -1214,6 +1260,7 @@ def write_msg(id, stamp):
    else:
    
    out1 += '"Anomaly": "False", "Class": "Full Pump" }'
+   
 
    #Choose random issue
 
@@ -1223,27 +1270,35 @@ pct2 = int(random.uniform(1, 12)) + 1;
 
 out1 += '"Class": "' + number_to_class(pct2) + '" }'
 
+
    #Return sample message
 
 return json.loads(out1)
 
+
+*#*
 #Main routine - Test init() & run()
+*#*
 
 def main():
+
 
    #Turn on data collection debug mode to view output in stdout
    
    os.environ["AML_MODEL_DC_DEBUG"] = 'true';
    
    os.environ["AML_MODEL_DC_STORAGE_ENABLED"] = 'true';
+   
 
    #create the outputs folder
    
    os.makedirs('./outputs', exist_ok=True);
+   
 
    #Read in json, mod bus sample msg
    
    input_msg = read_msg();
+   
 
    #Debugging - remove when deploying
    
@@ -1253,13 +1308,16 @@ def main():
    
    #print (input_msg);
 
+
    #Test init function
    
    init();
+   
 
    #Write out json, sample response msg
    
    output_msg = run(input_msg);
+   
 
    #Debugging - remove when deploying
    
@@ -1269,6 +1327,7 @@ def main():
    
    print(output_msg);
 
+
    #Sample input string
    
    input_str = {"input_str": SampleDefinition(DataTypes.STANDARD, input_msg)};
@@ -1276,6 +1335,7 @@ def main():
    #Generate swagger document for web service
    
    generate_schema(run_func=run, inputs=input_str, filepath='./outputs/service_schema.json');
+   
    
 #Call main
 
