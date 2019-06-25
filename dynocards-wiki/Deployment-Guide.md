@@ -1361,12 +1361,12 @@ Navigate to the Experiments blade to see the created experiment.
 Click on **score4dc** experiment to see the graph.
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d084.png)
+
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d085.png)
  
 ### 6.10 Update myenv.yaml file
 
 Go back to **Data science VM** and click on Home tab of Jupyter server
-
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d085.png)
  
 Click on **myenv.yaml** and replace the below content in the file.
 
