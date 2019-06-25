@@ -1065,11 +1065,11 @@ from inference_schema.schema_decorators import input_schema, output_schema
 
 from inference_schema.parameter_types.numpy_parameter_type import NumpyParameterType
 
-#
+*#*
 
 #Init routine - Web service
 
-#
+*#*
 
 def init():  
 
@@ -1090,7 +1090,9 @@ def init():
 
 
 *#*
+
 #Run routine - Web service
+
 *#*
 
 
@@ -1134,7 +1136,9 @@ def run(input_str):
 
 
 *#*
+
 #Read Input Message Rountine - Read in mod bus sample message
+
 *#*
 
 def read_msg():
@@ -1181,7 +1185,9 @@ def read_msg():
    
    
 *#*
+
 #Number 2 Class Rountine - Classify the anomaly.
+
 *#*
 
 
@@ -1219,7 +1225,9 @@ def number_to_class(argument):
 
 
 *#*
+
 #Write Output Message Rountine - Randomly classify the data.
+
 *#*
 
 
@@ -1277,7 +1285,9 @@ return json.loads(out1)
 
 
 *#*
+
 #Main routine - Test init() & run()
+
 *#*
 
 def main():
@@ -1447,21 +1457,21 @@ dependencies:
 
 #Currently Azure ML only supports 3.5.2 and later.
 
-- python=3.6.2
+-python=3.6.2
 
-- pip:
+-pip:
 
 #Required packages for AzureML execution, history, and data preparation.
 
-  - azureml-defaults
+  -azureml-defaults
   
-  - scikit-learn==0.20.0
+  -scikit-learn==0.20.0
   
-  - azureml.webservice-schema
+  -azureml.webservice-schema
   
-  - inference-schema[numpy-support]
+  -inference-schema[numpy-support]
   
-  - azureml.datacollector==0.1.0a13
+  -azureml.datacollector==0.1.0a13
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d086.png)
  
