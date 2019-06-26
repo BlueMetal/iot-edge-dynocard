@@ -1517,19 +1517,14 @@ Paste the below code in the next cell.
 
 **from azureml.core.image import ContainerImage**
 
-**image_config = ContainerImage.image_configuration(execution_script="score4dc.py",**
+**image_config = ContainerImage.image_configuration(execution_script="score4dc.py",
+                                                    runtime="python",
+                                                    conda_file="myenv.yml",
+                                                    dependencies=["inputs.json", "model.pkl", "service_schema.json", "train4dc.py"],
+                                                    description="image for model",
+                                                    enable_gpu=True
+                                                    )**
 
-                                                    **runtime="python",**
-						    
-                                                    **conda_file="myenv.yml",**
-						    
-                                                    **dependencies=["inputs.json", "model.pkl", "service_schema.json", "train4dc.py"],**
-                                                    
-						    **description="image for model",**
-                                                    
-						    **enable_gpu=True**
-                                                    
-						    **)**
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d092.png)
  
@@ -1547,20 +1542,17 @@ Paste the below code in the next cell.
  
 Paste the below code in the next cell.
 
-**%%time
-from azureml.core.webservice import Webservice
+**%%time**
 
-service = Webservice.deploy_from_model(workspace=ws,
-                                       
-				        name='anomaly-svc',
-				       
-                                        deployment_config=aciconfig,
-				       
-                                        models=[model],
-				       
-                                        image_config=image_config)
-				       
-service.wait_for_deployment(show_output=True)**
+**from azureml.core.webservice import Webservice**
+
+**service = Webservice.deploy_from_model(workspace=ws,**
+                                        **name='anomaly-svc',**                                      
+                                        **deployment_config=aciconfig,**
+                                        **models=[model],**
+				        **image_config=image_config)**
+ 
+ **service.wait_for_deployment(show_output=True)**
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d094.png)
  
