@@ -1073,7 +1073,7 @@ The first line in the cell **“%%writefile score4dc.py”** writes whole conten
  
 **Now, comment the first line of the script cell and run it again.**
 
-#writefile score4dc.py
+            #writefile score4dc.py
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d076.png)
  
