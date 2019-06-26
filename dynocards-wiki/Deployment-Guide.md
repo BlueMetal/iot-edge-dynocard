@@ -1513,13 +1513,20 @@ model = Model(ws, model_name)**
 Paste the below code in the next cell.
 
 **from azureml.core.image import ContainerImage
+
 image_config = ContainerImage.image_configuration(execution_script="score4dc.py",
+
                                                     runtime="python",
+						    
                                                     conda_file="myenv.yml",
+						    
                                                     dependencies=["inputs.json", "model.pkl", "service_schema.json", "train4dc.py"],
-                                                    description="image for model",
-                                                    enable_gpu=True
-                                                    )**
+                                                    
+						    description="image for model",
+                                                    
+						    enable_gpu=True
+                                                    
+						    )**
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d092.png)
  
@@ -1527,8 +1534,11 @@ Paste the below code in the next cell.
 
 
 **from azureml.core.webservice import AciWebservice
-aciconfig = AciWebservice.deploy_configuration(cpu_cores=1, 
+
+aciconfig = AciWebservice.deploy_configuration(cpu_cores=1,
+
                                                memory_gb=1, 
+					       
                                                description='Predict anomaly')**
 					       
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d093.png)
@@ -1538,11 +1548,17 @@ Paste the below code in the next cell.
 
 **%%time
 from azureml.core.webservice import Webservice
+
 service = Webservice.deploy_from_model(workspace=ws,
+
                                        name='anomaly-svc',
+				       
                                        deployment_config=aciconfig,
+				       
                                        models=[model],
+				       
                                        image_config=image_config)
+				       
 service.wait_for_deployment(show_output=True)**
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d094.png)
@@ -1563,10 +1579,14 @@ Paste the below code in the next cell.
 Paste the below code in the next cell.
 
 **import requests
+
 input_data = "{ \"Id\": 0, \"Timestamp\": \"2018-04-04T22:42:59+00:00\", \"NumberOfPoints\": 400, \"MaxLoad\": 19500, \"MinLoad\": 7500, \"StrokeLength\": 1200, \"StrokePeriod\": 150, \"CardType\": 0,\"CardPoints\": [{\"Load\": 11744,\"Position\": 145 }] }"
 headers = {'Content-Type':'application/json'}
+
 resp = requests.post(service.scoring_uri, input_data, headers=headers)
+
 print("POST to url", service.scoring_uri)
+
 print("prediction:", resp.text)
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d097.png)
