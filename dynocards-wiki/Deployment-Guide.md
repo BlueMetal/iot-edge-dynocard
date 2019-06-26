@@ -1075,18 +1075,18 @@ The first line in the cell **“%%writefile score4dc.py”** writes whole conten
 
 #writefile score4dc.py
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d075.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d076.png)
  
 Now you will get the following output.
 
 {'Id': '0', 'Timestamp': '2018-04-04T22:42:59+00:00', 'Anomaly': 'False', 'Class': 'Full Pump'}
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d076.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d077.png)
  
 
 Run the next cells “**runscore4dc**”, “**experiment**” and “**runscore4dc.complete()**”
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d077.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d077b.PNG)
  
 #### 6.9.1 Check the service_schema.json file
 
