@@ -75,15 +75,62 @@ This Document explains how to use the Dyno Card solution, specifically it explai
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/ml11.png)
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/ml12.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/dgd09.PNG)
 
 7. In line number 67, **mlAlertModule** update the image value with copied location value from machine learning workspace before.
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/ml13.png)
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/ml14.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/dgd10.PNG)
 
-8. After that Save the file and run the below command to restart the iotedge service.
+8. After that Save the file
+9. run the below command to install iot extension
+
+**az extension add --name azure-cli-iot-ext**
+
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/dgd01a.PNG)
+
+10. Login to your azure account using the below command.
+
+**az login -t <tenantid>**
+
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/dgd01b.PNG)
+
+11. Navigate to device login page and enter the code
+
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/dgd02.PNG)
+
+12.You will be login to your Azure Account.
+
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/dgd03.PNG)
+
+13. set you subscription with the below command
+
+**az account set -s <subscription id>**
+    
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/dgd04.PNG)
+
+14. Deploy the modules on IoT Edge using below command
+
+**az iot edge set-modules -d <IoT Edge DeviceName> -n <IoThubName> -k deployment.json**
+    
+15. To copy the IoT Hub name, Go to resource group click on IoT Hub and copy the name
+
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/dgd05.PNG)
+
+16. Navigate to IoT Edge blade to copy the IoT Edge Device Name.
+
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/dgd06.PNG)
+
+17. Deploy the modules on IoT Edge 
+
+**az iot edge set-modules -d <IoT Edge DeviceName> -n <IoThubName> -k deployment.json**
+    
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/dgd07.PNG) 
+
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/dgd08.PNG)
+
+18.run the below command to restart the iotedge service.
 
 **sudo systemctl restart iotedge**
 
