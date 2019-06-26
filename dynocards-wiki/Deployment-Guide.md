@@ -1171,7 +1171,6 @@ Paste the below code in the next cell.
 **from azureml.core.model import Model**
 
 **model_name = "anomaly_detect"**
-
 **model = Model(ws, model_name)**
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d091.png)
