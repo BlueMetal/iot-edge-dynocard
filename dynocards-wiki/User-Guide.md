@@ -92,7 +92,9 @@ This Document explains how to use the Dyno Card solution, specifically it explai
 
 10. Login to your azure account using the below command.
 
-az login -t <tenantid>
+**az login -t tenantid**
+
+**az login -t xxxxxxxxxx**
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/dgd01b.PNG)
 
@@ -106,13 +108,15 @@ az login -t <tenantid>
 
 13. set you subscription with the below command
 
-**az account set -s <subscription id>**
+**az account set -s subscription id**
+
+**az account set -s xxxxxxxxxxxxxxx**
     
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/dgd04.PNG)
 
 14. Deploy the modules on IoT Edge using below command
 
-**az iot edge set-modules -d <IoT Edge DeviceName> -n <IoThubName> -k deployment.json**
+**az iot edge set-modules -d <IoT_Edge_DeviceName> -n <IoT_Hub_Name> -k deployment.json**
     
 15. To copy the IoT Hub name, Go to resource group click on IoT Hub and copy the name
 
@@ -124,7 +128,7 @@ az login -t <tenantid>
 
 17. Deploy the modules on IoT Edge 
 
-**az iot edge set-modules -d <IoT Edge DeviceName> -n <IoThubName> -k deployment.json**
+**az iot edge set-modules -d iotedgedev -n iothub43ysm -k deployment.json**
     
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/dgd07.PNG) 
 
