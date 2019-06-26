@@ -1536,11 +1536,9 @@ Paste the below code in the next cell.
 **from azureml.core.webservice import AciWebservice
 
 aciconfig = AciWebservice.deploy_configuration(cpu_cores=1,
-
-                                               memory_gb=1, 
-					       
+                                               memory_gb=1,
                                                description='Predict anomaly')**
-					       
+                                            					       
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d093.png)
 
  
@@ -1550,14 +1548,14 @@ Paste the below code in the next cell.
 from azureml.core.webservice import Webservice
 
 service = Webservice.deploy_from_model(workspace=ws,
-
-                                       name='anomaly-svc',
+                                       
+				        name='anomaly-svc',
 				       
-                                       deployment_config=aciconfig,
+                                        deployment_config=aciconfig,
 				       
-                                       models=[model],
+                                        models=[model],
 				       
-                                       image_config=image_config)
+                                        image_config=image_config)
 				       
 service.wait_for_deployment(show_output=True)**
 
