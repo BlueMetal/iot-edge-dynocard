@@ -1571,16 +1571,17 @@ Paste the below code in the next cell.
  
 Paste the below code in the next cell.
 
-**import requests
+**import requests**
 
-input_data = "{ \"Id\": 0, \"Timestamp\": \"2018-04-04T22:42:59+00:00\", \"NumberOfPoints\": 400, \"MaxLoad\": 19500, \"MinLoad\": 7500, \"StrokeLength\": 1200, \"StrokePeriod\": 150, \"CardType\": 0,\"CardPoints\": [{\"Load\": 11744,\"Position\": 145 }] }"
-headers = {'Content-Type':'application/json'}
+**input_data = "{ \"Id\": 0, \"Timestamp\": \"2018-04-04T22:42:59+00:00\", \"NumberOfPoints\": 400, \"MaxLoad\": 19500, \"MinLoad\": 7500, \"StrokeLength\": 1200, \"StrokePeriod\": 150, \"CardType\": 0,\"CardPoints\": [{\"Load\": 11744,\"Position\": 145 }] }"**
 
-resp = requests.post(service.scoring_uri, input_data, headers=headers)
+**headers = {'Content-Type':'application/json'}**
 
-print("POST to url", service.scoring_uri)
+**resp = requests.post(service.scoring_uri, input_data, headers=headers)**
 
-print("prediction:", resp.text)
+**print("POST to url", service.scoring_uri)**
+
+**print("prediction:", resp.text)**
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d097.png)
 
