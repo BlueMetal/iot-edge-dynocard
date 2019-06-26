@@ -1,90 +1,68 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
         "machineLearning": {
-            "type":"object"
-        }        
+            "type": "object"
+        }
     },
     "variables": {},
     "resources": [
         {
-            "type": "Microsoft.MachineLearningExperimentation/accounts",
-            "apiVersion": "2017-05-01-preview",
-            "name": "[parameters('machineLearning').expaccname]",
+            "type": "Microsoft.MachineLearningServices/workspaces",
+            "apiVersion": "[parameters('machineLearning').machineLearningApiVersion]",
+            "name": "[parameters('machineLearning').mlworkspaceName]",
             "location": "[parameters('machineLearning').location]",
             "dependsOn": [
-                "[resourceId('Microsoft.Storage/storageAccounts', parameters('machineLearning').storageAccountName)]"
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('machineLearning').newStorageAccountName)]",
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('machineLearning').keyVaultName)]",
+                "[resourceId('Microsoft.Insights/components', parameters('machineLearning').appInsightsName)]"
             ],
+            "identity": {
+                "type": "systemAssigned"
+            },
             "properties": {
-                "storageAccount": {
-                    "storageAccountId": "[resourceId('Microsoft.Storage/storageAccounts', parameters('machineLearning').storageAccountName)]",
-                    "accessKey": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('machineLearning').storageAccountName), '2016-12-01').keys[0].value]"
-                },
-                "seats": "[parameters('machineLearning').seatCount]"
+                "friendlyName": "[parameters('machineLearning').mlworkspaceName]",
+                "keyVault": "[parameters('machineLearning').keyVaultId]",
+                "storageAccount": "[parameters('machineLearning').storageAccountId]",
+                "applicationInsights": "[parameters('machineLearning').appInsightsId]"
             }
         },
-        {
-            "type": "Microsoft.MachineLearningExperimentation/accounts/workspaces",
-            "apiVersion": "2017-05-01-preview",
-            "name": "[concat(parameters('machineLearning').expaccname, '/', parameters('machineLearning').workspacename)]",
-            "location": "[parameters('machineLearning').location]",
-            
-            "dependsOn": [
-                "[resourceId('Microsoft.MachineLearningExperimentation/accounts', parameters('machineLearning').expaccname)]"
-            ],
-            "properties": {
-                "friendlyName": "[parameters('machineLearning').workspacename]"
-            }
-        },
-        
         {
             "type": "Microsoft.Storage/storageAccounts",
-            "apiVersion": "2016-12-01",
-            "name": "[parameters('machineLearning').storageAccountName]",
+            "apiVersion": "[parameters('machineLearning').storageApiVersion]",
+            "name": "[parameters('machineLearning').newStorageAccountName]",
             "location": "[parameters('machineLearning').location]",
-            
             "sku": {
-                "name": "Standard_LRS"
+                "name": "[parameters('machineLearning').newStorageAccountType]"
             },
-            "kind": "Storage",
-            "tags": {
-                "mlteamAccount": "[parameters('machineLearning').expaccname]"
-            },
-            "properties": {
-                "networkAcls": {
-                    "bypass": "AzureServices",
-                    "virtualNetworkRules": [],
-                    "ipRules": [],
-                    "defaultAction": "Allow"
-                },
-                "supportsHttpsTrafficOnly": false,
-                "encryption": {
-                    "services": {
-                        "file": {
-                            "enabled": true
-                        },
-                        "blob": {
-                            "enabled": true
-                        }
-                    },
-                    "keySource": "Microsoft.Storage"
-                }
-            },
-            "dependsOn": []
+            "kind": "Storage"
         },
         {
-            "apiVersion": "2017-09-01-preview",
-            "name": "[parameters('machineLearning').modelManagementAccountName]",
+            "type": "Microsoft.KeyVault/vaults",
+            "apiVersion": "[parameters('machineLearning').keyVaultApiVersion]",
+            "name": "[parameters('machineLearning').keyVaultName]",
             "location": "[parameters('machineLearning').location]",
-            "type": "Microsoft.MachineLearningModelManagement/accounts",
             "properties": {
-                "description": ""
-            },
-            "sku": {
-                "name": "[parameters('machineLearning').modelManagementAccountSkuName]",
-                "tier": "[parameters('machineLearning').modelManagementAccountSkuTier]",
-                "capacity": 1
+                "accessPolicies": [],
+                "enabledForDeployment": true,
+                "enabledForTemplateDeployment": true,
+                "enabledForVolumeEncryption": true,
+                "sku": {
+                    "name": "Standard",
+                    "family": "A"
+                },
+                "tenantId": "[parameters('machineLearning').keyVaultTenant]"
+            }
+        },
+        {
+            "type": "Microsoft.Insights/components",
+            "apiVersion": "[parameters('machineLearning').appInsightsApiVersion]",
+            "name": "[parameters('machineLearning').appInsightsName]",
+            "location": "[parameters('machineLearning').appInsightsLocation]",
+            "kind": "[parameters('machineLearning').appInsightsKind]",
+            "properties": {
+                "Application_Type": "[parameters('machineLearning').appInsightsType]"
             }
         }
     ]

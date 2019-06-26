@@ -2,20 +2,20 @@
 
 # Oil & Gas
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/oil%26gas-gettingstarted.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/oil%26gas-gettingstarted.png)
 
 **Table of Contents** 
 
-- [1 Introduction](#1-introduction)
+- [1.0 Introduction](#10-introduction)
     - [1.1 Overview](#11-overview)
     - [1.2 IoT Solution Summary](#12-iot-solution-summary)
         - [1.2.1 Highlights](#121-highlights)
         - [1.2.2 About the Solution](#122-about-the-solution)
-- [2 IoT Solutions Automation and Hardening](#2-iot-solutions-automation-and-hardening)
+- [2.0 IoT Solution Automation and Hardening](#20-iot-solution-automation-and-hardening)
     - [2.1 Existing Solution](#21-existing-solution)
         - [2.1.1 Core Architecture (Current)](#211-core-architecture-(current))
     - [2.2 Automated Solution](#22-automated-solution)
-    - [2.3 Architectural Updates](#23-architectural-updates)
+    - [2.3 Architectures](#23-architectures)
         - [2.3.1 Basic Architecture](#231-basic-architecture)
         - [2.3.2 Standard Architecture](#232-standard-architecture)
         - [2.3.3 Premium Architecture](#233-premium-architecture)
@@ -32,11 +32,11 @@
         - [2.5.9 Azure SQL Database](#257-azure-sql-database)
         - [2.5.10 Power BI](#2510-power-bi)
         - [2.5.11 Azure Container Registry](#2511-azure-container-registry)
-        - [2.5.12 Machine Learning Studio](#2512-machine-learning-studio)
+        - [2.5.12 Machine Learning Service workspace](#2512-machine-learning-studio)
         - [2.5.13 Application Insights](#2512-application-insights)
         - [2.5.14 OMS Log Analytics](#2514-oms-log-analytics)
         - [2.5.15 Function App](#2515-function-app)
-- [3 Solution Types & Deployment Costs](#3-solution-types-&-deployment-costs)
+- [3.0 Solution Types and Deployment Costs](#30-solution-types-and-deployment-costs)
     - [3.1 Solutions and Associated Costs](#31-solutions-and-associated-costs)
         - [3.1.1 Basic](#311-basic)
         - [3.1.2 Standard](#312-standard)
@@ -45,18 +45,20 @@
         - [3.2.1 In terms of features](#321-in-terms-of-features)
         - [3.2.2 Solution Cost Impact](#322-solution-cost-impact)
         - [3.2.3 Estimated Monthly Cost for each Solution](#323-estimated-monthly-cost-for-each-solution)
-- [4 Further References](#4-further-references)
+- [4.0 Further References](#40-further-references)
     - [4.1 Deployment Guide](#41-deployment-guide)
     - [4.2 Admin Guide](#42-admin-guide)
     - [4.3 User Guide](#43-user-guide)
 
 
-## 1 Introduction
+## 1.0 Introduction
+
 ### 1.1 Overview
 
 Oil and Gas Companies wants to operate the sucker pumps in an Efficient, Safe, Eco – Friendly & responsible manner. Companies are using dynamometers (dyno) surveys to determine the condition of the pump operating under ground or downhole. Medium to large oil companies have thousands of these pumps scattered remotely across the world. Monitoring the dynamometers with the current setup is ideally very expensive, Time Consuming & ineffective solution.  To have Efficient & Effective solution to overcome the problem, we have come up with the Automated Solution which is Reliable, Cost Effective, Scalable & useful across the industry.
 
 ### 1.2 IoT Solution Summary
+
 #### 1.2.1 Highlights:
 
 The Rationale behind this IoT Solution specifically designed for the Oil & Gas industry is to: 
@@ -77,7 +79,7 @@ Oil and Gas companies can remotely monitor the condition of the sucker pumps.
 
 *	This Solution is beneficial to inspect thousands of sucker pumps throughout remote areas of the world by issuing alerts. Based on the alerts that are received to the cloud, the field technicians can repair the appropriate sucker pumps.
 
-## 2 IoT Solution Automation and Hardening
+## 2.0 IoT Solution Automation and Hardening
 
 ### 2.1 Existing Solution
 
@@ -102,7 +104,7 @@ Existing solution process flow is explained in following steps:
 
 The diagram below explains the Core Architecture for Oil & Gas Companies. 
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/core.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/core.png)
 
 Core Architecture components: 
 
@@ -132,9 +134,9 @@ Core Architecture components:
 
 **Note**: Please refer **section 2.5** for more details about the components.
 
-### 2.2 Automated  Solution
+### 2.2 Automated Solution
 
-The Automated IoT Solution is designed on the top of existing core solution architecture. In addition, this solution also provides Monitoring, High availability and Security.. 
+The Automated IoT Solution is designed on the top of existing core solution architecture. In addition, this solution also provides Monitoring, High availability and Security.
 
 This solution is deployed through an ARM template. This is a single click deployment which reduces manual effort when compared with the exiting solution.. 
 
@@ -158,7 +160,6 @@ In addition, this solution consists
 
 *	This solution also provides Disaster Recovery activities  IoT Hub manual failover is helpful to make the IoT Hub available in another region, when IoT Hub of one region is failed. 
 
-
 ### 2.3 Architectures
 
 #### 2.3.1 Basic Architecture:
@@ -171,7 +172,7 @@ The Basic solution will have all the core components, in addition, this solution
 
 The below is the Basic Architecture Diagram:
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/Basic.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/Basic.png)
 
 Basic Architecture comprises of following components: 
 
@@ -181,7 +182,7 @@ Basic Architecture comprises of following components:
 
 * 1-Function App 
 
-* 1-Application Insights 
+* 2-Application Insights 
 
 * 1-Data Lake Storage 
 
@@ -195,15 +196,15 @@ Basic Architecture comprises of following components:
 
 * 1-SQL database 
 
-* 1-Storage account 
+* 2-Storage accounts 
 
 * 1-Stream Analytics job 
 
-* 1-Machine Learning Experiment Account 
-
-* 1-Machine Learning Management Account 
+* 1-Machine Learning Service workspace
 
 * 1 – Container registry  
+
+* 1 – key vault  
 
 **Note**: Please refer **section 2.5** for more details about the components.
 
@@ -219,17 +220,17 @@ The main use of this solution is for disaster recovery scenarios. When a region 
 
 The diagram below depicts the dataflow between Azure Components in Standard Solution architecture:
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/Standard.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/Standard.png)
 
 Standard Architecture comprises of following components: 
 
-*	3-Virtual machines (2 windows & 1 Linux). One of the Windows VM is the **Dynocard VM** which has pre-installed PLC Simulator v1 and Modbus Simulator software’s. The second Windows VM is the **Machine Learning VM** which has  pre-installed Docker Containers and setup file for Azure ML workbench, which has to be installed by the user. The Linux VM is the **Edge VM** and is used to create and install modules in IoT Edge device. **VMs are optional Components**.
+*	3-Virtual machines (2 windows & 1 Linux). One of the Windows VM is the **Dynocard VM** which has pre-installed PLC Simulator v1 and Modbus Simulator software’s. The second Windows VM is the **Data Science Machine Learning VM** which is used  to run the notebooks to create experiments, register model, create image and to deploy webservices in ML service workspace. The Linux VM is the **Edge VM** and is used to create and install modules in IoT Edge device. **VMs are optional Components**.
 
 *	1-Web App
 
 *	1-Function App
 
-*	1-Application Insights
+*	2-Application Insights
 
 *	1-Data Lake Storage
 
@@ -243,15 +244,15 @@ Standard Architecture comprises of following components:
 
 *	2-SQL database
 
-*	1-Storage account
+*	2-Storage accounts
 
 *	1-Stream Analytics job
 
-*	1-Machine Learning Experiment Account
-
-*	1-Machine Learning Management Account
+*	1-Machine Learning service workspace
 
 *	1 – Container registry
+
+*	1 – key vault
 
 **Note**: Please refer **section 2.5** for more details about the components.
 
@@ -271,9 +272,9 @@ When there is an Azure Region failover, user needs to redeploy the ARM Template 
 
 **Note**: Please refer **section 2.5** for more details about the components.
 
-#### 2.3.3 Premium  Architecture:
+#### 2.3.3 Premium Architecture
 
-The Premium solution will have all of the components from the Standard solution and in addition, the Premium Architecture will be deploying the solution to two regions right when the solution is first deployed. The failover is an automatic process (a partially automated solution) and the two deployments are :
+The Premium solution will have all of the components from the Standard solution and in addition, the Premium Architecture will be deploying the solution to two regions right when the solution is first deployed. The failover is an automatic process (a partially automated solution) and the two deployments are:
 
 1.	Primary Region (fully deployed)
 
@@ -285,17 +286,17 @@ In Primary Region the configuration and set up of the VM’s was done automatica
 
 The below is the Architecture diagram of the Premium solution:
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/Premium.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/Premium.png)
 
 Premium Architecture comprises of following components: 
 
-* 3-Virtual machines (2 windows & 1 Linux). One of the Windows VM is the **Dynocard VM** which has  pre-installed PLC Simulator and Modbus Simulator software’s. The second Windows VM is the **Machine Learning VM** which has pre-installed Docker Containers and setup file for Azure ML workbench, which has to be installed by the user. The Linux VM is the **Edge** VM and is used to create and  install modules for the IoT Edge devices. **VMs are optional Components**.
+* 3-Virtual machines (2 windows & 1 Linux). One of the Windows VM is the **Dynocard VM** which has  pre-installed PLC Simulator and Modbus Simulator software’s. The second Windows VM is the **Data Science Machine Learning VM** which is used  to run the notebooks to create experiments, register model, create image and to deploy webservices in ML service workspace. The Linux VM is the **Edge** VM and is used to create and  install modules for the IoT Edge devices. **VMs are optional Components**.
 
 * 2-Web App 
 
 * 1-Function App 
 
-* 1-Application Insights 
+* 2-Application Insights 
 
 * 2-Data Lake Storage 
 
@@ -309,15 +310,15 @@ Premium Architecture comprises of following components:
 
 * 2-SQL database 
 
-* 1-Storage account 
+* 2-Storage accounts 
 
 * 2-Stream Analytics job 
 
-* 1-Machine Learning Experiment Account 
-
-* 1-Machine Learning Management Account 
+* 1-Machine Learning service workspace 
 
 * 1 – container registry 
+
+* 1 – key vault 
 
 **Note**: Please refer **section 2.5** for more details about the components.
 
@@ -329,7 +330,7 @@ The data flow is similar across all of the solutions offered.
 
 The below diagram explains the data flow between Azure components within the solution.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/4.png)
+![alt text](https://github.com/BlueMetal/iot-edge-dynocard/blob/master/images/4.png)
 
 ### 2.5 Azure Components and their Functionality 
 
@@ -359,39 +360,52 @@ Analytics drives business value in IoT solutions, but not all analytics needs to
 
 Azure IoT Edge is made up of three components:
 
-•	IoT Edge modules: These are containers that run Azure services, 3rd party services, or your own code. They are deployed to IoT Edge devices and execute locally on those devices.
+*	IoT Edge modules: These are containers that run Azure services, 3rd party services, or your own code. They are deployed to IoT Edge devices and execute locally on those devices.
 
-•	The IoT Edge runtime: This runs on each IoT Edge device and manages the modules deployed to each device.
+*	The IoT Edge runtime: This runs on each IoT Edge device and manages the modules deployed to each device.
 
-•	The Interface: A cloud-based interface enables you to remotely monitor and manage IoT Edge devices.
+*	The Interface: A cloud-based interface enables you to remotely monitor and manage IoT Edge devices.
 
 **Implementation**:
 
 In the solution implementation, the IoT Edge device gathers data from the Simulator and processes the data into the IoTHub service. Below modules will be installed on the IoT Edge System.
 
 * sql 
+
 * modbus 
+
 * dynocardalertModule 
-* Mlalertmodule 
+
+* Mlalertmodule
+
 * edgeAgent 
+
 * edgeHub 
-* dynoCardWebApi 
+
+* dynoCardWebApi
+
 * dynocard_telemetry
+
 * dynocard_web
-
-
 
 In this solution, the IoT Edge VM is an Optional Component, which lets users  choose whether they want to deploy the IoT Edge device in a Cloud Based environment or  deploy it on premise. When deployed  in a Virtual Machine, ARM Template will configure all the required parameters. If deployed on premise, it might require running some additional manual configurations.
 
 Here is a description of the 9 modules
 
 * modbus                - the modbus protocol adapter
+
 * dynoCardAlertModule   - the custom logic in C# to handle parsing all the messages and sending the alerts to the IoT Hub
+
 * mlAlertModule         - the machine learning module that detects the anomalies
+
 * dynocard_telemetry    - custom C# code that generates the device telemetry without the need for an actual device
+
 * sql                   - the SQL Server DB
+
 * dynoCardWebAPI        - a web app running on the edge that accesses the data for the local web UI
+
 * dynocard_web          - the locally running web application that displays the dynocard graph
+
 * edgeAgent & edgeHub   - system provided modules that manage the edge runtime.
 
 
@@ -410,13 +424,21 @@ The Azure IoT Hub offers several services for connecting IoT devices with Azure 
 IoT Hub is the core component of the Dynocard Solution. IoT Edge VM will send the data to the IoT Hub using the Edge Modules. These are the modules present in the IoT Edge device.
 
 * sql 
+
 * modbus 
+
 * dynocardalertModule 
+
 * Mlalertmodule 
+
 * edgeAgent 
+
 * edgeHub 
+
 * dynoCardWebApi 
+
 * dynocard_telemetry
+
 * dynocard_web 
 
 #### 2.5.4 Stream Analytics Job 
@@ -525,15 +547,16 @@ Azure Container Registry allows you to store images for all types of container d
 
 In this implementation, Azure Container registry is used to store the images used as part of the IoT Edge modules and other aspects. Images like the websvc4dc image is stored in a private repository that will be pulled down to create containers. 
 
-#### 2.5.12 Machine Learning Studio 
+#### 2.5.12 Machine Learning Service workspace
 
 **Introduction:**
 
-Microsoft Azure Machine Learning Studio is a collaborative, drag-and-drop tool you can use to build, test, and deploy predictive analytics solutions on your data. Machine Learning Studio publishes models as web services that can easily be consumed by custom apps or BI tools such as Excel. Machine Learning Studio is where data science, predictive analytics, cloud resources, and your data meet.
+Azure Machine Learning service is a cloud service that you use to train, deploy, automate, and manage machine learning models.
+The workspace is the top-level resource for Azure Machine Learning service, providing a centralized place to work with all the artifacts you create when you use Azure Machine Learning service.The workspace keeps a history of all training runs, metrics and a snapshot of your scripts.
 
 **Implementation:**
 
-Machine learning studio is used to create Machine Learning experiment accounts, model creation and management account and the workspace.
+Machine learning service workspace is used to create experiments, register model, deploy image and web service.
 
 #### 2.5.13 Application Insights 
 
@@ -577,13 +600,13 @@ Implementation:
 
 Azure function App HTTP trigger url is accessed through IoT edge script inside the edge VM, which will create an edge device in IoT Hub.
 
-## 3 Solution Types & Deployment Costs
+## 3.0 Solution Types and Deployment Costs
 
 ### 3.1 Solutions and Associated Costs 
 
-The Automated solutions provided by us covers in Section …. Will have the following Cost associated. The solutions are created considering users requirements & have Cost effective measures. User have control on what Type of azure resources need to be deploy with respect to SKU and Cost. These options will let user to choose whether user wants to deploy azure resources with minimal SKU and Production ready SKU. The Cost Models per solutions are explained in future sections:
+The Automated solutions provided by us covers in Section. Will have the following Cost associated. The solutions are created considering users requirements & have Cost effective measures. User have control on what Type of azure resources need to be deploy with respect to SKU and Cost. These options will let user to choose whether user wants to deploy azure resources with minimal SKU and Production ready SKU. The Cost Models per solutions are explained in future sections:
 
-#### 3.1.1. Basic 
+#### 3.1.1 Basic 
 
 This solution is mostly recommended for a PoC or Piloting environment. Deploy the Basic solution when you want only to need the monitoring for the Azure components. Also, when the Basic solution is deployed, no high availability is provided. 
 
@@ -591,7 +614,7 @@ The Basic solution requires minimum Azure components with minimal available SKU�
 
 * The Estimated Monthly Azure cost is: **$105.67**
   
-* The Estimated Monthly Azure cost (Including Optional Component) is: **$396.31**
+* The Estimated Monthly Azure cost (Including Optional Component) is: **$300.73**
 
 **Note**: Refer below table for the optional component list & Features
 
@@ -612,26 +635,26 @@ Prices are calculated by using the US East Location and Pricing Model is set to 
 | **SQL Database**        | B1 (Basic tier), 5DTUs, 2GB included storage per DB, US$ 0.0067/hour      | PAYG                       | $4.90  
 | **Stream Analytics**       | Standard Streaming Unit, 1 Units * US$ 80.30                          | PAYG                          | $80.30
 | **Azure Container Registry**       | Basic Tier, 1 units * 30 day * US$ 0.167 per unit per day = US$ 5.00, total WebHooks = 2, AS= 10GiB      | PAYG                             | $5.00
-| **ML Services**   | Model Management (Preview), Dev/Test, Location East US2(Managed models=20,managed deployments=2, Available Cores=4)| PAYG  | $0.00
-| **Machine learning studio**   | Free    | PAYG   | $0.00
+| **Machine learning Service workspace**   | Free    | PAYG   | $0.00
 | **Application Insights**     | 6 GB, 5 GB of data is included for free. 1 GB * $2.99   | PAYG                             | $2.99
 | **Log Analytics**     | 6 GB, 5 GB of data is included for free. 1 GB * $2.30   | PAYG                             | $2.30
 | **Virtual machine (edgevm)**(Optional - Depends on Customer Choice)   | Standard, A2:2 core(s), 3.5 GB memory, 135GB Temporary storage, East US, Linux VM   | PAYG   | $87.60
 | **Virtual network(Optional)**     | 5GB Data transfer, Outbound data transfer 1*US$ 0.0100 per GB, Inbound data transfer 1*US$0.0100 per GB, East US | PAYG                             | $0.10
-| **Virtual machine (MLVM)(Optional)**     | Standard, D2 v3:2 vCPU(s), 8GB RAM, 50GB Temporary storage, US $ 0.117/hour, East US, windows VM  | PAYG                             | $137.24 
+| **Virtual machine (Data Science VM)(Optional)**     | Data Science VM windows -2016 Standard, B2s: 2 vCPU(s), 4GB RAM, 8GB Temporary storage   | PAYG                             | $41.66 
 | **Virtual machine(modbusvm)(Optional)**   | 1 A1 (1 vCPU(s), 1.75 GB RAM) x 730 Hours; Windows – (OS Only); Pay as you go; 0 managed OS disks – S4    | PAYG    | $65.70   
 |      |       | **Estimated monthly cost**       | **$105.67**
-|      |       | **Optional Cost**       | **$290.64**
-|              |                               | **Estimated Monthly Cost (Including Optional)**                 | **$396.31**               
+|      |       | **Optional Cost**       | **$195.06**
+|              |                               | **Estimated Monthly Cost (Including Optional)**                 | **$300.73**               
 
-#### 3.1.2. Standard
+#### 3.1.2 Standard
 
 Deploy the Standard solution when you want monitoring, high availability and security/hardening for the deployed components. High availability is achieved by deploying the components in two regions. When the primary region fails , the secondary region needs to be redeployed (manual effort required).
 
 This Solution provides (Core + Monitoring + Hardening) features such as Application Insights, OMS Log Analytics, High Availability, Security & Disaster Recovery. The details of the components used in this solution is listed in section below: 
 
 * The Estimated Monthly Azure cost is: **301.21**  
-* The Estimated monthly Azure cost (Including Optional Component) is: **591.85**  
+
+* The Estimated monthly Azure cost (Including Optional Component) is: **496.27**  
 
 **Note**: Refer below table for the optional component list & Features
 
@@ -650,21 +673,20 @@ Prices are calculated by Location as **East US** and Pricing Model as **“PAYG�
 | **SQL Database**        | 2 * (Single Database, DTU Purchase Model, Standard Tier, S0: 10 DTUs, 250 GB included storage per DB, 1 Database(s) x 730 Hours, 5 GB Retention)       | PAYG                       | $29.44  
 | **Stream Analytics**       | Standard Streaming Unit, 1 Units * US$ 80.30                          | PAYG                          | $80.30
 | **Azure Container Registry**       | Basic Tier, 1 units * 30 day * US$ 0.167 per unit per day = US$ 5.00, total WebHooks = 2, AS= 10GiB      | PAYG                             | $5.00
-| **ML Services**  | Model Management (Preview), Dev/Test, Location East US2(Managed models=20,managed deployments=2, Available Cores=4) | PAYG | $0.00
-| **Machine learning studio**   | Free    | PAYG   | $0.00
+| **Machine learning service workspace**   | Free    | PAYG   | $0.00
 | **Application Insights**  | 6 GB, 5 GB of data is included for free. 1 GB * $2.99  | PAYG  | $2.99 
 | **Log Analytics**    | 6 GB, 5 GB of data is included for free. 1 GB * $2.30  | PAYG  | $2.30
 | **Virtual machine (edgevm)(Optional - Depends on Customer Choice)**   | Standard, A2:2 core(s), 3.5 GB memory, 135GB Temporary storage, East US, Linux VM   | PAYG   | $87.60
 | **Virtual network(Optional)**     | 5GB Data transfer, Outbound data transfer 1*US$ 0.0100 per GB, Inbound data transfer 1*US$0.0100 per GB, East US | PAYG                             | $0.10 
 | **Virtual machine(modbusvm)(Optional)**   | 1 A1 (1 vCPU(s), 1.75 GB RAM) x 730 Hours; Windows – (OS Only); Pay as you go; 0 managed OS disks – S4    | PAYG    | $65.70 
-| **Virtual machine (MLVM)(Optional)**     | Standard, D2 v3:2 vCPU(s), 8GB RAM, 50GB Temporary storage, US $ 0.117/hour, East US, windows VM  | PAYG                             | $137.24   
+| **Virtual machine (Data Science VM)(Optional)**     | Data Science VM windows -2016 Standard, B2s: 2 vCPU(s), 4GB RAM, 8GB Temporary storage   | PAYG                             | $41.66  
 |      |       | **Estimated monthly cost**       | **$301.21**
-|      |       | **Optional Cost**       | **$290.64**
-|              |                               | **Estimated Monthly Cost (Including Optional)**                 | **$591.85**             
+|      |       | **Optional Cost**       | **$195.06**
+|              |                               | **Estimated Monthly Cost (Including Optional)**                 | **$496.27**             
 
-**Note**: When we redeploy the solution, there will be no  extra cost, since primary region is already paid for. 
+**Note**: When we redeploy the solution, there will be no extra cost, since primary region is already paid for. 
 
-#### 3.1.3. Premium
+#### 3.1.3 Premium
 
 Deploy the Premium solution when you require Monitoring, High Availability and Hardening/Security for the deployed components. High availability is achieved by deploying the same components in two regions at the same time. No redeployment is required in this solution.
 
@@ -672,7 +694,7 @@ This solution also provides (Core + Monitoring + Hardening), the difference betw
 
 * The Estimated Monthly Azure cost is: **$391.69**  
 
-* The Estimated Monthly Azure cost (Including Optional Component) is: **$682.33**  
+* The Estimated Monthly Azure cost (Including Optional Component) is: **$586.75**  
 
 **Note**: Refer below table for the optional component list & Features 
 
@@ -691,17 +713,16 @@ Prices are calculated by Considering Location as **East US** and Pricing Model a
 | **SQL Database**        | 2 * (Single Database, DTU Purchase Model, Standard Tier, S0: 10 DTUs, 10 GB included storage per DB, 1 Database(s) x 730 Hours, 5 GB Retention)      | PAYG                       | $29.44 
 | **Stream Analytics**       | 2 * (Standard Streaming Unit, 1 Units * US$ 80.30) (2 * 80.30)                          | PAYG                          | $160.60 
 | **Azure Container Registry**       | Basic Tier, 1 units * 30 day * US$ 0.167 per unit per day = US$ 5.00, total WebHooks = 2, AS= 10GiB      | PAYG                             | $5.00
-| **ML Services**  | Model Management (Preview), Dev/Test, Location East US2(Managed models=20, managed deployments=2, Available Cores=4) | PAYG     | $0.00
-| **Machine learning studio**   | Free    | PAYG   | $0.00
+| **Machine learning service workspace**   | Free    | PAYG   | $0.00
 | **Application Insights**  | 6 GB, 5 GB of data is included for free. 1 GB * $2.99  | PAYG  | $2.99 
 | **Log Analytics**    | 6 GB, 5 GB of data is included for free. 1 GB * $2.30  | PAYG  | $2.30
 | **Virtual machine (edgevm)(optional)**   | Standard, A2:2 core(s), 3.5 GB memory, 135GB Temporary storage, East US, Linux VM   | PAYG   | $87.60 
 | **Virtual network**     | 5GB Data transfer, Outbound data transfer 1*US$ 0.0100 per GB, Inbound data transfer 1*US$0.0100 per GB, East US | PAYG                             | $0.10
 | **Virtual machine(modbusvm)(Optional)**   | 1 A1 (1 vCPU(s), 1.75 GB RAM) x 730 Hours; Windows – (OS Only); Pay as you go; 0 managed OS disks – S4    | PAYG    | $65.70 
-| **Virtual machine (MLVM)(Optional)**     | Standard, D2 v3:2 vCPU(s), 8GB RAM, 50GB Temporary storage, US $ 0.117/hour, East US, windows VM  | PAYG                             | $137.24  
+| **Virtual machine (Data Science VM)(Optional)**     | Data Science VM windows -2016 Standard, B2s: 2 vCPU(s), 4GB RAM, 8GB Temporary storage   | PAYG                             | $41.66  
 |      |       | **Estimated monthly cost**       | **$391.69**
-|      |       | **Optional Cost**       | **$290.64**
-|              |                               | **Estimated Monthly Cost (Including Optional)**                 | **$682.33**               
+|      |       | **Optional Cost**       | **$195.06**
+|              |                               | **Estimated Monthly Cost (Including Optional)**                 | **$586.75**               
 
 
 ## 3.2 Solution Features and Cost Comparison: 
@@ -739,9 +760,7 @@ The below table explain the distinctive features available across solution types
 |                  | Streaming Unit       | 1 Units	        | 1 Units         | 1 Units
 | Azure Container Registry         | SKU	        | Basic         | Basic	          | Basic
 |            | Units              |	1	         | 1	             | 1
-|ML Services	    | Feature	          | Model Management (Preview)        | Model Management (Preview)	       | Model Management (Preview)
-|                  | Tier	        | Dev/Test	        | Dev/Test	       | Dev/Test
-| Machine learning studio       | SKU	       | Free	       | Free	       | Free
+| Machine learning service workspace       | SKU	       | Free	       | Free	       | Free
 | Application Insights        |	Logs collected	       | 6 GB, 5 GB of data is included for free.	    | 6 GB, 5 GB of data is included for free.	     | 6 GB, 5 GB of data is included for free.
 | Log Analytics	       | Logs ingested	       | 5 GB of data is included for free. An average Azure VM ingests 1 GB to 3 GB	      | 5 GB of data is included for free. An average Azure VM ingests 1 GB to 3 GB	       | 5 GB of data is included for free. An average Azure VM ingests 1 GB to 3 GB
 | Virtual machine (edgevm) (Optional - Depends on Customer Choice)	       | SKU	           | Standard	         | Standard	        | Standard
@@ -752,10 +771,10 @@ The below table explain the distinctive features available across solution types
 | Virtual network (Optional)	        | Data Transfer	        | 5 GB	           | 5 GB	             | 5 GB
 |                   | Outbound data transfer           | 5       	          | 5	                   | 5
 |                 |	Inbound data transfer	             | 5	            | 5	                 | 5
-| Virtual machine (MLVM) (Optional)	        | SKU	              | Standard, D2 v3	       | Standard, D2 v3	        | Standard, D2 v3
+| Virtual machine (Data Science VM) (Optional)	        | SKU	              | Standard, B2s	       | Standard, B2s	        | Standard, B2s
 |                  | Cores	           | 2 vCPU(s)	        | 2 vCPU(s)	          | 2 vCPU(s)
-|                 |	RAM           | 8 GB	       | 8 GB	      | 8 GB
-|                | Storage	          | 50 GB	          | 50 GB	            | 50 GB
+|                 |	RAM           | 4 GB	       | 4 GB	      | 4 GB
+|                | Storage	          | 8 GB	          | 8 GB	            | 8 GB
 |	            |OS           |	Windows VM	              | Windows VM	                  | Windows VM
 | Virtual machine (modbusvm) (Optional)        | SKU	           | Standard	            |Standard, D2 v3	        | Standard, D2 v3
 |                      | Cores	            | 1 Core	          | 2 vCPU(s)	               | 2 vCPU(s)
@@ -778,47 +797,44 @@ The below Table explains the $ impact for the solutions by resources.
 | **Service Bus Namespace**    |	$9.81     |	$9.81   |	$19.62 
 | **SQL Database** | $4.90      |	$29.44     | 	$29.44 
 | **Stream Analytics** | $80.30 	 | $80.30   |  $160.60 
-| **Azure Container Registry**    | $5.00 	    | $5.00     |	$5.00 
-| **ML Services**	| $0.00 	 | $0.00     | $0.00 
-| **Machine learning studio**    | $0.00      | $0.00     | $0.00 
+| **Azure Container Registry**    | $5.00 	    | $5.00     |	$5.00  
+| **Machine learning service workspace**    | $0.00      | $0.00     | $0.00 
 | **Application Insights**    | $2.99 	  | $2.99 	   | $2.99 
 | **Log Analytics**   | $2.30      | $2.30 	    | $2.30 
 | **Virtual machine (edgevm) (Optional)**    | $87.60 	    | $87.60     | $87.60 
 | **Virtual network (Optional)**    | $0.10 	  | $0.10 	     | $0.10 
-| **Virtual machine (MLVM) (Optional)**    | $137.24 	  | $65.70 	    | $65.70 
-| **Virtual machine (modbusvm) (Optional)**    | $65.70 	  | $137.24    | $137.24 
+| **Virtual machine (Data Science VM) (Optional)**    | $41.66 	  | $41.66 	    | $41.66 
+| **Virtual machine (modbusvm) (Optional)**    | $65.70 	  | $65.70    | $65.70 
 
 
-### 3.2.3. Estimated Monthly Cost for each Solution:
+### 3.2.3 stimated Monthly Cost for each Solution:
 
 | **Resource Name**                 | **Basic**           | **Standard**            | **Premium**
 | -------------                  | -------------          | -------------            | ------------- 
 | **Estimated monthly cost**     | **$105.67**            | **$301.21** 	              | **$391.69** 
-| **Optional Cost**      | **$290.64** 	       | **$290.64** 	              | **$290.64** 
-| **Estimated monthly cost (Including Optional)**       | **$396.31** 	       | **$591.85** 	              | **$682.33** 
+| **Optional Cost**      | **$195.06** 	       | **$195.06** 	              | **$195.06** 
+| **Estimated monthly cost (Including Optional)**       | **$300.73** 	       | **$496.27** 	              | **$586.75** 
 
 
-## 4. Further Reference
+## 4.0 Further Reference
 
-### 4.1. Deployment Guide
+### 4.1 Deployment Guide
 
 To Deploy the Oil & Gas solution please refer Deployment guide in the Provided Documents.
 
-https://github.com/nvtuluva/iot-edge-dynocard/blob/master/dynocards-wiki/Deployment-Guide.md
+https://github.com/BlueMetal/iot-edge-dynocard/blob/master/dynocards-wiki/Deployment-Guide.md
 
-### 4.2. Admin Guide
+### 4.2 Admin Guide
 
 Refer Admin Guide to perform Administrator tasks of the Solution in Azure Portal.
 
-https://github.com/nvtuluva/iot-edge-dynocard/blob/master/dynocards-wiki/Admin-Guide-Page.md
+https://github.com/BlueMetal/iot-edge-dynocard/blob/master/dynocards-wiki/Admin-Guide-Page.md
 
-### 4.3. User Guide
+### 4.3 User Guide
 
 Refer User Guide to find how to use Oil & Gas solution once deployed successfully in Azure portal. 
 
-https://github.com/nvtuluva/iot-edge-dynocard/blob/master/dynocards-wiki/User-Guide.md
-
-
+https://github.com/BlueMetal/iot-edge-dynocard/blob/master/dynocards-wiki/User-Guide.md
 
 
 ************************************* END OF DOCUMENT *************************************

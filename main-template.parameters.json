@@ -8,8 +8,11 @@
         "Edge VM + Simulator VM":{
             "value":"No"
         },
-        "MLVM":{
+        "dataScienceVM":{
             "value":"No"
+        },
+         "dataScienceVmSize":{
+            "value":"Standard_B2s"
         },
         "dataLakelocation": {
             "value": "eastus2"
