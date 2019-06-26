@@ -1487,13 +1487,13 @@ Create a notebook named deployment.
  
 Let's import the azureml.core package. This contains core packages, modules and classes for Azure Machine Learning. 
 
-**import azureml.core
+**import azureml.core**
 
-from azureml.core import Workspace, Experiment, Run**
+**from azureml.core import Workspace, Experiment, Run**
 
-**#check core SDK version number
+**#check core SDK version number**
 
-print("Azure ML SDK Version: ", azureml.core.VERSION)**
+**print("Azure ML SDK Version: ", azureml.core.VERSION)**
 
 Paste the below code in the next cell to configure the workspace
 
