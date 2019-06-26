@@ -1497,50 +1497,50 @@ Let's import the azureml.core package. This contains core packages, modules and 
 
 Paste the below code in the next cell to configure the workspace
 
-**ws = Workspace.from_config()
+**ws = Workspace.from_config()**
 
-print(ws.name, ws.location, ws.resource_group, ws.location, sep = '\t')**
+**print(ws.name, ws.location, ws.resource_group, ws.location, sep = '\t')**
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d090.png)
  
 Paste the below code in the next cell.
 
-**from azureml.core.model import Model
+**from azureml.core.model import Model**
 
-model_name = "anomaly_detect"
+**model_name = "anomaly_detect"**
 
-model = Model(ws, model_name)**
+**model = Model(ws, model_name)**
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d091.png)
  
 Paste the below code in the next cell.
 
-**from azureml.core.image import ContainerImage
+**from azureml.core.image import ContainerImage**
 
-image_config = ContainerImage.image_configuration(execution_script="score4dc.py",
+**image_config = ContainerImage.image_configuration(execution_script="score4dc.py",**
 
-                                                    runtime="python",
+                                                    **runtime="python",**
 						    
-                                                    conda_file="myenv.yml",
+                                                    **conda_file="myenv.yml",**
 						    
-                                                    dependencies=["inputs.json", "model.pkl", "service_schema.json", "train4dc.py"],
+                                                    **dependencies=["inputs.json", "model.pkl", "service_schema.json", "train4dc.py"],**
                                                     
-						    description="image for model",
+						    **description="image for model",**
                                                     
-						    enable_gpu=True
+						    **enable_gpu=True**
                                                     
-						    )**
+						    **)**
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d092.png)
  
 Paste the below code in the next cell.
 
 
-**from azureml.core.webservice import AciWebservice
+**from azureml.core.webservice import AciWebservice**
 
-aciconfig = AciWebservice.deploy_configuration(cpu_cores=1,
-                                               memory_gb=1,
-                                               description='Predict anomaly')**
+**aciconfig = AciWebservice.deploy_configuration(cpu_cores=1,**
+					       **memory_gb=1,**
+                                               **description='Predict anomaly')**
                                             					       
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d093.png)
 
