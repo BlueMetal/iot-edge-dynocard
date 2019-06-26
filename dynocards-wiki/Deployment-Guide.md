@@ -1438,38 +1438,12 @@ Click on **score4dc** experiment to see the graph.
 ### 6.10 Update myenv.yaml file
 
 Go back to **Data science VM** and click on Home tab of Jupyter server
+
+click on below github url,click on raw and copied the txt file content.
+
+https://github.com/nvtuluva/iot-edge-dynocard/blob/master/jupyter/myenv.txt
  
-Click on **myenv.yaml** and replace the below content in the file.
-
-#Conda environment specification. The dependencies defined in this file will
-
-#be automatically provisioned for runs with userManagedDependencies=False.
-
-
-#Details about the Conda environment file format:
-
-#https://conda.io/docs/user-guide/tasks/manage-environments.html#create-env-file-manually
-
-
-name: project_environment
-
-dependencies:
-
-#The python interpreter version.
-
-#Currently Azure ML only supports 3.5.2 and later.
-
-- python=3.6.2
-
-- pip:
-
-#Required packages for AzureML execution, history, and data preparation.
-
-  - azureml-defaults 
-  - scikit-learn==0.20.0 
-  - azureml.webservice-schema
-  - inference-schema[numpy-support]
-  - azureml.datacollector==0.1.0a13
+Click on **myenv.yaml** and replace the above myenv.txt file content.
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d086.png)
  
