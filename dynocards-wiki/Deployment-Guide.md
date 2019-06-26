@@ -1488,14 +1488,17 @@ Create a notebook named deployment.
 Let's import the azureml.core package. This contains core packages, modules and classes for Azure Machine Learning. 
 
 **import azureml.core
+
 from azureml.core import Workspace, Experiment, Run**
 
 **#check core SDK version number
+
 print("Azure ML SDK Version: ", azureml.core.VERSION)**
 
 Paste the below code in the next cell to configure the workspace
 
 **ws = Workspace.from_config()
+
 print(ws.name, ws.location, ws.resource_group, ws.location, sep = '\t')**
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d090.png)
