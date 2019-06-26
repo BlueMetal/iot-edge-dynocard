@@ -1441,9 +1441,10 @@ Go back to **Data science VM** and click on Home tab of Jupyter server
  
 Click on **myenv.yaml** and replace the below content in the file.
 
- #Conda environment specification. The dependencies defined in this file will
+#Conda environment specification. The dependencies defined in this file will
 
- #be automatically provisioned for runs with userManagedDependencies=False.
+#be automatically provisioned for runs with userManagedDependencies=False.
+
 
 #Details about the Conda environment file format:
 
@@ -1458,21 +1459,17 @@ dependencies:
 
 #Currently Azure ML only supports 3.5.2 and later.
 
--python=3.6.2
+- python=3.6.2
 
--pip:
+- pip:
 
 #Required packages for AzureML execution, history, and data preparation.
 
-  -azureml-defaults
-  
-  -scikit-learn==0.20.0
-  
-  -azureml.webservice-schema
-  
-  -inference-schema[numpy-support]
-  
-  -azureml.datacollector==0.1.0a13
+  - azureml-defaults 
+  - scikit-learn==0.20.0 
+  - azureml.webservice-schema
+  - inference-schema[numpy-support]
+  - azureml.datacollector==0.1.0a13
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d086.png)
  
