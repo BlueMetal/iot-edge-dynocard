@@ -92,7 +92,7 @@ This Document explains how to use the Dyno Card solution, specifically it explai
 
 10. Login to your azure account using the below command.
 
-**az login -t <tenantid>**
+az login -t <tenantid>
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/dgd01b.PNG)
 
