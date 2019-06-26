@@ -870,12 +870,12 @@ Insert three more new cells and paste **run, experiment** and **run.complete()**
  
 Click on new cell and paste the below code to register the model.
 
-**from azureml.core.model import Model**
+from azureml.core.model import Model
 
-**model = Model.register(workspace = ws,**
-                     **model_path ="model.pkl",**
-                     **model_name = "anomaly_detect",**
-                     **description = "Dynocard anomaly detection")**
+model = Model.register(workspace = ws,
+                     model_path ="model.pkl",
+                     model_name = "anomaly_detect",
+                     description = "Dynocard anomaly detection")
 		 
  
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d041.png)
