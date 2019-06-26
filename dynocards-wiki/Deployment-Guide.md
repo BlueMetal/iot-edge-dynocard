@@ -1020,11 +1020,13 @@ Let's import the azureml.core package. This contains core packages, modules and 
 **from azureml.core import Workspace, Experiment, Run**
 
 **#check core SDK version number
+
 print("Azure ML SDK Version: ", azureml.core.VERSION)**
 
 Paste the below code in the next cell to configure the workspace
 
 **ws = Workspace.from_config()
+
 print(ws.name, ws.location, ws.resource_group, ws.location, sep = '\t')**
 
 paste the below code in next cell to create experiment
