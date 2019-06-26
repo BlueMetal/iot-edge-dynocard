@@ -1124,7 +1124,7 @@ Click on **score4dc** experiment to see the graph.
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d085.png)
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d086.png)
+
  
 ### 6.10 Update myenv.yaml file
 
