@@ -1232,15 +1232,9 @@ Paste the below code in the next cell.
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d096.png)
  
-Paste the below code in the next cell.
+Go to below link, copy the content of the file and paste it in the next cell.
 
-**import requests**
-**input_data = "{ \"Id\": 0, \"Timestamp\": \"2018-04-04T22:42:59+00:00\", \"NumberOfPoints\": 400, \"MaxLoad\": 19500, \"MinLoad\": 7500, \"StrokeLength\": 1200, \"StrokePeriod\": 150, \"CardType\": 0,\"CardPoints\": [{\"Load\": 11744,\"Position\": 145 }] }"**
-**headers = {'Content-Type':'application/json'}**
-**resp = requests.post(service.scoring_uri, input_data, headers=headers)**
-
-**print("POST to url", service.scoring_uri)**
-**print("prediction:", resp.text)**
+https://raw.githubusercontent.com/nvtuluva/iot-edge-dynocard/master/jupyter/deployment.xt
 
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d097.png)
 
