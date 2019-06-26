@@ -1092,19 +1092,19 @@ Run the next cells “**runscore4dc**”, “**experiment**” and “**runscore
 
 Go to **Home** tab
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d078.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d079.png)
 
 Click on **Outputs** folder
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d079.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d080.png)
  
 Here you can see the generated **service_schema.json** file.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d080.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d081.png)
  
 Click on the file to see the content.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d081.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d082.png)
 
 The file contains below content.
 
@@ -1114,17 +1114,17 @@ The file contains below content.
 
 To see the created experiment go to **ML service Workspace**
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d082.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d083.png)
  
 Navigate to the Experiments blade to see the created experiment.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d083.png)
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d084.png)
  
 Click on **score4dc** experiment to see the graph.
 
-![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d084.png)
-
 ![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d085.png)
+
+![alt text](https://github.com/nvtuluva/iot-edge-dynocard/blob/master/images/d086.png)
  
 ### 6.10 Update myenv.yaml file
 
